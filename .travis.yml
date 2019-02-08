@@ -5,6 +5,6 @@ dist: xenial
 solution: NdArrayNet.sln
 dotnet: 2.2
 script:
- -dotnet restore
- -dotnet build
- -dotnet test
+    - dotnet restore
+    - dotnet build
+    - dotnet test
