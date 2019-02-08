@@ -1,7 +1,9 @@
 language: csharp
-solution: NdArrayNet.sln
 mono: none
+sudo: required
+solution: NdArrayNet.sln
 dotnet: 2.2
 script:
  -dotnet restore
+ -dotnet build
  -dotnet test
