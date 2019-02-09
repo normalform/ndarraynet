@@ -1,11 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Microsoft.NETCore.App"/>
-  </ItemGroup>
-  
 </Project>
