@@ -22,6 +22,8 @@ steps:
     packageType: 'sdk'
     version: '2.2.103'
 
+- script: dotnet restore
+
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
