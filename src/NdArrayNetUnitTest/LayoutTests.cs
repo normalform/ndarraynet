@@ -28,50 +28,83 @@
 namespace NdArrayNetUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using NdArrayNet;
+    using System.Linq;
 
     [TestClass]
-    public class NumPyArangeTests
+    public class LayoutTests
     {
         [TestMethod]
-        public void ArangeDouble_IntTypeFullArgs_ReturnIntegerTypeNdArray()
+        public void OrderedStride_case1()
         {
-            // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var order = Enumerable.Range(0, shape.Length).Reverse().ToArray();
+
+            // action
+            var result = Layout.OrderedStride(shape, order);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+            var expected = new[] { 120, 60, 20, 5, 1 };
+            CollectionAssert.AreEqual(expected, result);
         }
 
         [TestMethod]
-        public void ArangeDouble_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
+        public void OrderedStride_case2()
         {
-            // arrange & action
-            var array = NumPy.Arange(10);
+            // arange
+            var shape = new[] { 5, 4, 3, 2, 1 };
+            var order = Enumerable.Range(0, shape.Length).Reverse().ToArray();
+
+            // action
+            var result = Layout.OrderedStride(shape, order);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+            var expected = new[] { 24, 6, 2, 1, 1 };
+            CollectionAssert.AreEqual(expected, result);
         }
 
         [TestMethod]
-        public void ArangeDouble_DoubleTypeFullArgs_ReturnIntegerTypeNdArray()
+        public void OrderedStride_case3()
         {
-            // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
+            // arange
+            var shape = new[] { 0, 1, 2, 3, 4 };
+            var order = Enumerable.Range(0, shape.Length).Reverse().ToArray();
+
+            // action
+            var result = Layout.OrderedStride(shape, order);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
+            var expected = new[] { 24, 24, 12, 4, 1 };
+            CollectionAssert.AreEqual(expected, result);
         }
 
         [TestMethod]
-        public void ArangeDouble_DoubleTypeStopArgOnly_ReturnIntegerTypeNdArray()
+        public void CStride()
         {
-            // arrange & action
-            var array = NumPy.Arange(10.0);
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+
+            // action
+            var result = Layout.CStride(shape);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
+            var expected = new[] { 120, 60, 20, 5, 1 };
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void FStride()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+
+            // action
+            var result = Layout.FStride(shape);
+
+            // assert
+            var expected = new[] { 1, 1, 2, 6, 24 };
+            CollectionAssert.AreEqual(expected, result);
         }
     }
 }

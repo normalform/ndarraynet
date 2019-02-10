@@ -25,30 +25,24 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-namespace NdArrayNet
+namespace NdArrayNet.Utils
 {
-    public class NumPy
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public class Permutation
     {
-        private static readonly IDevice Device = HostDevice.Instance;
-
-        public static NdArray<int> Arange(int stop)
+        /// <summary>
+        /// true if the given list is a permutation of the numbers 0 to perm.Length-1
+        /// </summary>
+        /// <param name="perm"></param>
+        /// <returns></returns>
+        static public bool Is(int[] perm)
         {
-            return NdArray<int>.Arange(Device, 0, stop, 1);
-        }
+            var s0 = new HashSet<int>(perm);
+            var s1 = new HashSet<int>(Enumerable.Range(0, perm.Length));
 
-        public static NdArray<int> Arange(int start, int stop, int step)
-        {
-            return NdArray<int>.Arange(Device, start, stop, step);
-        }
-
-        public static NdArray<double> Arange(double stop)
-        {
-            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
-        }
-
-        public static NdArray<double> Arange(double start, double stop, double step)
-        {
-            return NdArray<double>.Arange(Device, start, stop, step);
+            return s0.SetEquals(s1);
         }
     }
 }

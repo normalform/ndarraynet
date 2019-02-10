@@ -27,28 +27,13 @@
 
 namespace NdArrayNet
 {
-    public class NumPy
+    public interface IHostStorage<T>
     {
-        private static readonly IDevice Device = HostDevice.Instance;
+        T[] Data { get; }
 
-        public static NdArray<int> Arange(int stop)
-        {
-            return NdArray<int>.Arange(Device, 0, stop, 1);
-        }
+        int DataSize { get; }
+        int DataSizeInBytes { get; }
 
-        public static NdArray<int> Arange(int start, int stop, int step)
-        {
-            return NdArray<int>.Arange(Device, start, stop, step);
-        }
-
-        public static NdArray<double> Arange(double stop)
-        {
-            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
-        }
-
-        public static NdArray<double> Arange(double start, double stop, double step)
-        {
-            return NdArray<double>.Arange(Device, start, stop, step);
-        }
+        PinnedMemory Pin();
     }
 }

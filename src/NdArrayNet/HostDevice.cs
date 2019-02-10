@@ -27,28 +27,34 @@
 
 namespace NdArrayNet
 {
-    public class NumPy
+    public sealed class HostDevice : BaseDevice
     {
-        private static readonly IDevice Device = HostDevice.Instance;
+        private static HostDevice instance;
 
-        public static NdArray<int> Arange(int stop)
+        private HostDevice()
         {
-            return NdArray<int>.Arange(Device, 0, stop, 1);
         }
 
-        public static NdArray<int> Arange(int start, int stop, int step)
+        public static HostDevice Instance
         {
-            return NdArray<int>.Arange(Device, start, stop, step);
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new HostDevice();
+                }
+
+                return instance;
+            }
         }
 
-        public static NdArray<double> Arange(double stop)
+        public override IStorage<T> Create<T>(int numElements)
         {
-            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
+            return new HostStorage<T>(numElements);
         }
 
-        public static NdArray<double> Arange(double start, double stop, double step)
-        {
-            return NdArray<double>.Arange(Device, start, stop, step);
-        }
+        public override string Id => "Host";
+
+        public override bool Zeroed => true;
     }
 }

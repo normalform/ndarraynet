@@ -27,28 +27,29 @@
 
 namespace NdArrayNet
 {
-    public class NumPy
+    using System;
+
+    public abstract class BaseDevice : IDevice
     {
-        private static readonly IDevice Device = HostDevice.Instance;
-
-        public static NdArray<int> Arange(int stop)
+        public virtual IStorage<T> Create<T>(int numElements)
         {
-            return NdArray<int>.Arange(Device, 0, stop, 1);
+            throw new NotImplementedException();
         }
 
-        public static NdArray<int> Arange(int start, int stop, int step)
+        public virtual string Id
         {
-            return NdArray<int>.Arange(Device, start, stop, step);
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public static NdArray<double> Arange(double stop)
+        public virtual bool Zeroed
         {
-            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
-        }
-
-        public static NdArray<double> Arange(double start, double stop, double step)
-        {
-            return NdArray<double>.Arange(Device, start, stop, step);
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

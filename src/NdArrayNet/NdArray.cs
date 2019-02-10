@@ -25,10 +25,91 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-
 namespace NdArrayNet
 {
-    public class NdArray<T>
+    using System;
+
+    /// <summary>
+    /// An N-dimensional array with elements of type 'T.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class NdArray<T> : IFrontend, IFrontend<T>
     {
+        private readonly IStorage<T> storage;
+
+        public int NumDimensions => Layout.NumDimensions;
+        public int NumElements => Layout.NumElements;
+
+        public IBackend<T> Backend => storage.Backend(Layout);
+
+        public Layout Layout { get; }
+
+        /// <summary>
+        /// Implicit constructor.
+        /// </summary>
+        /// <param name="layout"></param>
+        public NdArray(Layout layout, IStorage<T> storage)
+        {
+            Layout = layout;
+            this.storage = storage;
+        }
+
+        /// <summary>
+        /// Creates a new, uninitialized NdArray with a new storage.
+        /// </summary>
+        /// <param name="shape">The shape of the NdArray to create.</param>
+        /// <param name="device">The device to store the data of the NdArray on.</param>
+        /// <param name="order">The memory layout to use for the new NdArray. (default: row-major)</param>
+        public NdArray(int[] shape, IDevice device, Order order = Order.RowMajor)
+        {
+            if (order == Order.RowMajor)
+            {
+                Layout = Layout.NewC(shape);
+            }
+            else
+            {
+                Layout = Layout.NewF(shape);
+            }
+
+            storage = device.Create<T>(Layout.NumElements);
+        }
+
+        public static NdArray<T> Arange(IDevice device, T start, T stop, T step)
+        {
+            var op = ScalarPrimitives.For<T, T>();
+            var opc = ScalarPrimitives.For<int, T>();
+
+            var numberOfElementT = op.Divide(op.Subtract(stop, start), step);
+            var numberOfElementInt = opc.Convert(numberOfElementT);
+            var numberOfElement = Math.Max(0, numberOfElementInt);
+
+            var shape = new[] { numberOfElement };
+
+            var ndArray = new NdArray<T>(shape, device);
+            ndArray.FillIncrementing(start, step);
+
+            return ndArray;
+        }
+
+        public void FillIncrementing(T start, T step)
+        {
+            if (NumDimensions != 1)
+            {
+                throw new InvalidOperationException("FillIncrementing requires a vector.");
+            }
+
+            Backend.FillIncrementing(start, step, this);
+        }
+
+        /// <summary>
+        /// Creates a NdArray with the specified layout sharing its storage with the original NdArray.
+        /// </summary>
+        /// <param name="layout">The new NdArray memory layout.</param>
+        /// <param name="array">The NdArray to operate on.</param>
+        /// <returns>The resulting NdArray.</returns>
+        public NdArray<T> Relayout(Layout layout)
+        {
+            return new NdArray<T>(layout, storage);
+        }
     }
 }

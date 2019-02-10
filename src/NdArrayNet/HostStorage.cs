@@ -27,28 +27,46 @@
 
 namespace NdArrayNet
 {
-    public class NumPy
+    using System;
+    using System.Runtime.InteropServices;
+
+    public class HostStorage<T> : IStorage<T>, IStorage, IHostStorage<T>
     {
-        private static readonly IDevice Device = HostDevice.Instance;
+        private readonly int UnitSize = Marshal.SizeOf(typeof(T));
 
-        public static NdArray<int> Arange(int stop)
+        public HostStorage(T[] data)
         {
-            return NdArray<int>.Arange(Device, 0, stop, 1);
+            Data = data;
         }
 
-        public static NdArray<int> Arange(int start, int stop, int step)
+        public HostStorage(long numberOfElements)
         {
-            return NdArray<int>.Arange(Device, start, stop, step);
+            if (numberOfElements > int.MaxValue)
+            {
+                var msg = string.Format("Cannot create host NdArray storage for {0} elements, the current limit is {1} elements.", numberOfElements, int.MaxValue);
+                throw new ArgumentOutOfRangeException(msg);
+            }
+
+            Data = new T[numberOfElements];
         }
 
-        public static NdArray<double> Arange(double stop)
+        public T[] Data { get; }
+
+        public IDevice Device => HostDevice.Instance;
+
+        public int DataSize => Data.Length;
+
+        public int DataSizeInBytes => DataSize * UnitSize;
+
+        public IBackend<T> Backend(Layout layout)
         {
-            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
+            return new HostBackend<T>(layout, this);
         }
 
-        public static NdArray<double> Arange(double start, double stop, double step)
+        public PinnedMemory Pin()
         {
-            return NdArray<double>.Arange(Device, start, stop, step);
+            var gcHnd = GCHandle.Alloc(Data, GCHandleType.Pinned);
+            return new PinnedMemory(gcHnd, Data.LongLength * UnitSize);
         }
     }
 }

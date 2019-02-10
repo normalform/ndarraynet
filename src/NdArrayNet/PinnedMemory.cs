@@ -27,28 +27,37 @@
 
 namespace NdArrayNet
 {
-    public class NumPy
+    using System;
+    using System.Runtime.InteropServices;
+
+    public class PinnedMemory : IDisposable
     {
-        private static readonly IDevice Device = HostDevice.Instance;
+        private bool dispossed = false;
+        private GCHandle GcHnd;
 
-        public static NdArray<int> Arange(int stop)
+        public PinnedMemory(GCHandle gcHnd, long size)
         {
-            return NdArray<int>.Arange(Device, 0, stop, 1);
+            GcHnd = gcHnd;
+            Ptr = gcHnd.AddrOfPinnedObject();
+            Size = size;
         }
 
-        public static NdArray<int> Arange(int start, int stop, int step)
+        public long Size { get; }
+
+        public IntPtr Ptr { get; }
+
+        public void Dispose()
         {
-            return NdArray<int>.Arange(Device, start, stop, step);
+            if (!dispossed)
+            {
+                GcHnd.Free();
+                dispossed = true;
+            }
         }
 
-        public static NdArray<double> Arange(double stop)
+        ~PinnedMemory()
         {
-            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
-        }
-
-        public static NdArray<double> Arange(double start, double stop, double step)
-        {
-            return NdArray<double>.Arange(Device, start, stop, step);
+            Dispose();
         }
     }
 }
