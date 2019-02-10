@@ -28,9 +28,8 @@
 namespace NdArrayNetUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using System.Linq;
     using NdArrayNet;
+    using System.Linq;
 
     [TestClass]
     public class LayoutTests

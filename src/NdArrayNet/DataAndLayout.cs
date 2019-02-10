@@ -31,8 +31,8 @@ namespace NdArrayNet
     {
         public DataAndLayout(T[] data, FastLayout fastLayout)
         {
-            this.Data = data;
-            this.FastLayout = fastLayout;
+            Data = data;
+            FastLayout = fastLayout;
         }
 
         public T[] Data { get; }

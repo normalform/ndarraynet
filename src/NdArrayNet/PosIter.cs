@@ -32,62 +32,62 @@ namespace NdArrayNet
     public class PosIter
     {
         public PosIter(
-            FastLayout fl, 
-            int[] startPos = null, 
-            int fromDim = 0, 
+            FastLayout fl,
+            int[] startPos = null,
+            int fromDim = 0,
             int toDim = -999)
         {
-            if(startPos == null)
+            if (startPos == null)
             {
                 startPos = new int[fl.NumDiensions];
             }
-            if(toDim == -999)
+            if (toDim == -999)
             {
                 toDim = fl.NumDiensions - 1;
             }
 
-            this.Pos = new int[startPos.Length];
-            startPos.CopyTo(this.Pos, 0);
+            Pos = new int[startPos.Length];
+            startPos.CopyTo(Pos, 0);
 
-            this.Shape = fl.Shape;
-            this.Stride = fl.Stride;
+            Shape = fl.Shape;
+            Stride = fl.Stride;
 
-            this.Addr = fl.UnCheckedArray(startPos);
-            this.Active = Enumerable.Range(0, fl.NumDiensions + 1)
-                                    .All(d => (fromDim <= d && d <= toDim)? 
-                                                0 <= startPos[d] && startPos[d] < this.Shape[d] : true);
-            this.FromDim = fromDim;
-            this.ToDim = toDim;
+            Addr = fl.UnCheckedArray(startPos);
+            Active = Enumerable.Range(0, fl.NumDiensions + 1)
+                                    .All(d => (fromDim <= d && d <= toDim) ?
+                                                0 <= startPos[d] && startPos[d] < Shape[d] : true);
+            FromDim = fromDim;
+            ToDim = toDim;
         }
 
         public void MoveNext()
         {
             // try incrementing starting from last axis
             var increment = true;
-            var d = this.ToDim;
+            var d = ToDim;
 
-            while (increment && d >= this.FromDim)
+            while (increment && d >= FromDim)
             {
-                if (this.Pos[d] > this.Shape[d] - 1)
+                if (Pos[d] > Shape[d] - 1)
                 {
                     // was last element of that axis
-                    this.Addr = this.Addr - this.Pos[d] * this.Shape[d];
-                    this.Pos[d] = 0;
+                    Addr = Addr - Pos[d] * Shape[d];
+                    Pos[d] = 0;
                     d--;
                 }
                 else
                 {
                     // can increment this axis
-                    this.Addr = this.Addr + this.Stride[d];
-                    this.Pos[d] = this.Pos[d] + 1;
+                    Addr = Addr + Stride[d];
+                    Pos[d] = Pos[d] + 1;
                     increment = false;
                 }
             }
 
             // if we tried to increment past first axis, then iteration finished
-            if(d < this.FromDim)
+            if (d < FromDim)
             {
-                this.Active = false;
+                Active = false;
             }
         }
 

@@ -44,7 +44,7 @@ namespace NdArrayNet
             {
                 var fromDim = dim0Fixed ? 1 : 0;
                 var startPos = new int[nd];
-                if(dim0Fixed)
+                if (dim0Fixed)
                 {
                     startPos[0] = dim0Pos;
                 }
@@ -52,20 +52,20 @@ namespace NdArrayNet
                 var targetPosItr = new PosIter(trgt.FastLayout, startPos, fromDim: fromDim, toDim: nd - 2);
                 var pos = new int[targetPosItr.Pos.Length];
 
-                while(targetPosItr.Active)
+                while (targetPosItr.Active)
                 {
                     var targetAddr = targetPosItr.Addr;
-                    if(nd == 0)
+                    if (nd == 0)
                     {
                         trgt.Data[targetPosItr.Addr] = op(null);
                     }
-                    else if(isIndexed)
+                    else if (isIndexed)
                     {
-                        for(var d = 0; d < nd; d++)
+                        for (var d = 0; d < nd; d++)
                         {
                             pos[d] = targetPosItr.Pos[d];
                         }
-                        for(var i = 0; i < shape[nd-1]; i++)
+                        for (var i = 0; i < shape[nd - 1]; i++)
                         {
                             trgt.Data[targetAddr] = op(pos);
                             targetAddr = targetAddr + trgt.FastLayout.Stride[nd - 1];
@@ -74,7 +74,7 @@ namespace NdArrayNet
                     }
                     else
                     {
-                        for(var i = 0; i < shape[nd-1]; i++)
+                        for (var i = 0; i < shape[nd - 1]; i++)
                         {
                             trgt.Data[targetAddr] = op(null);
                             targetAddr = targetAddr + trgt.FastLayout.Stride[nd - 1];
@@ -84,7 +84,7 @@ namespace NdArrayNet
                 }
             };
 
-            if(useThreads && nd > 1)
+            if (useThreads && nd > 1)
             {
                 Parallel.For(0, shape[0], index => loops(true, index));
             }
@@ -92,13 +92,13 @@ namespace NdArrayNet
             {
                 loops(false, 0);
             }
-       }
+        }
 
         public static void FillIncrementing<T>(T start, T step, DataAndLayout<T> trgt)
         {
             var p = ScalarPrimitives.For<T, int>();
             T op(int[] pos) => p.Add(start, p.Multiply(step, p.Convert(pos[0])));
-            ApplyNoaryOp(op, trgt, isIndexed: true, useThreads:true);
+            ApplyNoaryOp(op, trgt, isIndexed: true, useThreads: true);
         }
     }
 }

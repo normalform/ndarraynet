@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-//Copyright(c) 2019, Jaeho Kim
+﻿//Copyright(c) 2019, Jaeho Kim
 //All rights reserved.
 
 //Redistribution and use in source and binary forms, with or without

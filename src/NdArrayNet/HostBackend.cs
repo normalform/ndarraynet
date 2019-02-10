@@ -35,8 +35,8 @@ namespace NdArrayNet
 
         public HostBackend(Layout layout, HostStorage<T> storage)
         {
-            this.FastLayout = new FastLayout(layout);
-            this.Data = storage.Data;
+            FastLayout = new FastLayout(layout);
+            Data = storage.Data;
         }
 
         public FastLayout FastLayout { get; }
@@ -45,18 +45,18 @@ namespace NdArrayNet
         {
             get
             {
-                var addr = this.FastLayout.Addr(index);
-                return (T)this.Data[addr];
+                var addr = FastLayout.Addr(index);
+                return Data[addr];
             }
 
             set
             {
-                var addr = this.FastLayout.Addr(index);
-                this.Data[addr] = value;
+                var addr = FastLayout.Addr(index);
+                Data[addr] = value;
             }
         }
 
-        public DataAndLayout<T> DataLayout => new DataAndLayout<T>(this.Data, this.FastLayout);
+        public DataAndLayout<T> DataLayout => new DataAndLayout<T>(Data, FastLayout);
 
         /// <summary>
         /// gets layouts for specified targets and sources, optimized for an element-wise operation
@@ -68,7 +68,7 @@ namespace NdArrayNet
             var dimGood = Enumerable.Range(0, trgt.NumDimensions)
                                     .Select(idx => trgt.Stride[idx] == 1 && srcs.All(src => src.Stride[idx] == 1 || src.Stride[idx] == 0));
 
-            if(dimGood.Any(d => d == true))
+            if (dimGood.Any(d => d == true))
             {
                 var dims = Enumerable.Range(0, trgt.NumDimensions)
                                        .Select(d => dimGood.ElementAt(d) ? trgt.Shape[d] : -1);

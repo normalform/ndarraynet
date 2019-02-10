@@ -37,21 +37,21 @@ namespace NdArrayNet
 
         public PinnedMemory(GCHandle gcHnd, long size)
         {
-            this.GcHnd = gcHnd;
-            this.Ptr = gcHnd.AddrOfPinnedObject();
-            this.Size = size;
+            GcHnd = gcHnd;
+            Ptr = gcHnd.AddrOfPinnedObject();
+            Size = size;
         }
 
         public long Size { get; }
 
         public IntPtr Ptr { get; }
-        
+
         public void Dispose()
         {
-            if(!this.dispossed)
+            if (!dispossed)
             {
-                this.GcHnd.Free();
-                this.dispossed = true;
+                GcHnd.Free();
+                dispossed = true;
             }
         }
 

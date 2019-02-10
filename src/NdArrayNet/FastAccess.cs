@@ -34,11 +34,11 @@ namespace NdArrayNet
     {
         public FastLayout(Layout layout)
         {
-            this.NumDiensions = layout.NumDimensions;
-            this.NumElements = layout.NumElements;
-            this.Offset = layout.Offset;
-            this.Shape = layout.Shape;
-            this.Stride = layout.Stride;
+            NumDiensions = layout.NumDimensions;
+            NumElements = layout.NumElements;
+            Offset = layout.Offset;
+            Shape = layout.Shape;
+            Stride = layout.Stride;
         }
 
         public int NumDiensions { get; }
@@ -49,9 +49,9 @@ namespace NdArrayNet
 
         public bool IsPosValid(int[] pos)
         {
-            if (pos.Length == this.NumDiensions)
+            if (pos.Length == NumDiensions)
             {
-                var posAndShape = pos.Zip(this.Shape, (p, s) => new { p, s });
+                var posAndShape = pos.Zip(Shape, (p, s) => new { p, s });
                 return posAndShape.All(ps => ps.p >= 0 && ps.p < ps.s);
             }
             else
@@ -62,11 +62,11 @@ namespace NdArrayNet
 
         public int UnCheckedArray(int[] pos)
         {
-            int addr = this.Offset;
+            int addr = Offset;
 
-            for (var d = 0; d < this.NumDiensions; d++)
+            for (var d = 0; d < NumDiensions; d++)
             {
-                addr = addr + pos[d] * this.Stride[d];
+                addr = addr + pos[d] * Stride[d];
             }
 
             return addr;
@@ -74,23 +74,23 @@ namespace NdArrayNet
 
         public int Addr(int[] pos)
         {
-            if (pos.Length != this.NumDiensions)
+            if (pos.Length != NumDiensions)
             {
-                var msg = string.Format("Position {0} has wrong dimensionality for NdArray of shape {1}.", pos, this.Shape);
+                var msg = string.Format("Position {0} has wrong dimensionality for NdArray of shape {1}.", pos, Shape);
                 throw new IndexOutOfRangeException(msg);
             }
 
-            int addr = this.Offset;
-            for (var d = 0; d < this.NumDiensions; d++)
+            int addr = Offset;
+            for (var d = 0; d < NumDiensions; d++)
             {
                 var p = pos[d];
-                if (0 <= p && p < this.Shape[d])
+                if (0 <= p && p < Shape[d])
                 {
-                    addr = addr + p * this.Stride[d];
+                    addr = addr + p * Stride[d];
                 }
                 else
                 {
-                    var msg = string.Format("Position {0} is out of range for NdArray of shape {1}.", pos, this.Shape);
+                    var msg = string.Format("Position {0} is out of range for NdArray of shape {1}.", pos, Shape);
                     throw new IndexOutOfRangeException(msg);
                 }
             }

@@ -25,7 +25,6 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-
 namespace NdArrayNet
 {
     using System;
@@ -41,7 +40,7 @@ namespace NdArrayNet
         public int NumDimensions => Layout.NumDimensions;
         public int NumElements => Layout.NumElements;
 
-        public IBackend<T> Backend => storage.Backend(this.Layout);
+        public IBackend<T> Backend => storage.Backend(Layout);
 
         public Layout Layout { get; }
 
@@ -51,7 +50,7 @@ namespace NdArrayNet
         /// <param name="layout"></param>
         public NdArray(Layout layout, IStorage<T> storage)
         {
-            this.Layout = layout;
+            Layout = layout;
             this.storage = storage;
         }
 
@@ -63,16 +62,16 @@ namespace NdArrayNet
         /// <param name="order">The memory layout to use for the new NdArray. (default: row-major)</param>
         public NdArray(int[] shape, IDevice device, Order order = Order.RowMajor)
         {
-            if(order == Order.RowMajor)
+            if (order == Order.RowMajor)
             {
-                this.Layout = Layout.NewC(shape);
+                Layout = Layout.NewC(shape);
             }
             else
             {
-                this.Layout = Layout.NewF(shape);
+                Layout = Layout.NewF(shape);
             }
 
-            this.storage = device.Create<T>(this.Layout.NumElements);
+            storage = device.Create<T>(Layout.NumElements);
         }
 
         public static NdArray<T> Arange(IDevice device, T start, T stop, T step)
@@ -94,12 +93,12 @@ namespace NdArrayNet
 
         public void FillIncrementing(T start, T step)
         {
-            if(this.NumDimensions != 1)
+            if (NumDimensions != 1)
             {
                 throw new InvalidOperationException("FillIncrementing requires a vector.");
             }
 
-            this.Backend.FillIncrementing(start, step, this);
+            Backend.FillIncrementing(start, step, this);
         }
 
         /// <summary>
@@ -110,7 +109,7 @@ namespace NdArrayNet
         /// <returns>The resulting NdArray.</returns>
         public NdArray<T> Relayout(Layout layout)
         {
-            return new NdArray<T>(layout, this.storage);
+            return new NdArray<T>(layout, storage);
         }
     }
 }

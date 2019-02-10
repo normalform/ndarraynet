@@ -39,7 +39,7 @@ namespace NdArrayNet
         {
             get
             {
-                if(instance == null)
+                if (instance == null)
                 {
                     instance = new HostDevice();
                 }

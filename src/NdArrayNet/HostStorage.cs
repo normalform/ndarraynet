@@ -36,27 +36,27 @@ namespace NdArrayNet
 
         public HostStorage(T[] data)
         {
-            this.Data = data;
+            Data = data;
         }
 
         public HostStorage(long numberOfElements)
         {
-            if(numberOfElements > int.MaxValue)
+            if (numberOfElements > int.MaxValue)
             {
                 var msg = string.Format("Cannot create host NdArray storage for {0} elements, the current limit is {1} elements.", numberOfElements, int.MaxValue);
                 throw new ArgumentOutOfRangeException(msg);
             }
 
-            this.Data = new T[numberOfElements];
+            Data = new T[numberOfElements];
         }
 
         public T[] Data { get; }
 
         public IDevice Device => HostDevice.Instance;
 
-        public int DataSize => this.Data.Length;
+        public int DataSize => Data.Length;
 
-        public int DataSizeInBytes => this.DataSize * UnitSize;
+        public int DataSizeInBytes => DataSize * UnitSize;
 
         public IBackend<T> Backend(Layout layout)
         {

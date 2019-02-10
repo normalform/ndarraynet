@@ -43,12 +43,12 @@ namespace NdArrayNet
         /// <param name="stride">Stride in elements.</param>
         public Layout(int[] shape, int offset, int[] stride)
         {
-            this.Shape = shape;
-            this.Offset = offset;
-            this.Stride = stride;
+            Shape = shape;
+            Offset = offset;
+            Stride = stride;
 
-            this.NumDimensions = shape.Length;
-            this.NumElements = shape.Aggregate((a, b) => a * b);
+            NumDimensions = shape.Length;
+            NumElements = shape.Aggregate((a, b) => a * b);
         }
 
         public static Layout NewC(int[] shape)
@@ -133,7 +133,7 @@ namespace NdArrayNet
         /// <returns>The NdArray with the dimensions swapped.</returns>
         public static Layout Swap(int ax1, int ax2, Layout a)
         {
-            if(!(0 <= ax1 && ax1 < a.NumDimensions && 0 <= ax2 && ax2 < a.NumDimensions))
+            if (!(0 <= ax1 && ax1 < a.NumDimensions && 0 <= ax2 && ax2 < a.NumDimensions))
             {
                 var msg = string.Format("Cannot swap dimension {0} with {1} of for shape {2}.", ax1, ax2, a.Shape);
                 throw new ArgumentException(msg);
