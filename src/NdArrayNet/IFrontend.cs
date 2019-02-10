@@ -25,53 +25,16 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-namespace NdArrayNetUnitTest
+namespace NdArrayNet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using NdArrayNet;
-
-    [TestClass]
-    public class NumPyArangeTests
+    public interface IFrontend
     {
-        [TestMethod]
-        public void ArangeDouble_IntTypeFullArgs_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
+    }
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
-        }
+    public interface IFrontend<T>
+    {
+        Layout Layout { get; }
 
-        [TestMethod]
-        public void ArangeDouble_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(10);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeFullArgs_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeStopArgOnly_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(10.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
-        }
+        NdArray<T> Relayout(Layout layout);
     }
 }

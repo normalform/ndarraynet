@@ -25,53 +25,36 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-namespace NdArrayNetUnitTest
+namespace NdArrayNet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using NdArrayNet;
-
-    [TestClass]
-    public class NumPyArangeTests
+    public sealed class HostDevice : BaseDevice
     {
-        [TestMethod]
-        public void ArangeDouble_IntTypeFullArgs_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
+        private static HostDevice instance;
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+        private HostDevice()
+        {
         }
 
-        [TestMethod]
-        public void ArangeDouble_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
+        public static HostDevice Instance
         {
-            // arrange & action
-            var array = NumPy.Arange(10);
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new HostDevice();
+                }
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+                return instance;
+            }
         }
 
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeFullArgs_ReturnIntegerTypeNdArray()
+        public override IStorage<T> Create<T>(int numElements)
         {
-            // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
+            return new HostStorage<T>(numElements);
         }
 
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeStopArgOnly_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(10.0);
+        public override string Id => "Host";
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
-        }
+        public override bool Zeroed => true;
     }
 }

@@ -29,19 +29,26 @@ namespace NdArrayNet
 {
     public class NumPy
     {
-        public static NdArray<T> Arange<T>(T start, T stop, T step) where T : struct
-        {
-            return new NdArray<T>();
-        }
+        private static readonly IDevice Device = HostDevice.Instance;
 
         public static NdArray<int> Arange(int stop)
         {
-            return Arange(start: 0, stop: stop, step: 1);
+            return NdArray<int>.Arange(Device, 0, stop, 1);
+        }
+
+        public static NdArray<int> Arange(int start, int stop, int step)
+        {
+            return NdArray<int>.Arange(Device, start, stop, step);
         }
 
         public static NdArray<double> Arange(double stop)
         {
-            return Arange(start: 0.0, stop: stop, step: 1.0);
+            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
+        }
+
+        public static NdArray<double> Arange(double start, double stop, double step)
+        {
+            return NdArray<double>.Arange(Device, start, stop, step);
         }
     }
 }

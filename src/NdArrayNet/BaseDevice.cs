@@ -25,53 +25,31 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-namespace NdArrayNetUnitTest
+namespace NdArrayNet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
 
-    using NdArrayNet;
-
-    [TestClass]
-    public class NumPyArangeTests
+    public abstract class BaseDevice : IDevice
     {
-        [TestMethod]
-        public void ArangeDouble_IntTypeFullArgs_ReturnIntegerTypeNdArray()
+        public virtual IStorage<T> Create<T>(int numElements)
         {
-            // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+            throw new NotImplementedException();
         }
 
-        [TestMethod]
-        public void ArangeDouble_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
+        public virtual string Id
         {
-            // arrange & action
-            var array = NumPy.Arange(10);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeFullArgs_ReturnIntegerTypeNdArray()
+        public virtual bool Zeroed
         {
-            // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeStopArgOnly_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(10.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

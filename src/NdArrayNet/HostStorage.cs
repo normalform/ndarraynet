@@ -25,53 +25,48 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-namespace NdArrayNetUnitTest
+namespace NdArrayNet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
+    using System.Runtime.InteropServices;
 
-    using NdArrayNet;
-
-    [TestClass]
-    public class NumPyArangeTests
+    public class HostStorage<T> : IStorage<T>, IStorage, IHostStorage<T>
     {
-        [TestMethod]
-        public void ArangeDouble_IntTypeFullArgs_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
+        private readonly int UnitSize = Marshal.SizeOf(typeof(T));
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+        public HostStorage(T[] data)
+        {
+            this.Data = data;
         }
 
-        [TestMethod]
-        public void ArangeDouble_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
+        public HostStorage(long numberOfElements)
         {
-            // arrange & action
-            var array = NumPy.Arange(10);
+            if(numberOfElements > int.MaxValue)
+            {
+                var msg = string.Format("Cannot create host NdArray storage for {0} elements, the current limit is {1} elements.", numberOfElements, int.MaxValue);
+                throw new ArgumentOutOfRangeException(msg);
+            }
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
+            this.Data = new T[numberOfElements];
         }
 
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeFullArgs_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
+        public T[] Data { get; }
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
+        public IDevice Device => HostDevice.Instance;
+
+        public int DataSize => this.Data.Length;
+
+        public int DataSizeInBytes => this.DataSize * UnitSize;
+
+        public IBackend<T> Backend(Layout layout)
+        {
+            return new HostBackend<T>(layout, this);
         }
 
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeStopArgOnly_ReturnIntegerTypeNdArray()
+        public PinnedMemory Pin()
         {
-            // arrange & action
-            var array = NumPy.Arange(10.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
+            var gcHnd = GCHandle.Alloc(Data, GCHandleType.Pinned);
+            return new PinnedMemory(gcHnd, Data.LongLength * UnitSize);
         }
     }
 }

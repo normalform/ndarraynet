@@ -25,53 +25,24 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-namespace NdArrayNetUnitTest
+namespace NdArrayNet.Utils
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    using NdArrayNet;
-
-    [TestClass]
-    public class NumPyArangeTests
+    public class Permutation
     {
-        [TestMethod]
-        public void ArangeDouble_IntTypeFullArgs_ReturnIntegerTypeNdArray()
+        /// <summary>
+        /// true if the given list is a permutation of the numbers 0 to perm.Length-1
+        /// </summary>
+        /// <param name="perm"></param>
+        /// <returns></returns>
+        static public bool Is(int[] perm)
         {
-            // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
+            var s0 = new HashSet<int>(perm);
+            var s1 = new HashSet<int>(Enumerable.Range(0, perm.Length));
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(10);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeFullArgs_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeStopArgOnly_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(10.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
+            return s0.SetEquals(s1);
         }
     }
 }
