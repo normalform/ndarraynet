@@ -48,7 +48,7 @@ namespace NdArrayNet
             Stride = stride;
 
             NumDimensions = shape.Length;
-            NumElements = shape.Aggregate((a, b) => a * b);
+            NumElements = shape.Aggregate(1, (a, b) => a * b);
         }
 
         public static Layout NewC(int[] shape)
@@ -149,6 +149,104 @@ namespace NdArrayNet
             newStr[ax2] = a.Stride[ax1];
 
             return new Layout(newShp, a.Offset, newStr);
+        }
+
+        private static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)
+        {
+            var nElems = isEnd ? numElements + 1 : numElements;
+            if (!(0 <= index && index < nElems))
+            {
+                var msg = string.Format("Index {0} out of range in slice {1} for shape {2}.", index, ranges, shp);
+                throw new IndexOutOfRangeException(msg);
+            }
+        }
+
+        internal Layout View(IRange[] ranges, Layout layout)
+        {
+            Layout SubView(IRange[] subRanges, Layout subLayout)
+            {
+                if (subRanges.Length == 0 && subLayout.Shape.Length == 0)
+                {
+                    return subLayout;
+                }
+                else if (subRanges[0].Type == RangeType.AllFill)
+                {
+                    var rRanges = subRanges.Skip(1);
+                    var rShps = subLayout.Shape.Skip(1);
+                    if (rShps.Count() > rRanges.Count())
+                    {
+                        var newRange = new[] { RangeFactory.All, RangeFactory.AllFill }.Concat(rRanges).ToArray();
+                        SubView(newRange, subLayout);
+                    }
+                    else if (rShps.Count() == rRanges.Count())
+                    {
+                        var newRange = new[] { RangeFactory.All }.Concat(rRanges).ToArray();
+                        SubView(newRange, subLayout);
+                    }
+                    else
+                    {
+                        SubView(rRanges.ToArray(), subLayout);
+                    }
+                }
+                else if (subRanges[0].Type == RangeType.Range || subRanges[0].Type == RangeType.Elem)
+                {
+                    var index = subRanges[0].Type;// == RangeType.Range ? ((Range)subRanges[0]).Start : ((Elem)subRanges[0]).Pos;
+                    var rRanges = subRanges.Skip(1);
+                    var shp = subLayout.Shape[0];
+                    var str = subLayout.Stride[0];
+                    var rShps = subLayout.Shape.Skip(1);
+                    var rStrs = subLayout.Stride.Skip(1);
+
+                    var ra = SubView(rRanges.ToArray(), new Layout(rShps.ToArray(), subLayout.Offset, rStrs.ToArray()));
+                    if (index == RangeType.Elem)
+                    {
+                        var i = ((Elem)subRanges[0]).Pos;
+                        CheckElementRange(false, shp, i, subRanges, subLayout.Shape);
+                        return new Layout(ra.Shape, ra.Offset + (i * str), ra.Stride);
+                    }
+                    else if (index == RangeType.Range)
+                    {
+                        var start = ((Range)subRanges[0]).Start;
+                        var stop = ((Range)subRanges[0]).Stop;
+                        if (start == 0 && stop == 0)
+                        {
+                            stop = shp - 1;
+                        }
+                        if (stop >= start)
+                        {
+                            // non-empy slice
+                            CheckElementRange(false, shp, start, subRanges, subLayout.Shape);
+                            CheckElementRange(true, shp, stop, subRanges, subLayout.Shape);
+                            return new Layout(new[] { stop + 1 - start }.Concat(ra.Shape).ToArray(), ra.Offset + (start * str), new[] { str }.Concat(ra.Stride).ToArray());
+                        }
+                        else
+                        {
+                            // empty slice
+                            // We allow start and stop to be out of range in this case.
+                            return new Layout(new[] { 0 }.Concat(ra.Shape).ToArray(), ra.Offset, new[] { str }.Concat(ra.Stride).ToArray());
+                        }
+                    }
+                    else if (index == RangeType.AllFill || index == RangeType.NewAxis)
+                    {
+                        // TODO: Is this correct conditions to get here??
+                        throw new InvalidOperationException("Impossible");
+                    }
+                }
+                else if (subRanges[0].Type == RangeType.NewAxis)
+                {
+                    var rRanges = subRanges.Skip(1);
+                    var ra = SubView(rRanges.ToArray(), subLayout);
+
+                    var newShape = new[] { 1 }.Concat(ra.Shape).ToArray();
+                    var newStride = new[] { 0 }.Concat(ra.Stride).ToArray();
+                    return new Layout(newShape, ra.Offset, newStride);
+                }
+
+                var msg = string.Format("Slice {0} is incompatible with shape {1}.", ranges, subLayout);
+                throw new IndexOutOfRangeException(msg);
+            }
+
+            return SubView(ranges, layout);
         }
     }
 }

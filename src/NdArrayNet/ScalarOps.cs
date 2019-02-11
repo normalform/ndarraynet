@@ -100,5 +100,11 @@ namespace NdArrayNet
             T op(int[] pos) => p.Add(start, p.Multiply(step, p.Convert(pos[0])));
             ApplyNoaryOp(op, trgt, isIndexed: true, useThreads: true);
         }
+
+        public static void Fill<T>(T value, DataAndLayout<T> trgt)
+        {
+            T op(int[] pos) => value;
+            ApplyNoaryOp(op, trgt, isIndexed: false, useThreads: true);
+        }
     }
 }

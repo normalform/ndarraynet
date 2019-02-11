@@ -25,53 +25,45 @@
 //of the authors and should not be interpreted as representing official policies,
 //either expressed or implied, of the NdArrayNet project.
 
-namespace NdArrayNetUnitTest
+namespace NdArrayNet.Utils
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
+    using System.Collections.Generic;
 
-    using NdArrayNet;
-
-    [TestClass]
-    public class NumPyArangeTests
+    internal class Primitives
     {
-        [TestMethod]
-        public void ArangeDouble_IntTypeFullArgs_ReturnIntegerTypeNdArray()
+        private static readonly Dictionary<Type, object> zeroOf = new Dictionary<Type, object>
         {
-            // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
+            { typeof(byte), (byte)0 },
+            { typeof(sbyte), (sbyte)0 },
+            { typeof(short), (short)0 },        // Int16
+            { typeof(ushort), (ushort)0 },      // UInt16
+            { typeof(int), 0 },                 // Int32
+            { typeof(uint), 0U },               // UInt32
+            { typeof(long), 0L },               // Int64
+            { typeof(ulong), 0UL },             // UInt64
+            { typeof(float), 0.0F },            // Single
+            { typeof(double), 0.0 },
+            { typeof(decimal), decimal.Zero },
+        };
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
+        private static readonly Dictionary<Type, object> oneOf = new Dictionary<Type, object>
         {
-            // arrange & action
-            var array = NumPy.Arange(10);
+            { typeof(byte), (byte)1 },
+            { typeof(sbyte), (sbyte)1 },
+            { typeof(short), (short)1 },        // Int16
+            { typeof(ushort), (ushort)1 },      // UInt16
+            { typeof(int), 1 },                 // Int32
+            { typeof(uint), 1U },               // UInt32
+            { typeof(long), 1L },               // Int64
+            { typeof(ulong), 1UL },             // Uint64
+            { typeof(float), 1.0F },            // Single
+            { typeof(double), 1.0 },
+            { typeof(decimal), decimal.One },
+        };
 
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<int>));
-        }
+        public static T Zero<T>() => (T)zeroOf[typeof(T)];
 
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeFullArgs_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
-        }
-
-        [TestMethod]
-        public void ArangeDouble_DoubleTypeStopArgOnly_ReturnIntegerTypeNdArray()
-        {
-            // arrange & action
-            var array = NumPy.Arange(10.0);
-
-            // assert
-            Assert.IsInstanceOfType(array, typeof(NdArrayNet.NdArray<double>));
-        }
+        public static T One<T>() => (T)oneOf[typeof(T)];
     }
 }

@@ -75,7 +75,6 @@ namespace NdArrayNet
 
         public ScalarPrimitives()
         {
-            //            var x = Math.Round(;
         }
 
         internal static Func<T, T, T> CompileAny(Expression<Func<T, T, T>>[] fns)
@@ -92,7 +91,7 @@ namespace NdArrayNet
                 }
                 catch (InvalidOperationException)
                 {
-                    // TODO: Might need to remove this try anc catch
+                    // TODO: Maybe I don't need this try anc catch block.
                     throw;
                 }
             }
