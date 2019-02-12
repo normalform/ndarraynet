@@ -6,8 +6,11 @@ before_build:
 - cmd: dotnet restore
 build:
   verbosity: minimal
-after_test:
+test_script:
 - ps: >-
+    packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor NdArrayNetUnitTest.dll" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
+
+
     $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
 
     Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
