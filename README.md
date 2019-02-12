@@ -1,4 +1,6 @@
-[![Build Status](https://dev.azure.com/kimjaeho/kimjaeho/_apis/build/status/normalform.ndarraynet?branchName=master)](https://dev.azure.com/kimjaeho/kimjaeho/_build/latest?definitionId=1&branchName=master)
+[![Build status](https://ci.appveyor.com/api/projects/status/xyi465dgjiuu5tfd/branch/master?svg=true)](https://ci.appveyor.com/project/normalform/ndarraynet/branch/master)
+
+[![codecov](https://codecov.io/gh/normalform/ndarraynet/branch/master/graph/badge.svg)](https://codecov.io/gh/normalform/ndarraynet)
 
 # NdArrayNet
 N-dimensional array library for .NET 
