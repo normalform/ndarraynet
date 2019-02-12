@@ -6,7 +6,7 @@ build:
   verbosity: minimal
 test_script:
 - ps: >-
-    $opencover = (Resolve-Path ~\.nuget\packages\opencover.*/tools/OpenCover.Console.exe").ToString()
+    $opencover = (Resolve-Path "~\.nuget\packages\opencover\*\tools\OpenCover.Console.exe").ToString()
 
     Write-Host "opencover: $opeopencovercov"
 
