@@ -50,5 +50,25 @@ namespace NdArrayNet
         {
             return NdArray<double>.Arange(Device, start, stop, step);
         }
+
+        public static NdArray<T> Ones<T>(int[] shape)
+        {
+            return NdArray<T>.Ones(Device, shape);
+        }
+
+        public static NdArray<T> OnesLike<T>(NdArray<T> template)
+        {
+            return NdArray<T>.Ones(template.Storage.Device, template.Shape);
+        }
+
+        public static NdArray<T> Zeros<T>(int[] shape)
+        {
+            return NdArray<T>.Zeros(Device, shape);
+        }
+
+        public static NdArray<T> ZerosLike<T>(NdArray<T> template)
+        {
+            return NdArray<T>.Zeros(template.Storage.Device, template.Shape);
+        }
     }
 }

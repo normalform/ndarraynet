@@ -94,5 +94,18 @@ namespace NdArrayNet
             var dataAndLayout = ElemwiseDataAndLayout(trgt);
             ScalarOps.FillIncrementing(start, step, dataAndLayout);
         }
+
+        public void FillConst(T value, IFrontend<T> trgt)
+        {
+            var dataAndLayout = ElemwiseDataAndLayout(trgt);
+            if (VectorOps.CanUse(dataAndLayout))
+            {
+                VectorOps.Fill(value, dataAndLayout);
+            }
+            else
+            {
+                ScalarOps.Fill(value, dataAndLayout);
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@
 namespace NdArrayNet
 {
     using System;
+    using System.Linq;
 
     /// <summary>
     /// An N-dimensional array with elements of type 'T.
@@ -35,12 +36,14 @@ namespace NdArrayNet
     /// <typeparam name="T"></typeparam>
     public class NdArray<T> : IFrontend, IFrontend<T>
     {
-        private readonly IStorage<T> storage;
+        public IStorage<T> Storage { get; }
 
         public int NumDimensions => Layout.NumDimensions;
         public int NumElements => Layout.NumElements;
 
-        public IBackend<T> Backend => storage.Backend(Layout);
+        public int[] Shape => Layout.Shape;
+
+        internal IBackend<T> Backend => Storage.Backend(Layout);
 
         public Layout Layout { get; }
 
@@ -51,7 +54,7 @@ namespace NdArrayNet
         public NdArray(Layout layout, IStorage<T> storage)
         {
             Layout = layout;
-            this.storage = storage;
+            Storage = storage;
         }
 
         /// <summary>
@@ -71,7 +74,7 @@ namespace NdArrayNet
                 Layout = Layout.NewF(shape);
             }
 
-            storage = device.Create<T>(Layout.NumElements);
+            Storage = device.Create<T>(Layout.NumElements);
         }
 
         public static NdArray<T> Arange(IDevice device, T start, T stop, T step)
@@ -91,7 +94,27 @@ namespace NdArrayNet
             return ndArray;
         }
 
-        public void FillIncrementing(T start, T step)
+        public static NdArray<T> Ones(IDevice device, int[] shape)
+        {
+            var ndArray = new NdArray<T>(shape, device);
+            ndArray.FillConst(Utils.Primitives.One<T>());
+
+            return ndArray;
+        }
+
+        public static NdArray<T> Zeros(IDevice device, int[] shape)
+        {
+            var ndArray = new NdArray<T>(shape, device);
+
+            return ndArray;
+        }
+
+        internal void FillConst(T value)
+        {
+            Backend.FillConst(value, this);
+        }
+
+        internal void FillIncrementing(T start, T step)
         {
             if (NumDimensions != 1)
             {
@@ -109,7 +132,46 @@ namespace NdArrayNet
         /// <returns>The resulting NdArray.</returns>
         public NdArray<T> Relayout(Layout layout)
         {
-            return new NdArray<T>(layout, storage);
+            return new NdArray<T>(layout, Storage);
         }
+
+        internal NdArray<T> Range(IRange[] ranges)
+        {
+            return Relayout(Layout.View(ranges, Layout));
+        }
+
+        internal NdArray<T> GetRange(object[] rngArgs)
+        {
+            return Range(RangeArgParser.ofItemOrSliceArgs(rngArgs));
+        }
+
+        public NdArray<T> this[int i]
+        {
+            get { return GetRange((new[] { i }).Cast<object>().ToArray()); }
+            //set { }
+        }
+
+        internal string ToString(int maxElems)
+        {
+            return "";
+            //string PreetyDim(string lineSpace, NdArray<T> array)
+            //{
+            //    var ls = array.Shape[0];
+
+            //    string SubPrint(int[] idxes)
+            //    {
+            //        idxes.Select(i => PreetyDim(lineSpace + " "))
+            //        return "";
+            //    }
+
+            //    return "";
+            //}
+
+            //return PreetyDim(" ", this);
+        }
+
+        public string Pretty => ToString(maxElems: 10);
+
+        public override string ToString() => Pretty;
     }
 }

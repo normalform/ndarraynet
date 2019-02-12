@@ -68,10 +68,17 @@ namespace NdArrayNet
 
             while (increment && d >= FromDim)
             {
-                if (Pos[d] > Shape[d] - 1)
+                if (Pos[d] == (Shape[d] - 1))
                 {
                     // was last element of that axis
-                    Addr = Addr - Pos[d] * Shape[d];
+                    if (d == 0)
+                    {
+                        Addr = Addr - Stride[d];
+                    }
+                    else
+                    {
+                        Addr = Addr - (Stride[d - 1] - Stride[d]);
+                    }
                     Pos[d] = 0;
                     d--;
                 }

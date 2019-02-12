@@ -31,6 +31,8 @@ namespace NdArrayNet
     {
         void FillIncrementing(T start, T step, IFrontend<T> trgt);
 
+        void FillConst(T value, IFrontend<T> trgt);
+
         T this[int[] index] { get; set; }
 
         DataAndLayout<T> DataLayout { get; }
