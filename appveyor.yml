@@ -1,14 +1,12 @@
 version: 1.0.{build}
 image: Visual Studio 2017
-environment:
-  CODECOV_TOKEN: 5fbd680d-dcc5-431e-bb0e-39ec47863522
 before_build:
 - cmd: dotnet restore
 build:
   verbosity: minimal
 test_script:
 - ps: >-
-    .\packages\OpenCover.4.7.992\tools\OpenCover.Console.exe -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor NdArrayNetUnitTest.dll" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
+    .\packages\opencover\4.7.922\tools\OpenCover.Console.exe -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor NdArrayNetUnitTest.dll" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
 
 
     $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
