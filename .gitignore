@@ -4,6 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 *.swp
+.sonarqube
+cov-int
 
 # User-specific files
 *.suo
