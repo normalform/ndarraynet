@@ -6,7 +6,12 @@ build:
   verbosity: minimal
 test_script:
 - ps: >-
-    ~\.nuget\packages\opencover\4.7.922\tools\OpenCover.Console.exe -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor .\NdArrayNetUnitTest.dll" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
+    $opencover = (Resolve-Path ~\.nuget\packages\opencover.*/tools/OpenCover.Console.exe").ToString()
+
+    Write-Host "opencover: $opeopencovercov"
+
+
+    & $opencover -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor .\NdArrayNetUnitTest.dll" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
 
 
     Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
