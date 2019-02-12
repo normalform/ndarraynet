@@ -11,7 +11,7 @@ test_script:
     Write-Host "opencover: $opencover"
 
 
-    $testasm = (Resolve-Path "src\NdArrayNetUnitTest\bin\Debug\*\NdArrayNetUnitTest.dll
+    $testasm = (Resolve-Path "src\NdArrayNetUnitTest\bin\Debug\*\NdArrayNetUnitTest.dll").ToString()
 
 
     & $opencover -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor $testasm" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
