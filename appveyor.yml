@@ -14,7 +14,7 @@ test_script:
     $testasm = (Resolve-Path "src\NdArrayNetUnitTest\bin\Debug\netcoreapp2.2\NdArrayNetUnitTest.dll").ToString()
 
 
-    & $opencover -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor $testasm" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
+    & $opencover -register:user -target:mstest.exe -targetargs:"$testasm" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
 
 
     Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
