@@ -21,7 +21,7 @@ test_script:
     Write-Host "Path of the MsTest: $mstest"
 
 
-    & $opencover -register:user -target:$mstest -targetargs:"$testasm" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
+    & $opencover -register:user -target:$mstest -targetargs:"/testcontainer:$testasm" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
 
 
     Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
