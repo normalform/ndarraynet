@@ -8,10 +8,13 @@ test_script:
 - ps: >-
     $opencover = (Resolve-Path "~\.nuget\packages\opencover\*\tools\OpenCover.Console.exe").ToString()
 
-    Write-Host "opencover: $opeopencovercov"
+    Write-Host "opencover: $opencover"
 
 
-    & $opencover -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor .\NdArrayNetUnitTest.dll" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
+    $testasm = (Resolve-Path "src\NdArrayNetUnitTest\bin\Debug\*\NdArrayNetUnitTest.dll
+
+
+    & $opencover -register:user -target:vstest.console.exe -targetargs:"/logger:Appveyor $testasm" -output:".\coverage.xml" -filter:"+NdArrayNetUnitTest"
 
 
     Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
