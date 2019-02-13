@@ -3,7 +3,7 @@ image: Visual Studio 2017
 before_build:
 - cmd: dotnet restore
 build:
-  project: src\NdArrayNet.sln
+  project: src\\NdArrayNet.sln
   verbosity: minimal
 test_script:
 - ps: >-
