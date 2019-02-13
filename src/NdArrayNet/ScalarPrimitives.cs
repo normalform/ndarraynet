@@ -106,8 +106,8 @@ namespace NdArrayNet
             var thrw = Expression.Throw(Expression.Constant(new InvalidOperationException(msg)));
             var errExpr = Expression.Lambda<Func<T, T, T>>(Expression.Block(thrw, A), A, B);
 
-            fns.Concat(new[] { errExpr });
-            return CompileAny(fns);
+            var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
+            return CompileAny(fnsWithExceptionBlock.ToArray());
         }
 
         public T Add(T a, T b) => AddFunc.Invoke(a, b);
