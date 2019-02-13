@@ -34,7 +34,7 @@ namespace NdArrayNet.Utils
 
     internal class Primitives
     {
-        private static readonly Dictionary<Type, object> zeroOf = new Dictionary<Type, object>
+        private static readonly Dictionary<Type, object> ZeroOf = new Dictionary<Type, object>
         {
             { typeof(byte), (byte)0 },
             { typeof(sbyte), (sbyte)0 },
@@ -49,7 +49,7 @@ namespace NdArrayNet.Utils
             { typeof(decimal), decimal.Zero },
         };
 
-        private static readonly Dictionary<Type, object> oneOf = new Dictionary<Type, object>
+        private static readonly Dictionary<Type, object> OneOf = new Dictionary<Type, object>
         {
             { typeof(byte), (byte)1 },
             { typeof(sbyte), (sbyte)1 },
@@ -64,8 +64,8 @@ namespace NdArrayNet.Utils
             { typeof(decimal), decimal.One },
         };
 
-        public static T Zero<T>() => (T)zeroOf[typeof(T)];
+        public static T Zero<T>() => (T)ZeroOf[typeof(T)];
 
-        public static T One<T>() => (T)oneOf[typeof(T)];
+        public static T One<T>() => (T)OneOf[typeof(T)];
     }
 }

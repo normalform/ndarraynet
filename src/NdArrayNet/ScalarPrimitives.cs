@@ -49,9 +49,8 @@ namespace NdArrayNet
         // NOTE: The .NET Modulo expression has different behavior from the Python in special cases (e.g. 4 % -3)
         private static readonly Func<T, T, T> ModuloFunc = TryBinary("%", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Modulo(A, B), A, B) });
 
-        private static readonly Func<T, T, T> PowerFunc = TryBinary("Power", new[] {
-            Expression.Lambda<Func<T, T, T>>(Expression.Convert(Expression.Power(Expression.Convert(A, typeof(double)), Expression.Convert(B, typeof(double))), typeof(T)), A, B)
-        });
+        private static readonly Func<T, T, T> PowerFunc =
+            TryBinary("Power", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Convert(Expression.Power(Expression.Convert(A, typeof(double)), Expression.Convert(B, typeof(double))), typeof(T)), A, B) });
 
         private static readonly Func<T, T> AbsFunc = Expression.Lambda<Func<T, T>>(Expression.Call(typeof(Math).GetMethod("Abs", new[] { typeof(T) }), A), A).Compile();
         private static readonly Func<T, T> SignFunc = Expression.Lambda<Func<T, T>>(Expression.Convert(Expression.Call(typeof(Math).GetMethod("Sign", new[] { typeof(T) }), A), typeof(T)), A).Compile();
@@ -77,39 +76,6 @@ namespace NdArrayNet
 
         public ScalarPrimitives()
         {
-        }
-
-        internal static Func<T, T, T> CompileAny(Expression<Func<T, T, T>>[] fns)
-        {
-            foreach (var fn in fns)
-            {
-                try
-                {
-                    var func = fn.Compile();
-                    if (func != null)
-                    {
-                        return func;
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    // TODO: Maybe I don't need this try anc catch block.
-                    throw;
-                }
-            }
-
-            var msg = string.Format("cannot compile scalar primitive for type %s", typeof(T).Name);
-            throw new InvalidOperationException(msg);
-        }
-
-        internal static Func<T, T, T> TryBinary(string op, Expression<Func<T, T, T>>[] fns)
-        {
-            var msg = string.Format("The type {0} does not implemented {1}", typeof(T).Name, op);
-            var thrw = Expression.Throw(Expression.Constant(new InvalidOperationException(msg)));
-            var errExpr = Expression.Lambda<Func<T, T, T>>(Expression.Block(thrw, A), A, B);
-
-            var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
-            return CompileAny(fnsWithExceptionBlock.ToArray());
         }
 
         public T Add(T a, T b) => AddFunc.Invoke(a, b);
@@ -163,6 +129,39 @@ namespace NdArrayNet
         public T Truncate(T a) => TruncateFunc.Invoke(a);
 
         public T Convert(TC c) => ConvertFunc.Invoke(c);
+
+        internal static Func<T, T, T> CompileAny(Expression<Func<T, T, T>>[] fns)
+        {
+            foreach (var fn in fns)
+            {
+                try
+                {
+                    var func = fn.Compile();
+                    if (func != null)
+                    {
+                        return func;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // TODO: Maybe I don't need this try anc catch block.
+                    throw;
+                }
+            }
+
+            var msg = string.Format("cannot compile scalar primitive for type %s", typeof(T).Name);
+            throw new InvalidOperationException(msg);
+        }
+
+        internal static Func<T, T, T> TryBinary(string op, Expression<Func<T, T, T>>[] fns)
+        {
+            var msg = string.Format("The type {0} does not implemented {1}", typeof(T).Name, op);
+            var thrw = Expression.Throw(Expression.Constant(new InvalidOperationException(msg)));
+            var errExpr = Expression.Lambda<Func<T, T, T>>(Expression.Block(thrw, A), A, B);
+
+            var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
+            return CompileAny(fnsWithExceptionBlock.ToArray());
+        }
     }
 
     internal class ScalarPrimitives

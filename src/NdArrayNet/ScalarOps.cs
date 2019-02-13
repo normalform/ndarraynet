@@ -39,8 +39,8 @@ namespace NdArrayNet
     {
         public static void ApplyNoaryOp<T>(Func<int[], T> op, DataAndLayout<T> trgt, bool isIndexed, bool useThreads)
         {
-            var nd = trgt.FastLayout.NumDiensions;
-            var shape = trgt.FastLayout.Shape;
+            var nd = trgt.FastAccess.NumDiensions;
+            var shape = trgt.FastAccess.Shape;
 
             Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
             {
@@ -51,7 +51,7 @@ namespace NdArrayNet
                     startPos[0] = dim0Pos;
                 }
 
-                var targetPosItr = new PosIter(trgt.FastLayout, startPos, fromDim: fromDim, toDim: nd - 2);
+                var targetPosItr = new PosIter(trgt.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
                 var pos = new int[targetPosItr.Pos.Length];
 
                 while (targetPosItr.Active)
@@ -67,10 +67,11 @@ namespace NdArrayNet
                         {
                             pos[d] = targetPosItr.Pos[d];
                         }
+
                         for (var i = 0; i < shape[nd - 1]; i++)
                         {
                             trgt.Data[targetAddr] = op(pos);
-                            targetAddr = targetAddr + trgt.FastLayout.Stride[nd - 1];
+                            targetAddr = targetAddr + trgt.FastAccess.Stride[nd - 1];
                             pos[nd - 1] = pos[nd - 1] + 1;
                         }
                     }
@@ -79,9 +80,10 @@ namespace NdArrayNet
                         for (var i = 0; i < shape[nd - 1]; i++)
                         {
                             trgt.Data[targetAddr] = op(null);
-                            targetAddr = targetAddr + trgt.FastLayout.Stride[nd - 1];
+                            targetAddr = targetAddr + trgt.FastAccess.Stride[nd - 1];
                         }
                     }
+
                     targetPosItr.MoveNext();
                 }
             };

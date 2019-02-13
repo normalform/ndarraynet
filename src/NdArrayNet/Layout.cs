@@ -53,16 +53,6 @@ namespace NdArrayNet
             NumElements = shape.Aggregate(1, (a, b) => a * b);
         }
 
-        public static Layout NewC(int[] shape)
-        {
-            return new Layout(shape, 0, CStride(shape));
-        }
-
-        public static Layout NewF(int[] shape)
-        {
-            return new Layout(shape, 0, FStride(shape));
-        }
-
         /// <summary>
         /// Gets the shape.
         /// </summary>
@@ -88,6 +78,16 @@ namespace NdArrayNet
         /// </summary>
         public int NumElements { get; }
 
+        public static Layout NewC(int[] shape)
+        {
+            return new Layout(shape, 0, CStride(shape));
+        }
+
+        public static Layout NewF(int[] shape)
+        {
+            return new Layout(shape, 0, FStride(shape));
+        }
+
         public static int[] OrderedStride(int[] shape, int[] order)
         {
             if (!Utils.Permutation.Is(order))
@@ -95,6 +95,7 @@ namespace NdArrayNet
                 var msg = string.Format("The stride order {0} is not a permutation", order);
                 throw new ArgumentException(msg);
             }
+
             if (order.Length != shape.Length)
             {
                 var msg = string.Format("The stride order {0} is incompatible with the shape {1}", order, shape);
@@ -135,7 +136,7 @@ namespace NdArrayNet
         /// <returns>The NdArray with the dimensions swapped.</returns>
         public static Layout Swap(int ax1, int ax2, Layout a)
         {
-            if (!(0 <= ax1 && ax1 < a.NumDimensions && 0 <= ax2 && ax2 < a.NumDimensions))
+            if (!(ax1 >= 0 && ax1 < a.NumDimensions && ax2 >= 0 && ax2 < a.NumDimensions))
             {
                 var msg = string.Format("Cannot swap dimension {0} with {1} of for shape {2}.", ax1, ax2, a.Shape);
                 throw new ArgumentException(msg);
@@ -153,16 +154,6 @@ namespace NdArrayNet
             return new Layout(newShp, a.Offset, newStr);
         }
 
-        private static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)
-        {
-            var nElems = isEnd ? numElements + 1 : numElements;
-            if (!(0 <= index && index < nElems))
-            {
-                var msg = string.Format("Index {0} out of range in slice {1} for shape {2}.", index, ranges, shp);
-                throw new IndexOutOfRangeException(msg);
-            }
-        }
-
         internal Layout View(IRange[] ranges, Layout layout)
         {
             Layout SubView(IRange[] subRanges, Layout subLayout)
@@ -173,33 +164,33 @@ namespace NdArrayNet
                 }
                 else if (subRanges[0].Type == RangeType.AllFill)
                 {
-                    var rRanges = subRanges.Skip(1);
-                    var rShps = subLayout.Shape.Skip(1);
-                    if (rShps.Count() > rRanges.Count())
+                    var restRanges = subRanges.Skip(1);
+                    var restShps = subLayout.Shape.Skip(1);
+                    if (restShps.Count() > restRanges.Count())
                     {
-                        var newRange = new[] { RangeFactory.All, RangeFactory.AllFill }.Concat(rRanges).ToArray();
+                        var newRange = new[] { RangeFactory.All, RangeFactory.AllFill }.Concat(restRanges).ToArray();
                         SubView(newRange, subLayout);
                     }
-                    else if (rShps.Count() == rRanges.Count())
+                    else if (restShps.Count() == restRanges.Count())
                     {
-                        var newRange = new[] { RangeFactory.All }.Concat(rRanges).ToArray();
+                        var newRange = new[] { RangeFactory.All }.Concat(restRanges).ToArray();
                         SubView(newRange, subLayout);
                     }
                     else
                     {
-                        SubView(rRanges.ToArray(), subLayout);
+                        SubView(restRanges.ToArray(), subLayout);
                     }
                 }
                 else if (subRanges[0].Type == RangeType.Range || subRanges[0].Type == RangeType.Elem)
                 {
-                    var index = subRanges[0].Type;// == RangeType.Range ? ((Range)subRanges[0]).Start : ((Elem)subRanges[0]).Pos;
-                    var rRanges = subRanges.Skip(1);
+                    var index = subRanges[0].Type;
+                    var restRanges = subRanges.Skip(1);
                     var shp = subLayout.Shape[0];
                     var str = subLayout.Stride[0];
-                    var rShps = subLayout.Shape.Skip(1);
-                    var rStrs = subLayout.Stride.Skip(1);
+                    var restShps = subLayout.Shape.Skip(1);
+                    var restStrs = subLayout.Stride.Skip(1);
 
-                    var ra = SubView(rRanges.ToArray(), new Layout(rShps.ToArray(), subLayout.Offset, rStrs.ToArray()));
+                    var ra = SubView(restRanges.ToArray(), new Layout(restShps.ToArray(), subLayout.Offset, restStrs.ToArray()));
                     if (index == RangeType.Elem)
                     {
                         var i = ((Elem)subRanges[0]).Pos;
@@ -214,6 +205,7 @@ namespace NdArrayNet
                         {
                             stop = shp - 1;
                         }
+
                         if (stop >= start)
                         {
                             // non-empy slice
@@ -236,8 +228,8 @@ namespace NdArrayNet
                 }
                 else if (subRanges[0].Type == RangeType.NewAxis)
                 {
-                    var rRanges = subRanges.Skip(1);
-                    var ra = SubView(rRanges.ToArray(), subLayout);
+                    var restRanges = subRanges.Skip(1);
+                    var ra = SubView(restRanges.ToArray(), subLayout);
 
                     var newShape = new[] { 1 }.Concat(ra.Shape).ToArray();
                     var newStride = new[] { 0 }.Concat(ra.Stride).ToArray();
@@ -249,6 +241,16 @@ namespace NdArrayNet
             }
 
             return SubView(ranges, layout);
+        }
+
+        private static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)
+        {
+            var numEl = isEnd ? numElements + 1 : numElements;
+            if (!(index >= 0 && index < numEl))
+            {
+                var msg = string.Format("Index {0} out of range in slice {1} for shape {2}.", index, ranges, shp);
+                throw new IndexOutOfRangeException(msg);
+            }
         }
     }
 }

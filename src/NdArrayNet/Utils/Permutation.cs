@@ -39,7 +39,7 @@ namespace NdArrayNet.Utils
         /// </summary>
         /// <param name="perm"></param>
         /// <returns></returns>
-        static public bool Is(int[] perm)
+        public static bool Is(int[] perm)
         {
             var s0 = new HashSet<int>(perm);
             var s1 = new HashSet<int>(Enumerable.Range(0, perm.Length));
