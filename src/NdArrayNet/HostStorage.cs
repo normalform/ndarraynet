@@ -34,7 +34,7 @@ namespace NdArrayNet
 
     public class HostStorage<T> : IStorage<T>, IStorage, IHostStorage<T>
     {
-        private readonly int UnitSize = Marshal.SizeOf(typeof(T));
+        private readonly int unitSize = Marshal.SizeOf(typeof(T));
 
         public HostStorage(T[] data)
         {
@@ -58,7 +58,7 @@ namespace NdArrayNet
 
         public int DataSize => Data.Length;
 
-        public int DataSizeInBytes => DataSize * UnitSize;
+        public int DataSizeInBytes => DataSize * unitSize;
 
         public IBackend<T> Backend(Layout layout)
         {
@@ -67,8 +67,8 @@ namespace NdArrayNet
 
         public PinnedMemory Pin()
         {
-            var gcHnd = GCHandle.Alloc(Data, GCHandleType.Pinned);
-            return new PinnedMemory(gcHnd, Data.LongLength * UnitSize);
+            var handle = GCHandle.Alloc(Data, GCHandleType.Pinned);
+            return new PinnedMemory(handle, Data.LongLength * unitSize);
         }
     }
 }

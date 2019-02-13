@@ -8,5 +8,16 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="HostDevice.cs">
+      <ExcludeFromSourceAnalysis>False</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Update="VectorOps.cs">
+      <ExcludeFromSourceAnalysis>False</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+  </ItemGroup>
   
 </Project>

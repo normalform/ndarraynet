@@ -33,11 +33,6 @@ namespace NdArrayNet
 
     public abstract class BaseDevice : IDevice
     {
-        public virtual IStorage<T> Create<T>(int numElements)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual string Id
         {
             get
@@ -52,6 +47,11 @@ namespace NdArrayNet
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public virtual IStorage<T> Create<T>(int numElements)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -31,12 +31,12 @@ namespace NdArrayNet
 {
     public interface IBackend<T>
     {
-        void FillIncrementing(T start, T step, IFrontend<T> trgt);
-
-        void FillConst(T value, IFrontend<T> trgt);
+        DataAndLayout<T> DataLayout { get; }
 
         T this[int[] index] { get; set; }
 
-        DataAndLayout<T> DataLayout { get; }
+        void FillIncrementing(T start, T step, IFrontend<T> trgt);
+
+        void FillConst(T value, IFrontend<T> trgt);
     }
 }

@@ -34,16 +34,17 @@ namespace NdArrayNet
     public class PosIter
     {
         public PosIter(
-            FastLayout fl,
+            FastAccess fl,
             int[] startPos = null,
             int fromDim = 0,
-            int toDim = -999)
+            int toDim = int.MinValue)
         {
             if (startPos == null)
             {
                 startPos = new int[fl.NumDiensions];
             }
-            if (toDim == -999)
+
+            if (toDim == int.MinValue)
             {
                 toDim = fl.NumDiensions - 1;
             }
@@ -57,10 +58,24 @@ namespace NdArrayNet
             Addr = fl.UnCheckedArray(startPos);
             Active = Enumerable.Range(0, fl.NumDiensions + 1)
                                     .All(d => (fromDim <= d && d <= toDim) ?
-                                                0 <= startPos[d] && startPos[d] < Shape[d] : true);
+                                                startPos[d] >= 0 && startPos[d] < Shape[d] : true);
             FromDim = fromDim;
             ToDim = toDim;
         }
+
+        public int[] Pos { get; }
+
+        public int Addr { get; private set; }
+
+        public bool Active { get; private set; }
+
+        public int[] Shape { get; }
+
+        public int[] Stride { get; }
+
+        public int FromDim { get; }
+
+        public int ToDim { get; }
 
         public void MoveNext()
         {
@@ -81,6 +96,7 @@ namespace NdArrayNet
                     {
                         Addr = Addr - (Stride[d - 1] - Stride[d]);
                     }
+
                     Pos[d] = 0;
                     d--;
                 }
@@ -99,19 +115,5 @@ namespace NdArrayNet
                 Active = false;
             }
         }
-
-        public int[] Pos { get; }
-
-        public int Addr { get; private set; }
-
-        public bool Active { get; private set; }
-
-        public int[] Shape { get; }
-
-        public int[] Stride { get; }
-
-        public int FromDim { get; }
-
-        public int ToDim { get; }
     }
 }

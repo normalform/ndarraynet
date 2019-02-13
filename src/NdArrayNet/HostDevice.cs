@@ -50,13 +50,13 @@ namespace NdArrayNet
             }
         }
 
+        public override string Id => "Host";
+
+        public override bool Zeroed => true;
+
         public override IStorage<T> Create<T>(int numElements)
         {
             return new HostStorage<T>(numElements);
         }
-
-        public override string Id => "Host";
-
-        public override bool Zeroed => true;
     }
 }

@@ -35,13 +35,18 @@ namespace NdArrayNet
     public class PinnedMemory : IDisposable
     {
         private bool dispossed = false;
-        private GCHandle GcHnd;
+        private GCHandle garbageCollectorHandleHnd;
 
-        public PinnedMemory(GCHandle gcHnd, long size)
+        public PinnedMemory(GCHandle handle, long size)
         {
-            GcHnd = gcHnd;
-            Ptr = gcHnd.AddrOfPinnedObject();
+            garbageCollectorHandleHnd = handle;
+            Ptr = handle.AddrOfPinnedObject();
             Size = size;
+        }
+
+        ~PinnedMemory()
+        {
+            Dispose();
         }
 
         public long Size { get; }
@@ -52,14 +57,9 @@ namespace NdArrayNet
         {
             if (!dispossed)
             {
-                GcHnd.Free();
+                garbageCollectorHandleHnd.Free();
                 dispossed = true;
             }
-        }
-
-        ~PinnedMemory()
-        {
-            Dispose();
         }
     }
 }

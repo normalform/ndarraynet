@@ -34,6 +34,7 @@ namespace NdArrayNet
         T[] Data { get; }
 
         int DataSize { get; }
+
         int DataSizeInBytes { get; }
 
         PinnedMemory Pin();

@@ -40,26 +40,33 @@ namespace NdArrayNet
     /// </summary>
     internal class VectorOps
     {
-        private delegate void FillDelegate<T>(T value, DataAndLayout<T> dataAndLayout);
-
-        private static Dictionary<(string, List<Type>), Delegate> MethodDelegates = new Dictionary<(string, List<Type>), Delegate>();
-
-        private static readonly List<Type> vecTypes = new List<Type> {
+        private static readonly List<Type> VecTypes = new List<Type>
+        {
             typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int),
-            typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) };
+            typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal)
+        };
+
+        private static Dictionary<(string, List<Type>), Delegate> methodDelegates = new Dictionary<(string, List<Type>), Delegate>();
+
+        private delegate void FillDelegate<T>(T value, DataAndLayout<T> dataAndLayout);
 
         public static bool CanUse<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1 = null, DataAndLayout<T> src2 = null)
         {
-            var nd = trgt.FastLayout.NumDiensions;
+            var nd = trgt.FastAccess.NumDiensions;
             if (nd == 0)
             {
                 return false;
             }
 
-            var canUseType = vecTypes.Contains(typeof(T));
-            var canUseTrgt = trgt.FastLayout.Stride[nd - 1] == 1;
+            var canUseType = VecTypes.Contains(typeof(T));
+            var canUseTrgt = trgt.FastAccess.Stride[nd - 1] == 1;
 
             return canUseType && canUseTrgt && CanUseSrc(nd, src1) && CanUseSrc(nd, src2);
+        }
+
+        public static void Fill<T>(T value, DataAndLayout<T> trgt)
+        {
+            Method<FillDelegate<T>>("FillImpl").Invoke(value, trgt);
         }
 
         private static bool CanUseSrc<T>(int numDim, DataAndLayout<T> src)
@@ -69,7 +76,7 @@ namespace NdArrayNet
                 return true;
             }
 
-            var lastStride = src.FastLayout.Stride[numDim - 1];
+            var lastStride = src.FastAccess.Stride[numDim - 1];
             return lastStride == 1 || lastStride == 0;
         }
 
@@ -77,12 +84,12 @@ namespace NdArrayNet
         {
             var dt = typeof(D).GenericTypeArguments;
             var dtl = dt.ToList();
-            MethodDelegates.TryGetValue((name, dtl), out Delegate del);
+            methodDelegates.TryGetValue((name, dtl), out Delegate del);
             if (del == null)
             {
                 var mi = typeof(VectorOps).GetMethod(name, BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(dt);
                 var newDel = mi.CreateDelegate(typeof(D));
-                MethodDelegates[(name, dtl)] = newDel;
+                methodDelegates[(name, dtl)] = newDel;
                 return (D)newDel;
             }
 
@@ -91,8 +98,8 @@ namespace NdArrayNet
 
         private static void FillImpl<T>(T value, DataAndLayout<T> trgt) where T : struct
         {
-            var nd = trgt.FastLayout.NumDiensions;
-            var shape = trgt.FastLayout.Shape;
+            var nd = trgt.FastAccess.NumDiensions;
+            var shape = trgt.FastAccess.Shape;
 
             void vectorInnerLoop(int addr)
             {
@@ -113,10 +120,10 @@ namespace NdArrayNet
                 }
             }
 
-            var targetPosItr = new PosIter(trgt.FastLayout, toDim: nd - 2);
+            var targetPosItr = new PosIter(trgt.FastAccess, toDim: nd - 2);
             while (targetPosItr.Active)
             {
-                if (trgt.FastLayout.Stride[nd - 1] == 1)
+                if (trgt.FastAccess.Stride[nd - 1] == 1)
                 {
                     vectorInnerLoop(targetPosItr.Addr);
                 }
@@ -124,13 +131,9 @@ namespace NdArrayNet
                 {
                     throw new InvalidOperationException("vector operation not applicable to the given NdArray");
                 }
+
                 targetPosItr.MoveNext();
             }
-        }
-
-        public static void Fill<T>(T value, DataAndLayout<T> trgt)
-        {
-            Method<FillDelegate<T>>("FillImpl").Invoke(value, trgt);
         }
     }
 }

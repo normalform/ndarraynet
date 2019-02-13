@@ -31,13 +31,14 @@ namespace NdArrayNet
 {
     public class DataAndLayout<T>
     {
-        public DataAndLayout(T[] data, FastLayout fastLayout)
+        public DataAndLayout(T[] data, FastAccess fastAccess)
         {
             Data = data;
-            FastLayout = fastLayout;
+            FastAccess = fastAccess;
         }
 
         public T[] Data { get; }
-        public FastLayout FastLayout { get; }
+
+        public FastAccess FastAccess { get; }
     }
 }

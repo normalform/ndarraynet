@@ -31,9 +31,9 @@ namespace NdArrayNet
     using System;
     using System.Linq;
 
-    public class FastLayout
+    public class FastAccess
     {
-        public FastLayout(Layout layout)
+        public FastAccess(Layout layout)
         {
             NumDiensions = layout.NumDimensions;
             NumElements = layout.NumElements;
@@ -43,9 +43,13 @@ namespace NdArrayNet
         }
 
         public int NumDiensions { get; }
+
         public int NumElements { get; }
+
         public int Offset { get; }
+
         public int[] Shape { get; }
+
         public int[] Stride { get; }
 
         public bool IsPosValid(int[] pos)
@@ -67,7 +71,7 @@ namespace NdArrayNet
 
             for (var d = 0; d < NumDiensions; d++)
             {
-                addr = addr + pos[d] * Stride[d];
+                addr = addr + (pos[d] * Stride[d]);
             }
 
             return addr;
@@ -85,9 +89,9 @@ namespace NdArrayNet
             for (var d = 0; d < NumDiensions; d++)
             {
                 var p = pos[d];
-                if (0 <= p && p < Shape[d])
+                if (p >= 0 && p < Shape[d])
                 {
-                    addr = addr + p * Stride[d];
+                    addr = addr + (p * Stride[d]);
                 }
                 else
                 {

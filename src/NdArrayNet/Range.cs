@@ -30,31 +30,8 @@
 namespace NdArrayNet
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
-    internal class SpecialIdx
-    {
-        /// <summary>
-        /// For slicing: inserts a new axis of size one.
-        /// </summary>
-        public static int NewAxis = int.MinValue + 1;
-
-        /// <summary>
-        /// For slicing: fills all remaining axes with size one.
-        /// Cannot be used together with NewAxis.
-        /// </summary>
-        public static int Fill = int.MinValue + 2;
-
-        /// <summary>
-        /// For reshape: remainder, so that number of elements stays constant.
-        /// </summary>
-        public static int Remainder = int.MinValue + 3;
-
-        /// <summary>
-        /// For search: value was not found.
-        /// </summary>
-        public static int NotFound = int.MinValue + 4;
-    }
 
     public enum RangeType
     {
@@ -69,27 +46,17 @@ namespace NdArrayNet
         RangeType Type { get; }
     }
 
-    public abstract class RangeBase : IRange
-    {
-        public RangeType Type { get; }
-
-        public RangeBase(RangeType type)
-        {
-            Type = type;
-        }
-    }
-
     public static class RangeFactory
     {
-        public static IRange Range(int start, int stop, int step = 1) => new Range(start, stop, step);
-
-        public static IRange Elem(int pos) => new Elem(pos);
-
         public static IRange NewAxis => new NewAxis();
 
         public static IRange AllFill => new AllFill();
 
         public static IRange All => new Range(0, 0, 0);
+
+        public static IRange Range(int start, int stop, int step = 1) => new Range(start, stop, step);
+
+        public static IRange Elem(int pos) => new Elem(pos);
     }
 
     public static class RangeArgParser
@@ -99,7 +66,7 @@ namespace NdArrayNet
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static IRange[] ofItemOrSliceArgs(object[] allArgs)
+        public static IRange[] OfItemOrSliceArgs(object[] allArgs)
         {
             IRange[] toRng(object[] args)
             {
@@ -125,7 +92,8 @@ namespace NdArrayNet
                         var msg = string.Format("invalidArg item Specified items / slices are invalid: {0}.", allArgs);
                         throw new InvalidOperationException(msg);
                     }
-                    return new[] { RangeFactory.Range(start, stop, step) }.Concat(toRng(args.Skip(3).ToArray())).ToArray(); ;
+
+                    return new[] { RangeFactory.Range(start, stop, step) }.Concat(toRng(args.Skip(3).ToArray())).ToArray();
                 }
                 else if (args.Length > 2 && args[0].GetType() == typeof(int) && args[1].GetType() == typeof(int))
                 {
@@ -138,6 +106,7 @@ namespace NdArrayNet
                         var msg = string.Format("invalidArg item Specified items / slices are invalid: {0}.", allArgs);
                         throw new InvalidOperationException(msg);
                     }
+
                     return new[] { RangeFactory.Range(start, stop) }.Concat(toRng(args.Skip(2).ToArray())).ToArray();
                 }
                 else if (args[0].GetType() == typeof(int))
@@ -167,28 +136,42 @@ namespace NdArrayNet
         }
     }
 
+    public abstract class RangeBase : IRange
+    {
+        public RangeBase(RangeType type)
+        {
+            Type = type;
+        }
+
+        public RangeType Type { get; }
+    }
+
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed.")]
     public class Range : RangeBase
     {
-        public int Start { get; }
-        public int Stop { get; }
-        public int Step { get; }
-
         public Range(int start, int stop, int step) : base(RangeType.Range)
         {
             Start = start;
             Stop = stop;
             Step = step;
         }
+
+        public int Start { get; }
+
+        public int Stop { get; }
+
+        public int Step { get; }
     }
 
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed.")]
     public class Elem : RangeBase
     {
-        public int Pos { get; }
-
         public Elem(int pos) : base(RangeType.Elem)
         {
             Pos = pos;
         }
+
+        public int Pos { get; }
     }
 
     public class NewAxis : RangeBase
@@ -203,5 +186,29 @@ namespace NdArrayNet
         public AllFill() : base(RangeType.AllFill)
         {
         }
+    }
+
+    internal class SpecialIdx
+    {
+        /// <summary>
+        /// For slicing: inserts a new axis of size one.
+        /// </summary>
+        public static readonly int NewAxis = int.MinValue + 1;
+
+        /// <summary>
+        /// For slicing: fills all remaining axes with size one.
+        /// Cannot be used together with NewAxis.
+        /// </summary>
+        public static readonly int Fill = int.MinValue + 2;
+
+        /// <summary>
+        /// For reshape: remainder, so that number of elements stays constant.
+        /// </summary>
+        public static readonly int Remainder = int.MinValue + 3;
+
+        /// <summary>
+        /// For search: value was not found.
+        /// </summary>
+        public static readonly int NotFound = int.MinValue + 4;
     }
 }

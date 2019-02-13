@@ -31,34 +31,38 @@ namespace NdArrayNet
 {
     using System.Linq;
 
+    /// <summary>
+    /// Backend for host <see cref="NdArray{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The generic type parameter.</typeparam>
     public class HostBackend<T> : IBackend<T>
     {
-        private T[] Data;
+        private readonly T[] data;
 
         public HostBackend(Layout layout, HostStorage<T> storage)
         {
-            FastLayout = new FastLayout(layout);
-            Data = storage.Data;
+            FastAccess = new FastAccess(layout);
+            data = storage.Data;
         }
 
-        public FastLayout FastLayout { get; }
+        public FastAccess FastAccess { get; }
+
+        public DataAndLayout<T> DataLayout => new DataAndLayout<T>(data, FastAccess);
 
         public T this[int[] index]
         {
             get
             {
-                var addr = FastLayout.Addr(index);
-                return Data[addr];
+                var addr = FastAccess.Addr(index);
+                return data[addr];
             }
 
             set
             {
-                var addr = FastLayout.Addr(index);
-                Data[addr] = value;
+                var addr = FastAccess.Addr(index);
+                data[addr] = value;
             }
         }
-
-        public DataAndLayout<T> DataLayout => new DataAndLayout<T>(Data, FastLayout);
 
         /// <summary>
         /// gets layouts for specified targets and sources, optimized for an element-wise operation
