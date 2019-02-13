@@ -4,7 +4,7 @@ before_build:
 - cmd: dotnet restore ./src
 build:
   project: src/NdArrayNet.sln
-  verbosity: minimal 
+  verbosity: minimal
 test_script:
 - ps: >-
     $opencover = (Resolve-Path "~\.nuget\packages\opencover\*\tools\OpenCover.Console.exe").ToString()
