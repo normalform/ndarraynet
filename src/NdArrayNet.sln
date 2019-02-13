@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NdArrayNet", "src\NdArrayNet\NdArrayNet.csproj", "{19970074-8DE1-4781-9C19-D4DFC952B815}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NdArrayNet", "NdArrayNet\NdArrayNet.csproj", "{19970074-8DE1-4781-9C19-D4DFC952B815}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NdArrayNetUnitTest", "src\NdArrayNetUnitTest\NdArrayNetUnitTest.csproj", "{102F58C5-3218-46F5-B389-F0FD067785C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NdArrayNetUnitTest", "NdArrayNetUnitTest\NdArrayNetUnitTest.csproj", "{102F58C5-3218-46F5-B389-F0FD067785C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
