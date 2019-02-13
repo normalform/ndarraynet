@@ -1,1 +1,1 @@
-<div style="text-align:center"><img src="images/LogoRender800_600.png" alt="logo" class="inline"/>
+<div style="text-align:center"><img src="images/LogoRender160_120.png" alt="logo" class="inline"/>
