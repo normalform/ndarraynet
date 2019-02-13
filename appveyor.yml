@@ -3,6 +3,7 @@ image: Visual Studio 2017
 before_build:
 - cmd: dotnet restore
 build:
+  project: ndarraynet\src\NdArrayNet.sln
   verbosity: minimal
 test_script:
 - ps: >-
@@ -22,7 +23,6 @@ test_script:
 
 
     & $opencover -register:user -target:dotnet.exe -targetargs:test -output:"coverage.xml" -filter:"+NdArrayNetUnitTest" -oldstyle
-
 
     Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
 
