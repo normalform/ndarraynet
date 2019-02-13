@@ -3,8 +3,7 @@ image: Visual Studio 2017
 before_build:
 - cmd: dotnet restore
 build:
-  $solution = (Resolve-Path "src\NdArrayNet.sln").ToString()
-  project: $solution
+  project: C:\projects\ndarraynet\src\NdArrayNet.sln
   verbosity: minimal
 test_script:
 - ps: >-
