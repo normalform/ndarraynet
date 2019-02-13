@@ -57,7 +57,7 @@ namespace NdArrayNet
             var canUseType = vecTypes.Contains(typeof(T));
             var canUseTrgt = trgt.FastLayout.Stride[nd - 1] == 1;
 
-            return canUseType && canUseTrgt & CanUseSrc(nd, src1) && CanUseSrc(nd, src2);
+            return canUseType && canUseTrgt && CanUseSrc(nd, src1) && CanUseSrc(nd, src2);
         }
 
         private static bool CanUseSrc<T>(int numDim, DataAndLayout<T> src)
