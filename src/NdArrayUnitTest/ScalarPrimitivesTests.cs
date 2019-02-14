@@ -27,7 +27,7 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace ScalarPrimitivesUnitTest
+namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;

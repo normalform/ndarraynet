@@ -16,6 +16,7 @@ Refernce designs:
  - F# Tensor (F#)
  - xTensor (C++)
  - NumSharp (C#)
+ - NumNet and BlasNet (C#)
 
 Using:
  - StyleCopy 6.0
