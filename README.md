@@ -15,6 +15,7 @@ Refernce designs:
  - numpy (Python)
  - F# Tensor (F#)
  - xTensor (C++)
+ - NumSharp (C#)
 
 Using:
  - StyleCopy 6.0
