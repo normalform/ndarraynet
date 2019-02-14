@@ -163,5 +163,53 @@ namespace NdArrayNet.NdArrayUnitTest
             CollectionAssert.AreEqual(shape, result.Shape);
             CollectionAssert.AreEqual(expected, result.Stride);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_NegativeDimensionToSwap_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(-1, 2, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_NegativeDimensionToSwapWith_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(2, -1, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_TooBigDimensionToSwap_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(9, 2, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_TooBigDimensionToSwapWith_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(2, 9, layout);
+        }
     }
 }
