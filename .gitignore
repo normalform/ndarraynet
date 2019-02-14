@@ -8,6 +8,7 @@
 .sonarqube
 cov-int
 StyleCop.Cache
+src/coverage.xml
 
 # User-specific files
 *.suo
