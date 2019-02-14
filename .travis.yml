@@ -10,12 +10,11 @@ script:
 - dotnet test ./src
 env:
   global:
-  - secure: lCiJY21IAMN46GKnJm_Eog
+  - secure: "lCiJY21IAMN46GKnJm_Eog"
 addons:
   coverity_scan:
     project:
       name: "normalform/ndarraynet"
-      version: 0.1
       description: "Build submitted via Travis CI"
     notification_email: kim.jaeho@gmail.com
     build_command_prepend: "dotnet restore ./src/NdArrayNet.sln"
