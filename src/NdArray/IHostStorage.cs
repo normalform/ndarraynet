@@ -29,7 +29,7 @@
 
 namespace NdArrayNet
 {
-    public interface IHostStorage<out T>
+    internal interface IHostStorage<out T>
     {
         T[] Data { get; }
 

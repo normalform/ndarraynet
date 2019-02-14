@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseDeviceTests.cs" company="NdArrayNet">
+﻿// <copyright file="SpecialIdxTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -31,46 +31,48 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
-    using System;
 
     [TestClass]
-    public class BaseDeviceTests
+    public class SpecialIdxTests
     {
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Id_WithDummy_ThrowException()
+        public void NewAxis()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange & action
+            var idx = SpecialIdx.NewAxis;
 
-            // action
-            var _ = dummy.Id;
+            // assert
+            Assert.AreEqual(int.MinValue + 1, idx);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Zeroed_WithDummy_ThrowException()
+        public void Fill()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange & action
+            var idx = SpecialIdx.Fill;
 
-            // action
-            var _ = dummy.Zeroed;
+            // assert
+            Assert.AreEqual(int.MinValue + 2, idx);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Create_WithDummy_ThrowException()
+        public void Remainder()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange & action
+            var idx = SpecialIdx.Remainder;
 
-            // action
-            var _ = dummy.Create<int>(3);
+            // assert
+            Assert.AreEqual(int.MinValue + 3, idx);
         }
 
-        internal class DummyBaseDevice : BaseDevice
+        [TestMethod]
+        public void NotFound()
         {
+            // arange & action
+            var idx = SpecialIdx.NotFound;
+
+            // assert
+            Assert.AreEqual(int.MinValue + 4, idx);
         }
     }
 }

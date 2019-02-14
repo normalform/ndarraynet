@@ -39,7 +39,7 @@ namespace NdArrayNet
     {
         private readonly T[] data;
 
-        public HostBackend(Layout layout, HostStorage<T> storage)
+        public HostBackend(Layout layout, IHostStorage<T> storage)
         {
             FastAccess = new FastAccess(layout);
             data = storage.Data;

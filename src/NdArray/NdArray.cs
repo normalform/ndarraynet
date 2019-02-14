@@ -67,8 +67,6 @@ namespace NdArrayNet
             Storage = device.Create<T>(Layout.NumElements);
         }
 
-        internal IStorage<T> Storage { get; }
-
         public int NumDimensions => Layout.NumDimensions;
 
         public int NumElements => Layout.NumElements;
@@ -79,7 +77,22 @@ namespace NdArrayNet
 
         public string Pretty => ToString(maxElems: 10);
 
+        internal IStorage<T> Storage { get; }
+
         internal IBackend<T> Backend => Storage.Backend(Layout);
+
+        public override string ToString() => Pretty;
+
+        /// <summary>
+        /// Creates a NdArray with the specified layout sharing its storage with the original NdArray.
+        /// </summary>
+        /// <param name="layout">The new NdArray memory layout.</param>
+        /// <param name="array">The NdArray to operate on.</param>
+        /// <returns>The resulting NdArray.</returns>
+        public NdArray<T> Relayout(Layout layout)
+        {
+            return new NdArray<T>(layout, Storage);
+        }
 
         internal static NdArray<T> Arange(IDevice device, T start, T stop, T step)
         {
@@ -110,19 +123,6 @@ namespace NdArrayNet
         {
             var newArray = new NdArray<T>(shape, device);
             return newArray;
-        }
-
-        public override string ToString() => Pretty;
-
-        /// <summary>
-        /// Creates a NdArray with the specified layout sharing its storage with the original NdArray.
-        /// </summary>
-        /// <param name="layout">The new NdArray memory layout.</param>
-        /// <param name="array">The NdArray to operate on.</param>
-        /// <returns>The resulting NdArray.</returns>
-        public NdArray<T> Relayout(Layout layout)
-        {
-            return new NdArray<T>(layout, Storage);
         }
 
         internal void FillConst(T value)

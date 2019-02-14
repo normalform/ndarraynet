@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseDeviceTests.cs" company="NdArrayNet">
+﻿// <copyright file="HostBackendTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -30,47 +30,47 @@
 namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
     using NdArrayNet;
-    using System;
+    using System.Linq;
 
     [TestClass]
-    public class BaseDeviceTests
+    public class HostBackendTests
     {
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Id_WithDummy_ThrowException()
+        public void GetIndex()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange
+            var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
+            var hostStorageMock = new Mock<IHostStorage<int>>();
+            hostStorageMock.SetupGet(m => m.Data).Returns(Enumerable.Range(0, 12).ToArray());
+            var hostBackend = new HostBackend<int>(layout, hostStorageMock.Object);
 
             // action
-            var _ = dummy.Id;
+            var val = hostBackend[new[] { 1, 2 }];
+
+            // assert
+            // 5 + (4 * 1) + 2
+            Assert.AreEqual(11, val);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Zeroed_WithDummy_ThrowException()
+        public void SetIndex()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange
+            var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
+            var hostStorageMock = new Mock<IHostStorage<int>>();
+            var memory = new int[12];
+            hostStorageMock.SetupGet(m => m.Data).Returns(memory);
+            var hostBackend = new HostBackend<int>(layout, hostStorageMock.Object);
 
             // action
-            var _ = dummy.Zeroed;
-        }
+            hostBackend[new[] { 1, 2 }] = 999;
 
-        [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Create_WithDummy_ThrowException()
-        {
-            // arange 
-            var dummy = new DummyBaseDevice();
-
-            // action
-            var _ = dummy.Create<int>(3);
-        }
-
-        internal class DummyBaseDevice : BaseDevice
-        {
+            // assert
+            // 5 + (4 * 1) + 2
+            Assert.AreEqual(999, memory[11]);
+            Assert.AreEqual(999, memory.Aggregate(0, (a, b) => a + b));
         }
     }
 }

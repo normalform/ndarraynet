@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseDeviceTests.cs" company="NdArrayNet">
+﻿// <copyright file="HostDeviceTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -31,46 +31,51 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
-    using System;
 
     [TestClass]
-    public class BaseDeviceTests
+    public class HostDeviceTests
     {
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Id_WithDummy_ThrowException()
+        public void Instance_CreateHostDevice()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange & action
+            var device = HostDevice.Instance;
 
-            // action
-            var _ = dummy.Id;
+            // assert
+            Assert.IsInstanceOfType(device, typeof(HostDevice));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Zeroed_WithDummy_ThrowException()
+        public void Id()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange & action
+            var device = HostDevice.Instance;
 
-            // action
-            var _ = dummy.Zeroed;
+            // assert
+            Assert.AreEqual("Host", device.Id);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void Create_WithDummy_ThrowException()
+        public void Zeroed()
         {
-            // arange 
-            var dummy = new DummyBaseDevice();
+            // arange & action
+            var device = HostDevice.Instance;
 
-            // action
-            var _ = dummy.Create<int>(3);
+            // assert
+            Assert.AreEqual(true, device.Zeroed);
         }
 
-        internal class DummyBaseDevice : BaseDevice
+        [TestMethod]
+        public void Create()
         {
+            // arange
+            var device = HostDevice.Instance;
+
+            // action
+            var storage = device.Create<int>(10);
+
+            // assert
+            Assert.IsInstanceOfType(storage, typeof(HostStorage<int>));
         }
     }
 }
