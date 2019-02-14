@@ -47,10 +47,30 @@ namespace NdArrayNet.NumCsUnitTest
         }
 
         [TestMethod]
+        public void Arange_IntOneElement_ReturnIntegerTypeNdArray()
+        {
+            // arrange & action
+            var array = NumCs.Arange(1);
+
+            // assert
+            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+        }
+
+        [TestMethod]
         public void Arange_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Arange(10);
+
+            // assert
+            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+        }
+
+        [TestMethod]
+        public void Ones_IntTypeScalar_ReturnIntegerTypeNdArray()
+        {
+            // arrange & action
+            var array = NumCs.Ones<int>(new int[] { });
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<int>));

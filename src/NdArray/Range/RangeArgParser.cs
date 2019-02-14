@@ -48,7 +48,7 @@ namespace NdArrayNet
                     return new IRange[] { };
                 }
 
-                if (typeof(IRange).IsInstanceOfType(args[0]))
+                if (args[0] is IRange)
                 {
                     return new[] { args[0] as IRange }.Concat(toRng(args.Skip(1).ToArray())).ToArray();
                 }

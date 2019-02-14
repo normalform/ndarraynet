@@ -154,7 +154,7 @@ namespace NdArrayNet
             return new Layout(newShp, a.Offset, newStr);
         }
 
-        internal Layout View(IRange[] ranges, Layout layout)
+        public Layout View(IRange[] ranges, Layout layout)
         {
             Layout SubView(IRange[] subRanges, Layout subLayout)
             {
