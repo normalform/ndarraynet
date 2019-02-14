@@ -10,7 +10,7 @@ script:
 - dotnet test ./src
 env:
   global:
-  - secure: "hc5kvLVz/stIZRYXq04KsSIE1YdywJMsv26Z2ReF7dHptELlRT9ybIsP24wxcfhtEqo4Odz9sqwFrIq0RRggpWdOMYpJKiUJtN0fexJKS4bXIPW6hSv2ZZqTtKnzrCKKYmiInRpq6GZowMnAT5MYDasr/tqPZBFvfQV0CnuHFmxopvxIweEHbkZleH6wnz9eej6TMZ4ma5KBGK+CuMt1Oj+OQucPXNynMYwpXjqXOK+haxb4sM9rgmRG3+/yCQOMvJESumSkj/mJ1FflX+yeQrMA8AGgXdIjhD89g1FCFOzkezITIhXCHuDdzgjlS+W1qIiWvm+gr50veRhoWwdzbfesy8OA+sB6LeOe8tMMoUuwUwLPToVm21qFcVfHcPOKJ5TbqdSM6TWaRzmxWhIaIKg7IA0cYqan/DmnQ7X81mHzhL4IdrT/JVGRr1T5/5KRUANfTCuKpyNp7Ph6ct2D6Cguc8DkA1n+ChIxJBSO1Ic65vlQuU7oZ7cUrugUB8zc5BwHti2CmE3Fz/gO0tIsnSZBhxYezzDsBGtYsjDgi8+uhv6eg2P7xREtmND2G5LqZpb230QGCKV3OQqdzI5BU1SACKnf2PtGonGkmXdt0n2NqZYVgjTHA+LISu8p92DfufWtcdVSDKTOnbWlqTRlv23qQafTOK68DmqxnpL/meY="
+  - secure: "OCgWEyIGBx-DOIjFxvhFxA"
 addons:
   coverity_scan:
     project:
