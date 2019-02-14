@@ -1,4 +1,4 @@
-// <copyright file="AssemblyInfo.cs" company="NdArrayNet">
+﻿// <copyright file="NumCs.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,13 +27,50 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-using System.Runtime.CompilerServices;
+namespace NdArrayNet
+{
+    public static class NumCs
+    {
+        private static readonly IDevice Device = HostDevice.Instance;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("NdArrayNet")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("NdArrayNet")]
-[assembly: System.Reflection.AssemblyTitleAttribute("NdArrayNet")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
-[assembly: InternalsVisibleTo("NdArrayNetUnitTest")]
+        public static NdArray<int> Arange(int stop)
+        {
+            return NdArray<int>.Arange(Device, 0, stop, 1);
+        }
+
+        public static NdArray<int> Arange(int start, int stop, int step)
+        {
+            return NdArray<int>.Arange(Device, start, stop, step);
+        }
+
+        public static NdArray<double> Arange(double stop)
+        {
+            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
+        }
+
+        public static NdArray<double> Arange(double start, double stop, double step)
+        {
+            return NdArray<double>.Arange(Device, start, stop, step);
+        }
+
+        public static NdArray<T> Ones<T>(int[] shape)
+        {
+            return NdArray<T>.Ones(Device, shape);
+        }
+
+        public static NdArray<T> OnesLike<T>(NdArray<T> template)
+        {
+            return NdArray<T>.Ones(template.Storage.Device, template.Shape);
+        }
+
+        public static NdArray<T> Zeros<T>(int[] shape)
+        {
+            return NdArray<T>.Zeros(Device, shape);
+        }
+
+        public static NdArray<T> ZerosLike<T>(NdArray<T> template)
+        {
+            return NdArray<T>.Zeros(template.Storage.Device, template.Shape);
+        }
+    }
+}

@@ -24,7 +24,7 @@
   </PropertyGroup>
       
   <ItemGroup>
-    <ProjectReference Include="..\NdArrayNet\NdArrayNet.csproj" />
+    <ProjectReference Include="..\NdArray\NdArray.csproj" />
   </ItemGroup>
 
 </Project>

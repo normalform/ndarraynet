@@ -8,19 +8,9 @@ build:
 test_script:
 - ps: >-
     $opencover = (Resolve-Path "~\.nuget\packages\opencover\*\tools\OpenCover.Console.exe").ToString()
-
     Write-Host "Path of OpenCover: $opencover"
 
-
-    $testasm = (Resolve-Path "src\NdArrayNetUnitTest\bin\Debug\netcoreapp2.2\NdArrayNetUnitTest.dll").ToString()
-
-    Write-Host "Path of the Test DLL: $testasm"
-
-
-    $mstest = (Resolve-Path "$ENV:VS140COMNTOOLS\..\IDE\MSTEST.exe").ToString()
-
-    Write-Host "Path of the MsTest: $mstest"
-
+    dotnet test
 
     & $opencover -register:user -target:dotnet.exe -targetargs:test -output:"coverage.xml" -filter:"+NdArrayNetUnitTest" -oldstyle
 

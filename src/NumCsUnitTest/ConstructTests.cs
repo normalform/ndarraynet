@@ -1,4 +1,4 @@
-﻿// <copyright file="NumPyConstructTests.cs" company="NdArrayNet">
+﻿// <copyright file="ConstructTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,20 +27,20 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNetUnitTest
+namespace NdArrayNet.NumCsUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using NdArrayNet;
 
     [TestClass]
-    public class NumPyConstructTests
+    public class ConstructTests
     {
         [TestMethod]
         public void Arange_IntTypeFullArgs_ReturnIntegerTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Arange(0, 10, 1);
+            var array = NumCs.Arange(0, 10, 1);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<int>));
@@ -50,7 +50,7 @@ namespace NdArrayNetUnitTest
         public void Arange_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Arange(10);
+            var array = NumCs.Arange(10);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<int>));
@@ -60,7 +60,7 @@ namespace NdArrayNetUnitTest
         public void Ones_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Ones<int>(new[] { 2, 3, 4, 5 });
+            var array = NumCs.Ones<int>(new[] { 2, 3, 4, 5 });
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<int>));
@@ -70,10 +70,10 @@ namespace NdArrayNetUnitTest
         public void OnesLike_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange
-            var template = NumPy.Ones<int>(new[] { 2, 3, 4, 5 });
+            var template = NumCs.Ones<int>(new[] { 2, 3, 4, 5 });
 
             // action
-            var array = NumPy.OnesLike(template);
+            var array = NumCs.OnesLike(template);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<int>));
@@ -83,7 +83,7 @@ namespace NdArrayNetUnitTest
         public void Zeros_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Zeros<int>(new[] { 2, 3, 4, 5 });
+            var array = NumCs.Zeros<int>(new[] { 2, 3, 4, 5 });
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<int>));
@@ -93,10 +93,10 @@ namespace NdArrayNetUnitTest
         public void ZerosLike_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange
-            var template = NumPy.Zeros<int>(new[] { 2, 3, 4, 5 });
+            var template = NumCs.Zeros<int>(new[] { 2, 3, 4, 5 });
 
             // action
-            var array = NumPy.ZerosLike(template);
+            var array = NumCs.ZerosLike(template);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<int>));
@@ -106,7 +106,7 @@ namespace NdArrayNetUnitTest
         public void Arange_DoubleTypeFullArgs_ReturnDoubleTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Arange(0.0, 10.0, 1.0);
+            var array = NumCs.Arange(0.0, 10.0, 1.0);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<double>));
@@ -116,7 +116,7 @@ namespace NdArrayNetUnitTest
         public void Arange_DoubleTypeStopArgOnly_ReturnDoubleTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Arange(10.0);
+            var array = NumCs.Arange(10.0);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<double>));
@@ -126,7 +126,7 @@ namespace NdArrayNetUnitTest
         public void Ones_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Ones<double>(new[] { 2, 3, 4, 5 });
+            var array = NumCs.Ones<double>(new[] { 2, 3, 4, 5 });
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<double>));
@@ -136,10 +136,10 @@ namespace NdArrayNetUnitTest
         public void OnesLike_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange
-            var template = NumPy.Ones<double>(new[] { 2, 3, 4, 5 });
+            var template = NumCs.Ones<double>(new[] { 2, 3, 4, 5 });
 
             // action
-            var array = NumPy.OnesLike(template);
+            var array = NumCs.OnesLike(template);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<double>));
@@ -149,7 +149,7 @@ namespace NdArrayNetUnitTest
         public void Zeros_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange & action
-            var array = NumPy.Zeros<double>(new[] { 2, 3, 4, 5 });
+            var array = NumCs.Zeros<double>(new[] { 2, 3, 4, 5 });
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<double>));
@@ -159,10 +159,10 @@ namespace NdArrayNetUnitTest
         public void ZerosLike_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange
-            var template = NumPy.Zeros<double>(new[] { 2, 3, 4, 5 });
+            var template = NumCs.Zeros<double>(new[] { 2, 3, 4, 5 });
 
             // action
-            var array = NumPy.ZerosLike(template);
+            var array = NumCs.ZerosLike(template);
 
             // assert
             Assert.IsInstanceOfType(array, typeof(NdArray<double>));
