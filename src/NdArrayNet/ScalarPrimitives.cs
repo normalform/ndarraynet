@@ -34,12 +34,32 @@ namespace NdArrayNet
     using System.Linq;
     using System.Linq.Expressions;
 
+    internal static class ScalarPrimitives
+    {
+        private static Dictionary<Tuple<Type, Type>, object> instances = new Dictionary<Tuple<Type, Type>, object>();
+
+        public static ScalarPrimitives<T, TC> For<T, TC>()
+        {
+            lock (instances)
+            {
+                var types = Tuple.Create(typeof(T), typeof(TC));
+                if (instances.ContainsKey(types))
+                {
+                    return instances[types] as ScalarPrimitives<T, TC>;
+                }
+
+                var sp = new ScalarPrimitives<T, TC>();
+                instances.Add(types, sp);
+                return sp;
+            }
+        }
+    }
+
     internal class ScalarPrimitives<T, TC>
     {
         private static readonly ParameterExpression A = Expression.Parameter(typeof(T), "a");
         private static readonly ParameterExpression B = Expression.Parameter(typeof(T), "b");
         private static readonly ParameterExpression C = Expression.Parameter(typeof(TC), "c");
-        private static readonly ParameterExpression Cond = Expression.Parameter(typeof(bool), "cond");
 
         private static readonly Func<T, T, T> AddFunc = TryBinary("+", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Add(A, B), A, B) });
         private static readonly Func<T, T, T> SubtractFunc = TryBinary("-", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Subtract(A, B), A, B) });
@@ -134,22 +154,14 @@ namespace NdArrayNet
         {
             foreach (var fn in fns)
             {
-                try
+                var func = fn.Compile();
+                if (func != null)
                 {
-                    var func = fn.Compile();
-                    if (func != null)
-                    {
-                        return func;
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    // TODO: Maybe I don't need this try anc catch block.
-                    throw;
+                    return func;
                 }
             }
 
-            var msg = string.Format("cannot compile scalar primitive for type %s", typeof(T).Name);
+            var msg = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
             throw new InvalidOperationException(msg);
         }
 
@@ -161,27 +173,6 @@ namespace NdArrayNet
 
             var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
             return CompileAny(fnsWithExceptionBlock.ToArray());
-        }
-    }
-
-    internal class ScalarPrimitives
-    {
-        private static Dictionary<Tuple<Type, Type>, object> instances = new Dictionary<Tuple<Type, Type>, object>();
-
-        public static ScalarPrimitives<T, TC> For<T, TC>()
-        {
-            lock (instances)
-            {
-                var types = Tuple.Create(typeof(T), typeof(TC));
-                if (instances.ContainsKey(types))
-                {
-                    return instances[types] as ScalarPrimitives<T, TC>;
-                }
-
-                var sp = new ScalarPrimitives<T, TC>();
-                instances.Add(types, sp);
-                return sp;
-            }
         }
     }
 }

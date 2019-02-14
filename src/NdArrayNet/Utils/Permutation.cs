@@ -32,7 +32,7 @@ namespace NdArrayNet.Utils
     using System.Collections.Generic;
     using System.Linq;
 
-    public class Permutation
+    public static class Permutation
     {
         /// <summary>
         /// true if the given list is a permutation of the numbers 0 to perm.Length-1

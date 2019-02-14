@@ -237,7 +237,7 @@ namespace NdArrayNet
                 }
 
                 var msg = string.Format("Slice {0} is incompatible with shape {1}.", ranges, subLayout);
-                throw new IndexOutOfRangeException(msg);
+                throw new ArgumentOutOfRangeException(msg);
             }
 
             return SubView(ranges, layout);
@@ -249,7 +249,7 @@ namespace NdArrayNet
             if (!(index >= 0 && index < numEl))
             {
                 var msg = string.Format("Index {0} out of range in slice {1} for shape {2}.", index, ranges, shp);
-                throw new IndexOutOfRangeException(msg);
+                throw new ArgumentOutOfRangeException(msg);
             }
         }
     }

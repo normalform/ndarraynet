@@ -32,7 +32,7 @@ namespace NdArrayNet
     using System;
     using System.Runtime.InteropServices;
 
-    public class HostStorage<T> : IStorage<T>, IStorage, IHostStorage<T>
+    public class HostStorage<T> : IStorage<T>, IHostStorage<T>
     {
         private readonly int unitSize = Marshal.SizeOf(typeof(T));
 

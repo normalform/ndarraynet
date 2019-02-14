@@ -32,7 +32,7 @@ namespace NdArrayNet.Utils
     using System;
     using System.Collections.Generic;
 
-    internal class Primitives
+    internal static class Primitives
     {
         private static readonly Dictionary<Type, object> ZeroOf = new Dictionary<Type, object>
         {

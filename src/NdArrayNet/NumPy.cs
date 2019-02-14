@@ -29,7 +29,7 @@
 
 namespace NdArrayNet
 {
-    public class NumPy
+    public static class NumPy
     {
         private static readonly IDevice Device = HostDevice.Instance;
 
