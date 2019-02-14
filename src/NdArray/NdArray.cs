@@ -41,7 +41,7 @@ namespace NdArrayNet
         /// Implicit constructor.
         /// </summary>
         /// <param name="layout"></param>
-        public NdArray(Layout layout, IStorage<T> storage)
+        internal NdArray(Layout layout, IStorage<T> storage)
         {
             Layout = layout;
             Storage = storage;
@@ -53,7 +53,7 @@ namespace NdArrayNet
         /// <param name="shape">The shape of the NdArray to create.</param>
         /// <param name="device">The device to store the data of the NdArray on.</param>
         /// <param name="order">The memory layout to use for the new NdArray. (default: row-major)</param>
-        public NdArray(int[] shape, IDevice device, Order order = Order.RowMajor)
+        internal NdArray(int[] shape, IDevice device, Order order = Order.RowMajor)
         {
             if (order == Order.RowMajor)
             {
@@ -67,7 +67,7 @@ namespace NdArrayNet
             Storage = device.Create<T>(Layout.NumElements);
         }
 
-        public IStorage<T> Storage { get; }
+        internal IStorage<T> Storage { get; }
 
         public int NumDimensions => Layout.NumDimensions;
 
@@ -81,7 +81,7 @@ namespace NdArrayNet
 
         internal IBackend<T> Backend => Storage.Backend(Layout);
 
-        public static NdArray<T> Arange(IDevice device, T start, T stop, T step)
+        internal static NdArray<T> Arange(IDevice device, T start, T stop, T step)
         {
             var op = ScalarPrimitives.For<T, T>();
             var opc = ScalarPrimitives.For<int, T>();
@@ -98,15 +98,15 @@ namespace NdArrayNet
             return newArray;
         }
 
-        public static NdArray<T> Ones(IDevice device, int[] shape)
+        internal static NdArray<T> Ones(IDevice device, int[] shape)
         {
             var newArray = new NdArray<T>(shape, device);
-            newArray.FillConst(Utils.Primitives.One<T>());
+            newArray.FillConst(Primitives.One<T>());
 
             return newArray;
         }
 
-        public static NdArray<T> Zeros(IDevice device, int[] shape)
+        internal static NdArray<T> Zeros(IDevice device, int[] shape)
         {
             var newArray = new NdArray<T>(shape, device);
             return newArray;

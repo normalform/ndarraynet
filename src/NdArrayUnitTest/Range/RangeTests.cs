@@ -1,4 +1,4 @@
-﻿// <copyright file="HostDevice.cs" company="NdArrayNet">
+﻿// <copyright file="RangeTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,36 +27,68 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    internal sealed class HostDevice : BaseDevice
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
+
+    [TestClass]
+    public class RangeTests
     {
-        private static HostDevice instance;
-
-        private HostDevice()
+        [TestMethod]
+        public void Range_ReturnRangeTypeAndStartStopStep()
         {
+            // arange
+            var range = new Range(10, 30, 2);
+
+            // action
+            var rangeType = range.Type;
+
+            // assert
+            Assert.AreEqual(RangeType.Range, rangeType);
+            Assert.AreEqual(10, range.Start);
+            Assert.AreEqual(30, range.Stop);
+            Assert.AreEqual(2, range.Step);
         }
 
-        public static HostDevice Instance
+        [TestMethod]
+        public void Elem_ReturnElemRangeTypeAndPosition()
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new HostDevice();
-                }
+            // arange
+            var elem = new Elem(100);
 
-                return instance;
-            }
+            // action
+            var rangeType = elem.Type;
+
+            // assert
+            Assert.AreEqual(RangeType.Elem, rangeType);
+            Assert.AreEqual(100, elem.Pos);
         }
 
-        public override string Id => "Host";
-
-        public override bool Zeroed => true;
-
-        public override IStorage<T> Create<T>(int numElements)
+        [TestMethod]
+        public void NewAxis_ReturnNewAxisRangeType()
         {
-            return new HostStorage<T>(numElements);
+            // arange
+            var newAxis = new NewAxis();
+
+            // action
+            var rangeType = newAxis.Type;
+
+            // assert
+            Assert.AreEqual(RangeType.NewAxis, rangeType);
         }
-    }
+
+        [TestMethod]
+        public void AllFill_ReturnAllFillRangeType()
+        {
+            // arange
+            var allFill = new AllFill();
+
+            // action
+            var rangeType = allFill.Type;
+
+            // assert
+            Assert.AreEqual(RangeType.AllFill, rangeType);
+        }
+   }
 }

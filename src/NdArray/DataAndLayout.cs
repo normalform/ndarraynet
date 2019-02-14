@@ -29,7 +29,7 @@
 
 namespace NdArrayNet
 {
-    public class DataAndLayout<T>
+    internal class DataAndLayout<T>
     {
         public DataAndLayout(T[] data, FastAccess fastAccess)
         {

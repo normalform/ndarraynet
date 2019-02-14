@@ -1,4 +1,4 @@
-﻿// <copyright file="HostStorage.cs" company="NdArrayNet">
+﻿// <copyright file="RangeFactoryTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,48 +27,69 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    using System;
-    using System.Runtime.InteropServices;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
 
-    internal class HostStorage<T> : IStorage<T>, IHostStorage<T>
+    [TestClass]
+    public class RangeFactoryTests
     {
-        private readonly int unitSize = Marshal.SizeOf(typeof(T));
-
-        public HostStorage(T[] data)
+        [TestMethod]
+        public void NewAxis_ReturnNewAxis()
         {
-            Data = data;
+            // arange & action
+            var rng = RangeFactory.NewAxis;
+
+            // assert
+            Assert.IsInstanceOfType(rng, typeof(NewAxis));
         }
 
-        public HostStorage(long numberOfElements)
+        [TestMethod]
+        public void AllFill_ReturnAllFill()
         {
-            if (numberOfElements > int.MaxValue)
-            {
-                var msg = string.Format("Cannot create host NdArray storage for {0} elements, the current limit is {1} elements.", numberOfElements, int.MaxValue);
-                throw new ArgumentOutOfRangeException(msg);
-            }
+            // arange & action
+            var rng = RangeFactory.AllFill;
 
-            Data = new T[numberOfElements];
+            // assert
+            Assert.IsInstanceOfType(rng, typeof(AllFill));
         }
 
-        public T[] Data { get; }
-
-        public IDevice Device => HostDevice.Instance;
-
-        public int DataSize => Data.Length;
-
-        public int DataSizeInBytes => DataSize * unitSize;
-
-        public IBackend<T> Backend(Layout layout)
+        [TestMethod]
+        public void Range_ReturnRange()
         {
-            return new HostBackend<T>(layout, this);
+            // arange & action
+            var rng = RangeFactory.Range(10, 30, 2) as Range;
+
+            // assert
+            Assert.IsInstanceOfType(rng, typeof(Range));
+            Assert.AreEqual(10, rng.Start);
+            Assert.AreEqual(30, rng.Stop);
+            Assert.AreEqual(2, rng.Step);
         }
 
-        public PinnedMemory Pin()
+        [TestMethod]
+        public void All_ReturnRangeWithAllZeros()
         {
-            var handle = GCHandle.Alloc(Data, GCHandleType.Pinned);
-            return new PinnedMemory(handle, Data.LongLength * unitSize);
+            // arange & action
+            var rng = RangeFactory.All as Range;
+
+            // assert
+            Assert.IsInstanceOfType(rng, typeof(Range));
+            Assert.AreEqual(0, rng.Start);
+            Assert.AreEqual(0, rng.Stop);
+            Assert.AreEqual(0, rng.Step);
         }
-    }
+
+        [TestMethod]
+        public void Elem_ReturnElem()
+        {
+            // arange & action
+            var rng = RangeFactory.Elem(100) as Elem;
+
+            // assert
+            Assert.IsInstanceOfType(rng, typeof(Elem));
+            Assert.AreEqual(100, rng.Pos);
+        }
+   }
 }

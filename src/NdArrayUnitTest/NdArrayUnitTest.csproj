@@ -26,5 +26,9 @@
   <ItemGroup>
     <ProjectReference Include="..\NdArray\NdArray.csproj" />
   </ItemGroup>
+      
+  <ItemGroup>
+    <Folder Include="Range\" />
+  </ItemGroup>
 
 </Project>

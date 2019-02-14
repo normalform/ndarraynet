@@ -29,7 +29,7 @@
 
 namespace NdArrayNet
 {
-    public interface IDevice
+    internal interface IDevice
     {
         IStorage<T> Create<T>(int numElements);
     }

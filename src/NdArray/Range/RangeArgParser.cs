@@ -1,4 +1,4 @@
-﻿// <copyright file="Range.cs" company="NdArrayNet">
+﻿// <copyright file="RangeArgParser.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -30,34 +30,7 @@
 namespace NdArrayNet
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
-    public enum RangeType
-    {
-        Range,
-        Elem,
-        NewAxis,
-        AllFill,
-    }
-
-    public interface IRange
-    {
-        RangeType Type { get; }
-    }
-
-    public static class RangeFactory
-    {
-        public static IRange NewAxis => new NewAxis();
-
-        public static IRange AllFill => new AllFill();
-
-        public static IRange All => new Range(0, 0, 0);
-
-        public static IRange Range(int start, int stop, int step = 1) => new Range(start, stop, step);
-
-        public static IRange Elem(int pos) => new Elem(pos);
-    }
 
     public static class RangeArgParser
     {
@@ -134,81 +107,5 @@ namespace NdArrayNet
 
             return toRng(allArgs);
         }
-    }
-
-    public abstract class RangeBase : IRange
-    {
-        protected RangeBase(RangeType type)
-        {
-            Type = type;
-        }
-
-        public RangeType Type { get; }
-    }
-
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed.")]
-    public class Range : RangeBase
-    {
-        public Range(int start, int stop, int step) : base(RangeType.Range)
-        {
-            Start = start;
-            Stop = stop;
-            Step = step;
-        }
-
-        public int Start { get; }
-
-        public int Stop { get; }
-
-        public int Step { get; }
-    }
-
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed.")]
-    public class Elem : RangeBase
-    {
-        public Elem(int pos) : base(RangeType.Elem)
-        {
-            Pos = pos;
-        }
-
-        public int Pos { get; }
-    }
-
-    public class NewAxis : RangeBase
-    {
-        public NewAxis() : base(RangeType.NewAxis)
-        {
-        }
-    }
-
-    public class AllFill : RangeBase
-    {
-        public AllFill() : base(RangeType.AllFill)
-        {
-        }
-    }
-
-    internal static class SpecialIdx
-    {
-        /// <summary>
-        /// For slicing: inserts a new axis of size one.
-        /// </summary>
-        public static readonly int NewAxis = int.MinValue + 1;
-
-        /// <summary>
-        /// For slicing: fills all remaining axes with size one.
-        /// Cannot be used together with NewAxis.
-        /// </summary>
-        public static readonly int Fill = int.MinValue + 2;
-
-        /// <summary>
-        /// For reshape: remainder, so that number of elements stays constant.
-        /// </summary>
-        public static readonly int Remainder = int.MinValue + 3;
-
-        /// <summary>
-        /// For search: value was not found.
-        /// </summary>
-        public static readonly int NotFound = int.MinValue + 4;
     }
 }

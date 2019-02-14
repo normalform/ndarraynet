@@ -40,4 +40,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+[assembly: InternalsVisibleTo("NumCs")]
 [assembly: InternalsVisibleTo("NdArrayUnitTest")]

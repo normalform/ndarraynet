@@ -90,7 +90,7 @@ namespace NdArrayNet
 
         public static int[] OrderedStride(int[] shape, int[] order)
         {
-            if (!Utils.Permutation.Is(order))
+            if (!Permutation.Is(order))
             {
                 var msg = string.Format("The stride order {0} is not a permutation", order);
                 throw new ArgumentException(msg);

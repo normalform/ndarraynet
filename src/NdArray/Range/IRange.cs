@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="IRange.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,19 +29,8 @@
 
 namespace NdArrayNet
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
+    public interface IRange
     {
-        IDevice Device { get; }
-    }
-
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
-    {
-        IBackend<T> Backend(Layout layout);
+        RangeType Type { get; }
     }
 }

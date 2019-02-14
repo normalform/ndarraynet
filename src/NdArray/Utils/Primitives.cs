@@ -27,7 +27,7 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet.Utils
+namespace NdArrayNet
 {
     using System;
     using System.Collections.Generic;
