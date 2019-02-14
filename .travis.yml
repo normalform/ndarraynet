@@ -14,10 +14,10 @@ env:
 addons:
   coverity_scan:
     project:
-      name: normalform/ndarraynet
+      name: "normalform/ndarraynet"
       version: 0.1
-      description: NdArrayNet
+      description: "Build submitted via Travis CI"
     notification_email: kim.jaeho@gmail.com
-    build_command_prepend: dotnet restore ./src/NdArrayNet.sln
-    build_command: dotnet build ./src/NdArrayNet.sln
+    build_command_prepend: "dotnet restore ./src/NdArrayNet.sln"
+    build_command: "dotnet build ./src/NdArrayNet.sln"
     branch_pattern: coverity-scan
