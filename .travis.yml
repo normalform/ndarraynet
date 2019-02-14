@@ -10,13 +10,13 @@ script:
 - dotnet test ./src
 env:
   global:
-  - secure: "P2FQ0jqF6ij4RdqyQ9ByiTHu1cD3nyZskUVefaZuI8XFw9pTsrPkGBlc6ukB+FlqSlQwKIRPptWNc1zVxTOpG6eQ6XPELBDDoK9htEma7NYOCUqjzBYElk6rqB+0FJq3m8bZHfoWTmo2AMllRPqQfcb/bnzU8sT20Xiw+g/GhqDwnf1imjiV0y5BASqCs9St/v8S7QhsqynAewRXaJi4yJP48FEpFbrOFHON3Zr/78YZRItqh5pISAPZHE/z0K2sN6mo82SEO41RpTbZ6/TBKuFHBNzvzYW7F/Xuz276OKR39l7D/bGikX+DwqY2B63cHTSK+elHtRMPuPzJVC2NujHSOG1MSGnVAGiaD8NIg8UcVOvCt+fPeRyCQCl0LFluem0jb3DtTkq4t78RelbyoB+OHmG6ztxONLKpJGSej7rO3LmihbUSswgsmXCi+Zqk+RjjAvB8ZMDwDLDCRUOMD9fZIvuDObd15F1cxf8rDEAUuW42pKr6hLjm70hHtO3pPyT7h6YsMXdBqArNn7ZN6EXzIfI1Erd99cDOIeQC/7IgEV3cjuHIXS2Bs8Y3HJop3R8t4bpU9U7e9tx9HrEk4dE7rc/D4SuwZ7bEealQRpS3ACAgoVaOnYvVIWWWaOtv3oGH/r4YHsiTqtYJFzZ+DHBThA1g2tOYSbuNpezFvg8="
+  - secure: H5XTtE+erPENGqz603UxmNOsT//JMhMCOGgs9eP9LqOaYm4CE2EhdMfK1TkgnKjarPL4AnOxgc/u+E6MV4vX7mI7rwBNPtxwOP8CyYpGXPp3Ou6s8dgx9WSNEq9Tp15WponEEa17OkVLSU8midfsSbDOTJU2NLsTe3Txf/YCcj46wQBOaA1lCBmwot0wrsgOtp8GjrPYjn8v4Siq8JNGh1kywlYUjhsO8sn4jkZv0DGiZ8u+Cv7XQZ6PwHYWi73h7ebYC4VE4zlRQzqCUezgWBGM7yxStfXl3Ynd688BW4tSTLLF0nFT5AldC2e9VmLDIhSlVmKk9yPjP7Ff2TwSIrEw1J1Sjiw5vEp0XquG4IdDI2nak+p2i0ORVDkd1ai2kbqTVdB0fjT25BCFgSRObK2Lkelv4ZbTS/DW0OIX/QTvXUCtw34gcPKw5PF/nUd5KkhNgEOVC6gN+1MycpOm4cMBuOAYNe1BUIaYiZcLYhNW3/+8gYWHeipHsiKoP+G9mCIb6X/IPzuushhGxMSF2JCZMJg5Yd6nXJbIliQvf72SLKHgNaO+91PDmi3F2fznIkm/+hTKFNYro55Py04ruyEdWerl/fOp/Sq7bOPmGzoLwRA4hV1uIQlogBsVQHy0bRq/BwVPgbxlnooDOlcj1JpSbUbmNfUszFOuhoVp90U=
 addons:
   coverity_scan:
     project:
-      name: "normalform/ndarraynet"
-      description: "Build submitted via Travis CI"
+      name: normalform/ndarraynet
+      description: Build submitted via Travis CI
     notification_email: kim.jaeho@gmail.com
-    build_command_prepend: "dotnet restore ./src/NdArrayNet.sln"
-    build_command: "dotnet build ./src/NdArrayNet.sln"
-    branch_pattern: "coverity-scan"
+    build_command_prepend: dotnet restore ./src/NdArrayNet.sln
+    build_command: dotnet build ./src/NdArrayNet.sln
+    branch_pattern: coverity-scan
