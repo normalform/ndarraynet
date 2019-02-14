@@ -90,5 +90,5 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.AreEqual(RangeType.AllFill, rangeType);
         }
-   }
+    }
 }

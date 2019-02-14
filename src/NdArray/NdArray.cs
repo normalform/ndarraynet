@@ -147,7 +147,7 @@ namespace NdArrayNet
 
         internal NdArray<T> GetRange(object[] rngArgs)
         {
-            return Range(RangeArgParser.OfItemOrSliceArgs(rngArgs));
+            return Range(RangeArgParser.Parse(rngArgs));
         }
 
         internal string ToString(int maxElems)

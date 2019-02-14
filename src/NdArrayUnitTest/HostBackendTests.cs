@@ -47,7 +47,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var hostBackend = new HostBackend<int>(layout, hostStorageMock.Object);
 
             // action
-            var val = hostBackend[new[] { 1, 2 }];
+            var index = new[] { 1, 2 };
+            var val = hostBackend[index];
 
             // assert
             // 5 + (4 * 1) + 2
@@ -65,7 +66,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var hostBackend = new HostBackend<int>(layout, hostStorageMock.Object);
 
             // action
-            hostBackend[new[] { 1, 2 }] = 999;
+            var index = new[] { 1, 2 };
+            hostBackend[index] = 999;
 
             // assert
             // 5 + (4 * 1) + 2

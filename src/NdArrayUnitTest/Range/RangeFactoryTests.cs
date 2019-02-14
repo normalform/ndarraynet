@@ -91,5 +91,5 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsInstanceOfType(rng, typeof(Elem));
             Assert.AreEqual(100, rng.Pos);
         }
-   }
+    }
 }

@@ -35,11 +35,11 @@ namespace NdArrayNet
     public static class RangeArgParser
     {
         /// <summary>
-        /// Converts arguments to a .NET Item property or GetSlice, SetSlice method to a IRange list.
+        /// Parses arguments to a .NET Item property or GetSlice, SetSlice method to a IRange list.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static IRange[] OfItemOrSliceArgs(object[] allArgs)
+        public static IRange[] Parse(object[] allArgs)
         {
             IRange[] toRng(object[] args)
             {
@@ -48,11 +48,11 @@ namespace NdArrayNet
                     return new IRange[] { };
                 }
 
-                if (args.GetType() == typeof(IRange[]))
+                if (typeof(IRange).IsInstanceOfType(args[0]))
                 {
-                    return args as IRange[];
+                    return new[] { args[0] as IRange }.Concat(toRng(args.Skip(1).ToArray())).ToArray();
                 }
-                else if (args.Length > 3 && args[0] is int && args[1] is int && args[2] is int)
+                else if (args.Length >= 3 && args[0] is int && args[1] is int && args[2] is int)
                 {
                     var start = (int)args[0];
                     var stop = (int)args[1];
@@ -68,7 +68,7 @@ namespace NdArrayNet
 
                     return new[] { RangeFactory.Range(start, stop, step) }.Concat(toRng(args.Skip(3).ToArray())).ToArray();
                 }
-                else if (args.Length > 2 && args[0] is int && args[1] is int)
+                else if (args.Length >= 2 && args[0] is int && args[1] is int)
                 {
                     var start = (int)args[0];
                     var stop = (int)args[1];

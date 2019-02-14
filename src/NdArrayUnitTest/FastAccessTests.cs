@@ -39,7 +39,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Offset()
         {
-            // arange 
+            // arange
             var layout = new Layout(new[] { 3, 4 }, 9, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -53,7 +53,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NumDiensions()
         {
-            // arange 
+            // arange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -67,7 +67,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NumElements()
         {
-            // arange 
+            // arange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -81,7 +81,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsPosValid_WithValidPos_ReturnTrue()
         {
-            // arange 
+            // arange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
