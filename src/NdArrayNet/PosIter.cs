@@ -56,9 +56,7 @@ namespace NdArrayNet
             Stride = fl.Stride;
 
             Addr = fl.UnCheckedArray(startPos);
-            Active = Enumerable.Range(0, fl.NumDiensions + 1)
-                                    .All(d => (fromDim <= d && d <= toDim) ?
-                                                startPos[d] >= 0 && startPos[d] < Shape[d] : true);
+            Active = Enumerable.Range(0, fl.NumDiensions + 1).All(d => !(fromDim <= d && d <= toDim) || (startPos[d] >= 0 && startPos[d] < Shape[d]));
             FromDim = fromDim;
             ToDim = toDim;
         }

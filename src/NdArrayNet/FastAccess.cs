@@ -82,7 +82,7 @@ namespace NdArrayNet
             if (pos.Length != NumDiensions)
             {
                 var msg = string.Format("Position {0} has wrong dimensionality for NdArray of shape {1}.", pos, Shape);
-                throw new IndexOutOfRangeException(msg);
+                throw new ArgumentOutOfRangeException(msg);
             }
 
             int addr = Offset;
@@ -96,7 +96,7 @@ namespace NdArrayNet
                 else
                 {
                     var msg = string.Format("Position {0} is out of range for NdArray of shape {1}.", pos, Shape);
-                    throw new IndexOutOfRangeException(msg);
+                    throw new ArgumentOutOfRangeException(msg);
                 }
             }
 

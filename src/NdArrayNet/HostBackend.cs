@@ -74,7 +74,7 @@ namespace NdArrayNet
             var dimGood = Enumerable.Range(0, trgt.NumDimensions)
                                     .Select(idx => trgt.Stride[idx] == 1 && srcs.All(src => src.Stride[idx] == 1 || src.Stride[idx] == 0));
 
-            if (dimGood.Any(d => d == true))
+            if (dimGood.Any())
             {
                 var dims = Enumerable.Range(0, trgt.NumDimensions)
                                        .Select(d => dimGood.ElementAt(d) ? trgt.Shape[d] : -1);

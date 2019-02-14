@@ -35,7 +35,7 @@ namespace NdArrayNet
     /// <summary>
     /// Scalar operations on host NdArray.
     /// </summary>
-    public class ScalarOps
+    public static class ScalarOps
     {
         public static void ApplyNoaryOp<T>(Func<int[], T> op, DataAndLayout<T> trgt, bool isIndexed, bool useThreads)
         {

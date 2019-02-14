@@ -79,7 +79,7 @@ namespace NdArrayNet
                 {
                     return args as IRange[];
                 }
-                else if (args.Length > 3 && args[0].GetType() == typeof(int) && args[1].GetType() == typeof(int) && args[2].GetType() == typeof(int))
+                else if (args.Length > 3 && args[0] is int && args[1] is int && args[2] is int)
                 {
                     var start = (int)args[0];
                     var stop = (int)args[1];
@@ -95,7 +95,7 @@ namespace NdArrayNet
 
                     return new[] { RangeFactory.Range(start, stop, step) }.Concat(toRng(args.Skip(3).ToArray())).ToArray();
                 }
-                else if (args.Length > 2 && args[0].GetType() == typeof(int) && args[1].GetType() == typeof(int))
+                else if (args.Length > 2 && args[0] is int && args[1] is int)
                 {
                     var start = (int)args[0];
                     var stop = (int)args[1];
@@ -109,7 +109,7 @@ namespace NdArrayNet
 
                     return new[] { RangeFactory.Range(start, stop) }.Concat(toRng(args.Skip(2).ToArray())).ToArray();
                 }
-                else if (args[0].GetType() == typeof(int))
+                else if (args[0] is int)
                 {
                     var idx = (int)args[0];
                     if (idx == SpecialIdx.NewAxis)
@@ -138,7 +138,7 @@ namespace NdArrayNet
 
     public abstract class RangeBase : IRange
     {
-        public RangeBase(RangeType type)
+        protected RangeBase(RangeType type)
         {
             Type = type;
         }
@@ -188,7 +188,7 @@ namespace NdArrayNet
         }
     }
 
-    internal class SpecialIdx
+    internal static class SpecialIdx
     {
         /// <summary>
         /// For slicing: inserts a new axis of size one.
