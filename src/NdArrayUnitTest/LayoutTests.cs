@@ -31,6 +31,7 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
+    using System;
     using System.Linq;
 
     [TestClass]
@@ -82,6 +83,30 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void OrderedStride_OrderIsNotPermutation_ThrowException()
+        {
+            // arange
+            var shape = new[] { 0, 1, 2, 3, 4 };
+            var order = new[] { 1, 2, 3, 4, 5 };
+
+            // action
+            var _ = Layout.OrderedStride(shape, order);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void OrderedStride_DifferentSize_ThrowException()
+        {
+            // arange
+            var shape = new[] { 0, 1, 2, 3, 4 };
+            var order = new[] { 0, 1 };
+
+            // action
+            var _ = Layout.OrderedStride(shape, order);
+        }
+
+        [TestMethod]
         public void CStride()
         {
             // arange
@@ -107,6 +132,84 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expected = new[] { 1, 1, 2, 6, 24 };
             CollectionAssert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void NewC()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+
+            // action
+            var result = Layout.NewC(shape);
+
+            // assert
+            var expected = new[] { 120, 60, 20, 5, 1 };
+            CollectionAssert.AreEqual(shape, result.Shape);
+            CollectionAssert.AreEqual(expected, result.Stride);
+        }
+
+        [TestMethod]
+        public void NewF()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+
+            // action
+            var result = Layout.NewF(shape);
+
+            // assert
+            var expected = new[] { 1, 1, 2, 6, 24 };
+            CollectionAssert.AreEqual(shape, result.Shape);
+            CollectionAssert.AreEqual(expected, result.Stride);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_NegativeDimensionToSwap_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(-1, 2, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_NegativeDimensionToSwapWith_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(2, -1, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_TooBigDimensionToSwap_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(9, 2, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Swap_TooBigDimensionToSwapWith_ThrowExceptions()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3, 4, 5 };
+            var layout = Layout.NewC(shape);
+
+            // action
+            var _ = Layout.Swap(2, 9, layout);
         }
     }
 }

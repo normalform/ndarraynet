@@ -31,7 +31,7 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using NdArrayNet.Utils;
+    using NdArrayNet;
 
     [TestClass]
     public class PrimitivesTests

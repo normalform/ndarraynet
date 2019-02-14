@@ -32,7 +32,7 @@ namespace NdArrayNet
     using System;
     using System.Linq;
 
-    public class FastAccess
+    internal class FastAccess
     {
         public FastAccess(Layout layout)
         {

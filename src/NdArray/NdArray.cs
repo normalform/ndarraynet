@@ -41,7 +41,7 @@ namespace NdArrayNet
         /// Implicit constructor.
         /// </summary>
         /// <param name="layout"></param>
-        public NdArray(Layout layout, IStorage<T> storage)
+        internal NdArray(Layout layout, IStorage<T> storage)
         {
             Layout = layout;
             Storage = storage;
@@ -53,7 +53,7 @@ namespace NdArrayNet
         /// <param name="shape">The shape of the NdArray to create.</param>
         /// <param name="device">The device to store the data of the NdArray on.</param>
         /// <param name="order">The memory layout to use for the new NdArray. (default: row-major)</param>
-        public NdArray(int[] shape, IDevice device, Order order = Order.RowMajor)
+        internal NdArray(int[] shape, IDevice device, Order order = Order.RowMajor)
         {
             if (order == Order.RowMajor)
             {
@@ -67,8 +67,6 @@ namespace NdArrayNet
             Storage = device.Create<T>(Layout.NumElements);
         }
 
-        public IStorage<T> Storage { get; }
-
         public int NumDimensions => Layout.NumDimensions;
 
         public int NumElements => Layout.NumElements;
@@ -79,9 +77,24 @@ namespace NdArrayNet
 
         public string Pretty => ToString(maxElems: 10);
 
+        internal IStorage<T> Storage { get; }
+
         internal IBackend<T> Backend => Storage.Backend(Layout);
 
-        public static NdArray<T> Arange(IDevice device, T start, T stop, T step)
+        public override string ToString() => Pretty;
+
+        /// <summary>
+        /// Creates a NdArray with the specified layout sharing its storage with the original NdArray.
+        /// </summary>
+        /// <param name="layout">The new NdArray memory layout.</param>
+        /// <param name="array">The NdArray to operate on.</param>
+        /// <returns>The resulting NdArray.</returns>
+        public NdArray<T> Relayout(Layout layout)
+        {
+            return new NdArray<T>(layout, Storage);
+        }
+
+        internal static NdArray<T> Arange(IDevice device, T start, T stop, T step)
         {
             var op = ScalarPrimitives.For<T, T>();
             var opc = ScalarPrimitives.For<int, T>();
@@ -98,31 +111,18 @@ namespace NdArrayNet
             return newArray;
         }
 
-        public static NdArray<T> Ones(IDevice device, int[] shape)
+        internal static NdArray<T> Ones(IDevice device, int[] shape)
         {
             var newArray = new NdArray<T>(shape, device);
-            newArray.FillConst(Utils.Primitives.One<T>());
+            newArray.FillConst(Primitives.One<T>());
 
             return newArray;
         }
 
-        public static NdArray<T> Zeros(IDevice device, int[] shape)
+        internal static NdArray<T> Zeros(IDevice device, int[] shape)
         {
             var newArray = new NdArray<T>(shape, device);
             return newArray;
-        }
-
-        public override string ToString() => Pretty;
-
-        /// <summary>
-        /// Creates a NdArray with the specified layout sharing its storage with the original NdArray.
-        /// </summary>
-        /// <param name="layout">The new NdArray memory layout.</param>
-        /// <param name="array">The NdArray to operate on.</param>
-        /// <returns>The resulting NdArray.</returns>
-        public NdArray<T> Relayout(Layout layout)
-        {
-            return new NdArray<T>(layout, Storage);
         }
 
         internal void FillConst(T value)
@@ -147,7 +147,7 @@ namespace NdArrayNet
 
         internal NdArray<T> GetRange(object[] rngArgs)
         {
-            return Range(RangeArgParser.OfItemOrSliceArgs(rngArgs));
+            return Range(RangeArgParser.Parse(rngArgs));
         }
 
         internal string ToString(int maxElems)

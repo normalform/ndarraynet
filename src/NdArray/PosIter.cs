@@ -31,7 +31,7 @@ namespace NdArrayNet
 {
     using System.Linq;
 
-    public class PosIter
+    internal class PosIter
     {
         public PosIter(
             FastAccess fl,

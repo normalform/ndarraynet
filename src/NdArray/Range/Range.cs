@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="Range.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,19 +29,30 @@
 
 namespace NdArrayNet
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
+    using System.Diagnostics.CodeAnalysis;
+
+    public enum RangeType
     {
-        IDevice Device { get; }
+        Range,
+        Elem,
+        NewAxis,
+        AllFill,
     }
 
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed.")]
+    public class Range : RangeBase
     {
-        IBackend<T> Backend(Layout layout);
+        public Range(int start, int stop, int step) : base(RangeType.Range)
+        {
+            Start = start;
+            Stop = stop;
+            Step = step;
+        }
+
+        public int Start { get; }
+
+        public int Stop { get; }
+
+        public int Step { get; }
     }
 }

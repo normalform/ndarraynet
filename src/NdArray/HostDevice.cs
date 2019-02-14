@@ -29,7 +29,7 @@
 
 namespace NdArrayNet
 {
-    public sealed class HostDevice : BaseDevice
+    internal sealed class HostDevice : BaseDevice
     {
         private static HostDevice instance;
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="HostStorageTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,21 +27,55 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
-    {
-        IDevice Device { get; }
-    }
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
+    using System;
 
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
+    [TestClass]
+    public class HostStorageTests
     {
-        IBackend<T> Backend(Layout layout);
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void HostStorage_WithMaximumSize_ThrowException()
+        {
+            // arange
+            var size = int.MaxValue + 1L;
+
+            // action
+            var _ = new HostStorage<int>(size);
+        }
+
+        [TestMethod]
+        public void Backend()
+        {
+            // arange
+            var data = new int[100];
+            var hostStorage = new HostStorage<int>(data);
+            var layout = new Layout(new[] { 10, 10 }, 0, new[] { 10, 1 });
+
+            // action
+            var hostBackend = hostStorage.Backend(layout);
+
+            // assert
+            Assert.IsInstanceOfType(hostBackend, typeof(HostBackend<int>));
+        }
+
+        [TestMethod]
+        public void Pin()
+        {
+            // arange
+            var data = new int[100];
+            var hostStorage = new HostStorage<int>(data);
+            var layout = new Layout(new[] { 10, 10 }, 0, new[] { 10, 1 });
+
+            // action
+            using (var memory = hostStorage.Pin())
+            {
+                // assert
+                Assert.IsInstanceOfType(memory, typeof(PinnedMemory));
+            }
+        }
     }
 }

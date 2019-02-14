@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="SpecialIdx.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,19 +29,27 @@
 
 namespace NdArrayNet
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
+    internal static class SpecialIdx
     {
-        IDevice Device { get; }
-    }
+        /// <summary>
+        /// For slicing: inserts a new axis of size one.
+        /// </summary>
+        public static readonly int NewAxis = int.MinValue + 1;
 
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
-    {
-        IBackend<T> Backend(Layout layout);
+        /// <summary>
+        /// For slicing: fills all remaining axes with size one.
+        /// Cannot be used together with NewAxis.
+        /// </summary>
+        public static readonly int Fill = int.MinValue + 2;
+
+        /// <summary>
+        /// For reshape: remainder, so that number of elements stays constant.
+        /// </summary>
+        public static readonly int Remainder = int.MinValue + 3;
+
+        /// <summary>
+        /// For search: value was not found.
+        /// </summary>
+        public static readonly int NotFound = int.MinValue + 4;
     }
 }

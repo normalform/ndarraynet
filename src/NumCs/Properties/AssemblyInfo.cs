@@ -39,5 +39,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: InternalsVisibleTo("NumCsUnitTest")]

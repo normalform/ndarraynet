@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="BaseDeviceTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,21 +27,50 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
-    {
-        IDevice Device { get; }
-    }
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
+    using System;
 
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
+    [TestClass]
+    public class BaseDeviceTests
     {
-        IBackend<T> Backend(Layout layout);
+        [TestMethod]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void Id_WithDummy_ThrowException()
+        {
+            // arange
+            var dummy = new DummyBaseDevice();
+
+            // action
+            var _ = dummy.Id;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void Zeroed_WithDummy_ThrowException()
+        {
+            // arange
+            var dummy = new DummyBaseDevice();
+
+            // action
+            var _ = dummy.Zeroed;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void Create_WithDummy_ThrowException()
+        {
+            // arange
+            var dummy = new DummyBaseDevice();
+
+            // action
+            var _ = dummy.Create<int>(3);
+        }
+
+        internal class DummyBaseDevice : BaseDevice
+        {
+        }
     }
 }

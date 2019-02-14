@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="HostDeviceTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,21 +27,55 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
-    {
-        IDevice Device { get; }
-    }
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
 
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
+    [TestClass]
+    public class HostDeviceTests
     {
-        IBackend<T> Backend(Layout layout);
+        [TestMethod]
+        public void Instance_CreateHostDevice()
+        {
+            // arange & action
+            var device = HostDevice.Instance;
+
+            // assert
+            Assert.IsInstanceOfType(device, typeof(HostDevice));
+        }
+
+        [TestMethod]
+        public void Id()
+        {
+            // arange & action
+            var device = HostDevice.Instance;
+
+            // assert
+            Assert.AreEqual("Host", device.Id);
+        }
+
+        [TestMethod]
+        public void Zeroed()
+        {
+            // arange & action
+            var device = HostDevice.Instance;
+
+            // assert
+            Assert.AreEqual(true, device.Zeroed);
+        }
+
+        [TestMethod]
+        public void Create()
+        {
+            // arange
+            var device = HostDevice.Instance;
+
+            // action
+            var storage = device.Create<int>(10);
+
+            // assert
+            Assert.IsInstanceOfType(storage, typeof(HostStorage<int>));
+        }
     }
 }

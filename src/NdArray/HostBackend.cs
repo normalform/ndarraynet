@@ -35,11 +35,11 @@ namespace NdArrayNet
     /// Backend for host <see cref="NdArray{T}"/>.
     /// </summary>
     /// <typeparam name="T">The generic type parameter.</typeparam>
-    public class HostBackend<T> : IBackend<T>
+    internal class HostBackend<T> : IBackend<T>
     {
         private readonly T[] data;
 
-        public HostBackend(Layout layout, HostStorage<T> storage)
+        public HostBackend(Layout layout, IHostStorage<T> storage)
         {
             FastAccess = new FastAccess(layout);
             data = storage.Data;

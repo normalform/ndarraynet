@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="AllFill.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,19 +29,10 @@
 
 namespace NdArrayNet
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
+    public class AllFill : RangeBase
     {
-        IDevice Device { get; }
-    }
-
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
-    {
-        IBackend<T> Backend(Layout layout);
+        public AllFill() : base(RangeType.AllFill)
+        {
+        }
     }
 }

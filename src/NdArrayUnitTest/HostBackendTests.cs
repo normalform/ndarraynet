@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="HostBackendTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,21 +27,52 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
-    {
-        IDevice Device { get; }
-    }
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using NdArrayNet;
+    using System.Linq;
 
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
+    [TestClass]
+    public class HostBackendTests
     {
-        IBackend<T> Backend(Layout layout);
+        [TestMethod]
+        public void GetIndex()
+        {
+            // arange
+            var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
+            var hostStorageMock = new Mock<IHostStorage<int>>();
+            hostStorageMock.SetupGet(m => m.Data).Returns(Enumerable.Range(0, 12).ToArray());
+            var hostBackend = new HostBackend<int>(layout, hostStorageMock.Object);
+
+            // action
+            var index = new[] { 1, 2 };
+            var val = hostBackend[index];
+
+            // assert
+            // 5 + (4 * 1) + 2
+            Assert.AreEqual(11, val);
+        }
+
+        [TestMethod]
+        public void SetIndex()
+        {
+            // arange
+            var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
+            var hostStorageMock = new Mock<IHostStorage<int>>();
+            var memory = new int[12];
+            hostStorageMock.SetupGet(m => m.Data).Returns(memory);
+            var hostBackend = new HostBackend<int>(layout, hostStorageMock.Object);
+
+            // action
+            var index = new[] { 1, 2 };
+            hostBackend[index] = 999;
+
+            // assert
+            // 5 + (4 * 1) + 2
+            Assert.AreEqual(999, memory[11]);
+            Assert.AreEqual(999, memory.Aggregate(0, (a, b) => a + b));
+        }
     }
 }

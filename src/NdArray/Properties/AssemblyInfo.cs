@@ -39,5 +39,8 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
+[assembly: InternalsVisibleTo("NumCs")]
 [assembly: InternalsVisibleTo("NdArrayUnitTest")]
+
+// This is for mocking with the Moq
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

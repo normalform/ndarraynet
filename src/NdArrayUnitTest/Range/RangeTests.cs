@@ -1,4 +1,4 @@
-﻿// <copyright file="Primitives.cs" company="NdArrayNet">
+﻿// <copyright file="RangeTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,45 +27,68 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    using System;
-    using System.Collections.Generic;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
 
-    internal static class Primitives
+    [TestClass]
+    public class RangeTests
     {
-        private static readonly Dictionary<Type, object> ZeroOf = new Dictionary<Type, object>
+        [TestMethod]
+        public void Range_ReturnRangeTypeAndStartStopStep()
         {
-            { typeof(byte), (byte)0 },
-            { typeof(sbyte), (sbyte)0 },
-            { typeof(short), (short)0 },        // Int16
-            { typeof(ushort), (ushort)0 },      // UInt16
-            { typeof(int), 0 },                 // Int32
-            { typeof(uint), 0U },               // UInt32
-            { typeof(long), 0L },               // Int64
-            { typeof(ulong), 0UL },             // UInt64
-            { typeof(float), 0.0F },            // Single
-            { typeof(double), 0.0 },
-            { typeof(decimal), decimal.Zero },
-        };
+            // arange
+            var range = new Range(10, 30, 2);
 
-        private static readonly Dictionary<Type, object> OneOf = new Dictionary<Type, object>
+            // action
+            var rangeType = range.Type;
+
+            // assert
+            Assert.AreEqual(RangeType.Range, rangeType);
+            Assert.AreEqual(10, range.Start);
+            Assert.AreEqual(30, range.Stop);
+            Assert.AreEqual(2, range.Step);
+        }
+
+        [TestMethod]
+        public void Elem_ReturnElemRangeTypeAndPosition()
         {
-            { typeof(byte), (byte)1 },
-            { typeof(sbyte), (sbyte)1 },
-            { typeof(short), (short)1 },        // Int16
-            { typeof(ushort), (ushort)1 },      // UInt16
-            { typeof(int), 1 },                 // Int32
-            { typeof(uint), 1U },               // UInt32
-            { typeof(long), 1L },               // Int64
-            { typeof(ulong), 1UL },             // Uint64
-            { typeof(float), 1.0F },            // Single
-            { typeof(double), 1.0 },
-            { typeof(decimal), decimal.One },
-        };
+            // arange
+            var elem = new Elem(100);
 
-        public static T Zero<T>() => (T)ZeroOf[typeof(T)];
+            // action
+            var rangeType = elem.Type;
 
-        public static T One<T>() => (T)OneOf[typeof(T)];
+            // assert
+            Assert.AreEqual(RangeType.Elem, rangeType);
+            Assert.AreEqual(100, elem.Pos);
+        }
+
+        [TestMethod]
+        public void NewAxis_ReturnNewAxisRangeType()
+        {
+            // arange
+            var newAxis = new NewAxis();
+
+            // action
+            var rangeType = newAxis.Type;
+
+            // assert
+            Assert.AreEqual(RangeType.NewAxis, rangeType);
+        }
+
+        [TestMethod]
+        public void AllFill_ReturnAllFillRangeType()
+        {
+            // arange
+            var allFill = new AllFill();
+
+            // action
+            var rangeType = allFill.Type;
+
+            // assert
+            Assert.AreEqual(RangeType.AllFill, rangeType);
+        }
     }
 }

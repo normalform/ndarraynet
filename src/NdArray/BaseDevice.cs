@@ -31,7 +31,7 @@ namespace NdArrayNet
 {
     using System;
 
-    public abstract class BaseDevice : IDevice
+    internal abstract class BaseDevice : IDevice
     {
         public virtual string Id
         {

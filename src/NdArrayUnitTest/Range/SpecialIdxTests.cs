@@ -1,4 +1,4 @@
-﻿// <copyright file="IStorage.cs" company="NdArrayNet">
+﻿// <copyright file="SpecialIdxTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,21 +27,52 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    /// <summary>
-    /// NdArray storage (type neutral).
-    /// </summary>
-    internal interface IStorage
-    {
-        IDevice Device { get; }
-    }
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
 
-    /// <summary>
-    /// NdArray storage.
-    /// </summary>
-    internal interface IStorage<T> : IStorage
+    [TestClass]
+    public class SpecialIdxTests
     {
-        IBackend<T> Backend(Layout layout);
+        [TestMethod]
+        public void NewAxis()
+        {
+            // arange & action
+            var idx = SpecialIdx.NewAxis;
+
+            // assert
+            Assert.AreEqual(int.MinValue + 1, idx);
+        }
+
+        [TestMethod]
+        public void Fill()
+        {
+            // arange & action
+            var idx = SpecialIdx.Fill;
+
+            // assert
+            Assert.AreEqual(int.MinValue + 2, idx);
+        }
+
+        [TestMethod]
+        public void Remainder()
+        {
+            // arange & action
+            var idx = SpecialIdx.Remainder;
+
+            // assert
+            Assert.AreEqual(int.MinValue + 3, idx);
+        }
+
+        [TestMethod]
+        public void NotFound()
+        {
+            // arange & action
+            var idx = SpecialIdx.NotFound;
+
+            // assert
+            Assert.AreEqual(int.MinValue + 4, idx);
+        }
     }
 }
