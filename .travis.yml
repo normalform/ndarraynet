@@ -18,5 +18,5 @@ addons:
       description: Build submitted via Travis CI
     notification_email: kim.jaeho@gmail.com
     build_command_prepend: dotnet restore ./src/NdArrayNet.sln
-    build_command: cov-build --dir cov-int dotnet build ./src/NdArrayNet.sln /t:Rebuild
+    build_command: dotnet build ./src/NdArrayNet.sln
     branch_pattern: coverity-scan
