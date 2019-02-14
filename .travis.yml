@@ -15,7 +15,7 @@ addons:
   coverity_scan:
     project:
       name: "normalform/ndarraynet"
-      description: "Build submitted via Travis CI
+      description: "Build submitted via Travis CI"
     notification_email: kim.jaeho@gmail.com
     build_command_prepend: "dotnet restore ./src/NdArrayNet.sln"
     build_command: "dotnet build ./src/NdArrayNet.sln"
