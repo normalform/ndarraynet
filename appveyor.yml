@@ -8,6 +8,7 @@ build:
 test_script:
 - ps: >-
     $opencover = (Resolve-Path "~\.nuget\packages\opencover\*\tools\OpenCover.Console.exe").ToString()
+
     Write-Host "Path of OpenCover: $opencover"
 
     dotnet test
