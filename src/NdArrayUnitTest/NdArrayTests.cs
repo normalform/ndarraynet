@@ -256,7 +256,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arange
             var device = HostDevice.Instance;
-            var array = NdArray<int>.Ones(device, new[] { 2, 3, 4 } );
+            var array = NdArray<int>.Ones(device, new[] { 2, 3, 4 });
 
             // action
             NdArray<int>.Set(array, new[] { 0, 1, 2 }, 999);
@@ -314,6 +314,57 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 0 }));
             Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 1 }));
             Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 2 }));
+        }
+
+        [TestMethod]
+        public void ScalarString()
+        {
+            // arange
+            var device = HostDevice.Instance;
+
+            // action
+            var strInt = NdArray<int>.ScalarString(NdArray<int>.Ones(device, new int[] { }));
+            var strLong = NdArray<long>.ScalarString(NdArray<long>.Ones(device, new int[] { }));
+            var strFloat = NdArray<float>.ScalarString(NdArray<float>.Ones(device, new int[] { }));
+            var strDouble = NdArray<double>.ScalarString(NdArray<double>.Ones(device, new int[] { }));
+            var strBool = NdArray<bool>.ScalarString(NdArray<bool>.Ones(device, new int[] { }));
+            var strByte = NdArray<byte>.ScalarString(NdArray<byte>.Ones(device, new int[] { }));
+
+            // assert
+            Assert.AreEqual("   1", strInt);
+            Assert.AreEqual("   1", strLong);
+            Assert.AreEqual("   1.0000", strFloat);
+            Assert.AreEqual("   1.0000", strDouble);
+            Assert.AreEqual("true", strBool);
+            Assert.AreEqual("  1", strByte);
+        }
+
+        [TestMethod]
+        public void PrettyDim()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Ones(device, new[] { 1, 2, 3 });
+
+            // action
+            var str = NdArray<int>.PrettyDim(10, " ", array);
+
+            // assert
+            Assert.AreEqual("[[[   1    1    1]\n  [   1    1    1]]]", str);
+        }
+
+        [TestMethod]
+        public void ArrayToString()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Ones(device, new[] { 1, 2, 3 });
+
+            // action
+            var str = array.ToString();
+
+            // assert
+            Assert.AreEqual("[[[   1    1    1]\n  [   1    1    1]]]", str);
         }
     }
 }

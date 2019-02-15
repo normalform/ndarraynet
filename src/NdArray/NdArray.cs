@@ -76,6 +76,8 @@ namespace NdArrayNet
 
         public Layout Layout { get; }
 
+        public string Pretty => ToString(maxElems: 10);
+
         public T Value
         {
             get
@@ -92,18 +94,6 @@ namespace NdArrayNet
                 Backend[noDim] = value;
             }
         }
-
-        public static T Get(NdArray<T> array, int[] pos) 
-        {
-            return array[pos];
-        }
-
-        public static void Set(NdArray<T> array, int[] pos, T value)
-        {
-            array[pos] = value;
-        }
-
-        public string Pretty => ToString(maxElems: 10);
 
         internal IStorage<T> Storage { get; }
 
@@ -137,7 +127,7 @@ namespace NdArrayNet
             }
         }
 
-        public NdArray<T> this[IRange [] ranges]
+        public NdArray<T> this[IRange[] ranges]
         {
             get
             {
@@ -150,7 +140,20 @@ namespace NdArrayNet
             }
         }
 
-        public override string ToString() => Pretty;
+        public static T Get(NdArray<T> array, int[] pos)
+        {
+            return array[pos];
+        }
+
+        public static void Set(NdArray<T> array, int[] pos, T value)
+        {
+            array[pos] = value;
+        }
+
+        public override string ToString()
+        {
+            return Pretty;
+        }
 
         /// <summary>
         /// Creates a NdArray with the specified layout sharing its storage with the original NdArray.
@@ -213,6 +216,141 @@ namespace NdArrayNet
             // skip this for now because of it support only one storage type for now.
         }
 
+        internal static string[] SubPrint(int maxElems, int[] idx, string lineSpace, NdArray<T> array)
+        {
+            return idx.Select(i => PrettyDim(maxElems, lineSpace + " ", array[new[] { RangeFactory.Elem(i), RangeFactory.AllFill }])).ToArray();
+        }
+
+        internal static string[] SubStrings(int maxElems, int numLineSpace, string strLineSpace, NdArray<T> array)
+        {
+            if (numLineSpace <= maxElems)
+            {
+                return SubPrint(maxElems, Enumerable.Range(0, numLineSpace).ToArray(), strLineSpace, array);
+            }
+            else
+            {
+                var leftTo = (maxElems / 2) - 1;
+                var remaning = maxElems - leftTo - 2;
+                var rightFrom = numLineSpace - remaning;
+                var leftIndex = Enumerable.Range(0, leftTo + 1).ToArray();
+                var rightIndex = Enumerable.Range(rightFrom, numLineSpace - rightFrom).ToArray();
+                string elipsis;
+                if (typeof(float) is T)
+                {
+                    elipsis = "      ...";
+                }
+                else if (typeof(double) is T)
+                {
+                    elipsis = "      ...";
+                }
+                else if (typeof(int) is T)
+                {
+                    elipsis = " ...";
+                }
+                else if (typeof(byte) is T)
+                {
+                    elipsis = "...";
+                }
+                else if (typeof(bool) is T)
+                {
+                    elipsis = " ... ";
+                }
+                else
+                {
+                    elipsis = "...";
+                }
+
+                var result = SubPrint(maxElems, leftIndex, strLineSpace, array).Concat(new[] { elipsis }).Concat(SubPrint(maxElems, rightIndex, strLineSpace, array));
+                return result.ToArray();
+            }
+        }
+
+        internal static string ScalarString(NdArray<T> array)
+        {
+            string msg;
+            var val = array.Value;
+            if (typeof(float).IsInstanceOfType(val))
+            {
+                var fval = Convert.ToSingle(val);
+                if (fval >= 0.0f)
+                {
+                    msg = string.Format("{0,9:F4}", fval);
+                }
+                else
+                {
+                    msg = string.Format("{0,9:F3}", fval);
+                }
+            }
+            else if (typeof(double).IsInstanceOfType(val))
+            {
+                var fval = Convert.ToDouble(val);
+                if (fval >= 0.0)
+                {
+                    msg = string.Format("{0,9:F4}", fval);
+                }
+                else
+                {
+                    msg = string.Format("{0,9:F3}", fval);
+                }
+            }
+            else if (typeof(int).IsInstanceOfType(val))
+            {
+                var fval = Convert.ToInt32(val);
+                msg = string.Format("{0,4:D}", fval);
+            }
+            else if (typeof(long).IsInstanceOfType(val))
+            {
+                var fval = Convert.ToInt64(val);
+                msg = string.Format("{0,4:D}", fval);
+            }
+            else if (typeof(byte).IsInstanceOfType(val))
+            {
+                var fval = Convert.ToByte(val);
+                msg = string.Format("{0,3:D}", fval);
+            }
+            else if (typeof(bool).IsInstanceOfType(val))
+            {
+                var fval = Convert.ToBoolean(val);
+                if (fval is true)
+                {
+                    msg = "true";
+                }
+                else
+                {
+                    msg = "false";
+                }
+            }
+            else
+            {
+                msg = val.ToString();
+            }
+
+            return msg;
+        }
+
+        internal static string PrettyDim(int maxElems, string lineSpace, NdArray<T> array)
+        {
+            var numLineSpece = array.Shape.Length > 0 ? array.Shape[0] : 0;
+
+            string msg;
+            if (array.NumDimensions == 0)
+            {
+                msg = ScalarString(array);
+            }
+            else if (array.NumDimensions == 1)
+            {
+                var midStr = string.Join(" ", SubStrings(maxElems, numLineSpece, lineSpace, array));
+                msg = "[" + midStr + "]";
+            }
+            else
+            {
+                var midStr = string.Join("\n" + lineSpace, SubStrings(maxElems, numLineSpece, lineSpace, array));
+                msg = "[" + midStr + "]";
+            }
+
+            return msg;
+        }
+
         internal void FillConst(T value)
         {
             Backend.FillConst(value, this);
@@ -255,7 +393,7 @@ namespace NdArrayNet
 
         internal string ToString(int maxElems)
         {
-            return string.Empty;
+            return PrettyDim(maxElems, " ", this);
         }
 
         internal void AssertScalar()

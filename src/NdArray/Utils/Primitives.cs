@@ -47,6 +47,7 @@ namespace NdArrayNet
             { typeof(float), 0.0F },            // Single
             { typeof(double), 0.0 },
             { typeof(decimal), decimal.Zero },
+            { typeof(bool), false },
         };
 
         private static readonly Dictionary<Type, object> OneOf = new Dictionary<Type, object>
@@ -62,6 +63,7 @@ namespace NdArrayNet
             { typeof(float), 1.0F },            // Single
             { typeof(double), 1.0 },
             { typeof(decimal), decimal.One },
+            { typeof(bool), true },
         };
 
         public static T Zero<T>() => (T)ZeroOf[typeof(T)];

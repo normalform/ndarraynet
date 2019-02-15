@@ -252,82 +252,89 @@ namespace NdArrayNet
         {
             Layout SubView(IRange[] subRanges, Layout subLayout)
             {
-                if (subRanges.Length == 0 && subLayout.Shape.Length == 0)
+                if (subRanges.Length == 0 || subLayout.Stride.Length == 0)
                 {
                     return subLayout;
                 }
-                else if (subRanges[0].Type == RangeType.AllFill)
+
+                var currentRangeType = subRanges[0].Type;
+                if (currentRangeType == RangeType.AllFill)
                 {
-                    var restRanges = subRanges.Skip(1);
-                    var restShps = subLayout.Shape.Skip(1);
-                    if (restShps.Count() > restRanges.Count())
+                    var restRanges = subRanges.Skip(1).ToArray();
+                    var restShps = subLayout.Shape.Skip(1).ToArray();
+                    if (restShps.Length > restRanges.Length)
                     {
                         var newRange = new[] { RangeFactory.All, RangeFactory.AllFill }.Concat(restRanges).ToArray();
-                        SubView(newRange, subLayout);
+                        return SubView(newRange, subLayout);
                     }
-                    else if (restShps.Count() == restRanges.Count())
+                    else if (restShps.Length == restRanges.Length)
                     {
                         var newRange = new[] { RangeFactory.All }.Concat(restRanges).ToArray();
-                        SubView(newRange, subLayout);
+                        return SubView(newRange, subLayout);
                     }
                     else
                     {
-                        SubView(restRanges.ToArray(), subLayout);
+                        return SubView(restRanges, subLayout);
                     }
                 }
-                else if (subRanges[0].Type == RangeType.Range || subRanges[0].Type == RangeType.Elem)
+                else if (currentRangeType == RangeType.Range || currentRangeType == RangeType.Elem)
                 {
-                    var index = subRanges[0].Type;
-                    var restRanges = subRanges.Skip(1);
-                    var shp = subLayout.Shape[0];
-                    var str = subLayout.Stride[0];
-                    var restShps = subLayout.Shape.Skip(1);
-                    var restStrs = subLayout.Stride.Skip(1);
+                    var restRanges = subRanges.Skip(1).ToArray();
+                    var shape = subLayout.Shape.Length > 0 ? subLayout.Shape[0] : 0;
+                    var stride = subLayout.Stride.Length > 0 ? subLayout.Stride[0] : 0;
 
-                    var ra = SubView(restRanges.ToArray(), new Layout(restShps.ToArray(), subLayout.Offset, restStrs.ToArray()));
-                    if (index == RangeType.Elem)
+                    var restShape = subLayout.Shape.Skip(1).ToArray();
+                    var restStride = subLayout.Stride.Skip(1).ToArray();
+                    var restLayout = SubView(restRanges, new Layout(restShape, subLayout.Offset, restStride));
+
+                    if (currentRangeType == RangeType.Elem)
                     {
-                        var i = ((Elem)subRanges[0]).Pos;
-                        CheckElementRange(false, shp, i, subRanges, subLayout.Shape);
-                        return new Layout(ra.Shape, ra.Offset + (i * str), ra.Stride);
+                        var position = ((Elem)subRanges[0]).Pos;
+                        CheckElementRange(false, shape, position, ranges, subLayout.Shape);
+                        return new Layout(restLayout.Shape, restLayout.Offset + (position * stride), restLayout.Stride);
                     }
-                    else if (index == RangeType.Range)
+                    else if (currentRangeType == RangeType.Range)
                     {
                         var start = ((Range)subRanges[0]).Start;
                         var stop = ((Range)subRanges[0]).Stop;
-                        if (start == 0 && stop == 0)
+                        var step = ((Range)subRanges[0]).Step;
+
+                        // This indicates for the 'All' range specifier.
+                        if (start == 0 && stop == 0 && step == 0)
                         {
-                            stop = shp - 1;
+                            stop = shape - 1;
                         }
 
                         if (stop >= start)
                         {
                             // non-empy slice
-                            CheckElementRange(false, shp, start, subRanges, subLayout.Shape);
-                            CheckElementRange(true, shp, stop, subRanges, subLayout.Shape);
-                            return new Layout(new[] { stop + 1 - start }.Concat(ra.Shape).ToArray(), ra.Offset + (start * str), new[] { str }.Concat(ra.Stride).ToArray());
+                            CheckElementRange(false, shape, start, ranges, subLayout.Shape);
+                            CheckElementRange(true, shape, stop, ranges, subLayout.Shape);
+                            return new Layout(
+                                new[] { stop + 1 - start }.Concat(restLayout.Shape).ToArray(),
+                                restLayout.Offset + (start * stride),
+                                new[] { stride }.Concat(restLayout.Stride).ToArray());
                         }
                         else
                         {
                             // empty slice
                             // We allow start and stop to be out of range in this case.
-                            return new Layout(new[] { 0 }.Concat(ra.Shape).ToArray(), ra.Offset, new[] { str }.Concat(ra.Stride).ToArray());
+                            return new Layout(
+                                new[] { 0 }.Concat(restLayout.Shape).ToArray(),
+                                restLayout.Offset,
+                                new[] { stride }.Concat(restLayout.Stride).ToArray());
                         }
                     }
-                    else if (index == RangeType.AllFill || index == RangeType.NewAxis)
-                    {
-                        // TODO: Is this correct conditions to get here??
-                        throw new InvalidOperationException("Impossible");
-                    }
                 }
-                else if (subRanges[0].Type == RangeType.NewAxis)
+                else if (currentRangeType == RangeType.NewAxis)
                 {
-                    var restRanges = subRanges.Skip(1);
-                    var ra = SubView(restRanges.ToArray(), subLayout);
+                    var restRanges = subRanges.Skip(1).ToArray();
+                    var restLayout = SubView(restRanges, subLayout);
 
-                    var newShape = new[] { 1 }.Concat(ra.Shape).ToArray();
-                    var newStride = new[] { 0 }.Concat(ra.Stride).ToArray();
-                    return new Layout(newShape, ra.Offset, newStride);
+                    return new Layout(
+                        new[] { 1 }.Concat(restLayout.Shape).ToArray(),
+                        restLayout.Offset,
+                        new[] { 0 }.Concat(restLayout.Stride).ToArray());
                 }
 
                 var msg = string.Format("Slice {0} is incompatible with shape {1}.", ranges, subLayout);
