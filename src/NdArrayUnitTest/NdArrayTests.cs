@@ -119,7 +119,7 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void GetValue_Vector_ThrowException()
         {
             // arange
@@ -145,7 +145,7 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void SetValue_Vector_ThrowException()
         {
             // arange
@@ -183,6 +183,72 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             Assert.AreEqual(1, scalarArray.Value);
+        }
+
+        [TestMethod]
+        public void AssertSameShape_WithSameShape_Pass()
+        {
+            // arange
+            // arange
+            var device = HostDevice.Instance;
+            var arrayA = NdArray<int>.Arange(device, 1, 3, 1);
+            var arrayB = NdArray<int>.Arange(device, 1, 3, 1);
+
+            // action
+            NdArray<int>.AssertSameShape(arrayA, arrayB);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void AssertSameShape_DifferentShape_ThrowException()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var arrayA = NdArray<int>.Arange(device, 0, 3, 1);
+            var arrayB = NdArray<int>.Arange(device, 1, 3, 1);
+
+            // action
+            NdArray<int>.AssertSameShape(arrayA, arrayB);
+        }
+
+        [TestMethod]
+        public void AssertSameStorage()
+        {
+            // arange
+            // arange
+            var device = HostDevice.Instance;
+            var arrays = new[]
+            {
+                NdArray<int>.Arange(device, 1, 3, 1),
+                NdArray<int>.Arange(device, 1, 3, 1)
+            };
+
+            // action
+            NdArray<int>.AssertSameStorage(arrays);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void AssertScalar_WithVector_ThrowException()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Arange(device, 0, 3, 1);
+
+            // action
+            array.AssertScalar();
+        }
+
+        [TestMethod]
+        public void AssertScalar_WithScalar_Pass()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var emptyShapeForScalar = new int[] { };
+            var array = NdArray<int>.Zeros(device, emptyShapeForScalar);
+
+            // action
+            array.AssertScalar();
         }
     }
 }

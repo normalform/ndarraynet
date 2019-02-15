@@ -30,29 +30,23 @@
 namespace NdArrayNet
 {
     using System;
-    using System.Linq;
 
     public static class List
     {
         /// <summary>
-        public static int[] Set(int elem, int value, int[] list)
+        public static int[] Set(int indexToSet, int value, int[] src)
         {
-            if (list.Length > 0)
+            if (src.Length > 0 && src.Length > indexToSet)
             {
-                if (elem == 0)
-                {
-                    return new[] { value }.Concat(list.Skip(1)).ToArray();
-                }
-                else
-                {
-                    var sub = Set(elem - 1, value, list.Skip(1).ToArray()).ToArray();
-                    return new[] { list[0] }.Concat(sub).ToArray();
-                }
+                var newList = new int[src.Length];
+                Array.Copy(src, newList, src.Length);
+                newList[indexToSet] = value;
+
+                return newList;
             }
             else
             {
-                var msg = string.Format("element index out of bounds");
-                throw new ArgumentOutOfRangeException(msg);
+                throw new ArgumentOutOfRangeException("element index out of bounds");
             }
         }
     }

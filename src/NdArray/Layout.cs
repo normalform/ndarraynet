@@ -193,12 +193,11 @@ namespace NdArrayNet
             return IsC(input) || IsF(input);
         }
 
-        public Layout BraodCastDim(int dim, int size, Layout layout)
+        public static Layout BraodcastDim(int dim, int size, Layout layout)
         {
             if (size < 0)
             {
-                var sizeErrorMsg = string.Format("size must be positive");
-                throw new ArgumentOutOfRangeException(sizeErrorMsg);
+                throw new ArgumentOutOfRangeException("size must be positive");
             }
 
             if (layout.Shape[dim] == 1)
@@ -210,42 +209,43 @@ namespace NdArrayNet
             throw new ArgumentOutOfRangeException(msg);
         }
 
-        public Layout BroadcastToShape(int[] bs, Layout input)
+        public static Layout BroadcastToShape(int[] broadcastShape, Layout input)
         {
-            var broadcastDim = bs.Length;
+            var broadcastDim = broadcastShape.Length;
             if (broadcastDim < input.NumDimensions)
             {
-                var msg = string.Format("Cannot broadcast to shape {0} from shape {1} of higher rank.", bs, input.Shape);
+                var msg = string.Format("Cannot broadcast to shape {0} from shape {1} of higher rank.", broadcastShape, input.Shape);
                 throw new InvalidOperationException(msg);
             }
 
-            var a = input;
-            while (a.NumDimensions < broadcastDim)
+            var broadcastLayout = new Layout(input.Shape, input.Offset, input.Stride);
+
+            while (broadcastLayout.NumDimensions < broadcastDim)
             {
-                a = PadLeft(a);
+                broadcastLayout = PadLeft(broadcastLayout);
             }
 
-            for (var d = 0; d < broadcastDim; d++)
+            for (var dimIndex = 0; dimIndex < broadcastDim; dimIndex++)
             {
-                var al = a.Shape[d];
-                var bl = bs[d];
-                if (al == bl)
+                var targetShapeValue = broadcastLayout.Shape[dimIndex];
+                var inputShapeValue = broadcastShape[dimIndex];
+                if (targetShapeValue == inputShapeValue)
                 {
                     continue;
                 }
 
-                if (al == 1)
+                if (targetShapeValue == 1)
                 {
-                    a = BraodCastDim(d, bl, a);
+                    broadcastLayout = BraodcastDim(dimIndex, inputShapeValue, broadcastLayout);
                 }
                 else
                 {
-                    var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", input.Shape, bs);
+                    var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", input.Shape, broadcastShape);
                     throw new InvalidOperationException(msg);
                 }
             }
 
-            return a;
+            return broadcastLayout;
         }
 
         public Layout View(IRange[] ranges, Layout layout)

@@ -211,5 +211,276 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             var _ = Layout.Swap(2, 9, layout);
         }
+
+        [TestMethod]
+        public void PadLeft()
+        {
+            // arange
+            var shape = new[] { 1, 2 };
+            var stride = new[] { 2, 1 };
+            var srcLayout = new Layout(shape, 8, stride);
+
+            // action
+            var paddedLayout = Layout.PadLeft(srcLayout);
+
+            // assert
+            var expectedShape = new[] { 1, 1, 2 };
+            var expectedStride = new[] { 0, 2, 1 };
+            CollectionAssert.AreEqual(expectedShape, paddedLayout.Shape);
+            CollectionAssert.AreEqual(expectedStride, paddedLayout.Stride);
+            Assert.AreEqual(8, paddedLayout.Offset);
+        }
+
+        [TestMethod]
+        public void PadRight()
+        {
+            // arange
+            var shape = new[] { 1, 2 };
+            var stride = new[] { 2, 1 };
+            var srcLayout = new Layout(shape, 8, stride);
+
+            // action
+            var paddedLayout = Layout.PadRight(srcLayout);
+
+            // assert
+            var expectedShape = new[] { 1, 2, 1 };
+            var expectedStride = new[] { 2, 1, 0 };
+            CollectionAssert.AreEqual(expectedShape, paddedLayout.Shape);
+            CollectionAssert.AreEqual(expectedStride, paddedLayout.Stride);
+            Assert.AreEqual(8, paddedLayout.Offset);
+        }
+
+        [TestMethod]
+        public void StrideEqual_WithSameStrides_ReturnTrue()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3 };
+            var strideA = new[] { 6, 2, 1 };
+            var strideB = new[] { 6, 2, 1 };
+
+            // action
+            var equal = Layout.StrideEqual(shape, strideA, strideB);
+
+            // assert
+            Assert.IsTrue(equal);
+        }
+
+        [TestMethod]
+        public void StrideEqual_WithDifferentStrides_ReturnFalse()
+        {
+            // arange
+            var shape = new[] { 1, 2, 3 };
+            var strideA = new[] { 6, 2, 1 };
+            var strideB = new[] { 6, 3, 1 };
+
+            // action
+            var equal = Layout.StrideEqual(shape, strideA, strideB);
+
+            // assert
+            Assert.IsFalse(equal);
+        }
+
+        [TestMethod]
+        public void StrideEqual_WithDifferentStridesButZeroShape_ReturnTrue()
+        {
+            // arange
+            const int DontCareA = 100;
+            const int DontCareB = 200;
+
+            var shape = new[] { 1, 0, 3 };
+            var strideA = new[] { 6, DontCareA, 1 };
+            var strideB = new[] { 6, DontCareB, 1 };
+
+            // action
+            var equal = Layout.StrideEqual(shape, strideA, strideB);
+
+            // assert
+            Assert.IsTrue(equal);
+        }
+
+        [TestMethod]
+        public void IsC_WithC_ReturnTrue()
+        {
+            // arange
+            var layoutStyleC = Layout.NewC(new[] { 1, 2, 3 });
+
+            // action
+            var isC = Layout.IsC(layoutStyleC);
+
+            // assert
+            Assert.IsTrue(isC);
+        }
+
+        [TestMethod]
+        public void IsC_WithF_ReturnFalse()
+        {
+            // arange
+            var layoutStyleF = Layout.NewF(new[] { 1, 2, 3 });
+
+            // action
+            var isC = Layout.IsC(layoutStyleF);
+
+            // assert
+            Assert.IsFalse(isC);
+        }
+
+        [TestMethod]
+        public void IsF_WithC_ReturnFalse()
+        {
+            // arange
+            var layoutStyleC = Layout.NewC(new[] { 1, 2, 3 });
+
+            // action
+            var isF = Layout.IsF(layoutStyleC);
+
+            // assert
+            Assert.IsFalse(isF);
+        }
+
+        [TestMethod]
+        public void IsF_WithF_ReturnTrue()
+        {
+            // arange
+            var layoutStyleF = Layout.NewF(new[] { 1, 2, 3 });
+
+            // action
+            var isF = Layout.IsF(layoutStyleF);
+
+            // assert
+            Assert.IsTrue(isF);
+        }
+
+        [TestMethod]
+        public void HasContiguousMemory_WithC_ReturnTrue()
+        {
+            // arange
+            var layoutStyleC = Layout.NewC(new[] { 1, 2, 3 });
+
+            // action
+            var continuous = Layout.HasContiguousMemory(layoutStyleC);
+
+            // assert
+            Assert.IsTrue(continuous);
+        }
+
+        [TestMethod]
+        public void HasContiguousMemory_WithF_ReturnTrue()
+        {
+            // arange
+            var layoutStyleF = Layout.NewF(new[] { 1, 2, 3 });
+
+            // action
+            var continuous = Layout.HasContiguousMemory(layoutStyleF);
+
+            // assert
+            Assert.IsTrue(continuous);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BraodcastDim_NegativeSize_ThrowException()
+        {
+            // arange
+            var layout = Layout.NewC(new[] { 1, 2, 3 });
+
+            // action
+            Layout.BraodcastDim(0, -1, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BraodcastDim_InvalidShape_ThrowException()
+        {
+            // arange
+            const int ShapeValue2 = 2;
+            const int DimOfTheShapeValue2 = 1;
+            var layout = Layout.NewC(new[] { 1, ShapeValue2, 3 });
+            const int DummyValue = 9;
+
+            // action
+            Layout.BraodcastDim(DimOfTheShapeValue2, DummyValue, layout);
+        }
+
+        [TestMethod]
+        public void BraodcastDim_Valid_ReturnNewLayout()
+        {
+            // arange
+            const int ShapeValue1 = 1;
+            const int DimOfTheShapeValue1 = 0;
+            var layout = Layout.NewC(new[] { ShapeValue1, 2, 3 });
+
+            const int NewShapeValue = 9;
+
+            // action
+            var newLayout = Layout.BraodcastDim(DimOfTheShapeValue1, NewShapeValue, layout);
+
+            // assert
+            var expectedShape = new[] { NewShapeValue, 2, 3 };
+            var expectedStride = new[] { 0, 3, 1 };
+            CollectionAssert.AreEqual(expectedShape, newLayout.Shape);
+            CollectionAssert.AreEqual(expectedStride, newLayout.Stride);
+            Assert.AreEqual(0, newLayout.Offset);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void BroadcastToShape_LowerBroadcastShapeRank_ThrowException()
+        {
+            // arange
+            var layout = Layout.NewC(new[] { 1, 2, 3 });
+            var broadcastShape = new[] { 2, 3 };
+
+            // action
+            var _ = Layout.BroadcastToShape(broadcastShape, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void BroadcastToShape_InvalidShapeValue_ThrowException()
+        {
+            // arange
+            const int InvalidShapeValue = 9;
+            var layout = Layout.NewC(new[] { 2, 3, 4, 5 });
+            var broadcastShape = new[] { 2, 3, InvalidShapeValue, 5 };
+
+            // action
+            var _ = Layout.BroadcastToShape(broadcastShape, layout);
+        }
+
+        [TestMethod]
+        public void BroadcastToShape_WithDifferentValidShape_ReturnBroadcastLayout()
+        {
+            // arange
+            var layout = Layout.NewC(new[] { 2, 3 });
+            var broadcastShape = new[] { 1, 7, 2, 3 };
+
+            // action
+            var broadcastLayout = Layout.BroadcastToShape(broadcastShape, layout);
+
+            // assert
+            var expectedShape = new[] { 1, 7, 2, 3 };
+            var expectedStride = new[] { 0, 0, 3, 1 };
+            CollectionAssert.AreEqual(expectedShape, broadcastLayout.Shape);
+            CollectionAssert.AreEqual(expectedStride, broadcastLayout.Stride);
+            Assert.AreEqual(0, broadcastLayout.Offset);
+        }
+
+        [TestMethod]
+        public void BroadcastToShape_WithSameShape_ReturnBroadcastLayout()
+        {
+            // arange
+            var layout = Layout.NewC(new[] { 1, 7, 2, 3 });
+            var broadcastShape = new[] { 1, 7, 2, 3 };
+
+            // action
+            var broadcastLayout = Layout.BroadcastToShape(broadcastShape, layout);
+
+            // assert
+            var expectedShape = new[] { 1, 7, 2, 3 };
+            var expectedStride = new[] { 42, 6, 3, 1 };
+            CollectionAssert.AreEqual(expectedShape, broadcastLayout.Shape);
+            CollectionAssert.AreEqual(expectedStride, broadcastLayout.Stride);
+            Assert.AreEqual(0, broadcastLayout.Offset);
+        }
     }
 }

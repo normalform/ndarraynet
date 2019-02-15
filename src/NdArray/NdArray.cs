@@ -80,14 +80,14 @@ namespace NdArrayNet
         {
             get
             {
-                CheckScalar();
+                AssertScalar();
                 var noDim = new int[] { };
                 return Backend[noDim];
             }
 
             set
             {
-                CheckScalar();
+                AssertScalar();
                 var noDim = new int[] { };
                 Backend[noDim] = value;
             }
@@ -163,7 +163,7 @@ namespace NdArrayNet
             return newArray;
         }
 
-        internal static void CheckSameShape(NdArray<T> a, NdArray<T> b)
+        internal static void AssertSameShape(NdArray<T> a, NdArray<T> b)
         {
             if (!Enumerable.SequenceEqual(a.Shape, b.Shape))
             {
@@ -172,7 +172,7 @@ namespace NdArrayNet
             }
         }
 
-        internal static void CheckSameStorage(NdArray<T>[] arrays)
+        internal static void AssertSameStorage(NdArray<T>[] arrays)
         {
             // skip this for now because of it support only one storage type for now.
         }
@@ -204,15 +204,15 @@ namespace NdArrayNet
 
         internal void SetRange(object[] rngArgs, NdArray<T> value)
         {
-            CheckSameStorage(new[] { this, value });
+            AssertSameStorage(new[] { this, value });
             var rng = Range(RangeArgParser.Parse(rngArgs));
             rng.CopyFrom(BroadCastTo(rng.Shape, value));
         }
 
         internal void CopyFrom(NdArray<T> src)
         {
-            CheckSameShape(this, src);
-            CheckSameStorage(new[] { this, src });
+            AssertSameShape(this, src);
+            AssertSameStorage(new[] { this, src });
 
             Backend.Copy(this, src);
         }
@@ -222,12 +222,12 @@ namespace NdArrayNet
             return string.Empty;
         }
 
-        private void CheckScalar()
+        internal void AssertScalar()
         {
             if (NumDimensions != 0)
             {
                 var msg = string.Format("This operation requires a scalar (0-dimensional) NdArray, but its shape is {0}", Shape);
-                throw new ArgumentOutOfRangeException(msg);
+                throw new InvalidOperationException(msg);
             }
         }
     }
