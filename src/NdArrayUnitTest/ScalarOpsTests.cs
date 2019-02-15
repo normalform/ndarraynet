@@ -38,12 +38,43 @@ namespace NdArrayNet.NdArrayUnitTest
     public class ScalarOpsTests
     {
         [TestMethod]
-        public void Fill()
+        public void Fill_Scalar()
+        {
+            // arange
+            var data = new int[1];
+            var scalar = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] {}, 0, new int[] { })));
+
+            // action
+            const int FillPattern = 999;
+            ScalarOps.Fill(FillPattern, scalar);
+
+            // assert
+            Assert.IsTrue(data.All(d => d == FillPattern));
+        }
+
+        [TestMethod]
+        public void Fill_Vector1D()
         {
             // arange
             const int BufferSize = 10;
             var data = new int[BufferSize];
             var target = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
+
+            const int FillPattern = 999;
+
+            // action
+            ScalarOps.Fill(FillPattern, target);
+
+            // assert
+            Assert.IsTrue(data.All(d => d == FillPattern));
+        }
+
+        [TestMethod]
+        public void Fill_Vector2D()
+        {
+            // arange
+            var data = new int[24];
+            var target = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { 2, 3, 4 }, 0, new int[] { 12, 4, 1 })));
 
             const int FillPattern = 999;
 
@@ -71,7 +102,26 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void Copy()
+        public void Copy_Scalar()
+        {
+            // arange
+            var targetData = new int[1];
+            var srcData = new int[1];
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] {}, 0, new int[] {})));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] {}, 0, new int[] {})));
+            const int CopyPattern = 999;
+            srcData[0] = CopyPattern;
+
+            // action
+            ScalarOps.Copy(target, src);
+
+            // assert
+            Assert.AreEqual(CopyPattern, targetData[0]);
+        }
+
+        [TestMethod]
+        public void Copy_Vector1D()
         {
             // arange
             const int BufferSize = 10;
@@ -80,6 +130,24 @@ namespace NdArrayNet.NdArrayUnitTest
 
             var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
             var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Copy(target, src);
+
+            // assert
+            Assert.IsTrue(Enumerable.SequenceEqual(targetData, srcData));
+        }
+
+        [TestMethod]
+        public void Copy_Vector2D()
+        {
+            // arange
+            const int BufferSize = 24;
+            var targetData = new int[BufferSize];
+            var srcData = Enumerable.Range(0, BufferSize).ToArray();
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 2, 3, 4 }, 0, new int[] { 12, 4, 1 })));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 2, 3, 4 }, 0, new int[] { 12, 4, 1 })));
 
             // action
             ScalarOps.Copy(target, src);

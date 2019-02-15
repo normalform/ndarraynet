@@ -39,6 +39,200 @@ namespace NdArrayNet.NdArrayUnitTest
     public class VectorOpsTests
     {
         [TestMethod]
+        public void CanUseSrc_WithNullSrc_ReturnTrue()
+        {
+            // arange
+            const int DummyDimValue = 0;
+
+            // action
+            var canUse = VectorOps.CanUseSrc<int>(DummyDimValue, null);
+
+            // assert
+            Assert.IsTrue(canUse);
+        }
+
+        [TestMethod]
+        public void CanUseSrc_ContinuousStride_ReturnTrue()
+        {
+            // arange
+            const int BufferSize = 6;
+            const int NumDim = 3;
+            var data = new int[BufferSize];
+            var src = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { 1, 2, 3 }, 0, new int[] { 6, 3, 1 })));
+
+            // action
+            var canUse = VectorOps.CanUseSrc(NumDim, src);
+
+            // assert
+            Assert.IsTrue(canUse);
+        }
+
+        [TestMethod]
+        public void CanUseSrc_NoStride_ReturnTrue()
+        {
+            // arange
+            const int BufferSize = 1;
+            const int NumDim = 1;
+            var data = new int[BufferSize];
+            var src = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { 1 }, 0, new int[] { 0 })));
+
+            // action
+            var canUse = VectorOps.CanUseSrc(NumDim, src);
+
+            // assert
+            Assert.IsTrue(canUse);
+        }
+
+        [TestMethod]
+        public void CanUseSrc_NotContinuousStride_ReturnFalse()
+        {
+            // arange
+            const int BufferSize = 6;
+            const int NumDim = 3;
+            var data = new int[BufferSize];
+            var src = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { 1, 2, 3 }, 0, new int[] { 6, 3, 2 })));
+
+            // action
+            var canUse = VectorOps.CanUseSrc(NumDim, src);
+
+            // assert
+            Assert.IsFalse(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_ScalarTarget_ReturnFalse()
+        {
+            // arange
+            var target = new DataAndLayout<int>(new int[1], new FastAccess(new Layout(new int[] {}, 0, new int[] {})));
+
+            // action
+            var canUse = VectorOps.CanUse(target);
+
+            // assert
+            Assert.IsFalse(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_UnSupportedType_ReturnFalse()
+        {
+            // arange
+            var data = new UnSupportedType[1];
+            var target = new DataAndLayout<UnSupportedType>(data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
+
+            // action
+            var canUse = VectorOps.CanUse(target);
+
+            // assert
+            Assert.IsFalse(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_TargetIsNotContinuous_ReturnFalse()
+        {
+            // arange
+            const int NotContinuousStride = 2;
+            var target = new DataAndLayout<int>(new int[20], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { NotContinuousStride })));
+
+            // action
+            var canUse = VectorOps.CanUse(target);
+
+            // assert
+            Assert.IsFalse(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_GoodTargetOnly_ReturnTrue()
+        {
+            // arange
+            var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+
+            // action
+            var canUse = VectorOps.CanUse(target);
+
+            // assert
+            Assert.IsTrue(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_CanNotUseSrc1_ReturnFalse()
+        {
+            // arange
+            var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+
+            const int NotContinuousStride = 2;
+            var src1 = new DataAndLayout<int>(new int[20], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { NotContinuousStride })));
+
+            // action
+            var canUse = VectorOps.CanUse(target, src1);
+
+            // assert
+            Assert.IsFalse(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_CanUseSrc1_ReturnTrue()
+        {
+            // arange
+            var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+
+            // action
+            var canUse = VectorOps.CanUse(target, src1);
+
+            // assert
+            Assert.IsTrue(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_CanNotUseSrc2Only_ReturnFalse()
+        {
+            // arange
+            var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+
+            const int NotContinuousStride = 2;
+            var src2 = new DataAndLayout<int>(new int[20], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { NotContinuousStride })));
+
+            // action
+            var canUse = VectorOps.CanUse(target, src1, src2);
+
+            // assert
+            Assert.IsFalse(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_CanNotUseSrc1Only_ReturnFalse()
+        {
+            // arange
+            var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+
+            const int NotContinuousStride = 2;
+            var src1 = new DataAndLayout<int>(new int[20], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { NotContinuousStride })));
+
+            // action
+            var canUse = VectorOps.CanUse(target, src1, src2);
+
+            // assert
+            Assert.IsFalse(canUse);
+        }
+
+        [TestMethod]
+        public void CanUse_CanUseBothSrc1AndSrc2_ReturnTrue()
+        {
+            // arange
+            var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
+
+            // action
+            var canUse = VectorOps.CanUse(target, src1, src2);
+
+            // assert
+            Assert.IsTrue(canUse);
+        }
+
+        [TestMethod]
         public void Fill()
         {
             // arange
@@ -77,6 +271,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             Assert.IsTrue(Enumerable.SequenceEqual(targetData, srcData));
+        }
+
+        private struct UnSupportedType
+        {
+            public int dummy;
         }
     }
 }
