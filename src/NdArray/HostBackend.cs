@@ -139,13 +139,11 @@ namespace NdArrayNet
                 var (t, s) = ElemwiseDataAndLayout(trgt, src);
                 if (VectorOps.CanUse(t, s))
                 {
-                    // VectorOps.Copy(t, s);
-                    throw new NotImplementedException();
+                    VectorOps.Copy(t, s);
                 }
                 else
                 {
-                    // ScalarOps.Copy(t, s);
-                    throw new NotImplementedException();
+                     ScalarOps.Copy(t, s);
                 }
             }
         }

@@ -31,6 +31,7 @@ namespace NdArrayNet
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Numerics;
     using System.Reflection;
@@ -49,6 +50,8 @@ namespace NdArrayNet
         private static Dictionary<(string, List<Type>), Delegate> methodDelegates = new Dictionary<(string, List<Type>), Delegate>();
 
         private delegate void FillDelegate<T>(T value, DataAndLayout<T> dataAndLayout);
+
+        private delegate void CopyDelegate<T>(DataAndLayout<T> trgt, DataAndLayout<T> src);
 
         public static bool CanUse<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1 = null, DataAndLayout<T> src2 = null)
         {
@@ -69,7 +72,12 @@ namespace NdArrayNet
             Method<FillDelegate<T>>("FillImpl").Invoke(value, trgt);
         }
 
-        private static bool CanUseSrc<T>(int numDim, DataAndLayout<T> src)
+        public static void Copy<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            Method<CopyDelegate<T>>("CopyImpl").Invoke(trgt, src);
+        }
+
+        internal static bool CanUseSrc<T>(int numDim, DataAndLayout<T> src)
         {
             if (src == null)
             {
@@ -96,7 +104,91 @@ namespace NdArrayNet
             return (D)del;
         }
 
-        private static void FillImpl<T>(T value, DataAndLayout<T> trgt) where T : struct
+        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, DataAndLayout<T> trgt, DataAndLayout<T1> src) 
+            where T : struct 
+            where T1 : struct
+        {
+            Debug.Assert(Vector<T>.Count == Vector<T1>.Count, "Vector sizes should be matched");
+
+            var nd = trgt.FastAccess.NumDiensions;
+            var shape = trgt.FastAccess.Shape;
+            var srcBuf = new T1[Vector<T>.Count];
+
+            void stride11InnerLoop(int tAddr, int sAddr)
+            {
+                var targetAddr = tAddr;
+                var srcAddr = sAddr;
+
+                var vecIters = shape[nd - 1] / Vector<T>.Count;
+                for (var vecIter = 0; vecIter < vecIters; vecIter++)
+                {
+                    var trgtVec = vectorOp(new Vector<T1>(src.Data, srcAddr));
+                    trgtVec.CopyTo(trgt.Data, targetAddr);
+                    targetAddr = targetAddr + Vector<T>.Count;
+                    srcAddr = srcAddr + Vector<T>.Count;
+                }
+
+                var restElems = shape[nd - 1] % Vector<T>.Count;
+                for (var restPos = 0; restPos < restElems; restPos++)
+                {
+                    srcBuf[restPos] = src.Data[srcAddr];
+                    srcAddr = srcAddr + 1;
+                }
+
+                var restTrgtVec = vectorOp(new Vector<T1>(srcBuf));
+                for (var restPos = 0; restPos < restElems; restPos++)
+                {
+                    trgt.Data[targetAddr] = restTrgtVec[restPos];
+                    targetAddr = targetAddr + 1;
+                }
+            }
+
+            void stride10InnerLoop(int tAddr, int srcAddr)
+            {
+                var targetAddr = tAddr;
+                var vecIters = shape[nd - 1] / Vector<T>.Count;
+                var srcVec = new Vector<T1>(src.Data[srcAddr]);
+                var trgtVec = vectorOp(srcVec);
+                
+                for (var vecIter = 0; vecIter < vecIters; vecIter++)
+                {
+                    trgtVec.CopyTo(trgt.Data, targetAddr);
+                    targetAddr = targetAddr + Vector<T>.Count;
+                }
+
+                var restElems = shape[nd - 1] % Vector<T>.Count;
+                for (var restPos = 0; restPos < restElems; restPos++)
+                {
+                    trgt.Data[targetAddr] = trgtVec[restPos];
+                    targetAddr = targetAddr + 1;
+                }
+            }
+
+            var targetPosItr = new PosIter(trgt.FastAccess, toDim: nd - 2);
+            var srcPosItr = new PosIter(src.FastAccess, toDim: nd - 2);
+
+            while (targetPosItr.Active)
+            {
+                if (trgt.FastAccess.Stride[nd - 1] == 1 && src.FastAccess.Stride[nd - 1] == 1)
+                {
+                    stride11InnerLoop(targetPosItr.Addr, srcPosItr.Addr);
+                }
+                else if (trgt.FastAccess.Stride[nd - 1] == 1 && src.FastAccess.Stride[nd - 1] == 0)
+                {
+                    stride10InnerLoop(targetPosItr.Addr, srcPosItr.Addr);
+                }
+                else
+                {
+                    throw new InvalidOperationException("vector operation not applicable to the given NdArray");
+                }
+
+                targetPosItr.MoveNext();
+                srcPosItr.MoveNext();
+            }
+        }
+
+        private static void FillImpl<T>(T value, DataAndLayout<T> trgt) 
+            where T : struct
         {
             var nd = trgt.FastAccess.NumDiensions;
             var shape = trgt.FastAccess.Shape;
@@ -134,6 +226,12 @@ namespace NdArrayNet
 
                 targetPosItr.MoveNext();
             }
+        }
+
+        private static void CopyImpl<T>(DataAndLayout<T> trgt, DataAndLayout<T> src) where T : struct
+        {
+            Vector<T> op(Vector<T> v) => v;
+            ApplyUnary(op, trgt, src);
         }
     }
 }

@@ -98,6 +98,73 @@ namespace NdArrayNet
             }
         }
 
+        public static void ApplyUnaryOp<T, T1>(Func<int[], T1, T> op, DataAndLayout<T> trgt, DataAndLayout<T1> src, bool isIndexed, bool useThreads)
+        {
+            var nd = trgt.FastAccess.NumDiensions;
+            var shape = trgt.FastAccess.Shape;
+
+            Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
+            {
+                var fromDim = dim0Fixed ? 1 : 0;
+                var startPos = new int[nd];
+                if (dim0Fixed)
+                {
+                    startPos[0] = dim0Pos;
+                }
+
+                var targetPosItr = new PosIter(trgt.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                var srcPosItr = new PosIter(src.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                var pos = new int[targetPosItr.Pos.Length];
+
+                while (targetPosItr.Active)
+                {
+                    var targetAddr = targetPosItr.Addr;
+                    var srcAddr = srcPosItr.Addr;
+
+                    if (nd == 0)
+                    {
+                        trgt.Data[targetPosItr.Addr] = op(null, src.Data[srcAddr]);
+                    }
+                    else if (isIndexed)
+                    {
+                        for (var d = 0; d < nd; d++)
+                        {
+                            pos[d] = targetPosItr.Pos[d];
+                        }
+
+                        for (var i = 0; i < shape[nd - 1]; i++)
+                        {
+                            trgt.Data[targetAddr] = op(pos, src.Data[srcAddr]);
+                            targetAddr = targetAddr + trgt.FastAccess.Stride[nd - 1];
+                            srcAddr = srcAddr + src.FastAccess.Stride[nd - 1];
+                            pos[nd - 1] = pos[nd - 1] + 1;
+                        }
+                    }
+                    else
+                    {
+                        for (var i = 0; i < shape[nd - 1]; i++)
+                        {
+                            trgt.Data[targetAddr] = op(null, src.Data[srcAddr]);
+                            targetAddr = targetAddr + trgt.FastAccess.Stride[nd - 1];
+                            srcAddr = srcAddr + src.FastAccess.Stride[nd - 1];
+                        }
+                    }
+
+                    targetPosItr.MoveNext();
+                    srcPosItr.MoveNext();
+                }
+            };
+
+            if (useThreads && nd > 1)
+            {
+                Parallel.For(0, shape[0], index => loops(true, index));
+            }
+            else
+            {
+                loops(false, 0);
+            }
+        }
+
         public static void FillIncrementing<T>(T start, T step, DataAndLayout<T> trgt)
         {
             var p = ScalarPrimitives.For<T, int>();
@@ -109,6 +176,12 @@ namespace NdArrayNet
         {
             T op(int[] pos) => value;
             ApplyNoaryOp(op, trgt, isIndexed: false, useThreads: true);
+        }
+
+        public static void Copy<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            T op(int[] pos, T value) => value;
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
     }
 }
