@@ -29,10 +29,9 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using System;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using NdArrayNet;
+    using System;
 
     [TestClass]
     public class ListTests
