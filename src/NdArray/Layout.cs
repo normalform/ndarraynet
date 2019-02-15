@@ -197,7 +197,7 @@ namespace NdArrayNet
         {
             if (size < 0)
             {
-                throw new ArgumentOutOfRangeException("size must be positive");
+                throw new ArgumentOutOfRangeException("size", "size must be positive");
             }
 
             if (layout.Shape[dim] == 1)
