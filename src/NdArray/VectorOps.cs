@@ -88,7 +88,7 @@ namespace NdArrayNet
             return lastStride == 1 || lastStride == 0;
         }
 
-        internal static D Method<D>(string name) where D : Delegate
+        private static D Method<D>(string name) where D : Delegate
         {
             var dt = typeof(D).GenericTypeArguments;
             var dtl = dt.ToList();
@@ -104,7 +104,7 @@ namespace NdArrayNet
             return (D)del;
         }
 
-        internal static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, DataAndLayout<T> trgt, DataAndLayout<T1> src) 
+        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, DataAndLayout<T> trgt, DataAndLayout<T1> src) 
             where T : struct 
             where T1 : struct
         {
@@ -187,7 +187,7 @@ namespace NdArrayNet
             }
         }
 
-        internal static void FillImpl<T>(T value, DataAndLayout<T> trgt) 
+        private static void FillImpl<T>(T value, DataAndLayout<T> trgt) 
             where T : struct
         {
             var nd = trgt.FastAccess.NumDiensions;
@@ -228,7 +228,7 @@ namespace NdArrayNet
             }
         }
 
-        internal static void CopyImpl<T>(DataAndLayout<T> trgt, DataAndLayout<T> src) where T : struct
+        private static void CopyImpl<T>(DataAndLayout<T> trgt, DataAndLayout<T> src) where T : struct
         {
             Vector<T> op(Vector<T> v) => v;
             ApplyUnary(op, trgt, src);
