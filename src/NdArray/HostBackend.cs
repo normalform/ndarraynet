@@ -29,6 +29,7 @@
 
 namespace NdArrayNet
 {
+    using System;
     using System.Linq;
 
     /// <summary>
@@ -95,6 +96,12 @@ namespace NdArrayNet
             return trgt.Relayout(tl).Backend.DataLayout;
         }
 
+        public static (DataAndLayout<T>, DataAndLayout<TA>) ElemwiseDataAndLayout<TA>(IFrontend<T> trgt, IFrontend<TA> src)
+        {
+            var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { src.Layout });
+            return (trgt.Relayout(tl).Backend.DataLayout, src.Relayout(ls[0]).Backend.DataLayout);
+        }
+
         public void FillIncrementing(T start, T step, IFrontend<T> trgt)
         {
             var dataAndLayout = ElemwiseDataAndLayout(trgt);
@@ -111,6 +118,35 @@ namespace NdArrayNet
             else
             {
                 ScalarOps.Fill(value, dataAndLayout);
+            }
+        }
+
+        public void Copy(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            if (Layout.HasContiguousMemory(trgt.Layout) &&
+                Layout.HasContiguousMemory(src.Layout) &&
+                Enumerable.SequenceEqual(trgt.Layout.Stride, src.Layout.Stride))
+            {
+                // use array block copy for contiguous memory block
+                var (t, s) = ElemwiseDataAndLayout(trgt, src);
+                if (t.FastAccess.NumElements > 0)
+                {
+                    Array.Copy(s.Data, s.FastAccess.Offset, t.Data, t.FastAccess.Offset, t.FastAccess.NumElements);
+                }
+            }
+            else
+            {
+                var (t, s) = ElemwiseDataAndLayout(trgt, src);
+                if (VectorOps.CanUse(t, s))
+                {
+                    // VectorOps.Copy(t, s);
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    // ScalarOps.Copy(t, s);
+                    throw new NotImplementedException();
+                }
             }
         }
     }
