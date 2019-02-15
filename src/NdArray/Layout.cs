@@ -154,6 +154,100 @@ namespace NdArrayNet
             return new Layout(newShp, a.Offset, newStr);
         }
 
+        public static Layout PadLeft(Layout input)
+        {
+            var newShape = new[] { 1 }.Concat(input.Shape).ToArray();
+            var newStride = new[] { 0 }.Concat(input.Stride).ToArray();
+
+            return new Layout(newShape, input.Offset, newStride);
+        }
+
+        public static Layout PadRight(Layout input)
+        {
+            var newShape = input.Shape.Concat(new[] { 1 }).ToArray();
+            var newStride = input.Stride.Concat(new[] { 0 }).ToArray();
+
+            return new Layout(newShape, input.Offset, newStride);
+        }
+
+        public static bool StrideEqual(int[] shp, int[] strA, int[] strB)
+        {
+            var zip = shp.Zip(strA, (sp, sa) => new { Shape = sp, StrideA = sa })
+                .Zip(strB, (spAndSa, sb) => new { spAndSa.Shape, StribeA = spAndSa.StrideA, StribeB = sb });
+
+            return zip.All(z => (z.Shape == 0) || (z.StribeA == z.StribeB));
+        }
+
+        public static bool IsC(Layout input)
+        {
+            return StrideEqual(input.Shape, input.Stride, CStride(input.Shape));
+        }
+
+        public static bool IsF(Layout input)
+        {
+            return StrideEqual(input.Shape, input.Stride, FStride(input.Shape));
+        }
+
+        public static bool HasContiguousMemory(Layout input)
+        {
+            return IsC(input) || IsF(input);
+        }
+
+        public Layout BraodCastDim(int dim, int size, Layout layout)
+        {
+            if (size < 0)
+            {
+                var sizeErrorMsg = string.Format("size must be positive");
+                throw new ArgumentOutOfRangeException(sizeErrorMsg);
+            }
+
+            if (layout.Shape[dim] == 1)
+            {
+                return new Layout(List.Set(dim, size, layout.Shape), layout.Offset, List.Set(dim, 0, layout.Stride));
+            }
+
+            var msg = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, layout.Shape);
+            throw new ArgumentOutOfRangeException(msg);
+        }
+
+        public Layout BroadcastToShape(int[] bs, Layout input)
+        {
+            var broadcastDim = bs.Length;
+            if (broadcastDim < input.NumDimensions)
+            {
+                var msg = string.Format("Cannot broadcast to shape {0} from shape {1} of higher rank.", bs, input.Shape);
+                throw new InvalidOperationException(msg);
+            }
+
+            var a = input;
+            while (a.NumDimensions < broadcastDim)
+            {
+                a = PadLeft(a);
+            }
+
+            for (var d = 0; d < broadcastDim; d++)
+            {
+                var al = a.Shape[d];
+                var bl = bs[d];
+                if (al == bl)
+                {
+                    continue;
+                }
+
+                if (al == 1)
+                {
+                    a = BraodCastDim(d, bl, a);
+                }
+                else
+                {
+                    var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", input.Shape, bs);
+                    throw new InvalidOperationException(msg);
+                }
+            }
+
+            return a;
+        }
+
         public Layout View(IRange[] ranges, Layout layout)
         {
             Layout SubView(IRange[] subRanges, Layout subLayout)

@@ -103,5 +103,86 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             array.FillIncrementing(0, 1);
         }
+
+        [TestMethod]
+        public void GetValue_ScalarArray_ReturnValue()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var scalarArray = NdArray<int>.Ones(device, new int[] { });
+
+            // action
+            var value = scalarArray.Value;
+
+            // assert
+            Assert.AreEqual(1, value);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void GetValue_Vector_ThrowException()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var scalarArray = NdArray<int>.Ones(device, new int[] { 1 });
+
+            // action
+            var _ = scalarArray.Value;
+        }
+
+        [TestMethod]
+        public void SetValue_ScalarArray_ReturnValue()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var scalarArray = NdArray<int>.Ones(device, new int[] { });
+
+            // action
+            scalarArray.Value = 100;
+
+            // assert
+            Assert.AreEqual(100, scalarArray.Value);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void SetValue_Vector_ThrowException()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var scalarArray = NdArray<int>.Ones(device, new int[] { 1 });
+
+            // action
+            scalarArray.Value = 100;
+        }
+
+        [TestMethod]
+        public void Get_SingleIndex()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Arange(device, 0, 3, 1);
+
+            // action
+            var scalarArray = array[2];
+
+            // assert
+            Assert.AreEqual(2, scalarArray.Value);
+        }
+
+        [TestMethod]
+        public void Set_SingleIndex()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Arange(device, 0, 3, 1);
+
+            // action
+            array[2] = NdArray<int>.Ones(device, new int[] { });
+            var scalarArray = array[2];
+
+            // assert
+            Assert.AreEqual(1, scalarArray.Value);
+        }
     }
 }

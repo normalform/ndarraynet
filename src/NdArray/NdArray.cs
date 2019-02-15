@@ -30,6 +30,7 @@
 namespace NdArrayNet
 {
     using System;
+    using System.Linq;
 
     /// <summary>
     /// An N-dimensional array with elements of type 'T.
@@ -75,11 +76,43 @@ namespace NdArrayNet
 
         public Layout Layout { get; }
 
+        public T Value
+        {
+            get
+            {
+                CheckScalar();
+                var noDim = new int[] { };
+                return Backend[noDim];
+            }
+
+            set
+            {
+                CheckScalar();
+                var noDim = new int[] { };
+                Backend[noDim] = value;
+            }
+        }
+
         public string Pretty => ToString(maxElems: 10);
 
         internal IStorage<T> Storage { get; }
 
         internal IBackend<T> Backend => Storage.Backend(Layout);
+
+        public NdArray<T> this[int i]
+        {
+            get
+            {
+                var args = new[] { i }.Cast<object>().ToArray();
+                return GetRange(args);
+            }
+
+            set
+            {
+                var args = new[] { i }.Cast<object>().ToArray();
+                SetRange(args, value);
+            }
+        }
 
         public override string ToString() => Pretty;
 
@@ -92,6 +125,11 @@ namespace NdArrayNet
         public NdArray<T> Relayout(Layout layout)
         {
             return new NdArray<T>(layout, Storage);
+        }
+
+        public NdArray<T> BroadCastTo(int[] shp, NdArray<T> target)
+        {
+            return target.Relayout(Layout.BroadcastToShape(shp, target.Layout));
         }
 
         internal static NdArray<T> Arange(IDevice device, T start, T stop, T step)
@@ -125,6 +163,20 @@ namespace NdArrayNet
             return newArray;
         }
 
+        internal static void CheckSameShape(NdArray<T> a, NdArray<T> b)
+        {
+            if (!Enumerable.SequenceEqual(a.Shape, b.Shape))
+            {
+                var msg = string.Format("Tensors of shapes {0} and {1} were expected to have same shape", a.Shape, b.Shape);
+                throw new ArgumentOutOfRangeException(msg);
+            }
+        }
+
+        internal static void CheckSameStorage(NdArray<T>[] arrays)
+        {
+            // skip this for now because of it support only one storage type for now.
+        }
+
         internal void FillConst(T value)
         {
             Backend.FillConst(value, this);
@@ -150,9 +202,33 @@ namespace NdArrayNet
             return Range(RangeArgParser.Parse(rngArgs));
         }
 
+        internal void SetRange(object[] rngArgs, NdArray<T> value)
+        {
+            CheckSameStorage(new[] { this, value });
+            var rng = Range(RangeArgParser.Parse(rngArgs));
+            rng.CopyFrom(BroadCastTo(rng.Shape, value));
+        }
+
+        internal void CopyFrom(NdArray<T> src)
+        {
+            CheckSameShape(this, src);
+            CheckSameStorage(new[] { this, src });
+
+            Backend.Copy(this, src);
+        }
+
         internal string ToString(int maxElems)
         {
             return string.Empty;
+        }
+
+        private void CheckScalar()
+        {
+            if (NumDimensions != 0)
+            {
+                var msg = string.Format("This operation requires a scalar (0-dimensional) NdArray, but its shape is {0}", Shape);
+                throw new ArgumentOutOfRangeException(msg);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="IBackend.cs" company="NdArrayNet">
+﻿// <copyright file="List.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,16 +29,31 @@
 
 namespace NdArrayNet
 {
-    internal interface IBackend<T>
+    using System;
+    using System.Linq;
+
+    public static class List
     {
-        DataAndLayout<T> DataLayout { get; }
-
-        T this[int[] index] { get; set; }
-
-        void FillIncrementing(T start, T step, IFrontend<T> trgt);
-
-        void FillConst(T value, IFrontend<T> trgt);
-
-        void Copy(IFrontend<T> trgt, IFrontend<T> src);
+        /// <summary>
+        public static int[] Set(int elem, int value, int[] list)
+        {
+            if (list.Length > 0)
+            {
+                if (elem == 0)
+                {
+                    return new[] { value }.Concat(list.Skip(1)).ToArray();
+                }
+                else
+                {
+                    var sub = Set(elem - 1, value, list.Skip(1).ToArray()).ToArray();
+                    return new[] { list[0] }.Concat(sub).ToArray();
+                }
+            }
+            else
+            {
+                var msg = string.Format("element index out of bounds");
+                throw new ArgumentOutOfRangeException(msg);
+            }
+        }
     }
 }
