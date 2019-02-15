@@ -93,24 +93,60 @@ namespace NdArrayNet
             }
         }
 
+        public static T Get(NdArray<T> array, int[] pos) 
+        {
+            return array[pos];
+        }
+
+        public static void Set(NdArray<T> array, int[] pos, T value)
+        {
+            array[pos] = value;
+        }
+
         public string Pretty => ToString(maxElems: 10);
 
         internal IStorage<T> Storage { get; }
 
         internal IBackend<T> Backend => Storage.Backend(Layout);
 
-        public NdArray<T> this[int i]
+        public T this[int[] idx]
         {
             get
             {
-                var args = new[] { i }.Cast<object>().ToArray();
+                return Backend[idx];
+            }
+
+            set
+            {
+                Backend[idx] = value;
+            }
+        }
+
+        public NdArray<T> this[int idx]
+        {
+            get
+            {
+                var args = new[] { idx }.Cast<object>().ToArray();
                 return GetRange(args);
             }
 
             set
             {
-                var args = new[] { i }.Cast<object>().ToArray();
+                var args = new[] { idx }.Cast<object>().ToArray();
                 SetRange(args, value);
+            }
+        }
+
+        public NdArray<T> this[IRange [] ranges]
+        {
+            get
+            {
+                return GetRange(ranges);
+            }
+
+            set
+            {
+                SetRange(ranges, value);
             }
         }
 

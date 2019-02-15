@@ -250,5 +250,70 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             array.AssertScalar();
         }
+
+        [TestMethod]
+        public void SetAndGetWithArrayAndPos()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Ones(device, new[] { 2, 3, 4 } );
+
+            // action
+            NdArray<int>.Set(array, new[] { 0, 1, 2 }, 999);
+            var value = NdArray<int>.Get(array, new[] { 0, 1, 2 });
+
+            // assert
+            Assert.AreEqual(999, value);
+        }
+
+        [TestMethod]
+        public void GetView_WithRangeSpecifiers()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Ones(device, new[] { 2, 3 });
+
+            NdArray<int>.Set(array, new[] { 0, 0 }, 1);
+            NdArray<int>.Set(array, new[] { 0, 1 }, 2);
+            NdArray<int>.Set(array, new[] { 0, 2 }, 3);
+            NdArray<int>.Set(array, new[] { 1, 0 }, 4);
+            NdArray<int>.Set(array, new[] { 1, 1 }, 5);
+            NdArray<int>.Set(array, new[] { 1, 2 }, 6);
+
+            // action
+            var scalarView = array[new[] { RangeFactory.Elem(0), RangeFactory.Elem(1) }];
+            var arrayView1 = array[new[] { RangeFactory.Elem(0), RangeFactory.All }];
+            var arrayView2 = array[new[] { RangeFactory.Elem(1), RangeFactory.Range(0, 1) }];
+            var arrayView3 = array[new[] { RangeFactory.Range(1, 1), RangeFactory.Range(0, 1) }];
+
+            // assert
+            Assert.AreEqual(2, scalarView.Value);
+            Assert.AreEqual(1, arrayView1[0].Value);
+            Assert.AreEqual(2, arrayView1[1].Value);
+            Assert.AreEqual(3, arrayView1[2].Value);
+            Assert.AreEqual(4, arrayView2[0].Value);
+            Assert.AreEqual(5, arrayView2[1].Value);
+            Assert.AreEqual(4, arrayView3[new[] { 0, 0 }]);
+            Assert.AreEqual(5, arrayView3[new[] { 0, 1 }]);
+        }
+
+        [TestMethod]
+        public void SetView_WithRangeSpecifiers()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Ones(device, new[] { 2, 3 });
+
+            // action
+            array[new[] { RangeFactory.Elem(0), RangeFactory.All }] = NdArray<int>.Arange(device, 7, 10, 1);
+
+            // assert
+            Assert.AreEqual(7, NdArray<int>.Get(array, new[] { 0, 0 }));
+            Assert.AreEqual(8, NdArray<int>.Get(array, new[] { 0, 1 }));
+            Assert.AreEqual(9, NdArray<int>.Get(array, new[] { 0, 2 }));
+            Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 0 }));
+            Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 1 }));
+            Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 2 }));
+        }
     }
 }
