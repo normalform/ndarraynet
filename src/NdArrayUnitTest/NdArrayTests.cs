@@ -526,6 +526,35 @@ namespace NdArrayNet.NdArrayUnitTest
             CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
         }
 
+        [TestMethod]
+        public void Scalar()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            const int value = 9;
+
+            // action
+            var array = NdArray<int>.Scalar(device, value);
+
+            // asssert
+            Assert.AreEqual(value, array.Value);
+        }
+
+        [TestMethod]
+        public void ScalarLike()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var referenceArray = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            const int value = 9;
+
+            // action
+            var array = NdArray<int>.ScalarLike(referenceArray, value);
+
+            // asssert
+            Assert.AreEqual(value, array.Value);
+        }
+
         private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()

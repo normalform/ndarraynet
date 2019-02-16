@@ -239,6 +239,19 @@ namespace NdArrayNet
             return newArray;
         }
 
+        internal static NdArray<T> Scalar(IDevice device, T value)
+        {
+            var newArray = new NdArray<T>(new int[] { }, device);
+            newArray.Value = value;
+
+            return newArray;
+        }
+
+        internal static NdArray<T> ScalarLike(NdArray<T> array, T value)
+        {
+            return Scalar(array.Storage.Device, value);
+        }
+
         internal static NdArray<T> Ones(IDevice device, int[] shape)
         {
             var newArray = new NdArray<T>(shape, device);
