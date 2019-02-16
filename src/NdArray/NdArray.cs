@@ -156,7 +156,7 @@ namespace NdArrayNet
         {
             var layouts = new[] { a.Layout, b.Layout };
             var newLayouts = fn(layouts);
-            if (newLayouts.Length == 2 && newLayouts[0] is Layout && newLayouts[1] is Layout)
+            if (newLayouts.Length == 2 && newLayouts[0] != null && newLayouts[1] != null)
             {
                 return (a.Relayout(newLayouts[0]), b.Relayout(newLayouts[1]));
             }
@@ -309,7 +309,7 @@ namespace NdArrayNet
         {
             string msg;
             var val = array.Value;
-            if (typeof(float).IsInstanceOfType(val))
+            if (val is float)
             {
                 var fval = Convert.ToSingle(val);
                 if (fval >= 0.0f)
@@ -321,7 +321,7 @@ namespace NdArrayNet
                     msg = string.Format("{0,9:F3}", fval);
                 }
             }
-            else if (typeof(double).IsInstanceOfType(val))
+            else if (val is double)
             {
                 var fval = Convert.ToDouble(val);
                 if (fval >= 0.0)
@@ -333,22 +333,22 @@ namespace NdArrayNet
                     msg = string.Format("{0,9:F3}", fval);
                 }
             }
-            else if (typeof(int).IsInstanceOfType(val))
+            else if (val is int)
             {
                 var fval = Convert.ToInt32(val);
                 msg = string.Format("{0,4:D}", fval);
             }
-            else if (typeof(long).IsInstanceOfType(val))
+            else if (val is long)
             {
                 var fval = Convert.ToInt64(val);
                 msg = string.Format("{0,4:D}", fval);
             }
-            else if (typeof(byte).IsInstanceOfType(val))
+            else if (val is byte)
             {
                 var fval = Convert.ToByte(val);
                 msg = string.Format("{0,3:D}", fval);
             }
-            else if (typeof(bool).IsInstanceOfType(val))
+            else if (val is bool)
             {
                 var fval = Convert.ToBoolean(val);
                 if (fval is true)

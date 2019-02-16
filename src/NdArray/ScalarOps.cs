@@ -221,17 +221,9 @@ namespace NdArrayNet
                         }
                     }
 
-                    if (src1Addr == src2Addr)
-                    {
-                    }
-
                     targetPosItr.MoveNext();
                     src1PosItr.MoveNext();
                     src2PosItr.MoveNext();
-
-                    if (src1Addr == src2Addr)
-                    {
-                    }
                 }
             };
 

@@ -534,33 +534,32 @@ namespace NdArrayNet
                 {
                     var nonBc = ls.Where(s => s != 1);
                     var set = new HashSet<int>(nonBc);
-                    var setCount = set.Count();
-                    if (setCount == 0)
+                    var setCount = set.Count;
+                    if (setCount != 0)
                     {
-                        continue;
-                    }
-                    else if (setCount == 1)
-                    {
-                        var target = nonBc.First();
-                        var subSas = new List<Layout>();
-                        foreach (var sa in sas)
+                        if (setCount == 1)
                         {
-                            if (sa.Shape[dim] != target)
+                            var target = nonBc.First();
+                            var subSas = new List<Layout>();
+                            foreach (var sa in sas)
                             {
-                                subSas.Add(BroadcastDim(dim, target, sa));
+                                if (sa.Shape[dim] != target)
+                                {
+                                    subSas.Add(BroadcastDim(dim, target, sa));
+                                }
+                                else
+                                {
+                                    subSas.Add(sa);
+                                }
                             }
-                            else
-                            {
-                                subSas.Add(sa);
-                            }
-                        }
 
-                        newSas = subSas.ToArray();
-                    }
-                    else
-                    {
-                        var msg = string.Format("Cannot broadcast shapes {0} to same size in dimension {1} because they do not agree in the target size.", sas, dim);
-                        throw new InvalidOperationException(msg);
+                            newSas = subSas.ToArray();
+                        }
+                        else
+                        {
+                            var msg = string.Format("Cannot broadcast shapes {0} to same size in dimension {1} because they do not agree in the target size.", sas, dim);
+                            throw new InvalidOperationException(msg);
+                        }
                     }
                 }
                 else if (new HashSet<int>(ls).Count > 1)
