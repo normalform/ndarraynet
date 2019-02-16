@@ -143,7 +143,7 @@ namespace NdArrayNet
                 }
                 else
                 {
-                     ScalarOps.Copy(t, s);
+                    ScalarOps.Copy(t, s);
                 }
             }
         }

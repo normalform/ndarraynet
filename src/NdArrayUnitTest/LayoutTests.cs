@@ -482,5 +482,157 @@ namespace NdArrayNet.NdArrayUnitTest
             CollectionAssert.AreEqual(expectedStride, broadcastLayout.Stride);
             Assert.AreEqual(0, broadcastLayout.Offset);
         }
+
+        [TestMethod]
+        public void TryReshape_WithoutCopyCase1_ReturnNewLayout()
+        {
+            // arange
+            var array = NdArray<int>.Arange(HostDevice.Instance, 0, 10, 1);
+
+            // action
+            var newShape = new[] { 10, 1 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshape_WithoutCopyCase2_ReturnNewLayout()
+        {
+            // arange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10, 1 });
+
+            // action
+            var newShape = new[] { 10 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshape_WithoutCopyCase3_ReturnNewLayout()
+        {
+            // arange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10, 1 });
+
+            // action
+            var newShape = new[] { 1, 10 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshape_WithoutCopyCase4_ReturnNewLayout()
+        {
+            // arange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10, 1 });
+
+            // action
+            var newShape = new[] { 10, 1 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshape_WithoutCopyCase5_ReturnNewLayout()
+        {
+            // arange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10 });
+
+            // action
+            var newShape = new[] { 2, 5 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshape_WithoutCopyCase6_ReturnNewLayout()
+        {
+            // arange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 6, 8 });
+
+            // action
+            var newShape = new[] { 2, 12, 2 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshape_DifferentOrderWithoutCopy_ReturnNewShape()
+        {
+            // arange
+            var array = new NdArray<int>(new[] { 1, 1, 1 }, HostDevice.Instance, Order.ColumnMajor);
+
+            // action
+            var newShape = new[] { 1, 1, 1 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshape_NeedCopyCase1_ReturnNull()
+        {
+            // arange
+            var array = new NdArray<int>(new[] { 6, 8 }, HostDevice.Instance, Order.ColumnMajor);
+
+            // action
+            var newShape = new[] { 8, 6 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            Assert.IsNull(newLayout);
+        }
+
+        [TestMethod]
+        public void TryReshape_NeedCopyCase2_ReturnNull()
+        {
+            // arange
+            var array = new NdArray<int>(new[] { 6, 8 }, HostDevice.Instance, Order.ColumnMajor);
+
+            // action
+            var newShape = new[] { 2, 12, 2 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            Assert.IsNull(newLayout);
+        }
+
+        [TestMethod]
+        public void TryReshape_WithRemainder_ReturnNewLayout()
+        {
+            // arange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var newShape = new[] { 4, SpecialIdx.Remainder, 2 };
+            var newLayout = Layout.TryReshape(newShape, array);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 4, 3, 2 }, newLayout.Shape);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TryReshape_DifferentNumElements_ThrowException()
+        {
+            // arange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10 });
+
+            // action
+            var newShape = new[] { 3, 2, 5 };
+            var newLayout = Layout.TryReshape(newShape, array);
+        }
     }
 }

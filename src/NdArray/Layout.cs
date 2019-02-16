@@ -344,6 +344,105 @@ namespace NdArrayNet
             return SubView(ranges, layout);
         }
 
+        /// <summary>
+        /// Reshape layout under the assumption that it is contiguous.
+        /// The number of elements must not change.
+        /// Returns a newLayout when reshape is possible without copy
+        /// Returns null when a copy is required.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="shape"></param>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        internal static Layout TryReshape<T>(int[] shape, NdArray<T> array)
+        {
+            int[] newShape;
+
+            // replace on occurence of "Remainder" in new shape with required size to keep number of elements constant
+            var remainers = shape.Count(s => s == SpecialIdx.Remainder);
+            if (remainers == 0)
+            {
+                newShape = shape;
+            }
+            else if (remainers == 1)
+            {
+                var elemsSoFar = shape.Where(s => s != SpecialIdx.Remainder).Aggregate(1, (a, b) => a * b);
+                var elemsNeeded = array.NumElements;
+
+                if ((elemsNeeded % elemsSoFar) == 0)
+                {
+                    newShape = shape.Select(s => s == SpecialIdx.Remainder ? elemsNeeded / elemsSoFar : s).ToArray();
+                }
+                else
+                {
+                    var msg = string.Format("cannot reshape from {0} to {1} because {2} / {3} is not an integer", array.Shape, shape, elemsNeeded, elemsSoFar);
+                    throw new ArgumentOutOfRangeException("shape", msg);
+                }
+            }
+            else
+            {
+                var msg = string.Format("only the size of one dimension can be determined automatically, but shape was {0}", shape);
+                throw new ArgumentOutOfRangeException("shape", msg);
+            }
+
+            // check that number of elements does not change
+            var shpElems = newShape.Aggregate(1, (a, b) => a * b);
+            if (shpElems != array.NumElements)
+            {
+                var msg = string.Format("cannot reshape from shape {0} (with {1} elements) to shape {2} (with {3} elements)", array.Shape, array.NumElements, newShape, shpElems);
+                throw new ArgumentOutOfRangeException("shape", msg);
+            }
+
+            var newStride = TfStride(new int[] { }, newShape, array.Layout.Stride, array.Layout.Shape);
+            if (IsC(array.Layout))
+            {
+                return new Layout(newShape, array.Layout.Offset, CStride(newShape));
+            }
+
+            if (newStride != null)
+            {
+                return new Layout(newShape, array.Layout.Offset, newStride);
+            }
+
+            return null;
+        }
+
+        // try to transform stride using singleton insertions and removals
+        internal static int[] TfStride(int[] newStr, int[] newShp, int[] arrayStr, int[] arrayShp)
+        {
+            if (newShp.Length == 0 && arrayStr.Length == 0 && arrayShp.Length == 0)
+            {
+                return newStr;
+            }
+
+            if (newShp.Length > 1 && arrayShp.Length > 1 && newShp[0] == arrayShp[0])
+            {
+                return TfStride(
+                    newStr.Concat(arrayStr).ToArray(),
+                    newShp.Skip(1).ToArray(),
+                    arrayStr.Skip(1).ToArray(),
+                    arrayShp.Skip(1).ToArray());
+            }
+            else if (newShp.Length > 1 && newShp[0] == 1)
+            {
+                return TfStride(
+                    newStr.Concat(new[] { 0 }).ToArray(),
+                    newShp.Skip(1).ToArray(),
+                    arrayStr,
+                    arrayShp);
+            }
+            else if (arrayShp.Length > 1 && arrayShp[0] == 1)
+            {
+                return TfStride(
+                    newStr,
+                    newShp,
+                    arrayStr.Skip(1).ToArray(),
+                    arrayShp.Skip(1).ToArray());
+            }
+
+            return null;
+        }
+
         private static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)
         {
             var numEl = isEnd ? numElements + 1 : numElements;
