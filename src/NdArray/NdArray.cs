@@ -171,6 +171,18 @@ namespace NdArrayNet
             return target.Relayout(Layout.BroadcastToShape(shp, target.Layout));
         }
 
+        public NdArray<T> Reshape(int[] shp)
+        {
+            var newView = TryReshapeView(shp);
+            if (newView == null)
+            {
+                var copy = Copy().ReshapeView(shp);
+                return copy;
+            }
+
+            return newView;
+        }
+
         internal static NdArray<T> Arange(IDevice device, T start, T stop, T step)
         {
             var op = ScalarPrimitives.For<T, T>();
@@ -351,6 +363,19 @@ namespace NdArrayNet
             return msg;
         }
 
+        internal static (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order = Order.RowMajor)
+        {
+            var target = new NdArray<TR>(array.Shape, array.Storage.Device, order);
+            return (target, array);
+        }
+
+        internal NdArray<T> Copy(Order order = Order.RowMajor)
+        {
+            var (target, src) = PrepareElemwise<T, T>(this, order);
+            target.Backend.Copy(target, src);
+            return target;
+        }
+
         internal void FillConst(T value)
         {
             Backend.FillConst(value, this);
@@ -364,6 +389,29 @@ namespace NdArrayNet
             }
 
             Backend.FillIncrementing(start, step, this);
+        }
+
+        internal NdArray<T> TryReshapeView(int[] shape)
+        {
+            var newLayout = Layout.TryReshape(shape, this);
+            if (newLayout is null)
+            {
+                return null;
+            }
+
+            return Relayout(newLayout);
+        }
+
+        internal NdArray<T> ReshapeView(int[] shape)
+        {
+            var newNdArray = TryReshapeView(shape);
+            if (newNdArray is null)
+            {
+                var msg = string.Format("Cannot reshape NdArray of shape {0} and strides {1} without copying.", Shape, Layout.Stride);
+                throw new InvalidOperationException(msg);
+            }
+
+            return newNdArray;
         }
 
         internal NdArray<T> Range(IRange[] ranges)

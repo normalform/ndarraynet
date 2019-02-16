@@ -366,5 +366,87 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.AreEqual("[[[   1    1    1]\n  [   1    1    1]]]", str);
         }
+
+        [TestMethod]
+        public void TryReshapeView_WitoutCopy_ReturnReshapedArray()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Ones(device, new[] { 10 });
+
+            // action
+            var newView = array.TryReshapeView(new[] { 1, 10 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 10 }, newView.Shape);
+        }
+
+        [TestMethod]
+        public void TryReshapeView_NeedCopy_ReturnNull()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = new NdArray<int>(new[] { 2, 5 }, HostDevice.Instance, Order.ColumnMajor);
+
+            // action
+            var newView = array.TryReshapeView(new[] { 2, 5 });
+
+            // assert
+            Assert.IsNull(newView);
+        }
+
+        [TestMethod]
+        public void ReshapeView_WitoutCopy_ReturnReshapedArray()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Ones(device, new[] { 10 });
+
+            // action
+            var newView = array.ReshapeView(new[] { 1, 10 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 10 }, newView.Shape);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ReshapeView_NeedCopy_ReturnNull()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = new NdArray<int>(new[] { 2, 5 }, HostDevice.Instance, Order.ColumnMajor);
+
+            // action
+            var newView = array.ReshapeView(new[] { 2, 5 });
+        }
+
+        [TestMethod]
+        public void Reshape_WithoutCopy()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = NdArray<int>.Arange(device, 0, 2 * 3 * 4 * 5, 1);
+
+            // action
+            var newView = array.Reshape(new[] { 2, 3, 4, 5 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, newView.Shape);
+        }
+
+        [TestMethod]
+        public void Reshape_NeedCopy()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var array = new NdArray<int>(new[] { 2, 5 }, HostDevice.Instance, Order.ColumnMajor);
+
+            // action
+            var newView = array.Reshape(new[] { 5, 2 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 5, 2 }, newView.Shape);
+        }
     }
 }

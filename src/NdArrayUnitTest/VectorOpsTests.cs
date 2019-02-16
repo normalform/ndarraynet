@@ -31,7 +31,6 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
-    using System;
     using System.Linq;
     using System.Numerics;
 
@@ -103,7 +102,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CanUse_ScalarTarget_ReturnFalse()
         {
             // arange
-            var target = new DataAndLayout<int>(new int[1], new FastAccess(new Layout(new int[] {}, 0, new int[] {})));
+            var target = new DataAndLayout<int>(new int[1], new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
 
             // action
             var canUse = VectorOps.CanUse(target);
@@ -275,7 +274,6 @@ namespace NdArrayNet.NdArrayUnitTest
 
         private struct UnSupportedType
         {
-            public int dummy;
         }
     }
 }

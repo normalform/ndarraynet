@@ -104,8 +104,8 @@ namespace NdArrayNet
             return (D)del;
         }
 
-        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, DataAndLayout<T> trgt, DataAndLayout<T1> src) 
-            where T : struct 
+        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, DataAndLayout<T> trgt, DataAndLayout<T1> src)
+            where T : struct
             where T1 : struct
         {
             Debug.Assert(Vector<T>.Count == Vector<T1>.Count, "Vector sizes should be matched");
@@ -149,7 +149,7 @@ namespace NdArrayNet
                 var vecIters = shape[nd - 1] / Vector<T>.Count;
                 var srcVec = new Vector<T1>(src.Data[srcAddr]);
                 var trgtVec = vectorOp(srcVec);
-                
+
                 for (var vecIter = 0; vecIter < vecIters; vecIter++)
                 {
                     trgtVec.CopyTo(trgt.Data, targetAddr);
@@ -187,7 +187,7 @@ namespace NdArrayNet
             }
         }
 
-        private static void FillImpl<T>(T value, DataAndLayout<T> trgt) 
+        private static void FillImpl<T>(T value, DataAndLayout<T> trgt)
             where T : struct
         {
             var nd = trgt.FastAccess.NumDiensions;

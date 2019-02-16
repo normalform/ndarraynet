@@ -31,7 +31,6 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
-    using System;
     using System.Linq;
 
     [TestClass]
@@ -42,7 +41,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arange
             var data = new int[1];
-            var scalar = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] {}, 0, new int[] { })));
+            var scalar = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
 
             // action
             const int FillPattern = 999;
@@ -108,8 +107,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var targetData = new int[1];
             var srcData = new int[1];
 
-            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] {}, 0, new int[] {})));
-            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] {}, 0, new int[] {})));
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
             const int CopyPattern = 999;
             srcData[0] = CopyPattern;
 
