@@ -38,7 +38,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NewAxis()
         {
-            // arange & action
+            // arrange & action
             var idx = SpecialIdx.NewAxis;
 
             // assert
@@ -48,7 +48,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Fill()
         {
-            // arange & action
+            // arrange & action
             var idx = SpecialIdx.Fill;
 
             // assert
@@ -58,7 +58,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Remainder()
         {
-            // arange & action
+            // arrange & action
             var idx = SpecialIdx.Remainder;
 
             // assert
@@ -68,7 +68,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NotFound()
         {
-            // arange & action
+            // arrange & action
             var idx = SpecialIdx.NotFound;
 
             // assert

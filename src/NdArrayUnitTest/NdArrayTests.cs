@@ -39,7 +39,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NdArray_RowMajor()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
 
             // action
@@ -53,7 +53,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NdArray_ColumnMajor()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
 
             // action
@@ -67,7 +67,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NumElements()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
 
             // action
@@ -81,7 +81,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NumDimensions()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
 
             // action
@@ -96,7 +96,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void FillIncrementing_WithScalar_ThrowException()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new int[] { });
 
@@ -107,7 +107,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void GetValue_ScalarArray_ReturnValue()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var scalarArray = NdArray<int>.Ones(device, new int[] { });
 
@@ -122,7 +122,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void GetValue_Vector_ThrowException()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var scalarArray = NdArray<int>.Ones(device, new int[] { 1 });
 
@@ -133,7 +133,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void SetValue_ScalarArray_ReturnValue()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var scalarArray = NdArray<int>.Ones(device, new int[] { });
 
@@ -148,7 +148,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void SetValue_Vector_ThrowException()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var scalarArray = NdArray<int>.Ones(device, new int[] { 1 });
 
@@ -159,7 +159,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Get_SingleIndex()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Arange(device, 0, 3, 1);
 
@@ -173,7 +173,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Set_SingleIndex()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Arange(device, 0, 3, 1);
 
@@ -188,8 +188,8 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void AssertSameShape_WithSameShape_Pass()
         {
-            // arange
-            // arange
+            // arrange
+            // arrange
             var device = HostDevice.Instance;
             var arrayA = NdArray<int>.Arange(device, 1, 3, 1);
             var arrayB = NdArray<int>.Arange(device, 1, 3, 1);
@@ -202,7 +202,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertSameShape_DifferentShape_ThrowException()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var arrayA = NdArray<int>.Arange(device, 0, 3, 1);
             var arrayB = NdArray<int>.Arange(device, 1, 3, 1);
@@ -214,8 +214,8 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void AssertSameStorage()
         {
-            // arange
-            // arange
+            // arrange
+            // arrange
             var device = HostDevice.Instance;
             var arrays = new[]
             {
@@ -231,7 +231,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void AssertScalar_WithVector_ThrowException()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Arange(device, 0, 3, 1);
 
@@ -242,7 +242,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void AssertScalar_WithScalar_Pass()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var emptyShapeForScalar = new int[] { };
             var array = NdArray<int>.Zeros(device, emptyShapeForScalar);
@@ -254,7 +254,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void SetAndGetWithArrayAndPos()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new[] { 2, 3, 4 });
 
@@ -269,7 +269,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void GetView_WithRangeSpecifiers()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new[] { 2, 3 });
 
@@ -300,7 +300,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void SetView_WithRangeSpecifiers()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new[] { 2, 3 });
 
@@ -319,7 +319,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void ScalarString()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
 
             // action
@@ -342,7 +342,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void PrettyDim()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new[] { 1, 2, 3 });
 
@@ -356,7 +356,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void ArrayToString()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new[] { 1, 2, 3 });
 
@@ -370,7 +370,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshapeView_WitoutCopy_ReturnReshapedArray()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new[] { 10 });
 
@@ -384,7 +384,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshapeView_NeedCopy_ReturnNull()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = new NdArray<int>(new[] { 2, 5 }, HostDevice.Instance, Order.ColumnMajor);
 
@@ -398,7 +398,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void ReshapeView_WitoutCopy_ReturnReshapedArray()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Ones(device, new[] { 10 });
 
@@ -413,7 +413,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void ReshapeView_NeedCopy_ReturnNull()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = new NdArray<int>(new[] { 2, 5 }, HostDevice.Instance, Order.ColumnMajor);
 
@@ -424,7 +424,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Reshape_WithoutCopy()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = NdArray<int>.Arange(device, 0, 2 * 3 * 4 * 5, 1);
 
@@ -438,7 +438,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Reshape_NeedCopy()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var array = new NdArray<int>(new[] { 2, 5 }, HostDevice.Instance, Order.ColumnMajor);
 
@@ -452,7 +452,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Broadcasting_VectorsWithSameShape()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var arrayA = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
             var arrayB = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
@@ -467,7 +467,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Broadcasting_VectorsWithDiffernetShape()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
             var arrayA = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
             var arrayB = NdArray<int>.Arange(device, 0, 12, 1).Reshape(new[] { 3, 4 });

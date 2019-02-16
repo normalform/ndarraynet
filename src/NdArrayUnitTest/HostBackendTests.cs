@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void GetIndex()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
             var hostStorageMock = new Mock<IHostStorage<int>>();
             hostStorageMock.SetupGet(m => m.Data).Returns(Enumerable.Range(0, 12).ToArray());
@@ -58,7 +58,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void SetIndex()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
             var hostStorageMock = new Mock<IHostStorage<int>>();
             var memory = new int[12];

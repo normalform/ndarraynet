@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void OrderedStride_case1()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var order = Enumerable.Range(0, shape.Length).Reverse().ToArray();
 
@@ -55,7 +55,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void OrderedStride_case2()
         {
-            // arange
+            // arrange
             var shape = new[] { 5, 4, 3, 2, 1 };
             var order = Enumerable.Range(0, shape.Length).Reverse().ToArray();
 
@@ -70,7 +70,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void OrderedStride_case3()
         {
-            // arange
+            // arrange
             var shape = new[] { 0, 1, 2, 3, 4 };
             var order = Enumerable.Range(0, shape.Length).Reverse().ToArray();
 
@@ -86,7 +86,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void OrderedStride_OrderIsNotPermutation_ThrowException()
         {
-            // arange
+            // arrange
             var shape = new[] { 0, 1, 2, 3, 4 };
             var order = new[] { 1, 2, 3, 4, 5 };
 
@@ -98,7 +98,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void OrderedStride_DifferentSize_ThrowException()
         {
-            // arange
+            // arrange
             var shape = new[] { 0, 1, 2, 3, 4 };
             var order = new[] { 0, 1 };
 
@@ -109,7 +109,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CStride()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
 
             // action
@@ -123,7 +123,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void FStride()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
 
             // action
@@ -137,7 +137,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NewC()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
 
             // action
@@ -152,7 +152,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NewF()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
 
             // action
@@ -168,7 +168,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void Swap_NegativeDimensionToSwap_ThrowExceptions()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
@@ -180,7 +180,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void Swap_NegativeDimensionToSwapWith_ThrowExceptions()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
@@ -192,7 +192,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void Swap_TooBigDimensionToSwap_ThrowExceptions()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
@@ -204,7 +204,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentException))]
         public void Swap_TooBigDimensionToSwapWith_ThrowExceptions()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
@@ -215,7 +215,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void PadLeft()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2 };
             var stride = new[] { 2, 1 };
             var srcLayout = new Layout(shape, 8, stride);
@@ -234,7 +234,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void PadRight()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2 };
             var stride = new[] { 2, 1 };
             var srcLayout = new Layout(shape, 8, stride);
@@ -253,7 +253,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void StrideEqual_WithSameStrides_ReturnTrue()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3 };
             var strideA = new[] { 6, 2, 1 };
             var strideB = new[] { 6, 2, 1 };
@@ -268,7 +268,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void StrideEqual_WithDifferentStrides_ReturnFalse()
         {
-            // arange
+            // arrange
             var shape = new[] { 1, 2, 3 };
             var strideA = new[] { 6, 2, 1 };
             var strideB = new[] { 6, 3, 1 };
@@ -283,7 +283,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void StrideEqual_WithDifferentStridesButZeroShape_ReturnTrue()
         {
-            // arange
+            // arrange
             const int DontCareA = 100;
             const int DontCareB = 200;
 
@@ -301,7 +301,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsC_WithC_ReturnTrue()
         {
-            // arange
+            // arrange
             var layoutStyleC = Layout.NewC(new[] { 1, 2, 3 });
 
             // action
@@ -314,7 +314,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsC_WithF_ReturnFalse()
         {
-            // arange
+            // arrange
             var layoutStyleF = Layout.NewF(new[] { 1, 2, 3 });
 
             // action
@@ -327,7 +327,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsF_WithC_ReturnFalse()
         {
-            // arange
+            // arrange
             var layoutStyleC = Layout.NewC(new[] { 1, 2, 3 });
 
             // action
@@ -340,7 +340,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsF_WithF_ReturnTrue()
         {
-            // arange
+            // arrange
             var layoutStyleF = Layout.NewF(new[] { 1, 2, 3 });
 
             // action
@@ -353,7 +353,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void HasContiguousMemory_WithC_ReturnTrue()
         {
-            // arange
+            // arrange
             var layoutStyleC = Layout.NewC(new[] { 1, 2, 3 });
 
             // action
@@ -366,7 +366,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void HasContiguousMemory_WithF_ReturnTrue()
         {
-            // arange
+            // arrange
             var layoutStyleF = Layout.NewF(new[] { 1, 2, 3 });
 
             // action
@@ -380,7 +380,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BraodcastDim_NegativeSize_ThrowException()
         {
-            // arange
+            // arrange
             var layout = Layout.NewC(new[] { 1, 2, 3 });
 
             // action
@@ -391,7 +391,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BraodcastDim_InvalidShape_ThrowException()
         {
-            // arange
+            // arrange
             const int ShapeValue2 = 2;
             const int DimOfTheShapeValue2 = 1;
             var layout = Layout.NewC(new[] { 1, ShapeValue2, 3 });
@@ -404,7 +404,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void BraodcastDim_Valid_ReturnNewLayout()
         {
-            // arange
+            // arrange
             const int ShapeValue1 = 1;
             const int DimOfTheShapeValue1 = 0;
             var layout = Layout.NewC(new[] { ShapeValue1, 2, 3 });
@@ -426,7 +426,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void BroadcastToShape_LowerBroadcastShapeRank_ThrowException()
         {
-            // arange
+            // arrange
             var layout = Layout.NewC(new[] { 1, 2, 3 });
             var broadcastShape = new[] { 2, 3 };
 
@@ -438,7 +438,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void BroadcastToShape_InvalidShapeValue_ThrowException()
         {
-            // arange
+            // arrange
             const int InvalidShapeValue = 9;
             var layout = Layout.NewC(new[] { 2, 3, 4, 5 });
             var broadcastShape = new[] { 2, 3, InvalidShapeValue, 5 };
@@ -450,7 +450,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void BroadcastToShape_WithDifferentValidShape_ReturnBroadcastLayout()
         {
-            // arange
+            // arrange
             var layout = Layout.NewC(new[] { 2, 3 });
             var broadcastShape = new[] { 1, 7, 2, 3 };
 
@@ -468,7 +468,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void BroadcastToShape_WithSameShape_ReturnBroadcastLayout()
         {
-            // arange
+            // arrange
             var layout = Layout.NewC(new[] { 1, 7, 2, 3 });
             var broadcastShape = new[] { 1, 7, 2, 3 };
 
@@ -486,7 +486,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_WithoutCopyCase1_ReturnNewLayout()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Arange(HostDevice.Instance, 0, 10, 1);
 
             // action
@@ -500,7 +500,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_WithoutCopyCase2_ReturnNewLayout()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10, 1 });
 
             // action
@@ -514,7 +514,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_WithoutCopyCase3_ReturnNewLayout()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10, 1 });
 
             // action
@@ -528,7 +528,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_WithoutCopyCase4_ReturnNewLayout()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10, 1 });
 
             // action
@@ -542,7 +542,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_WithoutCopyCase5_ReturnNewLayout()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10 });
 
             // action
@@ -556,7 +556,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_WithoutCopyCase6_ReturnNewLayout()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 6, 8 });
 
             // action
@@ -570,7 +570,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_DifferentOrderWithoutCopy_ReturnNewShape()
         {
-            // arange
+            // arrange
             var array = new NdArray<int>(new[] { 1, 1, 1 }, HostDevice.Instance, Order.ColumnMajor);
 
             // action
@@ -584,7 +584,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_NeedCopyCase1_ReturnNull()
         {
-            // arange
+            // arrange
             var array = new NdArray<int>(new[] { 6, 8 }, HostDevice.Instance, Order.ColumnMajor);
 
             // action
@@ -598,7 +598,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_NeedCopyCase2_ReturnNull()
         {
-            // arange
+            // arrange
             var array = new NdArray<int>(new[] { 6, 8 }, HostDevice.Instance, Order.ColumnMajor);
 
             // action
@@ -612,7 +612,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void TryReshape_WithRemainder_ReturnNewLayout()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 2, 3, 4 });
 
             // action
@@ -627,7 +627,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TryReshape_DifferentNumElements_ThrowException()
         {
-            // arange
+            // arrange
             var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 10 });
 
             // action

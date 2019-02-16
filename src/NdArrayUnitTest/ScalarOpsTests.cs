@@ -39,7 +39,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Fill_Scalar()
         {
-            // arange
+            // arrange
             var data = new int[1];
             var scalar = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
 
@@ -54,7 +54,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Fill_Vector1D()
         {
-            // arange
+            // arrange
             const int BufferSize = 10;
             var data = new int[BufferSize];
             var target = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
@@ -71,7 +71,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Fill_Vector2D()
         {
-            // arange
+            // arrange
             var data = new int[24];
             var target = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { 2, 3, 4 }, 0, new int[] { 12, 4, 1 })));
 
@@ -87,7 +87,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void FillIncrementing()
         {
-            // arange
+            // arrange
             const int BufferSize = 10;
             var data = new int[BufferSize];
             var target = new DataAndLayout<int>(data, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
@@ -103,7 +103,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Copy_Scalar()
         {
-            // arange
+            // arrange
             var targetData = new int[1];
             var srcData = new int[1];
 
@@ -122,7 +122,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Copy_Vector1D()
         {
-            // arange
+            // arrange
             const int BufferSize = 10;
             var targetData = new int[BufferSize];
             var srcData = Enumerable.Range(0, BufferSize).ToArray();
@@ -140,7 +140,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Copy_Vector2D()
         {
-            // arange
+            // arrange
             const int BufferSize = 24;
             var targetData = new int[BufferSize];
             var srcData = Enumerable.Range(0, BufferSize).ToArray();
@@ -158,7 +158,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Multiply_Scalar()
         {
-            // arange
+            // arrange
             var targetData = new int[1];
             var src1Data = new int[1];
             var src2Data = new int[1];
@@ -184,7 +184,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Multiply_Vector1D()
         {
-            // arange
+            // arrange
             const int BufferSize = 10;
             var targetData = new int[BufferSize];
             var src1Data = Enumerable.Range(0, BufferSize).ToArray();
@@ -205,7 +205,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Multiply_Vector2D()
         {
-            // arange
+            // arrange
             const int BufferSize = 24;
             var targetData = new int[BufferSize];
             var src1Data = Enumerable.Range(0, BufferSize).ToArray();
