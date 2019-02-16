@@ -39,6 +39,8 @@ namespace NdArrayNet
 
         void FillConst(T value, IFrontend<T> trgt);
 
+        void Multiply(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b);
+
         void Copy(IFrontend<T> trgt, IFrontend<T> src);
     }
 }

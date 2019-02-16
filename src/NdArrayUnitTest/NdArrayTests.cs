@@ -448,5 +448,35 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             CollectionAssert.AreEqual(new[] { 5, 2 }, newView.Shape);
         }
+
+        [TestMethod]
+        public void Broadcasting_VectorsWithSameShape()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var arrayA = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+
+            // action
+            var result = arrayA * arrayB;
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+        }
+
+        [TestMethod]
+        public void Broadcasting_VectorsWithDiffernetShape()
+        {
+            // arange
+            var device = HostDevice.Instance;
+            var arrayA = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Arange(device, 0, 12, 1).Reshape(new[] { 3, 4 });
+
+            // action
+            var result = arrayA * arrayB;
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+        }
     }
 }
