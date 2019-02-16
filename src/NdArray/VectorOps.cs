@@ -115,23 +115,21 @@ namespace NdArrayNet
             Func<Vector<T1>, Vector<T>> vectorOp,
             int[] shape,
             int lastDimensionIndex,
-            DataAndLayout<T> target,
-            DataAndLayout<T1> source,
+            UnaryDataAndLayouts<T, T1> unaryDataAndLayouts,
             int vectorCount,
-            int targetAddressBase,
-            int sourceAddressBase)
+            UnaryAddessBases unaryAddessBases)
                 where T : struct
                 where T1 : struct
         {
-            var targetAddress = targetAddressBase;
-            var sourceAddress = sourceAddressBase;
+            var targetAddress = unaryAddessBases.TargetAddress;
+            var sourceAddress = unaryAddessBases.SourceAddress;
             var sourceBuffer = new T1[vectorCount];
 
             var vectorIters = shape[lastDimensionIndex] / vectorCount;
             for (var vecIter = 0; vecIter < vectorIters; vecIter++)
             {
-                var targetVec = vectorOp(new Vector<T1>(source.Data, sourceAddress));
-                targetVec.CopyTo(target.Data, targetAddress);
+                var targetVec = vectorOp(new Vector<T1>(unaryDataAndLayouts.Source.Data, sourceAddress));
+                targetVec.CopyTo(unaryDataAndLayouts.Target.Data, targetAddress);
                 targetAddress += vectorCount;
                 sourceAddress += vectorCount;
             }
@@ -139,14 +137,14 @@ namespace NdArrayNet
             var restElems = shape[lastDimensionIndex] % vectorCount;
             for (var restPos = 0; restPos < restElems; restPos++)
             {
-                sourceBuffer[restPos] = source.Data[sourceAddress];
+                sourceBuffer[restPos] = unaryDataAndLayouts.Source.Data[sourceAddress];
                 sourceAddress++;
             }
 
             var restTrgtVec = vectorOp(new Vector<T1>(sourceBuffer));
             for (var restPos = 0; restPos < restElems; restPos++)
             {
-                target.Data[targetAddress] = restTrgtVec[restPos];
+                unaryDataAndLayouts.Target.Data[targetAddress] = restTrgtVec[restPos];
                 targetAddress++;
             }
         }
@@ -155,55 +153,57 @@ namespace NdArrayNet
             Func<Vector<T1>, Vector<T>> vectorOp,
             int[] shape,
             int lastDimensionIndex,
-            DataAndLayout<T> target,
-            DataAndLayout<T1> source,
+            UnaryDataAndLayouts<T, T1> unaryDataAndLayouts,
             int vectorCount,
-            int targetAddressBase,
-            int sourceAddressBase)
+            UnaryAddessBases unaryAddessBases)
                 where T : struct
                 where T1 : struct
         {
-            var targetAddress = targetAddressBase;
+            var targetAddress = unaryAddessBases.TargetAddress;
             var vectorIters = shape[lastDimensionIndex] / vectorCount;
-            var sourceVector = new Vector<T1>(source.Data[sourceAddressBase]);
+            var sourceVector = new Vector<T1>(unaryDataAndLayouts.Source.Data[unaryAddessBases.SourceAddress]);
             var targetVector = vectorOp(sourceVector);
 
             for (var vecIter = 0; vecIter < vectorIters; vecIter++)
             {
-                targetVector.CopyTo(target.Data, targetAddress);
+                targetVector.CopyTo(unaryDataAndLayouts.Target.Data, targetAddress);
                 targetAddress += vectorCount;
             }
 
             var restElems = shape[lastDimensionIndex] % vectorCount;
             for (var restPos = 0; restPos < restElems; restPos++)
             {
-                target.Data[targetAddress] = targetVector[restPos];
+                unaryDataAndLayouts.Target.Data[targetAddress] = targetVector[restPos];
                 targetAddress++;
             }
         }
 
-        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, DataAndLayout<T> target, DataAndLayout<T1> source)
+        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, UnaryDataAndLayouts<T, T1> unaryDataAndLayouts)
             where T : struct
             where T1 : struct
         {
             Debug.Assert(Vector<T>.Count == Vector<T1>.Count, "Vector sizes should be matched");
 
-            var lastDimensionIndex = target.FastAccess.NumDiensions - 1;
-            var shape = target.FastAccess.Shape;
+            var lastDimensionIndex = unaryDataAndLayouts.Target.FastAccess.NumDiensions - 1;
+            var shape = unaryDataAndLayouts.Target.FastAccess.Shape;
             var vectorCount = Vector<T>.Count;
 
-            var targetIter = new PosIter(target.FastAccess, toDim: lastDimensionIndex - 1);
-            var srcIter = new PosIter(source.FastAccess, toDim: lastDimensionIndex - 1);
+            var targetIter = new PosIter(unaryDataAndLayouts.Target.FastAccess, toDim: lastDimensionIndex - 1);
+            var srcIter = new PosIter(unaryDataAndLayouts.Source.FastAccess, toDim: lastDimensionIndex - 1);
 
             while (targetIter.Active)
             {
-                if (target.FastAccess.Stride[lastDimensionIndex] == 1 && source.FastAccess.Stride[lastDimensionIndex] == 1)
+                var targetStride = unaryDataAndLayouts.Target.FastAccess.Stride[lastDimensionIndex];
+                var sourceStride = unaryDataAndLayouts.Source.FastAccess.Stride[lastDimensionIndex];
+
+                var unaryAddessBases = new UnaryAddessBases(targetIter.Addr, srcIter.Addr);
+                if (targetStride == 1 && sourceStride == 1)
                 {
-                    Stride11InnerLoop(vectorOp, shape, lastDimensionIndex, target, source, vectorCount, targetIter.Addr, srcIter.Addr);
+                    Stride11InnerLoop(vectorOp, shape, lastDimensionIndex, unaryDataAndLayouts, vectorCount, unaryAddessBases);
                 }
-                else if (target.FastAccess.Stride[lastDimensionIndex] == 1 && source.FastAccess.Stride[lastDimensionIndex] == 0)
+                else if (targetStride == 1 && sourceStride == 0)
                 {
-                    Stride10InnerLoop(vectorOp, shape, lastDimensionIndex, target, source, vectorCount, targetIter.Addr, srcIter.Addr);
+                    Stride10InnerLoop(vectorOp, shape, lastDimensionIndex, unaryDataAndLayouts, vectorCount, unaryAddessBases);
                 }
                 else
                 {
@@ -219,28 +219,24 @@ namespace NdArrayNet
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,
             int lastDimensionIndex,
-            DataAndLayout<T> target,
-            DataAndLayout<T1> source1,
-            DataAndLayout<T2> source2,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
             int vectorCount,
-            int targetAddressBase,
-            int sourceAddressBase1,
-            int sourceAddressBase2)
+            BinaryAddessBases binaryAddessBases)
                 where T : struct
                 where T1 : struct
                 where T2 : struct
         {
-            var targetAddress = targetAddressBase;
-            var sourceAddress1 = sourceAddressBase1;
-            var sourceAddress2 = sourceAddressBase2;
+            var targetAddress = binaryAddessBases.TargetAddress;
+            var sourceAddress1 = binaryAddessBases.SourceAddress1;
+            var sourceAddress2 = binaryAddessBases.SourceAddress2;
             var sourceBuffer1 = new T1[vectorCount];
             var sourceBuffer2 = new T2[vectorCount];
 
             var vectorIters = shape[lastDimensionIndex] / vectorCount;
             for (var vecIter = 0; vecIter < vectorIters; vecIter++)
             {
-                var targetVec = vectorOp(new Vector<T1>(source1.Data, sourceAddress1), new Vector<T2>(source2.Data, sourceAddress2));
-                targetVec.CopyTo(target.Data, targetAddress);
+                var targetVec = vectorOp(new Vector<T1>(binaryDataLaouts.Source1.Data, sourceAddress1), new Vector<T2>(binaryDataLaouts.Source2.Data, sourceAddress2));
+                targetVec.CopyTo(binaryDataLaouts.Target.Data, targetAddress);
                 targetAddress += vectorCount;
                 sourceAddress1 += vectorCount;
                 sourceAddress2 += vectorCount;
@@ -249,8 +245,8 @@ namespace NdArrayNet
             var restElements = shape[lastDimensionIndex] % vectorCount;
             for (var restPos = 0; restPos < restElements; restPos++)
             {
-                sourceBuffer1[restPos] = source1.Data[sourceAddress1];
-                sourceBuffer2[restPos] = source2.Data[sourceAddress2];
+                sourceBuffer1[restPos] = binaryDataLaouts.Source1.Data[sourceAddress1];
+                sourceBuffer2[restPos] = binaryDataLaouts.Source2.Data[sourceAddress2];
                 sourceAddress1++;
                 sourceAddress2++;
             }
@@ -258,7 +254,7 @@ namespace NdArrayNet
             var restTrgtVec = vectorOp(new Vector<T1>(sourceBuffer1), new Vector<T2>(sourceBuffer2));
             for (var restPos = 0; restPos < restElements; restPos++)
             {
-                target.Data[targetAddress] = restTrgtVec[restPos];
+                binaryDataLaouts.Target.Data[targetAddress] = restTrgtVec[restPos];
                 targetAddress++;
             }
         }
@@ -267,28 +263,24 @@ namespace NdArrayNet
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,
             int lastDimensionIndex,
-            DataAndLayout<T> target,
-            DataAndLayout<T1> source1,
-            DataAndLayout<T2> source2,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
             int vectorCount,
-            int targetAddressBase,
-            int sourceAddressBase1,
-            int sourceAddressBase2)
+            BinaryAddessBases binaryAddessBases)
                 where T : struct
                 where T1 : struct
                 where T2 : struct
         {
-            var targetAddress = targetAddressBase;
-            var sourceAddress1 = sourceAddressBase1;
+            var targetAddress = binaryAddessBases.TargetAddress;
+            var sourceAddress1 = binaryAddessBases.SourceAddress1;
             var sourceBuffer1 = new T1[vectorCount];
-            var sourceVector2 = new Vector<T2>(source2.Data[sourceAddressBase2]);
+            var sourceVector2 = new Vector<T2>(binaryDataLaouts.Source2.Data[binaryAddessBases.SourceAddress2]);
 
             var vectorIters = shape[lastDimensionIndex] / vectorCount;
 
             for (var vecIter = 0; vecIter < vectorIters; vecIter++)
             {
-                var targetVector = vectorOp(new Vector<T1>(source1.Data, sourceAddress1), sourceVector2);
-                targetVector.CopyTo(target.Data, targetAddress);
+                var targetVector = vectorOp(new Vector<T1>(binaryDataLaouts.Source1.Data, sourceAddress1), sourceVector2);
+                targetVector.CopyTo(binaryDataLaouts.Target.Data, targetAddress);
                 targetAddress += vectorCount;
                 sourceAddress1 += vectorCount;
             }
@@ -296,14 +288,14 @@ namespace NdArrayNet
             var restElems = shape[lastDimensionIndex] % vectorCount;
             for (var restPos = 0; restPos < restElems; restPos++)
             {
-                sourceBuffer1[restPos] = source1.Data[sourceAddress1];
+                sourceBuffer1[restPos] = binaryDataLaouts.Source1.Data[sourceAddress1];
                 sourceAddress1++;
             }
 
             var trgtVec2 = vectorOp(new Vector<T1>(sourceBuffer1), sourceVector2);
             for (var restPos = 0; restPos < restElems; restPos++)
             {
-                target.Data[targetAddress] = trgtVec2[restPos];
+                binaryDataLaouts.Target.Data[targetAddress] = trgtVec2[restPos];
                 targetAddress++;
             }
         }
@@ -312,28 +304,24 @@ namespace NdArrayNet
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,
             int lastDimensionIndex,
-            DataAndLayout<T> target,
-            DataAndLayout<T1> source1,
-            DataAndLayout<T2> source2,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
             int vectorCount,
-            int targetAddressBase,
-            int sourceAddressBase1,
-            int sourceAddressBase2)
+            BinaryAddessBases binaryAddessBases)
                 where T : struct
                 where T1 : struct
                 where T2 : struct
         {
-            var targetAddr = targetAddressBase;
-            var sourceAddress2 = sourceAddressBase2;
+            var targetAddr = binaryAddessBases.TargetAddress;
+            var sourceAddress2 = binaryAddessBases.SourceAddress2;
 
-            var sourceVector1 = new Vector<T1>(source1.Data[sourceAddressBase1]);
+            var sourceVector1 = new Vector<T1>(binaryDataLaouts.Source1.Data[binaryAddessBases.SourceAddress1]);
             var sourceBuffer2 = new T2[vectorCount];
             var vectorIters = shape[lastDimensionIndex] / vectorCount;
 
             for (var vecIter = 0; vecIter < vectorIters; vecIter++)
             {
-                var targetVector = vectorOp(sourceVector1, new Vector<T2>(source2.Data, sourceAddress2));
-                targetVector.CopyTo(target.Data, targetAddr);
+                var targetVector = vectorOp(sourceVector1, new Vector<T2>(binaryDataLaouts.Source2.Data, sourceAddress2));
+                targetVector.CopyTo(binaryDataLaouts.Target.Data, targetAddr);
                 targetAddr += vectorCount;
                 sourceAddress2 += vectorCount;
             }
@@ -341,14 +329,14 @@ namespace NdArrayNet
             var restElements = shape[lastDimensionIndex] % vectorCount;
             for (var restPos = 0; restPos < restElements; restPos++)
             {
-                sourceBuffer2[restPos] = source2.Data[sourceAddress2];
+                sourceBuffer2[restPos] = binaryDataLaouts.Source2.Data[sourceAddress2];
                 sourceAddress2 = sourceAddress2 + 1;
             }
 
             var trgtVec2 = vectorOp(sourceVector1, new Vector<T2>(sourceBuffer2));
             for (var restPos = 0; restPos < restElements; restPos++)
             {
-                target.Data[targetAddr] = trgtVec2[restPos];
+                binaryDataLaouts.Target.Data[targetAddr] = trgtVec2[restPos];
                 targetAddr = targetAddr + 1;
             }
         }
@@ -357,77 +345,70 @@ namespace NdArrayNet
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,
             int lastDimensionIndex,
-            DataAndLayout<T> target,
-            DataAndLayout<T1> source1,
-            DataAndLayout<T2> source2,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
             int vectorCount,
-            int targetAddressBase,
-            int sourceAddressBase1,
-            int sourceAddressBase2)
+            BinaryAddessBases binaryAddessBases)
                 where T : struct
                 where T1 : struct
                 where T2 : struct
         {
-            var targetAddress = targetAddressBase;
+            var targetAddress = binaryAddessBases.TargetAddress;
             var vectorIters = shape[lastDimensionIndex] / vectorCount;
-            var targetVector = vectorOp(new Vector<T1>(source1.Data[sourceAddressBase1]), new Vector<T2>(source2.Data[sourceAddressBase2]));
+            var targetVector = vectorOp(new Vector<T1>(binaryDataLaouts.Source1.Data[binaryAddessBases.SourceAddress1]), new Vector<T2>(binaryDataLaouts.Source2.Data[binaryAddessBases.SourceAddress2]));
 
             for (var vecIter = 0; vecIter < vectorIters; vecIter++)
             {
-                targetVector.CopyTo(target.Data, targetAddress);
+                targetVector.CopyTo(binaryDataLaouts.Target.Data, targetAddress);
                 targetAddress += vectorCount;
             }
 
             var resetElements = shape[lastDimensionIndex] % vectorCount;
             for (var restPos = 0; restPos < resetElements; restPos++)
             {
-                target.Data[targetAddress] = targetVector[restPos];
+                binaryDataLaouts.Target.Data[targetAddress] = targetVector[restPos];
                 targetAddress++;
             }
         }
 
         private static void ApplyBinary<T, T1, T2>(
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
-            DataAndLayout<T> target,
-            DataAndLayout<T1> source1,
-            DataAndLayout<T2> source2)
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts)
                 where T : struct
                 where T1 : struct
                 where T2 : struct
         {
             Debug.Assert(Vector<T>.Count == Vector<T1>.Count && Vector<T1>.Count == Vector<T2>.Count, "Vector sizes should be matched");
 
-            var lastDimensionIndex = target.FastAccess.NumDiensions - 1;
-            var shape = target.FastAccess.Shape;
+            var lastDimensionIndex = binaryDataLaouts.Target.FastAccess.NumDiensions - 1;
+            var shape = binaryDataLaouts.Target.FastAccess.Shape;
             var vectorCount = Vector<T>.Count;
-            var sourceBuffer1 = new T1[vectorCount];
-            var sourceBuffer2 = new T2[vectorCount];
 
-            var targetIter = new PosIter(target.FastAccess, toDim: lastDimensionIndex - 1);
-            var sourceIter1 = new PosIter(source1.FastAccess, toDim: lastDimensionIndex - 1);
-            var sourceIter2 = new PosIter(source2.FastAccess, toDim: lastDimensionIndex - 1);
+            var targetIter = new PosIter(binaryDataLaouts.Target.FastAccess, toDim: lastDimensionIndex - 1);
+            var sourceIter1 = new PosIter(binaryDataLaouts.Source1.FastAccess, toDim: lastDimensionIndex - 1);
+            var sourceIter2 = new PosIter(binaryDataLaouts.Source2.FastAccess, toDim: lastDimensionIndex - 1);
 
             while (targetIter.Active)
             {
-                var targetStride = target.FastAccess.Stride[lastDimensionIndex];
-                var sourceStride1 = source1.FastAccess.Stride[lastDimensionIndex];
-                var sourceStride2 = source2.FastAccess.Stride[lastDimensionIndex];
+                var targetStride = binaryDataLaouts.Target.FastAccess.Stride[lastDimensionIndex];
+                var sourceStride1 = binaryDataLaouts.Source1.FastAccess.Stride[lastDimensionIndex];
+                var sourceStride2 = binaryDataLaouts.Source2.FastAccess.Stride[lastDimensionIndex];
+                var binaryAddessBases = new BinaryAddessBases(targetIter.Addr, sourceIter1.Addr, sourceIter2.Addr);
 
                 if (targetStride == 1 && sourceStride1 == 1 && sourceStride2 == 1)
                 {
-                    Stride111InnerLoop(vectorOp, shape, lastDimensionIndex, target, source1, source2, vectorCount, targetIter.Addr, sourceIter1.Addr, sourceIter2.Addr);
+                    Stride111InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
                 else if (targetStride == 1 && sourceStride1 == 1 && sourceStride2 == 0)
                 {
-                    Stride110InnerLoop(vectorOp, shape, lastDimensionIndex, target, source1, source2, vectorCount, targetIter.Addr, sourceIter1.Addr, sourceIter2.Addr);
+                    Stride110InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
                 else if (targetStride == 1 && sourceStride1 == 0 && sourceStride2 == 1)
                 {
-                    Stride101InnerLoop(vectorOp, shape, lastDimensionIndex, target, source1, source2, vectorCount, targetIter.Addr, sourceIter1.Addr, sourceIter2.Addr);
+                    Stride101InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
                 else if (targetStride == 1 && sourceStride1 == 0 && sourceStride2 == 0)
                 {
-                    Stride100InnerLoop(vectorOp, shape, lastDimensionIndex, target, source1, source2, vectorCount, targetIter.Addr, sourceIter1.Addr, sourceIter2.Addr);
+                    Stride100InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
                 else
                 {
@@ -485,13 +466,72 @@ namespace NdArrayNet
         private static void CopyImpl<T>(DataAndLayout<T> trgt, DataAndLayout<T> src) where T : struct
         {
             Vector<T> op(Vector<T> v) => v;
-            ApplyUnary(op, trgt, src);
+            ApplyUnary(op, new UnaryDataAndLayouts<T, T>(trgt, src));
         }
 
-        private static void MultiplyImpl<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2) where T : struct
+        private static void MultiplyImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
         {
             Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Multiply(a, b);
-            ApplyBinary(op, trgt, src1, src2);
+
+            ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
+        private class UnaryDataAndLayouts<T, T1>
+        {
+            public UnaryDataAndLayouts(DataAndLayout<T> target, DataAndLayout<T1> source)
+            {
+                Target = target;
+                Source = source;
+            }
+
+            public DataAndLayout<T> Target { get; }
+
+            public DataAndLayout<T1> Source { get; }
+        }
+
+        private class UnaryAddessBases
+        {
+            public UnaryAddessBases(int targetAddress, int sourceAddress)
+            {
+                TargetAddress = targetAddress;
+                SourceAddress = sourceAddress;
+            }
+
+            public int TargetAddress { get; }
+
+            public int SourceAddress { get; }
+        }
+
+        private class BinaryDataAndLayouts<T, T1, T2>
+        {
+            public BinaryDataAndLayouts(DataAndLayout<T> target, DataAndLayout<T1> source1, DataAndLayout<T2> source2)
+            {
+                Target = target;
+                Source1 = source1;
+                Source2 = source2;
+            }
+
+            public DataAndLayout<T> Target { get; }
+
+            public DataAndLayout<T1> Source1 { get; }
+
+            public DataAndLayout<T2> Source2 { get; }
+        }
+
+        private class BinaryAddessBases
+        {
+            public BinaryAddessBases(int targetAddress, int sourceAddress1, int sourceAddress2)
+            {
+                TargetAddress = targetAddress;
+                SourceAddress1 = sourceAddress1;
+                SourceAddress2 = sourceAddress2;
+            }
+
+            public int TargetAddress { get; }
+
+            public int SourceAddress1 { get; }
+
+            public int SourceAddress2 { get; }
         }
     }
 }

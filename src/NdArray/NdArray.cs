@@ -46,7 +46,7 @@ namespace NdArrayNet
             { typeof(int), (T v) => { var val = Convert.ToInt32(v); return string.Format("{0,4:D}", val); } },
             { typeof(long), (T v) => { var val = Convert.ToUInt64(v); return string.Format("{0,4:D}", val); } },
             { typeof(byte), (T v) => { var val = Convert.ToByte(v); return string.Format("{0,3:D}", val); } },
-            { typeof(bool), (T v) => { var val = Convert.ToBoolean(v); return val == true ? "true" : "false"; } },
+            { typeof(bool), (T v) => { var val = Convert.ToBoolean(v); return val ? "true" : "false"; } },
         };
 
         /// <summary>
