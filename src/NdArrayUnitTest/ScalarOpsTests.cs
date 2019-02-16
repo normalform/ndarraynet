@@ -154,5 +154,73 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.IsTrue(Enumerable.SequenceEqual(targetData, srcData));
         }
+
+        [TestMethod]
+        public void Multiply_Scalar()
+        {
+            // arange
+            var targetData = new int[1];
+            var src1Data = new int[1];
+            var src2Data = new int[1];
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
+            var src1 = new DataAndLayout<int>(src1Data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
+            var src2 = new DataAndLayout<int>(src2Data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
+
+            const int CopyPattern1 = 4;
+            src1Data[0] = CopyPattern1;
+
+            const int CopyPattern2 = 5;
+            src2Data[0] = CopyPattern2;
+
+            // action
+            ScalarOps.Multiply(target, src1, src2);
+
+            // assert
+            const int ExpectedValue = 20;
+            Assert.AreEqual(ExpectedValue, targetData[0]);
+        }
+
+        [TestMethod]
+        public void Multiply_Vector1D()
+        {
+            // arange
+            const int BufferSize = 10;
+            var targetData = new int[BufferSize];
+            var src1Data = Enumerable.Range(0, BufferSize).ToArray();
+            var src2Data = Enumerable.Range(0, BufferSize).ToArray();
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(src1Data, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<int>(src2Data, new FastAccess(new Layout(new int[] { BufferSize }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Multiply(target, src1, src2);
+
+            // assert
+            var expectedData = src1Data.Select(x => x * x).ToArray();
+            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+        }
+
+        [TestMethod]
+        public void Multiply_Vector2D()
+        {
+            // arange
+            const int BufferSize = 24;
+            var targetData = new int[BufferSize];
+            var src1Data = Enumerable.Range(0, BufferSize).ToArray();
+            var src2Data = Enumerable.Range(0, BufferSize).ToArray();
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 2, 3, 4 }, 0, new int[] { 12, 4, 1 })));
+            var src1 = new DataAndLayout<int>(src1Data, new FastAccess(new Layout(new int[] { 2, 3, 4 }, 0, new int[] { 12, 4, 1 })));
+            var src2 = new DataAndLayout<int>(src2Data, new FastAccess(new Layout(new int[] { 2, 3, 4 }, 0, new int[] { 12, 4, 1 })));
+
+            // action
+            ScalarOps.Multiply(target, src1, src2);
+
+            // assert
+            var expectedData = src1Data.Select(x => x * x).ToArray();
+            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+        }
     }
 }

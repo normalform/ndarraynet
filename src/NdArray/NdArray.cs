@@ -44,6 +44,8 @@ namespace NdArrayNet
         /// <param name="layout"></param>
         internal NdArray(Layout layout, IStorage<T> storage)
         {
+            Layout.Check(layout);
+
             Layout = layout;
             Storage = storage;
         }
@@ -150,6 +152,37 @@ namespace NdArrayNet
             array[pos] = value;
         }
 
+        public static (NdArray<TA>, NdArray<TB>) ApplyLayoutFn<TA, TB>(Func<Layout[], Layout[]> fn, NdArray<TA> a, NdArray<TB> b)
+        {
+            var layouts = new[] { a.Layout, b.Layout };
+            var newLayouts = fn(layouts);
+            if (newLayouts.Length == 2 && newLayouts[0] != null && newLayouts[1] != null)
+            {
+                return (a.Relayout(newLayouts[0]), b.Relayout(newLayouts[1]));
+            }
+
+            throw new InvalidOperationException("unexpected layout function result");
+        }
+
+        public static (NdArray<TA>, NdArray<TB>) BroadCastToSame<TA, TB>(NdArray<TA> a, NdArray<TB> b)
+        {
+            return ApplyLayoutFn(Layout.BroadcastToSameMany, a, b);
+        }
+
+        public static NdArray<TA> BroadCastTo<TA>(int[] shp, NdArray<TA> target)
+        {
+            var layout = Layout.BroadcastToShape(shp, target.Layout);
+            return target.Relayout(layout);
+        }
+
+        public static NdArray<T> operator *(NdArray<T> a, NdArray<T> b)
+        {
+            var (trgt, arrA, arrB) = PrepareElemwise<T, T, T>(a, b);
+            trgt.FillMultiply(a, b);
+
+            return trgt;
+        }
+
         public override string ToString()
         {
             return Pretty;
@@ -164,11 +197,6 @@ namespace NdArrayNet
         public NdArray<T> Relayout(Layout layout)
         {
             return new NdArray<T>(layout, Storage);
-        }
-
-        public NdArray<T> BroadCastTo(int[] shp, NdArray<T> target)
-        {
-            return target.Relayout(Layout.BroadcastToShape(shp, target.Layout));
         }
 
         public NdArray<T> Reshape(int[] shp)
@@ -281,7 +309,7 @@ namespace NdArrayNet
         {
             string msg;
             var val = array.Value;
-            if (typeof(float).IsInstanceOfType(val))
+            if (val is float)
             {
                 var fval = Convert.ToSingle(val);
                 if (fval >= 0.0f)
@@ -293,7 +321,7 @@ namespace NdArrayNet
                     msg = string.Format("{0,9:F3}", fval);
                 }
             }
-            else if (typeof(double).IsInstanceOfType(val))
+            else if (val is double)
             {
                 var fval = Convert.ToDouble(val);
                 if (fval >= 0.0)
@@ -305,22 +333,22 @@ namespace NdArrayNet
                     msg = string.Format("{0,9:F3}", fval);
                 }
             }
-            else if (typeof(int).IsInstanceOfType(val))
+            else if (val is int)
             {
                 var fval = Convert.ToInt32(val);
                 msg = string.Format("{0,4:D}", fval);
             }
-            else if (typeof(long).IsInstanceOfType(val))
+            else if (val is long)
             {
                 var fval = Convert.ToInt64(val);
                 msg = string.Format("{0,4:D}", fval);
             }
-            else if (typeof(byte).IsInstanceOfType(val))
+            else if (val is byte)
             {
                 var fval = Convert.ToByte(val);
                 msg = string.Format("{0,3:D}", fval);
             }
-            else if (typeof(bool).IsInstanceOfType(val))
+            else if (val is bool)
             {
                 var fval = Convert.ToBoolean(val);
                 if (fval is true)
@@ -367,6 +395,30 @@ namespace NdArrayNet
         {
             var target = new NdArray<TR>(array.Shape, array.Storage.Device, order);
             return (target, array);
+        }
+
+        internal static (NdArray<TR>, NdArray<TA>, NdArray<TB>) PrepareElemwise<TR, TA, TB>(NdArray<TA> arrayA, NdArray<TB> arrayB, Order order = Order.RowMajor)
+        {
+            // AssertSameStorage [later..]
+            var (arrA, arrB) = BroadCastToSame(arrayA, arrayB);
+            var target = new NdArray<TR>(arrA.Shape, arrA.Storage.Device, order);
+
+            return (target, arrayA, arrB);
+        }
+
+        internal static (NdArray<TA>, NdArray<TB>) PrepareElemwiseSources<TR, TA, TB>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB)
+        {
+            // AssertSameStorage [later..]
+            var arrA = BroadCastTo(target.Shape, arrayA);
+            var arrB = BroadCastTo(target.Shape, arrayB);
+
+            return (arrA, arrB);
+        }
+
+        internal void FillMultiply(NdArray<T> a, NdArray<T> b)
+        {
+            var (aa, bb) = PrepareElemwiseSources(this, a, b);
+            Backend.Multiply(this, aa, bb);
         }
 
         internal NdArray<T> Copy(Order order = Order.RowMajor)

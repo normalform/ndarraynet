@@ -30,6 +30,7 @@
 namespace NdArrayNet
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -86,6 +87,21 @@ namespace NdArrayNet
         public static Layout NewF(int[] shape)
         {
             return new Layout(shape, 0, FStride(shape));
+        }
+
+        public static void Check(Layout layout)
+        {
+            if (layout.Shape.Length != layout.Stride.Length)
+            {
+                var msg = string.Format("shape {0} and stride {1} must have same number of entries", layout.Shape, layout.Stride);
+                throw new ArgumentException(msg);
+            }
+
+            if (layout.Shape.Any(s => s < 0))
+            {
+                var msg = string.Format("shape {0} cannot have negative entires", layout.Shape);
+                throw new ArgumentException(msg);
+            }
         }
 
         public static int[] OrderedStride(int[] shape, int[] order)
@@ -207,6 +223,23 @@ namespace NdArrayNet
 
             var msg = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, layout.Shape);
             throw new ArgumentOutOfRangeException(msg);
+        }
+
+        /// <summary>
+        /// broadcasts to have the same size
+        /// </summary>
+        /// <param name="sas"></param>
+        /// <returns></returns>
+        public static Layout[] BroadcastToSameMany(Layout[] sas)
+        {
+            if (sas.Length == 0)
+            {
+                return sas;
+            }
+
+            var newSas = PadToSameMany(sas);
+
+            return BroadcastToSameInDimsMany(Enumerable.Range(0, newSas.First().NumDimensions).ToArray(), newSas);
         }
 
         public static Layout BroadcastToShape(int[] broadcastShape, Layout input)
@@ -441,6 +474,102 @@ namespace NdArrayNet
             }
 
             return null;
+        }
+
+        internal static Layout[] PadToSameMany(Layout[] sas)
+        {
+            var numDimsNeeded = sas.Select(l => l.NumDimensions).Max();
+
+            var result = new List<Layout>();
+            foreach (var l in sas)
+            {
+                var sa = l;
+                while (sa.NumDimensions < numDimsNeeded)
+                {
+                    sa = PadLeft(sa);
+                }
+
+                result.Add(sa);
+            }
+
+            return result.ToArray();
+        }
+
+        internal static Layout BroadcastDim(int dim, int size, Layout a)
+        {
+            if (size < 0)
+            {
+                throw new ArgumentOutOfRangeException("size", "size must be positive");
+            }
+
+            if (a.Shape[dim] == 1)
+            {
+                return new Layout(List.Set(dim, size, a.Shape), a.Offset, List.Set(dim, 0, a.Stride));
+            }
+
+            var msg = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, a.Shape);
+            throw new InvalidOperationException(msg);
+        }
+
+        /// <summary>
+        /// broadcasts to have the same size in the given dimensions
+        /// </summary>
+        /// <param name="dims"></param>
+        /// <param name="sas"></param>
+        /// <returns></returns>
+        internal static Layout[] BroadcastToSameInDimsMany(int[] dims, Layout[] sas)
+        {
+            var newSas = sas;
+
+            foreach (var dim in dims)
+            {
+                if (!sas.All(s => dim < s.NumDimensions))
+                {
+                    var msg = string.Format("Cannot broadcast shapes {0} to same size in non - existant dimension {1}.", sas, dim);
+                    throw new InvalidOperationException(msg);
+                }
+
+                var ls = sas.Select(s => s.Shape[dim]);
+                if (ls.Contains(1))
+                {
+                    var nonBc = ls.Where(s => s != 1);
+                    var set = new HashSet<int>(nonBc);
+                    var setCount = set.Count;
+                    if (setCount != 0)
+                    {
+                        if (setCount == 1)
+                        {
+                            var target = nonBc.First();
+                            var subSas = new List<Layout>();
+                            foreach (var sa in sas)
+                            {
+                                if (sa.Shape[dim] != target)
+                                {
+                                    subSas.Add(BroadcastDim(dim, target, sa));
+                                }
+                                else
+                                {
+                                    subSas.Add(sa);
+                                }
+                            }
+
+                            newSas = subSas.ToArray();
+                        }
+                        else
+                        {
+                            var msg = string.Format("Cannot broadcast shapes {0} to same size in dimension {1} because they do not agree in the target size.", sas, dim);
+                            throw new InvalidOperationException(msg);
+                        }
+                    }
+                }
+                else if (new HashSet<int>(ls).Count > 1)
+                {
+                    var msg = string.Format("Non-broadcast dimension {0} of shapes {1} does not agree.", dim, sas);
+                    throw new InvalidOperationException(msg);
+                }
+            }
+
+            return newSas;
         }
 
         private static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)

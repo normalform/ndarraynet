@@ -102,6 +102,25 @@ namespace NdArrayNet
             return (trgt.Relayout(tl).Backend.DataLayout, src.Relayout(ls[0]).Backend.DataLayout);
         }
 
+        public static (DataAndLayout<T>, DataAndLayout<TA>, DataAndLayout<TB>) ElemwiseDataAndLayout<TA, TB>(IFrontend<T> trgt, IFrontend<TA> a, IFrontend<TB> b)
+        {
+            var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { a.Layout, b.Layout });
+            return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout);
+        }
+
+        public void Multiply(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout(trgt, a, b);
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB))
+            {
+                VectorOps.Multiply(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+            else
+            {
+                ScalarOps.Multiply(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+        }
+
         public void FillIncrementing(T start, T step, IFrontend<T> trgt)
         {
             var dataAndLayout = ElemwiseDataAndLayout(trgt);

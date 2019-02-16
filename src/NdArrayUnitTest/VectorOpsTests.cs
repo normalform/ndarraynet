@@ -272,6 +272,30 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsTrue(Enumerable.SequenceEqual(targetData, srcData));
         }
 
+        [TestMethod]
+        public void Multiply()
+        {
+            // arange
+            var vectorCount = Vector<int>.Count;
+
+            // Itentionally break the alignment for the Vector operation to test more code.
+            var bufferSize = 10 + (vectorCount / 2);
+            var targetData = new int[bufferSize];
+            var src1Data = Enumerable.Range(0, bufferSize).ToArray();
+            var src2Data = Enumerable.Range(0, bufferSize).ToArray();
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(src1Data, new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<int>(src2Data, new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+
+            // action
+            VectorOps.Multiply(target, src1, src2);
+
+            // assert
+            var expectedData = src1Data.Select(x => x * x).ToArray();
+            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+        }
+
         private struct UnSupportedType
         {
         }

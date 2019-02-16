@@ -86,17 +86,9 @@ namespace NdArrayNet
                 if (Pos[d] == (Shape[d] - 1))
                 {
                     // was last element of that axis
-                    if (d == 0)
-                    {
-                        Addr = Addr - Stride[d];
-                    }
-                    else
-                    {
-                        Addr = Addr - (Stride[d - 1] - Stride[d]);
-                    }
-
+                    Addr = Addr - (Pos[d] * Stride[d]);
                     Pos[d] = 0;
-                    d--;
+                    d = d - 1;
                 }
                 else
                 {
