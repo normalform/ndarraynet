@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void HostStorage_WithMaximumSize_ThrowException()
         {
-            // arange
+            // arrange
             var size = int.MaxValue + 1L;
 
             // action
@@ -50,7 +50,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Backend()
         {
-            // arange
+            // arrange
             var data = new int[100];
             var hostStorage = new HostStorage<int>(data);
             var layout = new Layout(new[] { 10, 10 }, 0, new[] { 10, 1 });
@@ -65,7 +65,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Pin()
         {
-            // arange
+            // arrange
             var data = new int[100];
             var hostStorage = new HostStorage<int>(data);
             var layout = new Layout(new[] { 10, 10 }, 0, new[] { 10, 1 });

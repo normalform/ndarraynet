@@ -39,7 +39,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Offset()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 9, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -53,7 +53,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NumDiensions()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -67,7 +67,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NumElements()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -81,7 +81,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsPosValid_WithValidPos_ReturnTrue()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -95,7 +95,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsPosValid_WithInvalidPosWrongLength_ReturnFalse()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -109,7 +109,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsPosValid_WithInvalidPosOutOfRangeCase1_ReturnFalse()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -123,7 +123,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsPosValid_WithInvalidPosOutOfRangeCase2_ReturnFalse()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -137,7 +137,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsPosValid_WithNegativeIndex_ReturnFalse()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -152,7 +152,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Addr_WithInvalidLength_ThrowException()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 0, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -164,7 +164,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Addr_WithNegativeIndex_ThrowException()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -176,7 +176,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Addr_OutOfRange_ThrowException()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -187,7 +187,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Addr_Zero_ReturnOffset()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 
@@ -201,7 +201,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Addr_ValidIndex_ReturnOffset()
         {
-            // arange
+            // arrange
             var layout = new Layout(new[] { 3, 4 }, 5, new[] { 4, 1 });
             var fastAccess = new FastAccess(layout);
 

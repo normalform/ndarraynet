@@ -38,7 +38,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Instance_CreateHostDevice()
         {
-            // arange & action
+            // arrange & action
             var device = HostDevice.Instance;
 
             // assert
@@ -48,7 +48,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Id()
         {
-            // arange & action
+            // arrange & action
             var device = HostDevice.Instance;
 
             // assert
@@ -58,7 +58,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Zeroed()
         {
-            // arange & action
+            // arrange & action
             var device = HostDevice.Instance;
 
             // assert
@@ -68,7 +68,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Create()
         {
-            // arange
+            // arrange
             var device = HostDevice.Instance;
 
             // action

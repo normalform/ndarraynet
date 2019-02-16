@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUseSrc_WithNullSrc_ReturnTrue()
         {
-            // arange
+            // arrange
             const int DummyDimValue = 0;
 
             // action
@@ -53,7 +53,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUseSrc_ContinuousStride_ReturnTrue()
         {
-            // arange
+            // arrange
             const int BufferSize = 6;
             const int NumDim = 3;
             var data = new int[BufferSize];
@@ -69,7 +69,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUseSrc_NoStride_ReturnTrue()
         {
-            // arange
+            // arrange
             const int BufferSize = 1;
             const int NumDim = 1;
             var data = new int[BufferSize];
@@ -85,7 +85,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUseSrc_NotContinuousStride_ReturnFalse()
         {
-            // arange
+            // arrange
             const int BufferSize = 6;
             const int NumDim = 3;
             var data = new int[BufferSize];
@@ -101,7 +101,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_ScalarTarget_ReturnFalse()
         {
-            // arange
+            // arrange
             var target = new DataAndLayout<int>(new int[1], new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
 
             // action
@@ -114,9 +114,9 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_UnSupportedType_ReturnFalse()
         {
-            // arange
-            var data = new UnSupportedType[1];
-            var target = new DataAndLayout<UnSupportedType>(data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
+            // arrange
+            var data = new UnSupportedTypeForUnitTestOnly[1];
+            var target = new DataAndLayout<UnSupportedTypeForUnitTestOnly>(data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
 
             // action
             var canUse = VectorOps.CanUse(target);
@@ -128,7 +128,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_TargetIsNotContinuous_ReturnFalse()
         {
-            // arange
+            // arrange
             const int NotContinuousStride = 2;
             var target = new DataAndLayout<int>(new int[20], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { NotContinuousStride })));
 
@@ -142,7 +142,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_GoodTargetOnly_ReturnTrue()
         {
-            // arange
+            // arrange
             var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
 
             // action
@@ -155,7 +155,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_CanNotUseSrc1_ReturnFalse()
         {
-            // arange
+            // arrange
             var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
 
             const int NotContinuousStride = 2;
@@ -171,7 +171,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_CanUseSrc1_ReturnTrue()
         {
-            // arange
+            // arrange
             var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
             var src1 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
 
@@ -185,7 +185,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_CanNotUseSrc2Only_ReturnFalse()
         {
-            // arange
+            // arrange
             var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
             var src1 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
 
@@ -202,7 +202,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_CanNotUseSrc1Only_ReturnFalse()
         {
-            // arange
+            // arrange
             var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
             var src2 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
 
@@ -219,7 +219,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void CanUse_CanUseBothSrc1AndSrc2_ReturnTrue()
         {
-            // arange
+            // arrange
             var target = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
             var src1 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
             var src2 = new DataAndLayout<int>(new int[10], new FastAccess(new Layout(new int[] { 10 }, 0, new int[] { 1 })));
@@ -234,7 +234,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Fill()
         {
-            // arange
+            // arrange
             var vectorCount = Vector<int>.Count;
 
             // Itentionally break the alignment for the Vector operation to test more code.
@@ -254,7 +254,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Copy()
         {
-            // arange
+            // arrange
             var vectorCount = Vector<int>.Count;
 
             // Itentionally break the alignment for the Vector operation to test more code.
@@ -275,7 +275,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Multiply()
         {
-            // arange
+            // arrange
             var vectorCount = Vector<int>.Count;
 
             // Itentionally break the alignment for the Vector operation to test more code.
@@ -296,7 +296,7 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        private struct UnSupportedType
+        private struct UnSupportedTypeForUnitTestOnly
         {
         }
     }

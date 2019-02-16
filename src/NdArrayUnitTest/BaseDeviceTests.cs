@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(NotImplementedException))]
         public void Id_WithDummy_ThrowException()
         {
-            // arange
+            // arrange
             var dummy = new DummyBaseDevice();
 
             // action
@@ -51,7 +51,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(NotImplementedException))]
         public void Zeroed_WithDummy_ThrowException()
         {
-            // arange
+            // arrange
             var dummy = new DummyBaseDevice();
 
             // action
@@ -62,7 +62,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(NotImplementedException))]
         public void Create_WithDummy_ThrowException()
         {
-            // arange
+            // arrange
             var dummy = new DummyBaseDevice();
 
             // action

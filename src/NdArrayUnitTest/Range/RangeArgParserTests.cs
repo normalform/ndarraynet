@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_EmptyArgs_ReturnEmptyRanges()
         {
-            // arange
+            // arrange
             var args = new int[] { };
 
             // action
@@ -53,7 +53,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_RangeArgs_ReturnSameRanges()
         {
-            // arange
+            // arrange
             var args = new IRange[] { RangeFactory.Elem(9) };
 
             // action
@@ -66,7 +66,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_SignelInteger_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { 5 };
 
             // action
@@ -81,7 +81,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_SignelIntegerWithNewAxis_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.NewAxis };
 
             // action
@@ -95,7 +95,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_SignelIntegerWithFill_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.Fill };
 
             // action
@@ -109,7 +109,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_SignelIntegerWithNewAxisAndRanges_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.NewAxis }.Cast<object>().Concat(new IRange[] { RangeFactory.Elem(8) }).ToArray();
 
             // action
@@ -124,7 +124,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_SignelIntegerWithFillAndRanges_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.Fill }.Cast<object>().Concat(new IRange[] { RangeFactory.Elem(8) }).ToArray();
 
             // action
@@ -139,7 +139,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_TwoInteger_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { 5, 9 };
 
             // action
@@ -159,7 +159,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_TwoIntegerStartIsNewAxis_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.NewAxis, 9 };
 
             // action
@@ -170,7 +170,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_TwoIntegerStartIsFill_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.Fill, 9 };
 
             // action
@@ -181,7 +181,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_TwoIntegerStepIsNewAxis_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { 5, SpecialIdx.NewAxis };
 
             // action
@@ -192,7 +192,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_TwoIntegerStepIsFill_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { 5, SpecialIdx.Fill };
 
             // action
@@ -202,7 +202,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_ThreeInteger_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { 5, 9, 2 };
 
             // action
@@ -222,7 +222,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_ThreeIntegerStartIsNewAxis_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.NewAxis, 9, 2 };
 
             // action
@@ -233,7 +233,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_ThreeIntegerStartIsFill_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { SpecialIdx.Fill, 9, 2 };
 
             // action
@@ -244,7 +244,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_ThreeIntegerStopIsNewAxis_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { 5, SpecialIdx.NewAxis, 2 };
 
             // action
@@ -255,7 +255,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_ThreeIntegerStopIsFill_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { 5, SpecialIdx.Fill, 2 };
 
             // action
@@ -266,7 +266,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_ThreeIntegerStepIsNewAxis_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { 5, 9, SpecialIdx.NewAxis };
 
             // action
@@ -277,7 +277,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_ThreeIntegerStepIsFill_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { 5, 9, SpecialIdx.Fill };
 
             // action
@@ -287,7 +287,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Parse_FourInteger_ReturnOneElem()
         {
-            // arange
+            // arrange
             var args = new[] { 5, 9, 2, 7 };
 
             // action
@@ -310,7 +310,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_InvalidType_ThrowException()
         {
-            // arange
+            // arrange
             var args = new[] { "INVALID" };
 
             // action

@@ -38,7 +38,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Range_ReturnRangeTypeAndStartStopStep()
         {
-            // arange
+            // arrange
             var range = new Range(10, 30, 2);
 
             // action
@@ -54,7 +54,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Elem_ReturnElemRangeTypeAndPosition()
         {
-            // arange
+            // arrange
             var elem = new Elem(100);
 
             // action
@@ -68,7 +68,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NewAxis_ReturnNewAxisRangeType()
         {
-            // arange
+            // arrange
             var newAxis = new NewAxis();
 
             // action
@@ -81,7 +81,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void AllFill_ReturnAllFillRangeType()
         {
-            // arange
+            // arrange
             var allFill = new AllFill();
 
             // action

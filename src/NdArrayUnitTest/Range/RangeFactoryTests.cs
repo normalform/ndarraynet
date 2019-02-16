@@ -38,7 +38,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void NewAxis_ReturnNewAxis()
         {
-            // arange & action
+            // arrange & action
             var rng = RangeFactory.NewAxis;
 
             // assert
@@ -48,7 +48,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void AllFill_ReturnAllFill()
         {
-            // arange & action
+            // arrange & action
             var rng = RangeFactory.AllFill;
 
             // assert
@@ -58,7 +58,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Range_ReturnRange()
         {
-            // arange & action
+            // arrange & action
             var rng = RangeFactory.Range(10, 30, 2) as Range;
 
             // assert
@@ -71,7 +71,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void All_ReturnRangeWithAllZeros()
         {
-            // arange & action
+            // arrange & action
             var rng = RangeFactory.All as Range;
 
             // assert
@@ -84,7 +84,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void Elem_ReturnElem()
         {
-            // arange & action
+            // arrange & action
             var rng = RangeFactory.Elem(100) as Elem;
 
             // assert

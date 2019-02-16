@@ -111,245 +111,313 @@ namespace NdArrayNet
             return (D)del;
         }
 
-        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, DataAndLayout<T> trgt, DataAndLayout<T1> src)
+        private static void Stride11InnerLoop<T, T1>(
+            Func<Vector<T1>, Vector<T>> vectorOp,
+            int[] shape,
+            int lastDimensionIndex,
+            UnaryDataAndLayouts<T, T1> unaryDataAndLayouts,
+            int vectorCount,
+            UnaryAddessBases unaryAddessBases)
+                where T : struct
+                where T1 : struct
+        {
+            var targetAddress = unaryAddessBases.TargetAddress;
+            var sourceAddress = unaryAddessBases.SourceAddress;
+            var sourceBuffer = new T1[vectorCount];
+
+            var vectorIters = shape[lastDimensionIndex] / vectorCount;
+            for (var vecIter = 0; vecIter < vectorIters; vecIter++)
+            {
+                var targetVec = vectorOp(new Vector<T1>(unaryDataAndLayouts.Source.Data, sourceAddress));
+                targetVec.CopyTo(unaryDataAndLayouts.Target.Data, targetAddress);
+                targetAddress += vectorCount;
+                sourceAddress += vectorCount;
+            }
+
+            var restElems = shape[lastDimensionIndex] % vectorCount;
+            for (var restPos = 0; restPos < restElems; restPos++)
+            {
+                sourceBuffer[restPos] = unaryDataAndLayouts.Source.Data[sourceAddress];
+                sourceAddress++;
+            }
+
+            var restTrgtVec = vectorOp(new Vector<T1>(sourceBuffer));
+            for (var restPos = 0; restPos < restElems; restPos++)
+            {
+                unaryDataAndLayouts.Target.Data[targetAddress] = restTrgtVec[restPos];
+                targetAddress++;
+            }
+        }
+
+        private static void Stride10InnerLoop<T, T1>(
+            Func<Vector<T1>, Vector<T>> vectorOp,
+            int[] shape,
+            int lastDimensionIndex,
+            UnaryDataAndLayouts<T, T1> unaryDataAndLayouts,
+            int vectorCount,
+            UnaryAddessBases unaryAddessBases)
+                where T : struct
+                where T1 : struct
+        {
+            var targetAddress = unaryAddessBases.TargetAddress;
+            var vectorIters = shape[lastDimensionIndex] / vectorCount;
+            var sourceVector = new Vector<T1>(unaryDataAndLayouts.Source.Data[unaryAddessBases.SourceAddress]);
+            var targetVector = vectorOp(sourceVector);
+
+            for (var vecIter = 0; vecIter < vectorIters; vecIter++)
+            {
+                targetVector.CopyTo(unaryDataAndLayouts.Target.Data, targetAddress);
+                targetAddress += vectorCount;
+            }
+
+            var restElems = shape[lastDimensionIndex] % vectorCount;
+            for (var restPos = 0; restPos < restElems; restPos++)
+            {
+                unaryDataAndLayouts.Target.Data[targetAddress] = targetVector[restPos];
+                targetAddress++;
+            }
+        }
+
+        private static void ApplyUnary<T, T1>(Func<Vector<T1>, Vector<T>> vectorOp, UnaryDataAndLayouts<T, T1> unaryDataAndLayouts)
             where T : struct
             where T1 : struct
         {
             Debug.Assert(Vector<T>.Count == Vector<T1>.Count, "Vector sizes should be matched");
 
-            var nd = trgt.FastAccess.NumDiensions;
-            var shape = trgt.FastAccess.Shape;
-            var srcBuf = new T1[Vector<T>.Count];
+            var lastDimensionIndex = unaryDataAndLayouts.Target.FastAccess.NumDiensions - 1;
+            var shape = unaryDataAndLayouts.Target.FastAccess.Shape;
+            var vectorCount = Vector<T>.Count;
 
-            void stride11InnerLoop(int tAddr, int sAddr)
+            var targetIter = new PosIter(unaryDataAndLayouts.Target.FastAccess, toDim: lastDimensionIndex - 1);
+            var srcIter = new PosIter(unaryDataAndLayouts.Source.FastAccess, toDim: lastDimensionIndex - 1);
+
+            while (targetIter.Active)
             {
-                var targetAddr = tAddr;
-                var srcAddr = sAddr;
+                var targetStride = unaryDataAndLayouts.Target.FastAccess.Stride[lastDimensionIndex];
+                var sourceStride = unaryDataAndLayouts.Source.FastAccess.Stride[lastDimensionIndex];
 
-                var vecIters = shape[nd - 1] / Vector<T>.Count;
-                for (var vecIter = 0; vecIter < vecIters; vecIter++)
+                var unaryAddessBases = new UnaryAddessBases(targetIter.Addr, srcIter.Addr);
+                if (targetStride == 1 && sourceStride == 1)
                 {
-                    var trgtVec = vectorOp(new Vector<T1>(src.Data, srcAddr));
-                    trgtVec.CopyTo(trgt.Data, targetAddr);
-                    targetAddr = targetAddr + Vector<T>.Count;
-                    srcAddr = srcAddr + Vector<T>.Count;
+                    Stride11InnerLoop(vectorOp, shape, lastDimensionIndex, unaryDataAndLayouts, vectorCount, unaryAddessBases);
                 }
-
-                var restElems = shape[nd - 1] % Vector<T>.Count;
-                for (var restPos = 0; restPos < restElems; restPos++)
+                else if (targetStride == 1 && sourceStride == 0)
                 {
-                    srcBuf[restPos] = src.Data[srcAddr];
-                    srcAddr = srcAddr + 1;
-                }
-
-                var restTrgtVec = vectorOp(new Vector<T1>(srcBuf));
-                for (var restPos = 0; restPos < restElems; restPos++)
-                {
-                    trgt.Data[targetAddr] = restTrgtVec[restPos];
-                    targetAddr = targetAddr + 1;
-                }
-            }
-
-            void stride10InnerLoop(int tAddr, int srcAddr)
-            {
-                var targetAddr = tAddr;
-                var vecIters = shape[nd - 1] / Vector<T>.Count;
-                var srcVec = new Vector<T1>(src.Data[srcAddr]);
-                var trgtVec = vectorOp(srcVec);
-
-                for (var vecIter = 0; vecIter < vecIters; vecIter++)
-                {
-                    trgtVec.CopyTo(trgt.Data, targetAddr);
-                    targetAddr = targetAddr + Vector<T>.Count;
-                }
-
-                var restElems = shape[nd - 1] % Vector<T>.Count;
-                for (var restPos = 0; restPos < restElems; restPos++)
-                {
-                    trgt.Data[targetAddr] = trgtVec[restPos];
-                    targetAddr = targetAddr + 1;
-                }
-            }
-
-            var targetPosItr = new PosIter(trgt.FastAccess, toDim: nd - 2);
-            var srcPosItr = new PosIter(src.FastAccess, toDim: nd - 2);
-
-            while (targetPosItr.Active)
-            {
-                if (trgt.FastAccess.Stride[nd - 1] == 1 && src.FastAccess.Stride[nd - 1] == 1)
-                {
-                    stride11InnerLoop(targetPosItr.Addr, srcPosItr.Addr);
-                }
-                else if (trgt.FastAccess.Stride[nd - 1] == 1 && src.FastAccess.Stride[nd - 1] == 0)
-                {
-                    stride10InnerLoop(targetPosItr.Addr, srcPosItr.Addr);
+                    Stride10InnerLoop(vectorOp, shape, lastDimensionIndex, unaryDataAndLayouts, vectorCount, unaryAddessBases);
                 }
                 else
                 {
                     throw new InvalidOperationException("vector operation not applicable to the given NdArray");
                 }
 
-                targetPosItr.MoveNext();
-                srcPosItr.MoveNext();
+                targetIter.MoveNext();
+                srcIter.MoveNext();
             }
         }
 
-        private static void ApplyBinary<T, T1, T2>(Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp, DataAndLayout<T> trgt, DataAndLayout<T1> src1, DataAndLayout<T2> src2)
-            where T : struct
-            where T1 : struct
-            where T2 : struct
+        private static void Stride111InnerLoop<T, T1, T2>(
+            Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
+            int[] shape,
+            int lastDimensionIndex,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
+            int vectorCount,
+            BinaryAddessBases binaryAddessBases)
+                where T : struct
+                where T1 : struct
+                where T2 : struct
+        {
+            var targetAddress = binaryAddessBases.TargetAddress;
+            var sourceAddress1 = binaryAddessBases.SourceAddress1;
+            var sourceAddress2 = binaryAddessBases.SourceAddress2;
+            var sourceBuffer1 = new T1[vectorCount];
+            var sourceBuffer2 = new T2[vectorCount];
+
+            var vectorIters = shape[lastDimensionIndex] / vectorCount;
+            for (var vecIter = 0; vecIter < vectorIters; vecIter++)
+            {
+                var targetVec = vectorOp(new Vector<T1>(binaryDataLaouts.Source1.Data, sourceAddress1), new Vector<T2>(binaryDataLaouts.Source2.Data, sourceAddress2));
+                targetVec.CopyTo(binaryDataLaouts.Target.Data, targetAddress);
+                targetAddress += vectorCount;
+                sourceAddress1 += vectorCount;
+                sourceAddress2 += vectorCount;
+            }
+
+            var restElements = shape[lastDimensionIndex] % vectorCount;
+            for (var restPos = 0; restPos < restElements; restPos++)
+            {
+                sourceBuffer1[restPos] = binaryDataLaouts.Source1.Data[sourceAddress1];
+                sourceBuffer2[restPos] = binaryDataLaouts.Source2.Data[sourceAddress2];
+                sourceAddress1++;
+                sourceAddress2++;
+            }
+
+            var restTrgtVec = vectorOp(new Vector<T1>(sourceBuffer1), new Vector<T2>(sourceBuffer2));
+            for (var restPos = 0; restPos < restElements; restPos++)
+            {
+                binaryDataLaouts.Target.Data[targetAddress] = restTrgtVec[restPos];
+                targetAddress++;
+            }
+        }
+
+        private static void Stride110InnerLoop<T, T1, T2>(
+            Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
+            int[] shape,
+            int lastDimensionIndex,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
+            int vectorCount,
+            BinaryAddessBases binaryAddessBases)
+                where T : struct
+                where T1 : struct
+                where T2 : struct
+        {
+            var targetAddress = binaryAddessBases.TargetAddress;
+            var sourceAddress1 = binaryAddessBases.SourceAddress1;
+            var sourceBuffer1 = new T1[vectorCount];
+            var sourceVector2 = new Vector<T2>(binaryDataLaouts.Source2.Data[binaryAddessBases.SourceAddress2]);
+
+            var vectorIters = shape[lastDimensionIndex] / vectorCount;
+
+            for (var vecIter = 0; vecIter < vectorIters; vecIter++)
+            {
+                var targetVector = vectorOp(new Vector<T1>(binaryDataLaouts.Source1.Data, sourceAddress1), sourceVector2);
+                targetVector.CopyTo(binaryDataLaouts.Target.Data, targetAddress);
+                targetAddress += vectorCount;
+                sourceAddress1 += vectorCount;
+            }
+
+            var restElems = shape[lastDimensionIndex] % vectorCount;
+            for (var restPos = 0; restPos < restElems; restPos++)
+            {
+                sourceBuffer1[restPos] = binaryDataLaouts.Source1.Data[sourceAddress1];
+                sourceAddress1++;
+            }
+
+            var trgtVec2 = vectorOp(new Vector<T1>(sourceBuffer1), sourceVector2);
+            for (var restPos = 0; restPos < restElems; restPos++)
+            {
+                binaryDataLaouts.Target.Data[targetAddress] = trgtVec2[restPos];
+                targetAddress++;
+            }
+        }
+
+        private static void Stride101InnerLoop<T, T1, T2>(
+            Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
+            int[] shape,
+            int lastDimensionIndex,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
+            int vectorCount,
+            BinaryAddessBases binaryAddessBases)
+                where T : struct
+                where T1 : struct
+                where T2 : struct
+        {
+            var targetAddr = binaryAddessBases.TargetAddress;
+            var sourceAddress2 = binaryAddessBases.SourceAddress2;
+
+            var sourceVector1 = new Vector<T1>(binaryDataLaouts.Source1.Data[binaryAddessBases.SourceAddress1]);
+            var sourceBuffer2 = new T2[vectorCount];
+            var vectorIters = shape[lastDimensionIndex] / vectorCount;
+
+            for (var vecIter = 0; vecIter < vectorIters; vecIter++)
+            {
+                var targetVector = vectorOp(sourceVector1, new Vector<T2>(binaryDataLaouts.Source2.Data, sourceAddress2));
+                targetVector.CopyTo(binaryDataLaouts.Target.Data, targetAddr);
+                targetAddr += vectorCount;
+                sourceAddress2 += vectorCount;
+            }
+
+            var restElements = shape[lastDimensionIndex] % vectorCount;
+            for (var restPos = 0; restPos < restElements; restPos++)
+            {
+                sourceBuffer2[restPos] = binaryDataLaouts.Source2.Data[sourceAddress2];
+                sourceAddress2 = sourceAddress2 + 1;
+            }
+
+            var trgtVec2 = vectorOp(sourceVector1, new Vector<T2>(sourceBuffer2));
+            for (var restPos = 0; restPos < restElements; restPos++)
+            {
+                binaryDataLaouts.Target.Data[targetAddr] = trgtVec2[restPos];
+                targetAddr = targetAddr + 1;
+            }
+        }
+
+        private static void Stride100InnerLoop<T, T1, T2>(
+            Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
+            int[] shape,
+            int lastDimensionIndex,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts,
+            int vectorCount,
+            BinaryAddessBases binaryAddessBases)
+                where T : struct
+                where T1 : struct
+                where T2 : struct
+        {
+            var targetAddress = binaryAddessBases.TargetAddress;
+            var vectorIters = shape[lastDimensionIndex] / vectorCount;
+            var targetVector = vectorOp(new Vector<T1>(binaryDataLaouts.Source1.Data[binaryAddessBases.SourceAddress1]), new Vector<T2>(binaryDataLaouts.Source2.Data[binaryAddessBases.SourceAddress2]));
+
+            for (var vecIter = 0; vecIter < vectorIters; vecIter++)
+            {
+                targetVector.CopyTo(binaryDataLaouts.Target.Data, targetAddress);
+                targetAddress += vectorCount;
+            }
+
+            var resetElements = shape[lastDimensionIndex] % vectorCount;
+            for (var restPos = 0; restPos < resetElements; restPos++)
+            {
+                binaryDataLaouts.Target.Data[targetAddress] = targetVector[restPos];
+                targetAddress++;
+            }
+        }
+
+        private static void ApplyBinary<T, T1, T2>(
+            Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
+            BinaryDataAndLayouts<T, T1, T2> binaryDataLaouts)
+                where T : struct
+                where T1 : struct
+                where T2 : struct
         {
             Debug.Assert(Vector<T>.Count == Vector<T1>.Count && Vector<T1>.Count == Vector<T2>.Count, "Vector sizes should be matched");
 
-            var nd = trgt.FastAccess.NumDiensions;
-            var shape = trgt.FastAccess.Shape;
+            var lastDimensionIndex = binaryDataLaouts.Target.FastAccess.NumDiensions - 1;
+            var shape = binaryDataLaouts.Target.FastAccess.Shape;
             var vectorCount = Vector<T>.Count;
-            var src1Buf = new T1[vectorCount];
-            var src2Buf = new T2[vectorCount];
 
-            void stride111InnerLoop(int tAddr, int s1Addr, int s2Addr)
+            var targetIter = new PosIter(binaryDataLaouts.Target.FastAccess, toDim: lastDimensionIndex - 1);
+            var sourceIter1 = new PosIter(binaryDataLaouts.Source1.FastAccess, toDim: lastDimensionIndex - 1);
+            var sourceIter2 = new PosIter(binaryDataLaouts.Source2.FastAccess, toDim: lastDimensionIndex - 1);
+
+            while (targetIter.Active)
             {
-                var targetAddr = tAddr;
-                var src1Addr = s1Addr;
-                var src2Addr = s2Addr;
+                var targetStride = binaryDataLaouts.Target.FastAccess.Stride[lastDimensionIndex];
+                var sourceStride1 = binaryDataLaouts.Source1.FastAccess.Stride[lastDimensionIndex];
+                var sourceStride2 = binaryDataLaouts.Source2.FastAccess.Stride[lastDimensionIndex];
+                var binaryAddessBases = new BinaryAddessBases(targetIter.Addr, sourceIter1.Addr, sourceIter2.Addr);
 
-                var vecIters = shape[nd - 1] / vectorCount;
-                for (var vecIter = 0; vecIter < vecIters; vecIter++)
+                if (targetStride == 1 && sourceStride1 == 1 && sourceStride2 == 1)
                 {
-                    var trgtVec = vectorOp(new Vector<T1>(src1.Data, src1Addr), new Vector<T2>(src2.Data, src2Addr));
-                    trgtVec.CopyTo(trgt.Data, targetAddr);
-                    targetAddr = targetAddr + Vector<T>.Count;
-                    src1Addr = src1Addr + Vector<T>.Count;
-                    src2Addr = src2Addr + Vector<T>.Count;
+                    Stride111InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
-
-                var restElems = shape[nd - 1] % vectorCount;
-                for (var restPos = 0; restPos < restElems; restPos++)
+                else if (targetStride == 1 && sourceStride1 == 1 && sourceStride2 == 0)
                 {
-                    src1Buf[restPos] = src1.Data[src1Addr];
-                    src2Buf[restPos] = src2.Data[src2Addr];
-                    src1Addr = src1Addr + 1;
-                    src2Addr = src2Addr + 1;
+                    Stride110InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
-
-                var restTrgtVec = vectorOp(new Vector<T1>(src1Buf), new Vector<T2>(src2Buf));
-                for (var restPos = 0; restPos < restElems; restPos++)
+                else if (targetStride == 1 && sourceStride1 == 0 && sourceStride2 == 1)
                 {
-                    trgt.Data[targetAddr] = restTrgtVec[restPos];
-                    targetAddr = targetAddr + 1;
+                    Stride101InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
-            }
-
-            void stride110InnerLoop(int tAddr, int s1Addr, int src2Addr)
-            {
-                var targetAddr = tAddr;
-                var src1Addr = s1Addr;
-                var vecIters = shape[nd - 1] / Vector<T>.Count;
-                var src2Vec = new Vector<T2>(src2.Data[src2Addr]);
-
-                for (var vecIter = 0; vecIter < vecIters; vecIter++)
+                else if (targetStride == 1 && sourceStride1 == 0 && sourceStride2 == 0)
                 {
-                    var trgtVec = vectorOp(new Vector<T1>(src1.Data, src1Addr), src2Vec);
-                    trgtVec.CopyTo(trgt.Data, targetAddr);
-                    targetAddr = targetAddr + Vector<T>.Count;
-                    src1Addr = src1Addr + Vector<T>.Count;
-                }
-
-                var restElems = shape[nd - 1] % Vector<T>.Count;
-                for (var restPos = 0; restPos < restElems; restPos++)
-                {
-                    src1Buf[restPos] = src1.Data[src1Addr];
-                    src1Addr = src1Addr + 1;
-                }
-
-                var trgtVec2 = vectorOp(new Vector<T1>(src1Buf), src2Vec);
-                for (var restPos = 0; restPos < restElems; restPos++)
-                {
-                    trgt.Data[targetAddr] = trgtVec2[restPos];
-                    targetAddr = targetAddr + 1;
-                }
-            }
-
-            void stride101InnerLoop(int tAddr, int src1Addr, int s2Addr)
-            {
-                var targetAddr = tAddr;
-                var src2Addr = s2Addr;
-                var vecIters = shape[nd - 1] / Vector<T>.Count;
-                var src1Vec = new Vector<T1>(src1.Data[src1Addr]);
-
-                for (var vecIter = 0; vecIter < vecIters; vecIter++)
-                {
-                    var trgtVec = vectorOp(src1Vec, new Vector<T2>(src2.Data, src2Addr));
-                    trgtVec.CopyTo(trgt.Data, targetAddr);
-                    targetAddr = targetAddr + Vector<T>.Count;
-                    src2Addr = src2Addr + Vector<T>.Count;
-                }
-
-                var restElems = shape[nd - 1] % Vector<T>.Count;
-                for (var restPos = 0; restPos < restElems; restPos++)
-                {
-                    src2Buf[restPos] = src2.Data[src2Addr];
-                    src2Addr = src2Addr + 1;
-                }
-
-                var trgtVec2 = vectorOp(src1Vec, new Vector<T2>(src2Buf));
-                for (var restPos = 0; restPos < restElems; restPos++)
-                {
-                    trgt.Data[targetAddr] = trgtVec2[restPos];
-                    targetAddr = targetAddr + 1;
-                }
-            }
-
-            void stride100InnerLoop(int tAddr, int src1Addr, int src2Addr)
-            {
-                var targetAddr = tAddr;
-                var vecIters = shape[nd - 1] / Vector<T>.Count;
-                var trgtVec = vectorOp(new Vector<T1>(src1.Data[src1Addr]), new Vector<T2>(src2.Data[src2Addr]));
-
-                for (var vecIter = 0; vecIter < vecIters; vecIter++)
-                {
-                    trgtVec.CopyTo(trgt.Data, targetAddr);
-                    targetAddr = targetAddr + Vector<T>.Count;
-                }
-
-                var restElems = shape[nd - 1] % Vector<T>.Count;
-                for (var restPos = 0; restPos < restElems; restPos++)
-                {
-                    trgt.Data[targetAddr] = trgtVec[restPos];
-                    targetAddr = targetAddr + 1;
-                }
-            }
-
-            var targetPosItr = new PosIter(trgt.FastAccess, toDim: nd - 2);
-            var src1PosItr = new PosIter(src1.FastAccess, toDim: nd - 2);
-            var src2PosItr = new PosIter(src2.FastAccess, toDim: nd - 2);
-
-            while (targetPosItr.Active)
-            {
-                if (trgt.FastAccess.Stride[nd - 1] == 1 && src1.FastAccess.Stride[nd - 1] == 1 && src2.FastAccess.Stride[nd - 1] == 1)
-                {
-                    stride111InnerLoop(targetPosItr.Addr, src1PosItr.Addr, src2PosItr.Addr);
-                }
-                else if (trgt.FastAccess.Stride[nd - 1] == 1 && src1.FastAccess.Stride[nd - 1] == 1 && src2.FastAccess.Stride[nd - 1] == 0)
-                {
-                    stride110InnerLoop(targetPosItr.Addr, src1PosItr.Addr, src2PosItr.Addr);
-                }
-                else if (trgt.FastAccess.Stride[nd - 1] == 1 && src1.FastAccess.Stride[nd - 1] == 0 && src2.FastAccess.Stride[nd - 1] == 1)
-                {
-                    stride101InnerLoop(targetPosItr.Addr, src1PosItr.Addr, src2PosItr.Addr);
-                }
-                else if (trgt.FastAccess.Stride[nd - 1] == 1 && src1.FastAccess.Stride[nd - 1] == 0 && src2.FastAccess.Stride[nd - 1] == 0)
-                {
-                    stride100InnerLoop(targetPosItr.Addr, src1PosItr.Addr, src2PosItr.Addr);
+                    Stride100InnerLoop(vectorOp, shape, lastDimensionIndex, binaryDataLaouts, vectorCount, binaryAddessBases);
                 }
                 else
                 {
                     throw new InvalidOperationException("vector operation not applicable to the given NdArray");
                 }
 
-                targetPosItr.MoveNext();
-                src1PosItr.MoveNext();
-                src2PosItr.MoveNext();
+                targetIter.MoveNext();
+                sourceIter1.MoveNext();
+                sourceIter2.MoveNext();
             }
         }
 
@@ -358,19 +426,20 @@ namespace NdArrayNet
         {
             var nd = trgt.FastAccess.NumDiensions;
             var shape = trgt.FastAccess.Shape;
+            var vectorCount = Vector<T>.Count;
 
             void vectorInnerLoop(int addr)
             {
                 var trgtAddr = addr;
                 var trgtVec = new Vector<T>(value);
-                var vecIters = shape[nd - 1] / Vector<T>.Count;
+                var vecIters = shape[nd - 1] / vectorCount;
                 for (var vecIter = 0; vecIter < vecIters; vecIter++)
                 {
                     trgtVec.CopyTo(trgt.Data, trgtAddr);
-                    trgtAddr += Vector<T>.Count;
+                    trgtAddr += vectorCount;
                 }
 
-                var restElems = shape[nd - 1] % Vector<T>.Count;
+                var restElems = shape[nd - 1] % vectorCount;
                 for (var restPos = 0; restPos < restElems; restPos++)
                 {
                     trgt.Data[trgtAddr] = trgtVec[restPos];
@@ -397,13 +466,72 @@ namespace NdArrayNet
         private static void CopyImpl<T>(DataAndLayout<T> trgt, DataAndLayout<T> src) where T : struct
         {
             Vector<T> op(Vector<T> v) => v;
-            ApplyUnary(op, trgt, src);
+            ApplyUnary(op, new UnaryDataAndLayouts<T, T>(trgt, src));
         }
 
-        private static void MultiplyImpl<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2) where T : struct
+        private static void MultiplyImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
         {
             Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Multiply(a, b);
-            ApplyBinary(op, trgt, src1, src2);
+
+            ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
+        private class UnaryDataAndLayouts<T, T1>
+        {
+            public UnaryDataAndLayouts(DataAndLayout<T> target, DataAndLayout<T1> source)
+            {
+                Target = target;
+                Source = source;
+            }
+
+            public DataAndLayout<T> Target { get; }
+
+            public DataAndLayout<T1> Source { get; }
+        }
+
+        private class UnaryAddessBases
+        {
+            public UnaryAddessBases(int targetAddress, int sourceAddress)
+            {
+                TargetAddress = targetAddress;
+                SourceAddress = sourceAddress;
+            }
+
+            public int TargetAddress { get; }
+
+            public int SourceAddress { get; }
+        }
+
+        private class BinaryDataAndLayouts<T, T1, T2>
+        {
+            public BinaryDataAndLayouts(DataAndLayout<T> target, DataAndLayout<T1> source1, DataAndLayout<T2> source2)
+            {
+                Target = target;
+                Source1 = source1;
+                Source2 = source2;
+            }
+
+            public DataAndLayout<T> Target { get; }
+
+            public DataAndLayout<T1> Source1 { get; }
+
+            public DataAndLayout<T2> Source2 { get; }
+        }
+
+        private class BinaryAddessBases
+        {
+            public BinaryAddessBases(int targetAddress, int sourceAddress1, int sourceAddress2)
+            {
+                TargetAddress = targetAddress;
+                SourceAddress1 = sourceAddress1;
+                SourceAddress2 = sourceAddress2;
+            }
+
+            public int TargetAddress { get; }
+
+            public int SourceAddress1 { get; }
+
+            public int SourceAddress2 { get; }
         }
     }
 }
