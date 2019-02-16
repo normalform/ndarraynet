@@ -329,7 +329,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var strDouble = NdArray<double>.ScalarString(NdArray<double>.Ones(device, new int[] { }));
             var strBool = NdArray<bool>.ScalarString(NdArray<bool>.Ones(device, new int[] { }));
             var strByte = NdArray<byte>.ScalarString(NdArray<byte>.Ones(device, new int[] { }));
-            var strUnkown = NdArray<UnKownValueTypeForTest>.ScalarString(NdArray<UnKownValueTypeForTest>.Zeros(device, new int[] { }));
+            var strUnkown = NdArray<UnKownValueTypeForTestOnly>.ScalarString(NdArray<UnKownValueTypeForTestOnly>.Zeros(device, new int[] { }));
 
             // assert
             Assert.AreEqual("   1", strInt);
@@ -481,7 +481,52 @@ namespace NdArrayNet.NdArrayUnitTest
             CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
         }
 
-        private struct UnKownValueTypeForTest
+        [TestMethod]
+        public void Broadcasting_VectorsWithScalar()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var arrayA = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Ones(device, new int[] { });
+
+            // action
+            var result = arrayA * arrayB;
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+        }
+
+        [TestMethod]
+        public void Broadcasting_ScalarWithScalar()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var arrayA = NdArray<int>.Ones(device, new int[] { });
+            var arrayB = NdArray<int>.Ones(device, new int[] { });
+
+            // action
+            var result = arrayA * arrayB;
+
+            // assert
+            CollectionAssert.AreEqual(new int[] { }, result.Shape);
+        }
+
+        [TestMethod]
+        public void Broadcasting_ScalarWithVectors()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var arrayA = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Ones(device, new int[] { });
+
+            // action
+            var result = arrayB * arrayA;
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+        }
+
+        private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()
             {

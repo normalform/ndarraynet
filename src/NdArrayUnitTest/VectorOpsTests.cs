@@ -115,8 +115,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CanUse_UnSupportedType_ReturnFalse()
         {
             // arrange
-            var data = new UnSupportedType[1];
-            var target = new DataAndLayout<UnSupportedType>(data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
+            var data = new UnSupportedTypeForUnitTestOnly[1];
+            var target = new DataAndLayout<UnSupportedTypeForUnitTestOnly>(data, new FastAccess(new Layout(new int[] { }, 0, new int[] { })));
 
             // action
             var canUse = VectorOps.CanUse(target);
@@ -296,7 +296,7 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        private struct UnSupportedType
+        private struct UnSupportedTypeForUnitTestOnly
         {
         }
     }

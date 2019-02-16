@@ -262,19 +262,17 @@ namespace NdArrayNet
             {
                 var targetShapeValue = broadcastLayout.Shape[dimIndex];
                 var inputShapeValue = broadcastShape[dimIndex];
-                if (targetShapeValue == inputShapeValue)
+                if (targetShapeValue != inputShapeValue)
                 {
-                    continue;
-                }
-
-                if (targetShapeValue == 1)
-                {
-                    broadcastLayout = BraodcastDim(dimIndex, inputShapeValue, broadcastLayout);
-                }
-                else
-                {
-                    var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", input.Shape, broadcastShape);
-                    throw new InvalidOperationException(msg);
+                    if (targetShapeValue == 1)
+                    {
+                        broadcastLayout = BraodcastDim(dimIndex, inputShapeValue, broadcastLayout);
+                    }
+                    else
+                    {
+                        var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", input.Shape, broadcastShape);
+                        throw new InvalidOperationException(msg);
+                    }
                 }
             }
 
@@ -519,8 +517,6 @@ namespace NdArrayNet
         /// <returns></returns>
         internal static Layout[] BroadcastToSameInDimsMany(int[] dims, Layout[] sas)
         {
-            var newSas = sas;
-
             foreach (var dim in dims)
             {
                 if (!sas.All(s => dim < s.NumDimensions))
@@ -540,20 +536,18 @@ namespace NdArrayNet
                         if (setCount == 1)
                         {
                             var target = nonBc.First();
-                            var subSas = new List<Layout>();
-                            foreach (var sa in sas)
+                            for (var sasIndex = 0; sasIndex < sas.Length; sasIndex++)
                             {
+                                var sa = sas[sasIndex];
                                 if (sa.Shape[dim] != target)
                                 {
-                                    subSas.Add(BroadcastDim(dim, target, sa));
+                                    sas[sasIndex] = BroadcastDim(dim, target, sa);
                                 }
                                 else
                                 {
-                                    subSas.Add(sa);
+                                    sas[sasIndex] = sa;
                                 }
                             }
-
-                            newSas = subSas.ToArray();
                         }
                         else
                         {
@@ -569,7 +563,7 @@ namespace NdArrayNet
                 }
             }
 
-            return newSas;
+            return sas;
         }
 
         private static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)
