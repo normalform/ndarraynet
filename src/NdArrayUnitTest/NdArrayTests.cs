@@ -329,6 +329,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var strDouble = NdArray<double>.ScalarString(NdArray<double>.Ones(device, new int[] { }));
             var strBool = NdArray<bool>.ScalarString(NdArray<bool>.Ones(device, new int[] { }));
             var strByte = NdArray<byte>.ScalarString(NdArray<byte>.Ones(device, new int[] { }));
+            var strUnkown = NdArray<UnKownValueTypeForTest>.ScalarString(NdArray<UnKownValueTypeForTest>.Zeros(device, new int[] { }));
 
             // assert
             Assert.AreEqual("   1", strInt);
@@ -337,6 +338,7 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual("   1.0000", strDouble);
             Assert.AreEqual("true", strBool);
             Assert.AreEqual("  1", strByte);
+            Assert.AreEqual("UnKownType", strUnkown);
         }
 
         [TestMethod]
@@ -477,6 +479,14 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+        }
+
+        private struct UnKownValueTypeForTest
+        {
+            public override string ToString()
+            {
+                return "UnKownType";
+            }
         }
     }
 }

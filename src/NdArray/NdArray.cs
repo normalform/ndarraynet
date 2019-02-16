@@ -30,6 +30,7 @@
 namespace NdArrayNet
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -38,6 +39,16 @@ namespace NdArrayNet
     /// <typeparam name="T"></typeparam>
     public class NdArray<T> : IFrontend, IFrontend<T>
     {
+        private static readonly Dictionary<Type, Func<T, string>> StringCoverter = new Dictionary<Type, Func<T, string>>
+        {
+            { typeof(float), (T v) => { var val = Convert.ToSingle(v); return val >= 0.0f ? string.Format("{0,9:F4}", val) : string.Format("{0,9:F3}", val); } },
+            { typeof(double), (T v) => { var val = Convert.ToDouble(v); return val >= 0.0f ? string.Format("{0,9:F4}", val) : string.Format("{0,9:F3}", val); } },
+            { typeof(int), (T v) => { var val = Convert.ToInt32(v); return string.Format("{0,4:D}", val); } },
+            { typeof(long), (T v) => { var val = Convert.ToUInt64(v); return string.Format("{0,4:D}", val); } },
+            { typeof(byte), (T v) => { var val = Convert.ToByte(v); return string.Format("{0,3:D}", val); } },
+            { typeof(bool), (T v) => { var val = Convert.ToBoolean(v); return val == true ? "true" : "false"; } },
+        };
+
         /// <summary>
         /// Implicit constructor.
         /// </summary>
@@ -307,65 +318,13 @@ namespace NdArrayNet
 
         internal static string ScalarString(NdArray<T> array)
         {
-            string msg;
             var val = array.Value;
-            if (val is float)
+            if (StringCoverter.TryGetValue(val.GetType(), out Func<T, string> converter))
             {
-                var fval = Convert.ToSingle(val);
-                if (fval >= 0.0f)
-                {
-                    msg = string.Format("{0,9:F4}", fval);
-                }
-                else
-                {
-                    msg = string.Format("{0,9:F3}", fval);
-                }
-            }
-            else if (val is double)
-            {
-                var fval = Convert.ToDouble(val);
-                if (fval >= 0.0)
-                {
-                    msg = string.Format("{0,9:F4}", fval);
-                }
-                else
-                {
-                    msg = string.Format("{0,9:F3}", fval);
-                }
-            }
-            else if (val is int)
-            {
-                var fval = Convert.ToInt32(val);
-                msg = string.Format("{0,4:D}", fval);
-            }
-            else if (val is long)
-            {
-                var fval = Convert.ToInt64(val);
-                msg = string.Format("{0,4:D}", fval);
-            }
-            else if (val is byte)
-            {
-                var fval = Convert.ToByte(val);
-                msg = string.Format("{0,3:D}", fval);
-            }
-            else if (val is bool)
-            {
-                var fval = Convert.ToBoolean(val);
-                if (fval is true)
-                {
-                    msg = "true";
-                }
-                else
-                {
-                    msg = "false";
-                }
-            }
-            else
-            {
-                msg = val.ToString();
+                return converter(val);
             }
 
-            return msg;
+            return val.ToString();
         }
 
         internal static string PrettyDim(int maxElems, string lineSpace, NdArray<T> array)

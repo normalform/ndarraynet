@@ -66,8 +66,28 @@ namespace NdArrayNet
             { typeof(bool), true },
         };
 
-        public static T Zero<T>() => (T)ZeroOf[typeof(T)];
+        public static T Zero<T>()
+        {
+            var type = typeof(T);
 
-        public static T One<T>() => (T)OneOf[typeof(T)];
+            if (ZeroOf.ContainsKey(type))
+            {
+                return (T)ZeroOf[type];
+            }
+
+            return default(T);
+        }
+
+        public static T One<T>()
+        {
+            var type = typeof(T);
+
+            if (OneOf.ContainsKey(type))
+            {
+                return (T)OneOf[type];
+            }
+
+            return default(T);
+        }
     }
 }
