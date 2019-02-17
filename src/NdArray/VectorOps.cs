@@ -79,9 +79,24 @@ namespace NdArrayNet
             Method<CopyDelegate<T>>("CopyImpl").Invoke(trgt, src);
         }
 
+        public static void Add<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            Method<BinaryDelegate<T>>("AddImpl").Invoke(trgt, src1, src2);
+        }
+
+        public static void Subtract<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            Method<BinaryDelegate<T>>("SubtractImpl").Invoke(trgt, src1, src2);
+        }
+
         public static void Multiply<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
             Method<BinaryDelegate<T>>("MultiplyImpl").Invoke(trgt, src1, src2);
+        }
+
+        public static void Divide<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            Method<BinaryDelegate<T>>("DivideImpl").Invoke(trgt, src1, src2);
         }
 
         internal static bool CanUseSrc<T>(int numDim, DataAndLayout<T> src)
@@ -469,9 +484,30 @@ namespace NdArrayNet
             ApplyUnary(op, new UnaryDataAndLayouts<T, T>(trgt, src));
         }
 
+        private static void AddImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
+        {
+            Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Add(a, b);
+
+            ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
+        private static void SubtractImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
+        {
+            Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Subtract(a, b);
+
+            ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
         private static void MultiplyImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
         {
             Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Multiply(a, b);
+
+            ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
+        private static void DivideImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
+        {
+            Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Divide(a, b);
 
             ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
         }

@@ -256,12 +256,106 @@ namespace NdArrayNet
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
+        public static void Add<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a, T b) => p.Add(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void Subtract<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a, T b) => p.Subtract(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
         public static void Multiply<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
             var p = ScalarPrimitives.For<T, T>();
             T op(int[] pos, T a, T b) => p.Multiply(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void Divide<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a, T b) => p.Divide(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void Modulo<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a, T b) => p.Modulo(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void Equal<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a, TP b) => p.Equal(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void NotEqual<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a, TP b) => p.NotEqual(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void Less<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a, TP b) => p.Less(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void LessOrEqual<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a, TP b) => p.LessOrEqual(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void Greater<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a, TP b) => p.Greater(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void GreaterOrEqual<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a, TP b) => p.GreaterOrEqual(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void UnaryPlus<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.UnaryPlus(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void UnaryMinus<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.UnaryMinus(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
     }
 }
