@@ -108,17 +108,10 @@ namespace NdArrayNet
             return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout);
         }
 
-        public void Multiply(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b)
+        public static (DataAndLayout<TR>, DataAndLayout<TA>, DataAndLayout<TB>) ElemwiseDataAndLayout<TR, TA, TB>(IFrontend<TR> trgt, IFrontend<TA> a, IFrontend<TB> b)
         {
-            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout(trgt, a, b);
-            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB))
-            {
-                VectorOps.Multiply(dataLayoutTrgt, dataLayoutA, dataLayoutB);
-            }
-            else
-            {
-                ScalarOps.Multiply(dataLayoutTrgt, dataLayoutA, dataLayoutB);
-            }
+            var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { a.Layout, b.Layout });
+            return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout);
         }
 
         public void FillIncrementing(T start, T step, IFrontend<T> trgt)
@@ -138,6 +131,105 @@ namespace NdArrayNet
             {
                 ScalarOps.Fill(value, dataAndLayout);
             }
+        }
+
+        public void UnaryPlus(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (t, s) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.UnaryPlus(t, s);
+        }
+
+        public void UnaryMinus(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (t, s) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.UnaryMinus(t, s);
+        }
+
+        public void Equal<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, src1, src2);
+            ScalarOps.Equal(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void NotEqual<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, src1, src2);
+            ScalarOps.NotEqual(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void Less<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, src1, src2);
+            ScalarOps.Less(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void LessOrEqual<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, src1, src2);
+            ScalarOps.LessOrEqual(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void Greater<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, src1, src2);
+            ScalarOps.Greater(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void GreaterOrEqual<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, src1, src2);
+            ScalarOps.GreaterOrEqual(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void Add(IFrontend<T> trgt, IFrontend<T> src1, IFrontend<T> src2)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, src1, src2);
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB))
+            {
+                VectorOps.Add(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+            else
+            {
+                ScalarOps.Add(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+        }
+
+        public void Subtract(IFrontend<T> trgt, IFrontend<T> src1, IFrontend<T> src2)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, src1, src2);
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB))
+            {
+                VectorOps.Subtract(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+            else
+            {
+                ScalarOps.Subtract(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+        }
+
+        public void Multiply(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, a, b);
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB))
+            {
+                VectorOps.Multiply(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+            else
+            {
+                ScalarOps.Multiply(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+        }
+
+        public void Divide(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, a, b);
+            ScalarOps.Divide(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+        }
+
+        public void Modulo(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, a, b);
+            ScalarOps.Modulo(dataLayoutTrgt, dataLayoutA, dataLayoutB);
         }
 
         public void Copy(IFrontend<T> trgt, IFrontend<T> src)

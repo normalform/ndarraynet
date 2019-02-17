@@ -69,6 +69,16 @@ namespace NdArrayNet
         // NOTE: The .NET Modulo expression has different behavior from the Python in special cases (e.g. 4 % -3)
         private static readonly Func<T, T, T> ModuloFunc = TryBinary("%", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Modulo(A, B), A, B) });
 
+        private static readonly Func<T, T> UnaryPlusFunc = TryUnary("~+", new[] { Expression.Lambda<Func<T, T>>(Expression.UnaryPlus(A), A) });
+        private static readonly Func<T, T> UnaryMinusFunc = TryUnary("~-", new[] { Expression.Lambda<Func<T, T>>(Expression.Negate(A), A) });
+
+        private static readonly Func<T, T, bool> EqualFunc = TryCompare("=", new[] { Expression.Lambda<Func<T, T, bool>>(Expression.Equal(A, B), A, B), Expression.Lambda<Func<T, T, bool>>(Expression.Call(A, typeof(IEquatable<T>).GetMethod("Equals", new[] { typeof(T) }), B), A, B) });
+        private static readonly Func<T, T, bool> NotEqualFunc = TryCompare("!=", new[] { Expression.Lambda<Func<T, T, bool>>(Expression.NotEqual(A, B), A, B), Expression.Lambda<Func<T, T, bool>>(Expression.IsFalse(Expression.Call(A, typeof(IEquatable<T>).GetMethod("Equals", new[] { typeof(T) }), B)), A, B) });
+        private static readonly Func<T, T, bool> LessFunc = TryCompare("<", new[] { Expression.Lambda<Func<T, T, bool>>(Expression.LessThan(A, B), A, B), Expression.Lambda<Func<T, T, bool>>(Expression.LessThan(Expression.Call(A, typeof(IComparable<T>).GetMethod("CompareTo", new[] { typeof(T) }), B), Expression.Constant(0)), A, B) });
+        private static readonly Func<T, T, bool> LessOrEqualFunc = TryCompare("<=", new[] { Expression.Lambda<Func<T, T, bool>>(Expression.LessThanOrEqual(A, B), A, B), Expression.Lambda<Func<T, T, bool>>(Expression.LessThanOrEqual(Expression.Call(A, typeof(IComparable<T>).GetMethod("CompareTo", new[] { typeof(T) }), B), Expression.Constant(0)), A, B) });
+        private static readonly Func<T, T, bool> GreaterFunc = TryCompare(">", new[] { Expression.Lambda<Func<T, T, bool>>(Expression.GreaterThan(A, B), A, B), Expression.Lambda<Func<T, T, bool>>(Expression.GreaterThan(Expression.Call(A, typeof(IComparable<T>).GetMethod("CompareTo", new[] { typeof(T) }), B), Expression.Constant(0)), A, B) });
+        private static readonly Func<T, T, bool> GreaterOrEqualFunc = TryCompare(">=", new[] { Expression.Lambda<Func<T, T, bool>>(Expression.GreaterThanOrEqual(A, B), A, B), Expression.Lambda<Func<T, T, bool>>(Expression.GreaterThanOrEqual(Expression.Call(A, typeof(IComparable<T>).GetMethod("CompareTo", new[] { typeof(T) }), B), Expression.Constant(0)), A, B) });
+
         private static readonly Func<T, T, T> PowerFunc =
             TryBinary("Power", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Convert(Expression.Power(Expression.Convert(A, typeof(double)), Expression.Convert(B, typeof(double))), typeof(T)), A, B) });
 
@@ -150,6 +160,37 @@ namespace NdArrayNet
 
         public T Convert(TC c) => ConvertFunc.Invoke(c);
 
+        public T UnaryPlus(T a) => UnaryPlusFunc.Invoke(a);
+
+        public T UnaryMinus(T a) => UnaryMinusFunc.Invoke(a);
+
+        public bool Equal(T a, T b) => EqualFunc.Invoke(a, b);
+
+        public bool NotEqual(T a, T b) => NotEqualFunc.Invoke(a, b);
+
+        public bool Less(T a, T b) => LessFunc.Invoke(a, b);
+
+        public bool LessOrEqual(T a, T b) => LessOrEqualFunc.Invoke(a, b);
+
+        public bool Greater(T a, T b) => GreaterFunc.Invoke(a, b);
+
+        public bool GreaterOrEqual(T a, T b) => GreaterOrEqualFunc.Invoke(a, b);
+
+        internal static Func<T, T> CompileAny(Expression<Func<T, T>>[] fns)
+        {
+            foreach (var fn in fns)
+            {
+                var func = fn.Compile();
+                if (func != null)
+                {
+                    return func;
+                }
+            }
+
+            var msg = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
+            throw new InvalidOperationException(msg);
+        }
+
         internal static Func<T, T, T> CompileAny(Expression<Func<T, T, T>>[] fns)
         {
             foreach (var fn in fns)
@@ -165,11 +206,46 @@ namespace NdArrayNet
             throw new InvalidOperationException(msg);
         }
 
+        internal static Func<T, T, bool> CompileAny(Expression<Func<T, T, bool>>[] fns)
+        {
+            foreach (var fn in fns)
+            {
+                var func = fn.Compile();
+                if (func != null)
+                {
+                    return func;
+                }
+            }
+
+            var msg = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
+            throw new InvalidOperationException(msg);
+        }
+
+        internal static Func<T, T> TryUnary(string op, Expression<Func<T, T>>[] fns)
+        {
+            var msg = string.Format("The type {0} does not implemented {1}", typeof(T).Name, op);
+            var thrw = Expression.Throw(Expression.Constant(new InvalidOperationException(msg)));
+            var errExpr = Expression.Lambda<Func<T, T>>(Expression.Block(thrw, A), A);
+
+            var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
+            return CompileAny(fnsWithExceptionBlock.ToArray());
+        }
+
         internal static Func<T, T, T> TryBinary(string op, Expression<Func<T, T, T>>[] fns)
         {
             var msg = string.Format("The type {0} does not implemented {1}", typeof(T).Name, op);
             var thrw = Expression.Throw(Expression.Constant(new InvalidOperationException(msg)));
             var errExpr = Expression.Lambda<Func<T, T, T>>(Expression.Block(thrw, A), A, B);
+
+            var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
+            return CompileAny(fnsWithExceptionBlock.ToArray());
+        }
+
+        internal static Func<T, T, bool> TryCompare(string op, Expression<Func<T, T, bool>>[] fns)
+        {
+            var msg = string.Format("The type {0} does not implemented {1}", typeof(T).Name, op);
+            var thrw = Expression.Throw(Expression.Constant(new InvalidOperationException(msg)));
+            var errExpr = Expression.Lambda<Func<T, T, bool>>(Expression.Block(thrw, Expression.Constant(false)), A, B);
 
             var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
             return CompileAny(fnsWithExceptionBlock.ToArray());

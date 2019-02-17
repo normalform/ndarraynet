@@ -29,6 +29,7 @@
 
 namespace NdArrayNet
 {
+    using NdArray.NdArrayImpl;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -84,6 +85,8 @@ namespace NdArrayNet
         public int NumDimensions => Layout.NumDimensions;
 
         public int NumElements => Layout.NumElements;
+
+        public Type DataType => typeof(T);
 
         public int[] Shape => Layout.Shape;
 
@@ -186,13 +189,75 @@ namespace NdArrayNet
             return target.Relayout(layout);
         }
 
-        public static NdArray<T> operator *(NdArray<T> a, NdArray<T> b)
-        {
-            var (trgt, arrA, arrB) = PrepareElemwise<T, T, T>(a, b);
-            trgt.FillMultiply(a, b);
+        public static NdArray<T> operator +(NdArray<T> a) => Operator<T>.FillUnaryPlus(a);
 
-            return trgt;
-        }
+        public static NdArray<T> operator -(NdArray<T> a) => Operator<T>.FillUnaryMinus(a);
+
+        public static NdArray<T> operator +(NdArray<T> a, NdArray<T> b) => Operator<T>.FillAdd(a, b);
+
+        public static NdArray<T> operator +(NdArray<T> a, T b) => Operator<T>.FillAdd(a, ScalarLike(a, b));
+
+        public static NdArray<T> operator +(T a, NdArray<T> b) => Operator<T>.FillAdd(ScalarLike(b, a), b);
+
+        public static NdArray<T> operator -(NdArray<T> a, NdArray<T> b) => Operator<T>.FillSubtract(a, b);
+
+        public static NdArray<T> operator -(NdArray<T> a, T b) => Operator<T>.FillSubtract(a, ScalarLike(a, b));
+
+        public static NdArray<T> operator -(T a, NdArray<T> b) => Operator<T>.FillSubtract(ScalarLike(b, a), b);
+
+        public static NdArray<T> operator *(NdArray<T> a, NdArray<T> b) => Operator<T>.FillMultiply(a, b);
+
+        public static NdArray<T> operator *(NdArray<T> a, T b) => Operator<T>.FillMultiply(a, ScalarLike(a, b));
+
+        public static NdArray<T> operator *(T a, NdArray<T> b) => Operator<T>.FillMultiply(ScalarLike(b, a), b);
+
+        public static NdArray<T> operator /(NdArray<T> a, NdArray<T> b) => Operator<T>.FillDivide(a, b);
+
+        public static NdArray<T> operator /(NdArray<T> a, T b) => Operator<T>.FillDivide(a, ScalarLike(a, b));
+
+        public static NdArray<T> operator /(T a, NdArray<T> b) => Operator<T>.FillDivide(ScalarLike(b, a), b);
+
+        public static NdArray<T> operator %(NdArray<T> a, NdArray<T> b) => Operator<T>.FillModulo(a, b);
+
+        public static NdArray<T> operator %(NdArray<T> a, T b) => Operator<T>.FillModulo(a, ScalarLike(a, b));
+
+        public static NdArray<T> operator %(T a, NdArray<T> b) => Operator<T>.FillModulo(ScalarLike(b, a), b);
+
+        public static NdArray<bool> operator ==(NdArray<T> a, NdArray<T> b) => Operator<T>.FillEqual(a, b);
+
+        public static NdArray<bool> operator ==(NdArray<T> a, T b) => Operator<T>.FillEqual(a, ScalarLike(a, b));
+
+        public static NdArray<bool> operator ==(T a, NdArray<T> b) => Operator<T>.FillEqual(ScalarLike(b, a), b);
+
+        public static NdArray<bool> operator !=(NdArray<T> a, NdArray<T> b) => Operator<T>.FillNotEqual(a, b);
+
+        public static NdArray<bool> operator !=(NdArray<T> a, T b) => Operator<T>.FillNotEqual(a, ScalarLike(a, b));
+
+        public static NdArray<bool> operator !=(T a, NdArray<T> b) => Operator<T>.FillNotEqual(ScalarLike(b, a), b);
+
+        public static NdArray<bool> operator <(NdArray<T> a, NdArray<T> b) => Operator<T>.FillLess(a, b);
+
+        public static NdArray<bool> operator <(NdArray<T> a, T b) => Operator<T>.FillLess(a, ScalarLike(a, b));
+
+        public static NdArray<bool> operator <(T a, NdArray<T> b) => Operator<T>.FillLess(ScalarLike(b, a), b);
+
+        public static NdArray<bool> operator <=(NdArray<T> a, NdArray<T> b) => Operator<T>.FillLessOrEqual(a, b);
+
+        public static NdArray<bool> operator <=(NdArray<T> a, T b) => Operator<T>.FillLessOrEqual(a, ScalarLike(a, b));
+
+        public static NdArray<bool> operator <=(T a, NdArray<T> b) => Operator<T>.FillLessOrEqual(ScalarLike(b, a), b);
+
+        public static NdArray<bool> operator >(NdArray<T> a, NdArray<T> b) => Operator<T>.FillGreater(a, b);
+
+        public static NdArray<bool> operator >(NdArray<T> a, T b) => Operator<T>.FillGreater(a, ScalarLike(a, b));
+
+        public static NdArray<bool> operator >(T a, NdArray<T> b) => Operator<T>.FillGreater(ScalarLike(b, a), b);
+
+        public static NdArray<bool> operator >=(NdArray<T> a, NdArray<T> b) => Operator<T>.FillGreaterOrEqual(a, b);
+
+        public static NdArray<bool> operator >=(NdArray<T> a, T b) => Operator<T>.FillGreaterOrEqual(a, ScalarLike(a, b));
+
+        public static NdArray<bool> operator >=(T a, NdArray<T> b) => Operator<T>.FillGreaterOrEqual(ScalarLike(b, a), b);
 
         public override string ToString()
         {
@@ -213,13 +278,43 @@ namespace NdArrayNet
         public NdArray<T> Reshape(int[] shp)
         {
             var newView = TryReshapeView(shp);
-            if (newView == null)
+            if (newView is null)
             {
                 var copy = Copy().ReshapeView(shp);
                 return copy;
             }
 
             return newView;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var array = obj as NdArray<T>;
+            return !(array is null) &&
+                   NumDimensions.Equals(array.NumDimensions) &&
+                   NumElements == array.NumElements &&
+                   EqualityComparer<Type>.Default.Equals(DataType, array.DataType) &&
+                   EqualityComparer<int[]>.Default.Equals(Shape, array.Shape) &&
+                   EqualityComparer<Layout>.Default.Equals(Layout, array.Layout) &&
+                   Pretty == array.Pretty &&
+                   EqualityComparer<T>.Default.Equals(Value, array.Value) &&
+                   EqualityComparer<IStorage<T>>.Default.Equals(Storage, array.Storage) &&
+                   EqualityComparer<IBackend<T>>.Default.Equals(Backend, array.Backend);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(NumDimensions);
+            hash.Add(NumElements);
+            hash.Add(DataType);
+            hash.Add(Shape);
+            hash.Add(Layout);
+            hash.Add(Pretty);
+            hash.Add(Value);
+            hash.Add(Storage);
+            hash.Add(Backend);
+            return hash.ToHashCode();
         }
 
         internal static NdArray<T> Arange(IDevice device, T start, T stop, T step)
@@ -378,6 +473,12 @@ namespace NdArrayNet
             return (target, arrayA, arrB);
         }
 
+        internal static NdArray<TA> PrepareElemwiseSources<TR, TA>(NdArray<TR> target, NdArray<TA> array)
+        {
+            // AssertSameStorage [later..]
+            return BroadCastTo(target.Shape, array);
+        }
+
         internal static (NdArray<TA>, NdArray<TB>) PrepareElemwiseSources<TR, TA, TB>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB)
         {
             // AssertSameStorage [later..]
@@ -387,10 +488,15 @@ namespace NdArrayNet
             return (arrA, arrB);
         }
 
-        internal void FillMultiply(NdArray<T> a, NdArray<T> b)
+        internal NdArray<T> AssertBool()
         {
-            var (aa, bb) = PrepareElemwiseSources(this, a, b);
-            Backend.Multiply(this, aa, bb);
+            if (DataType != typeof(bool))
+            {
+                var msg = string.Format("The operation requires a Tensor<bool> but the data type of the specified tensor is {0}.", DataType);
+                throw new InvalidOperationException(msg);
+            }
+
+            return this;
         }
 
         internal NdArray<T> Copy(Order order = Order.RowMajor)

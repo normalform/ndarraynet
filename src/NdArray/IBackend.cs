@@ -39,8 +39,32 @@ namespace NdArrayNet
 
         void FillConst(T value, IFrontend<T> trgt);
 
+        void Copy(IFrontend<T> trgt, IFrontend<T> src);
+
+        void UnaryPlus(IFrontend<T> trgt, IFrontend<T> src);
+
+        void UnaryMinus(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Equal<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
+
+        void NotEqual<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
+
+        void Less<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
+
+        void LessOrEqual<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
+
+        void Greater<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
+
+        void GreaterOrEqual<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
+
+        void Add(IFrontend<T> trgt, IFrontend<T> src1, IFrontend<T> src2);
+
+        void Subtract(IFrontend<T> trgt, IFrontend<T> src1, IFrontend<T> src2);
+
         void Multiply(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b);
 
-        void Copy(IFrontend<T> trgt, IFrontend<T> src);
+        void Divide(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b);
+
+        void Modulo(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b);
     }
 }

@@ -531,13 +531,13 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            const int value = 9;
+            const int Value = 9;
 
             // action
-            var array = NdArray<int>.Scalar(device, value);
+            var array = NdArray<int>.Scalar(device, Value);
 
             // asssert
-            Assert.AreEqual(value, array.Value);
+            Assert.AreEqual(Value, array.Value);
         }
 
         [TestMethod]
@@ -546,13 +546,13 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var device = HostDevice.Instance;
             var referenceArray = NdArray<int>.Arange(device, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
-            const int value = 9;
+            const int Value = 9;
 
             // action
-            var array = NdArray<int>.ScalarLike(referenceArray, value);
+            var array = NdArray<int>.ScalarLike(referenceArray, Value);
 
             // asssert
-            Assert.AreEqual(value, array.Value);
+            Assert.AreEqual(Value, array.Value);
         }
 
         private struct UnKownValueTypeForTestOnly
