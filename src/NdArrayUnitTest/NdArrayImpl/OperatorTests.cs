@@ -31,6 +31,7 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
+    using System.Numerics;
 
     [TestClass]
     public class OperatorTests
@@ -511,6 +512,42 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+        }
+
+        [TestMethod]
+        public void Divide_WithAligned()
+        {
+            // arrange
+            var vectorCount = Vector<int>.Count;
+            var numElements = vectorCount * 2;
+
+            var device = HostDevice.Instance;
+            var inputA = NdArray<int>.Arange(device, 1, numElements + 1, 1);
+            var inputB = NdArray<int>.Arange(device, 1, numElements + 1, 1);
+
+            // action
+            var equal = inputB / inputA;
+
+            // assert
+            CollectionAssert.AreEqual(new[] { numElements }, equal.Shape);
+        }
+
+        [TestMethod]
+        public void Divide_WithUnAligned()
+        {
+            // arrange
+            var vectorCount = Vector<int>.Count;
+            var numElements = vectorCount / 2;
+
+            var device = HostDevice.Instance;
+            var inputA = NdArray<int>.Arange(device, 1, numElements + 1, 1);
+            var inputB = NdArray<int>.Arange(device, 1, numElements + 1, 1);
+
+            // action
+            var equal = inputB / inputA;
+
+            // assert
+            CollectionAssert.AreEqual(new[] { numElements }, equal.Shape);
         }
 
         [TestMethod]

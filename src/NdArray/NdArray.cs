@@ -291,29 +291,17 @@ namespace NdArrayNet
         {
             var array = obj as NdArray<T>;
             return !(array is null) &&
-                   NumDimensions.Equals(array.NumDimensions) &&
-                   NumElements == array.NumElements &&
                    EqualityComparer<Type>.Default.Equals(DataType, array.DataType) &&
-                   EqualityComparer<int[]>.Default.Equals(Shape, array.Shape) &&
                    EqualityComparer<Layout>.Default.Equals(Layout, array.Layout) &&
-                   Pretty == array.Pretty &&
-                   EqualityComparer<T>.Default.Equals(Value, array.Value) &&
-                   EqualityComparer<IStorage<T>>.Default.Equals(Storage, array.Storage) &&
-                   EqualityComparer<IBackend<T>>.Default.Equals(Backend, array.Backend);
+                   EqualityComparer<IStorage<T>>.Default.Equals(Storage, array.Storage);
         }
 
         public override int GetHashCode()
         {
             var hash = new HashCode();
-            hash.Add(NumDimensions);
-            hash.Add(NumElements);
             hash.Add(DataType);
-            hash.Add(Shape);
             hash.Add(Layout);
-            hash.Add(Pretty);
-            hash.Add(Value);
             hash.Add(Storage);
-            hash.Add(Backend);
             return hash.ToHashCode();
         }
 

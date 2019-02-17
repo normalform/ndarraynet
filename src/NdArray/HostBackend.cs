@@ -223,7 +223,15 @@ namespace NdArrayNet
         public void Divide(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b)
         {
             var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, a, b);
-            ScalarOps.Divide(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB) && VectorOps.AlignedWith(dataLayoutA, dataLayoutB))
+            {
+                VectorOps.Divide(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+            else
+            {
+                ScalarOps.Divide(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
         }
 
         public void Modulo(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b)

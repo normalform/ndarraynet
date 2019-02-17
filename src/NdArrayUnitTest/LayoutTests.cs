@@ -634,5 +634,87 @@ namespace NdArrayNet.NdArrayUnitTest
             var newShape = new[] { 3, 2, 5 };
             var newLayout = Layout.TryReshape(newShape, array);
         }
+
+        [TestMethod]
+        public void Equal_WithSameObject_ReturnTrue()
+        {
+            // arrange
+            var layout = new Layout(new int[] { }, 0, new int[] { });
+
+            // action
+            var equal = layout.Equals(layout);
+
+            // assert
+            Assert.IsTrue(equal);
+        }
+
+        [TestMethod]
+        public void Equal_WithNullObject_ReturnFalse()
+        {
+            // arrange
+            var layout = new Layout(new int[] { }, 0, new int[] { });
+
+            // action
+            var equal = layout.Equals(null);
+
+            // assert
+            Assert.IsFalse(equal);
+        }
+
+        [TestMethod]
+        public void Equal_WithSameLayout_ReturnTrue()
+        {
+            // arrange
+            var layout1 = new Layout(new int[] { }, 0, new int[] { });
+            var layout2 = new Layout(new int[] { }, 0, new int[] { });
+
+            // action
+            var equal = layout1.Equals(layout2);
+
+            // assert
+            Assert.IsTrue(equal);
+        }
+
+        [TestMethod]
+        public void Equal_WithDifferentShape_ReturnFase()
+        {
+            // arrange
+            var layout1 = new Layout(new int[] { 1 }, 0, new int[] { });
+            var layout2 = new Layout(new int[] { }, 0, new int[] { });
+
+            // action
+            var equal = layout1.Equals(layout2);
+
+            // assert
+            Assert.IsFalse(equal);
+        }
+
+        [TestMethod]
+        public void Equal_WithDifferentOffset_ReturnFase()
+        {
+            // arrange
+            var layout1 = new Layout(new int[] { }, 1, new int[] { });
+            var layout2 = new Layout(new int[] { }, 0, new int[] { });
+
+            // action
+            var equal = layout1.Equals(layout2);
+
+            // assert
+            Assert.IsFalse(equal);
+        }
+
+        [TestMethod]
+        public void Equal_WithDifferentStride_ReturnFase()
+        {
+            // arrange
+            var layout1 = new Layout(new int[] { }, 0, new int[] { 1 });
+            var layout2 = new Layout(new int[] { }, 0, new int[] { });
+
+            // action
+            var equal = layout1.Equals(layout2);
+
+            // assert
+            Assert.IsFalse(equal);
+        }
     }
 }
