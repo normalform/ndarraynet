@@ -29,10 +29,10 @@
 
 namespace NdArrayNet
 {
-    using NdArray.NdArrayImpl;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using NdArray.NdArrayImpl;
 
     /// <summary>
     /// An N-dimensional array with elements of type 'T.
@@ -189,75 +189,75 @@ namespace NdArrayNet
             return target.Relayout(layout);
         }
 
-        public static NdArray<T> operator +(NdArray<T> a) => Operator<T>.FillUnaryPlus(a);
+        public static NdArray<T> operator +(NdArray<T> a) => ElementWiseOperator<T>.FillUnaryPlus(a);
 
-        public static NdArray<T> operator -(NdArray<T> a) => Operator<T>.FillUnaryMinus(a);
+        public static NdArray<T> operator -(NdArray<T> a) => ElementWiseOperator<T>.FillUnaryMinus(a);
 
-        public static NdArray<T> operator +(NdArray<T> a, NdArray<T> b) => Operator<T>.FillAdd(a, b);
+        public static NdArray<T> operator +(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillAdd(a, b);
 
-        public static NdArray<T> operator +(NdArray<T> a, T b) => Operator<T>.FillAdd(a, ScalarLike(a, b));
+        public static NdArray<T> operator +(NdArray<T> a, T b) => ElementWiseOperator<T>.FillAdd(a, ScalarLike(a, b));
 
-        public static NdArray<T> operator +(T a, NdArray<T> b) => Operator<T>.FillAdd(ScalarLike(b, a), b);
+        public static NdArray<T> operator +(T a, NdArray<T> b) => ElementWiseOperator<T>.FillAdd(ScalarLike(b, a), b);
 
-        public static NdArray<T> operator -(NdArray<T> a, NdArray<T> b) => Operator<T>.FillSubtract(a, b);
+        public static NdArray<T> operator -(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillSubtract(a, b);
 
-        public static NdArray<T> operator -(NdArray<T> a, T b) => Operator<T>.FillSubtract(a, ScalarLike(a, b));
+        public static NdArray<T> operator -(NdArray<T> a, T b) => ElementWiseOperator<T>.FillSubtract(a, ScalarLike(a, b));
 
-        public static NdArray<T> operator -(T a, NdArray<T> b) => Operator<T>.FillSubtract(ScalarLike(b, a), b);
+        public static NdArray<T> operator -(T a, NdArray<T> b) => ElementWiseOperator<T>.FillSubtract(ScalarLike(b, a), b);
 
-        public static NdArray<T> operator *(NdArray<T> a, NdArray<T> b) => Operator<T>.FillMultiply(a, b);
+        public static NdArray<T> operator *(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillMultiply(a, b);
 
-        public static NdArray<T> operator *(NdArray<T> a, T b) => Operator<T>.FillMultiply(a, ScalarLike(a, b));
+        public static NdArray<T> operator *(NdArray<T> a, T b) => ElementWiseOperator<T>.FillMultiply(a, ScalarLike(a, b));
 
-        public static NdArray<T> operator *(T a, NdArray<T> b) => Operator<T>.FillMultiply(ScalarLike(b, a), b);
+        public static NdArray<T> operator *(T a, NdArray<T> b) => ElementWiseOperator<T>.FillMultiply(ScalarLike(b, a), b);
 
-        public static NdArray<T> operator /(NdArray<T> a, NdArray<T> b) => Operator<T>.FillDivide(a, b);
+        public static NdArray<T> operator /(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillDivide(a, b);
 
-        public static NdArray<T> operator /(NdArray<T> a, T b) => Operator<T>.FillDivide(a, ScalarLike(a, b));
+        public static NdArray<T> operator /(NdArray<T> a, T b) => ElementWiseOperator<T>.FillDivide(a, ScalarLike(a, b));
 
-        public static NdArray<T> operator /(T a, NdArray<T> b) => Operator<T>.FillDivide(ScalarLike(b, a), b);
+        public static NdArray<T> operator /(T a, NdArray<T> b) => ElementWiseOperator<T>.FillDivide(ScalarLike(b, a), b);
 
-        public static NdArray<T> operator %(NdArray<T> a, NdArray<T> b) => Operator<T>.FillModulo(a, b);
+        public static NdArray<T> operator %(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillModulo(a, b);
 
-        public static NdArray<T> operator %(NdArray<T> a, T b) => Operator<T>.FillModulo(a, ScalarLike(a, b));
+        public static NdArray<T> operator %(NdArray<T> a, T b) => ElementWiseOperator<T>.FillModulo(a, ScalarLike(a, b));
 
-        public static NdArray<T> operator %(T a, NdArray<T> b) => Operator<T>.FillModulo(ScalarLike(b, a), b);
+        public static NdArray<T> operator %(T a, NdArray<T> b) => ElementWiseOperator<T>.FillModulo(ScalarLike(b, a), b);
 
-        public static NdArray<bool> operator ==(NdArray<T> a, NdArray<T> b) => Operator<T>.FillEqual(a, b);
+        public static NdArray<bool> operator ==(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillEqual(a, b);
 
-        public static NdArray<bool> operator ==(NdArray<T> a, T b) => Operator<T>.FillEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator ==(NdArray<T> a, T b) => ElementWiseOperator<T>.FillEqual(a, ScalarLike(a, b));
 
-        public static NdArray<bool> operator ==(T a, NdArray<T> b) => Operator<T>.FillEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator ==(T a, NdArray<T> b) => ElementWiseOperator<T>.FillEqual(ScalarLike(b, a), b);
 
-        public static NdArray<bool> operator !=(NdArray<T> a, NdArray<T> b) => Operator<T>.FillNotEqual(a, b);
+        public static NdArray<bool> operator !=(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillNotEqual(a, b);
 
-        public static NdArray<bool> operator !=(NdArray<T> a, T b) => Operator<T>.FillNotEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator !=(NdArray<T> a, T b) => ElementWiseOperator<T>.FillNotEqual(a, ScalarLike(a, b));
 
-        public static NdArray<bool> operator !=(T a, NdArray<T> b) => Operator<T>.FillNotEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator !=(T a, NdArray<T> b) => ElementWiseOperator<T>.FillNotEqual(ScalarLike(b, a), b);
 
-        public static NdArray<bool> operator <(NdArray<T> a, NdArray<T> b) => Operator<T>.FillLess(a, b);
+        public static NdArray<bool> operator <(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillLess(a, b);
 
-        public static NdArray<bool> operator <(NdArray<T> a, T b) => Operator<T>.FillLess(a, ScalarLike(a, b));
+        public static NdArray<bool> operator <(NdArray<T> a, T b) => ElementWiseOperator<T>.FillLess(a, ScalarLike(a, b));
 
-        public static NdArray<bool> operator <(T a, NdArray<T> b) => Operator<T>.FillLess(ScalarLike(b, a), b);
+        public static NdArray<bool> operator <(T a, NdArray<T> b) => ElementWiseOperator<T>.FillLess(ScalarLike(b, a), b);
 
-        public static NdArray<bool> operator <=(NdArray<T> a, NdArray<T> b) => Operator<T>.FillLessOrEqual(a, b);
+        public static NdArray<bool> operator <=(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillLessOrEqual(a, b);
 
-        public static NdArray<bool> operator <=(NdArray<T> a, T b) => Operator<T>.FillLessOrEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator <=(NdArray<T> a, T b) => ElementWiseOperator<T>.FillLessOrEqual(a, ScalarLike(a, b));
 
-        public static NdArray<bool> operator <=(T a, NdArray<T> b) => Operator<T>.FillLessOrEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator <=(T a, NdArray<T> b) => ElementWiseOperator<T>.FillLessOrEqual(ScalarLike(b, a), b);
 
-        public static NdArray<bool> operator >(NdArray<T> a, NdArray<T> b) => Operator<T>.FillGreater(a, b);
+        public static NdArray<bool> operator >(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillGreater(a, b);
 
-        public static NdArray<bool> operator >(NdArray<T> a, T b) => Operator<T>.FillGreater(a, ScalarLike(a, b));
+        public static NdArray<bool> operator >(NdArray<T> a, T b) => ElementWiseOperator<T>.FillGreater(a, ScalarLike(a, b));
 
-        public static NdArray<bool> operator >(T a, NdArray<T> b) => Operator<T>.FillGreater(ScalarLike(b, a), b);
+        public static NdArray<bool> operator >(T a, NdArray<T> b) => ElementWiseOperator<T>.FillGreater(ScalarLike(b, a), b);
 
-        public static NdArray<bool> operator >=(NdArray<T> a, NdArray<T> b) => Operator<T>.FillGreaterOrEqual(a, b);
+        public static NdArray<bool> operator >=(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillGreaterOrEqual(a, b);
 
-        public static NdArray<bool> operator >=(NdArray<T> a, T b) => Operator<T>.FillGreaterOrEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator >=(NdArray<T> a, T b) => ElementWiseOperator<T>.FillGreaterOrEqual(a, ScalarLike(a, b));
 
-        public static NdArray<bool> operator >=(T a, NdArray<T> b) => Operator<T>.FillGreaterOrEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator >=(T a, NdArray<T> b) => ElementWiseOperator<T>.FillGreaterOrEqual(ScalarLike(b, a), b);
 
         public override string ToString()
         {
@@ -305,49 +305,121 @@ namespace NdArrayNet
             return hash.ToHashCode();
         }
 
-        internal static NdArray<T> Arange(IDevice device, T start, T stop, T step)
-        {
-            var op = ScalarPrimitives.For<T, T>();
-            var opc = ScalarPrimitives.For<int, T>();
+        /// <summary>
+        /// Creates a new NdArray filled with equaly spaced values using a specifed increment.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="start">The starting value.</param>
+        /// <param name="stop">The end value, which is not included.</param>
+        /// <param name="step">The increment between successive element.</param>
+        /// <typeparam name="T">The new NdArray.</typeparam>
+        internal static NdArray<T> Arange(IDevice device, T start, T stop, T step) => Constructor<T>.Arange(device, start, stop, step);
 
-            var numberOfElementT = op.Divide(op.Subtract(stop, start), step);
-            var numberOfElementInt = opc.Convert(numberOfElementT);
-            var numberOfElement = Math.Max(0, numberOfElementInt);
+        /// <summary>
+        /// Creates a new NdArray filled with the integers from zero to the specified maximum.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="numElements">The number of elements of the new NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> Counting(IDevice device, int numElements) => Constructor<T>.Counting(device, numElements);
 
-            var shape = new[] { numberOfElement };
+        /// <summary>
+        /// Creates a new empty NdArray with the given number of dimensions.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="numDimension">The number of dimensions of the new, empty NdArray.</param>
+        /// <returns>The new empty NdArray.</returns>
+        internal static NdArray<T> Empty(IDevice device, int numDimension) => Constructor<T>.Empty(device, numDimension);
 
-            var newArray = new NdArray<T>(shape, device);
-            newArray.FillIncrementing(start, step);
+        /// <summary>
+        /// Creates a new boolean NdArray filled with falses.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="shape">The shape of the new NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<bool> Falses(IDevice device, int[] shape) => Constructor<bool>.Falses(device, shape);
 
-            return newArray;
-        }
+        /// <summary>
+        /// Creates a new NdArray filled with the specified value.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="shape">The shape of the new NdArray.</param>
+        /// <param name="value">The value to fill the new NdArray with.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> Filled(IDevice device, int[] shape, T value) => Constructor<T>.Filled(device, shape, value);
 
-        internal static NdArray<T> Scalar(IDevice device, T value)
-        {
-            var newArray = new NdArray<T>(new int[] { }, device);
-            newArray.Value = value;
+        /// <summary>
+        /// Creates a new identity matrix.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="size">The size of the square identity matrix.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> Identity(IDevice device, int size) => Constructor<T>.Identity(device, size);
 
-            return newArray;
-        }
+        /// <summary>
+        /// Creates a new NdArray filled with ones (1).
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="shape">The shape of the new NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> Ones(IDevice device, int[] shape) => Constructor<T>.Ones(device, shape);
 
-        internal static NdArray<T> ScalarLike(NdArray<T> array, T value)
-        {
-            return Scalar(array.Storage.Device, value);
-        }
+        /// <summary>
+        /// Creates a new NdArray filled with ones using the specified NdArray as template.
+        /// </summary>
+        /// <param name="template">The template NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> OnesLike(NdArray<T> template) => Constructor<T>.OnesLike(template);
 
-        internal static NdArray<T> Ones(IDevice device, int[] shape)
-        {
-            var newArray = new NdArray<T>(shape, device);
-            newArray.FillConst(Primitives.One<T>());
+        /// <summary>
+        /// Creates a new NdArray of given size filled with equaly spaced values.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="start">The starting value.</param>
+        /// <param name="stop">The end value, which is not included.</param>
+        /// <param name="numElement">The size of the vector.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> Linspace(IDevice device, T start, T stop, int numElement) => Constructor<T>.Linspace(device, start, stop, numElement);
 
-            return newArray;
-        }
+        /// <summary>
+        /// Creates a new zero-dimensional (scalar) NdArray with the specified value.
+        /// </summary>
+        /// <param name="dev">The device to create the NdArray on.</param>
+        /// <param name="value">The value of the new, scalar NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> Scalar(IDevice device, T value) => Constructor<T>.Scalar(device, value);
 
-        internal static NdArray<T> Zeros(IDevice device, int[] shape)
-        {
-            var newArray = new NdArray<T>(shape, device);
-            return newArray;
-        }
+        /// <summary>
+        /// Creates a new zero-dimensional (scalar) NdArray using the specified NdArray as template and with
+        /// the specified value.
+        /// </summary>
+        /// <param name="tmpl">template template NdArray.</param>
+        /// <param name="value">The value of the new, scalar NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> ScalarLike(NdArray<T> array, T value) => Constructor<T>.ScalarLike(array, value);
+
+        /// <summary>
+        /// Creates a new boolean NdArray filled with trues.
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="shape">The shape of the new NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<bool> Trues(IDevice device, int[] shape) => Constructor<T>.Trues(device, shape);
+
+        /// <summary>
+        /// Creates a new NdArray filled with zeros (0).
+        /// </summary>
+        /// <param name="device">The device to create the NdArray on.</param>
+        /// <param name="shape">The shape of the new NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> Zeros(IDevice device, int[] shape) => Constructor<T>.Zeros(device, shape);
+
+        /// <summary>
+        /// Creates a new NdArray filled with zeros using the specified NdArray as template.
+        /// </summary>
+        /// <param name="template">The template NdArray.</param>
+        /// <returns>The new NdArray.</returns>
+        internal static NdArray<T> ZerosLike(NdArray<T> template) => Constructor<T>.ZerosLike(template);
 
         internal static void AssertSameShape(NdArray<T> a, NdArray<T> b)
         {
@@ -480,7 +552,7 @@ namespace NdArrayNet
         {
             if (DataType != typeof(bool))
             {
-                var msg = string.Format("The operation requires a Tensor<bool> but the data type of the specified tensor is {0}.", DataType);
+                var msg = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
                 throw new InvalidOperationException(msg);
             }
 

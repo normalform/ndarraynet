@@ -36,7 +36,7 @@ namespace NdArrayNet
     /// <summary>
     /// Layout (shape, offset, stride) of a NdArray.
     /// </summary>
-    public class Layout : IEquatable<Layout>
+    public sealed class Layout : IEquatable<Layout>
     {
         /// <summary>
         /// constructor
@@ -186,6 +186,47 @@ namespace NdArrayNet
             return new Layout(newShape, input.Offset, newStride);
         }
 
+        public static Layout DiagAxis(Layout layout, int ax1, int ax2)
+        {
+            CheckAxis(layout, ax1);
+            CheckAxis(layout, ax2);
+
+            if (ax1 == ax2)
+            {
+                throw new ArgumentException("ax1", "Axes to use for diagonal must be different.");
+            }
+
+            if (layout.Shape[ax1] != layout.Shape[ax2])
+            {
+                var msg = string.Format("Array must have same dimensions along axis {0} and {1} to extract diagonal but it has shape {2}", ax1, ax2, layout.Shape);
+                throw new ArgumentException("layout", msg);
+            }
+
+            var newShape = new List<int>();
+            var newStride = new List<int>();
+            var shapeAndStrides = layout.Shape.Zip(layout.Stride, (shape, stride) => (shape, stride));
+
+            foreach (var shapeStrideIndex in shapeAndStrides.Select((ss, idx) => (ss, idx)))
+            {
+                var shape = shapeStrideIndex.ss.shape;
+                var stride = shapeStrideIndex.ss.stride;
+                var index = shapeStrideIndex.idx;
+
+                if (index == ax1)
+                {
+                    newShape.Add(shape);
+                    newStride.Add(layout.Stride[ax1] + layout.Stride[ax2]);
+                }
+                else if (index != ax2)
+                {
+                    newShape.Add(shape);
+                    newStride.Add(stride);
+                }
+            }
+
+            return new Layout(newShape.ToArray(), layout.Offset, newStride.ToArray());
+        }
+
         public static bool StrideEqual(int[] shp, int[] strA, int[] strB)
         {
             var zip = shp.Zip(strA, (sp, sa) => new { Shape = sp, StrideA = sa })
@@ -321,7 +362,7 @@ namespace NdArrayNet
                 return false;
             }
 
-            return Equals(layoutObj);
+            return this.Equals(layoutObj);
         }
 
         public override int GetHashCode()
@@ -620,7 +661,16 @@ namespace NdArrayNet
             return sas;
         }
 
-        private static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)
+        internal static void CheckAxis(Layout layout, int axis)
+        {
+            if (!(axis >= 0 && axis < layout.NumDimensions))
+            {
+                var msg = string.Format("axis {0} out of range for NdArray with shape {1}", axis, layout.Shape);
+                throw new ArgumentOutOfRangeException(msg);
+            }
+        }
+
+        internal static void CheckElementRange(bool isEnd, int numElements, int index, IRange[] ranges, int[] shp)
         {
             var numEl = isEnd ? numElements + 1 : numElements;
             if (!(index >= 0 && index < numEl))

@@ -555,6 +555,152 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(Value, array.Value);
         }
 
+        [TestMethod]
+        public void Counting()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<int>.Counting(device, 10);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
+            Assert.AreEqual(expectedLayout, array.Layout);
+        }
+
+        [TestMethod]
+        public void Empty()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<int>.Empty(device, 3);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 0, 0, 0 }, 0, new[] { 0 });
+        }
+
+        [TestMethod]
+        public void Falses()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<bool>.Falses(device, new[] { 1, 2, 3 });
+
+            // assert
+            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void Filled()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<int>.Filled(device, new[] { 1, 2, 3 }, 55);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void Identity_3by3()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<int>.Identity(device, 3);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 3, 3 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void Ones()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<int>.Ones(device, new[] { 2, 2 });
+
+            // assert
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void OnesLike()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var zeros = NdArray<int>.Zeros(device, new[] { 2, 2 });
+
+            // action
+            var array = NdArray<int>.OnesLike(zeros);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void Linspace()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<int>.Linspace(device, 0, 5, 5);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void Trues()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<bool>.Trues(device, new[] { 1, 2, 3 });
+
+            // assert
+            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void Zeros()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = NdArray<int>.Zeros(device, new[] { 2, 2 });
+
+            // assert
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+        }
+
+        [TestMethod]
+        public void ZerosLike()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var ones = NdArray<int>.Ones(device, new[] { 2, 2 });
+
+            // action
+            var array = NdArray<int>.ZerosLike(ones);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+        }
+
         private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()
