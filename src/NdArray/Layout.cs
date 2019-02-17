@@ -193,13 +193,13 @@ namespace NdArrayNet
 
             if (ax1 == ax2)
             {
-                throw new ArgumentException("ax1", "Axes to use for diagonal must be different.");
+                throw new ArgumentException("Axes to use for diagonal must be different.", "ax1");
             }
 
             if (layout.Shape[ax1] != layout.Shape[ax2])
             {
                 var msg = string.Format("Array must have same dimensions along axis {0} and {1} to extract diagonal but it has shape {2}", ax1, ax2, layout.Shape);
-                throw new ArgumentException("layout", msg);
+                throw new ArgumentException(msg, "layout");
             }
 
             var newShape = new List<int>();

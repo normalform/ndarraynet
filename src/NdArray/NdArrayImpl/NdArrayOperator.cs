@@ -29,6 +29,7 @@
 
 namespace NdArray.NdArrayImpl
 {
+    using System;
     using NdArrayNet;
 
     internal static class NdArrayOperator<T>
@@ -55,6 +56,7 @@ namespace NdArray.NdArrayImpl
             if (array.NumDimensions < 2)
             {
                 var message = string.Format("Need at least a two dimensional array for diagonal but got shape {0}.", array.Shape);
+                throw new ArgumentException(message, "array");
             }
 
             return DiagAxis(array, array.NumDimensions - 2, array.NumDimensions - 1);
