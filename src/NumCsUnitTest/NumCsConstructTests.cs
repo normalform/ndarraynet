@@ -1,4 +1,4 @@
-﻿// <copyright file="ConstructTests.cs" company="NdArrayNet">
+﻿// <copyright file="NumCsConstructTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -34,7 +34,7 @@ namespace NdArrayNet.NumCsUnitTest
     using NdArrayNet;
 
     [TestClass]
-    public class ConstructTests
+    public class NumCsConstructTests
     {
         [TestMethod]
         public void Arange_IntTypeFullArgs_ReturnIntegerTypeNdArray()

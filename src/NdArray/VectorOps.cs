@@ -53,6 +53,8 @@ namespace NdArrayNet
 
         private delegate void CopyDelegate<T>(DataAndLayout<T> trgt, DataAndLayout<T> src);
 
+        private delegate void UnaryDelegate<T>(DataAndLayout<T> trgt, DataAndLayout<T> src);
+
         private delegate void BinaryDelegate<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2);
 
         private delegate int VectorCountDelegate<T>();
@@ -114,6 +116,16 @@ namespace NdArrayNet
         public static void Divide<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
             Method<BinaryDelegate<T>>("DivideImpl").Invoke(trgt, src1, src2);
+        }
+
+        public static void Abs<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            Method<UnaryDelegate<T>>("AbsImpl").Invoke(trgt, src);
+        }
+
+        public static void Sqrt<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            Method<UnaryDelegate<T>>("SqrtImpl").Invoke(trgt, src);
         }
 
         internal static bool CanUseSrc<T>(int numDim, DataAndLayout<T> src)
@@ -535,6 +547,20 @@ namespace NdArrayNet
             Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Divide(a, b);
 
             ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
+        private static void AbsImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source) where T : struct
+        {
+            Vector<T> op(Vector<T> a) => Vector.Abs(a);
+
+            ApplyUnary(op, new UnaryDataAndLayouts<T, T>(target, source));
+        }
+
+        private static void SqrtImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source) where T : struct
+        {
+            Vector<T> op(Vector<T> a) => Vector.SquareRoot(a);
+
+            ApplyUnary(op, new UnaryDataAndLayouts<T, T>(target, source));
         }
 
         private static int VectorCountImpl<T>() where T : struct
