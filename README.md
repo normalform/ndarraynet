@@ -4,7 +4,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=normalform_ndarraynet&metric=alert_status)](https://sonarcloud.io/dashboard?id=normalform_ndarraynet)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=normalform_ndarraynet&metric=coverage)](https://sonarcloud.io/dashboard?id=normalform_ndarraynet)
 [![CodeFactor](https://www.codefactor.io/repository/github/normalform/ndarraynet/badge)](https://www.codefactor.io/repository/github/normalform/ndarraynet)
-[NuGet-TODO]
 
 # NdArrayNet
 N-dimensional array library for .NET 

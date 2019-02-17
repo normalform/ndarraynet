@@ -1,4 +1,4 @@
-﻿// <copyright file="Operator.cs" company="NdArrayNet">
+﻿// <copyright file="ElementWiseOperator.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -31,7 +31,7 @@ namespace NdArray.NdArrayImpl
 {
     using NdArrayNet;
 
-    internal static class Operator<T>
+    internal static class ElementWiseOperator<T>
     {
         public static NdArray<T> FillUnaryPlus(NdArray<T> input)
         {
