@@ -36,7 +36,7 @@ namespace NdArrayNet
     /// <summary>
     /// Layout (shape, offset, stride) of a NdArray.
     /// </summary>
-    public class Layout
+    public class Layout : IEquatable<Layout>
     {
         /// <summary>
         /// constructor
@@ -277,6 +277,60 @@ namespace NdArrayNet
             }
 
             return broadcastLayout;
+        }
+
+        public static bool operator ==(Layout lhs, Layout rhs)
+        {
+            if (((object)lhs) == null || ((object)rhs) == null)
+            {
+                return object.Equals(lhs, rhs);
+            }
+
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Layout lhs, Layout rhs)
+        {
+            if (((object)lhs) == null || ((object)rhs) == null)
+            {
+                return !object.Equals(lhs, rhs);
+            }
+
+            return !lhs.Equals(rhs);
+        }
+
+        public bool Equals(Layout other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return other.Offset == Offset && Enumerable.SequenceEqual(other.Shape, Shape) && Enumerable.SequenceEqual(other.Stride, Stride);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (!(obj is Layout layoutObj))
+            {
+                return false;
+            }
+
+            return Equals(layoutObj);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(Shape);
+            hash.Add(Stride);
+            hash.Add(Offset);
+            return hash.ToHashCode();
         }
 
         public Layout View(IRange[] ranges, Layout layout)

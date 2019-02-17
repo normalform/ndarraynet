@@ -55,6 +55,8 @@ namespace NdArrayNet
 
         private delegate void BinaryDelegate<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2);
 
+        private delegate int VectorCountDelegate<T>();
+
         public static bool CanUse<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1 = null, DataAndLayout<T> src2 = null)
         {
             var nd = trgt.FastAccess.NumDiensions;
@@ -67,6 +69,21 @@ namespace NdArrayNet
             var canUseTrgt = trgt.FastAccess.Stride[nd - 1] == 1;
 
             return canUseType && canUseTrgt && CanUseSrc(nd, src1) && CanUseSrc(nd, src2);
+        }
+
+        public static bool AlignedWith<T>(DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            var vectorCount = VectorCount<T>();
+
+            // Need to compute data alignment to avoid unwanted divied by zero with un-alinged data with the vector-SIMD- divided operation.
+            var lastShape = Math.Min(src1.FastAccess.Shape.Last(), src2.FastAccess.Shape.Last());
+
+            if ((lastShape >= vectorCount) && (lastShape % vectorCount) == 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public static void Fill<T>(T value, DataAndLayout<T> trgt)
@@ -108,6 +125,11 @@ namespace NdArrayNet
 
             var lastStride = src.FastAccess.Stride[numDim - 1];
             return lastStride == 1 || lastStride == 0;
+        }
+
+        private static int VectorCount<T>()
+        {
+            return Method<VectorCountDelegate<T>>("VectorCountImpl").Invoke();
         }
 
         private static D Method<D>(string name) where D : Delegate
@@ -266,11 +288,14 @@ namespace NdArrayNet
                 sourceAddress2++;
             }
 
-            var restTrgtVec = vectorOp(new Vector<T1>(sourceBuffer1), new Vector<T2>(sourceBuffer2));
-            for (var restPos = 0; restPos < restElements; restPos++)
+            if (restElements > 0)
             {
-                binaryDataLaouts.Target.Data[targetAddress] = restTrgtVec[restPos];
-                targetAddress++;
+                var restTrgtVec = vectorOp(new Vector<T1>(sourceBuffer1), new Vector<T2>(sourceBuffer2));
+                for (var restPos = 0; restPos < restElements; restPos++)
+                {
+                    binaryDataLaouts.Target.Data[targetAddress] = restTrgtVec[restPos];
+                    targetAddress++;
+                }
             }
         }
 
@@ -510,6 +535,11 @@ namespace NdArrayNet
             Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Divide(a, b);
 
             ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
+        private static int VectorCountImpl<T>() where T : struct
+        {
+            return Vector<T>.Count;
         }
 
         private class UnaryDataAndLayouts<T, T1>
