@@ -290,7 +290,7 @@ namespace NdArrayNet
         public override bool Equals(object obj)
         {
             var array = obj as NdArray<T>;
-            return !array.Equals(null) &&
+            return !(array is null) &&
                    NumDimensions.Equals(array.NumDimensions) &&
                    NumElements == array.NumElements &&
                    EqualityComparer<Type>.Default.Equals(DataType, array.DataType) &&

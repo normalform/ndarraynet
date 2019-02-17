@@ -31,7 +31,7 @@ namespace NdArray.NdArrayImpl
 {
     using NdArrayNet;
 
-    internal class Operator<T>
+    internal static class Operator<T>
     {
         public static NdArray<T> FillUnaryPlus(NdArray<T> input)
         {
