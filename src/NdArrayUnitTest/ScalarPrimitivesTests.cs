@@ -607,7 +607,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Tan(Math.PI / 4.0);
 
             // assert
-            const double Epsilon = 1e-10;
+            const double Epsilon = 1e-8;
             Assert.IsTrue(Math.Abs(1.0 - result) < Epsilon);
         }
 
@@ -634,7 +634,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Asin(1.0);
 
             // assert
-            const double Epsilon = 1e-10;
+            const double Epsilon = 1e-8;
             Assert.IsTrue(Math.Abs(1.5707963267949 - result) < Epsilon);
         }
 
@@ -661,7 +661,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Acos(0);
 
             // assert
-            const double Epsilon = 1e-10;
+            const double Epsilon = 1e-8;
             Assert.IsTrue(Math.Abs(1.5707963267949 - result) < Epsilon);
         }
 
@@ -688,7 +688,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Atan(1);
 
             // assert
-            const double Epsilon = 1e-10;
+            const double Epsilon = 1e-8;
             Assert.IsTrue(Math.Abs(0.785398163397448 - result) < Epsilon);
         }
 
@@ -715,7 +715,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sinh(1);
 
             // assert
-            const double Epsilon = 1e-10;
+            const double Epsilon = 1e-8;
             Assert.IsTrue(Math.Abs(1.1752011936438 - result) < Epsilon);
         }
 
@@ -742,7 +742,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Cosh(1);
 
             // assert
-            const double Epsilon = 1e-10;
+            const double Epsilon = 1e-8;
             Assert.IsTrue(Math.Abs(1.54308063481524 - result) < Epsilon);
         }
 
@@ -769,7 +769,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Tanh(1);
 
             // assert
-            const double Epsilon = 1e-10;
+            const double Epsilon = 1e-8;
             Assert.IsTrue(Math.Abs(0.761594155955765 - result) < Epsilon);
         }
 

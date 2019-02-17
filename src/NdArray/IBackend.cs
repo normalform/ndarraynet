@@ -66,5 +66,45 @@ namespace NdArrayNet
         void Divide(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b);
 
         void Modulo(IFrontend<T> trgt, IFrontend<T> a, IFrontend<T> b);
+
+        void Abs(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Acos(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Asin(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Atan(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Ceiling(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Cos(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Cosh(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Exp(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Floor(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Log(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Log10(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Pow(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs);
+
+        void Round(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Sign(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Sin(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Sinh(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Sqrt(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Tan(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Tanh(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Truncate(IFrontend<T> trgt, IFrontend<T> src);
     }
 }

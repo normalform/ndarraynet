@@ -296,6 +296,43 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
+        [TestMethod]
+        public void Abs()
+        {
+            // arrange
+            var bufferSize = 10;
+            var targetData = new int[bufferSize];
+            var srcData = Enumerable.Range(-1 * bufferSize / 2, bufferSize).ToArray();
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+
+            // action
+            VectorOps.Abs(target, src);
+
+            // assert
+            var allPositive = target.Data.All(v => v >= 0);
+            Assert.IsTrue(allPositive);
+        }
+
+        [TestMethod]
+        public void Sqrt()
+        {
+            // arrange
+            const int NumElements = 3;
+            var targetData = new double[NumElements];
+            var srcData = new[] { 1.0, 4.0, 16.0 };
+
+            var target = new DataAndLayout<double>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<double>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            VectorOps.Sqrt(target, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1.0, 2.0, 4.0 }, targetData);
+        }
+
         private struct UnSupportedTypeForUnitTestOnly
         {
         }

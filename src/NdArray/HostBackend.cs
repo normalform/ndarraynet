@@ -240,6 +240,140 @@ namespace NdArrayNet
             ScalarOps.Modulo(dataLayoutTrgt, dataLayoutA, dataLayoutB);
         }
 
+        public void Abs(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayout))
+            {
+                VectorOps.Abs(dataLayoutTrgt, dataLayout);
+            }
+            else
+            {
+                ScalarOps.Abs(dataLayoutTrgt, dataLayout);
+            }
+        }
+
+        public void Acos(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Acos(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Asin(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Asin(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Atan(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Atan(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Ceiling(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Ceiling(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Cos(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Cos(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Cosh(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Cosh(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Exp(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Exp(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Floor(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Floor(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Log(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Log(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Log10(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Log10(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Pow(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout<T, T, T>(trgt, lhs, rhs);
+            ScalarOps.Pow(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void Round(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Round(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Sign(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Sign(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Sin(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Sin(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Sinh(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Sinh(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Sqrt(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayout))
+            {
+                VectorOps.Sqrt(dataLayoutTrgt, dataLayout);
+            }
+            else
+            {
+                ScalarOps.Sqrt(dataLayoutTrgt, dataLayout);
+            }
+        }
+
+        public void Tan(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Tan(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Tanh(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Tanh(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Truncate(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Truncate(dataLayoutTrgt, dataLayout);
+        }
+
         public void Copy(IFrontend<T> trgt, IFrontend<T> src)
         {
             if (Layout.HasContiguousMemory(trgt.Layout) &&

@@ -701,6 +701,370 @@ namespace NdArrayNet.NdArrayUnitTest
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
         }
 
+        [TestMethod]
+        public void Abs()
+        {
+            // arrange
+            var srcArray = NdArray<int>.Linspace(HostDevice.Instance, -4, 4, 8);
+
+            // action
+            var newArray = NdArray<int>.Abs(srcArray);
+
+            // assert
+            Assert.IsTrue(newArray[0].Value > 0);
+        }
+
+        [TestMethod]
+        public void Acos()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
+
+            // action
+            var newArray = NdArray<double>.Acos(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - Math.PI) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - (Math.PI / 2.0)) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Asin()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
+
+            // action
+            var newArray = NdArray<double>.Asin(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - (-Math.PI / 2.0)) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - (Math.PI / 2.0)) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Atan()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
+
+            // action
+            var newArray = NdArray<double>.Atan(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - (-Math.PI / 4.0)) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - (Math.PI / 4.0)) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Ceiling()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+
+            // action
+            var newArray = NdArray<double>.Ceiling(srcArray);
+
+            // assert
+            Assert.AreEqual(-1.0, newArray[0].Value);
+            Assert.AreEqual(0.0, newArray[1].Value);
+            Assert.AreEqual(1.0, newArray[4].Value);
+        }
+
+        [TestMethod]
+        public void Cos()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = -Math.PI / 2.0;
+            srcArray[1].Value = 0.0;
+            srcArray[2].Value = Math.PI / 2.0;
+
+            // action
+            var newArray = NdArray<double>.Cos(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Cosh()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = -Math.PI / 2.0;
+            srcArray[1].Value = 0.0;
+            srcArray[2].Value = Math.PI / 2.0;
+
+            // action
+            var newArray = NdArray<double>.Cosh(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - 2.5091784786580567) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.5091784786580567) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Exp()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 4 });
+            srcArray[0].Value = -1.0;
+            srcArray[1].Value = 0.0;
+            srcArray[2].Value = 1.0;
+            srcArray[3].Value = 10.0;
+
+            // action
+            var newArray = NdArray<double>.Exp(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.36787944117144233) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.718281828459045) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[3].Value - 22026.465794806718) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Floor()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+
+            // action
+            var newArray = NdArray<double>.Floor(srcArray);
+
+            // assert
+            Assert.AreEqual(-1.0, newArray[0].Value);
+            Assert.AreEqual(-1.0, newArray[1].Value);
+            Assert.AreEqual(-1.0, newArray[2].Value);
+            Assert.AreEqual(0.0, newArray[3].Value);
+            Assert.AreEqual(0.0, newArray[4].Value);
+            Assert.AreEqual(1.0, newArray[5].Value);
+        }
+
+        [TestMethod]
+        public void Log()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = 1.00;
+            srcArray[1].Value = Math.E;
+            srcArray[2].Value = 4.0;
+
+            // action
+            var newArray = NdArray<double>.Log(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.3862943611198906) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Log10()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = 1.00;
+            srcArray[1].Value = 10.0;
+            srcArray[2].Value = 100.0;
+
+            // action
+            var newArray = NdArray<double>.Log10(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.0) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Pow()
+        {
+            // arrange
+            var lhs = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            lhs[0].Value = 5.0;
+            lhs[1].Value = 6.0;
+            lhs[2].Value = 7.0;
+
+            var rhs = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            rhs[0].Value = 2.00;
+            rhs[1].Value = 3.0;
+            rhs[2].Value = 4.0;
+
+            // action
+            var newArray = NdArray<double>.Pow(lhs, rhs);
+
+            // assert
+            Assert.AreEqual(25.0, newArray[0].Value);
+            Assert.AreEqual(216.0, newArray[1].Value);
+            Assert.AreEqual(2401.0, newArray[2].Value);
+        }
+
+        [TestMethod]
+        public void Round()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+
+            // action
+            var newArray = NdArray<double>.Round(srcArray);
+
+            // assert
+            Assert.AreEqual(-1.0, newArray[0].Value);
+            Assert.AreEqual(-1.0, newArray[1].Value);
+            Assert.AreEqual(0.0, newArray[2].Value);
+            Assert.AreEqual(0.0, newArray[3].Value);
+            Assert.AreEqual(1.0, newArray[4].Value);
+            Assert.AreEqual(1.0, newArray[5].Value);
+        }
+
+        [TestMethod]
+        public void Sign()
+        {
+            // arrange
+            var src = NdArray<double>.Zeros(HostDevice.Instance, new[] { 4 });
+            src[0].Value = -2.0;
+            src[1].Value = -1.0;
+            src[2].Value = 0.0;
+            src[3].Value = 1.0;
+
+            // action
+            var newArray = NdArray<double>.Sign(src);
+
+            // assert
+            Assert.AreEqual(-1.0, newArray[0].Value);
+            Assert.AreEqual(-1.0, newArray[1].Value);
+            Assert.AreEqual(0.0, newArray[2].Value);
+            Assert.AreEqual(1.0, newArray[3].Value);
+        }
+
+        [TestMethod]
+        public void Sin()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = -Math.PI / 2.0;
+            srcArray[1].Value = 0.0;
+            srcArray[2].Value = Math.PI / 2.0;
+
+            // action
+            var newArray = NdArray<double>.Sin(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - -1.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.0) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Sinh()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = -Math.PI / 2.0;
+            srcArray[1].Value = 0.0;
+            srcArray[2].Value = Math.PI / 2.0;
+
+            // action
+            var newArray = NdArray<double>.Sinh(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - -2.3012989023072947) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.3012989023072947) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Sqrt()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = 1.0;
+            srcArray[1].Value = 4.0;
+            srcArray[2].Value = 16.0;
+
+            // action
+            var newArray = NdArray<double>.Sqrt(srcArray);
+
+            // assert
+            Assert.AreEqual(1.0, newArray[0].Value);
+            Assert.AreEqual(2.0, newArray[1].Value);
+            Assert.AreEqual(4.0, newArray[2].Value);
+        }
+
+        [TestMethod]
+        public void Tan()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = -Math.PI / 2.0;
+            srcArray[1].Value = 0.0;
+            srcArray[2].Value = Math.PI / 2.0;
+
+            // action
+            var newArray = NdArray<double>.Tan(srcArray);
+
+            // assert
+            const double Epsilon = 1e10;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - -1.63312394e+16) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.63312394e+16) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Tanh()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            srcArray[0].Value = -Math.PI / 2.0;
+            srcArray[1].Value = 0.0;
+            srcArray[2].Value = Math.PI / 2.0;
+
+            // action
+            var newArray = NdArray<double>.Tanh(srcArray);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - -0.91715234) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.91715234) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Truncate()
+        {
+            // arrange
+            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+
+            // action
+            var newArray = NdArray<double>.Truncate(srcArray);
+
+            // assert
+            Assert.AreEqual(-1.0, newArray[0].Value);
+            Assert.AreEqual(0.0, newArray[1].Value);
+            Assert.AreEqual(0.0, newArray[2].Value);
+            Assert.AreEqual(0.0, newArray[3].Value);
+            Assert.AreEqual(0.0, newArray[4].Value);
+            Assert.AreEqual(1.0, newArray[5].Value);
+        }
+
         private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()

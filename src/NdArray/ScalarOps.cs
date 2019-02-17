@@ -357,5 +357,145 @@ namespace NdArrayNet
             T op(int[] pos, T a) => p.UnaryMinus(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
+
+        public static void Abs<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Abs(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Acos<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Acos(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Asin<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Asin(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Atan<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Atan(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Ceiling<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Ceiling(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Cos<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Cos(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Cosh<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Cosh(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Exp<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Exp(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Floor<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Floor(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Log<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Log(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Log10<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Log10(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Pow<T>(DataAndLayout<T> trgt, DataAndLayout<T> lhs, DataAndLayout<T> rhs)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T l, T t) => p.Power(l, t);
+            ApplyBinaryOp(op, trgt, lhs, rhs, isIndexed: false, useThreads: true);
+        }
+
+        public static void Round<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Round(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Sign<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Sign(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Sin<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Sin(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Sinh<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Sinh(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Sqrt<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Sqrt(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Tan<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Tan(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Tanh<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Tanh(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void Truncate<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a) => p.Truncate(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
     }
 }

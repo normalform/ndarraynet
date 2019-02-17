@@ -421,11 +421,152 @@ namespace NdArrayNet
         /// <returns>The new NdArray.</returns>
         internal static NdArray<T> ZerosLike(NdArray<T> template) => Constructor<T>.ZerosLike(template);
 
+        /// <summary>
+        /// Element-wise absolute value.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Abs(NdArray<T> input) => ElementWiseMathFunction<T>.FillAbs(input);
+
+        /// <summary>
+        /// Element-wise arccosine (inverse cosine).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Acos(NdArray<T> input) => ElementWiseMathFunction<T>.FillAcos(input);
+
+        /// <summary>
+        /// Element-wise arcsine (inverse sine).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Asin(NdArray<T> input) => ElementWiseMathFunction<T>.FillAsin(input);
+
+        /// <summary>
+        /// Element-wise arctanget (inverse tangent).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Atan(NdArray<T> input) => ElementWiseMathFunction<T>.FillAtan(input);
+
+        /// <summary>
+        /// Element-wise ceiling (round towards positive infinity).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Ceiling(NdArray<T> input) => ElementWiseMathFunction<T>.FillCeiling(input);
+
+        /// <summary>
+        /// Element-wise cosine.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Cos(NdArray<T> input) => ElementWiseMathFunction<T>.FillCos(input);
+
+        /// <summary>
+        /// Element-wise hyperbolic cosine.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Cosh(NdArray<T> input) => ElementWiseMathFunction<T>.FillCosh(input);
+
+        /// <summary>
+        /// Element-wise exponential function.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Exp(NdArray<T> input) => ElementWiseMathFunction<T>.FillExp(input);
+
+        /// <summary>
+        /// Element-wise floor (round towards negative infinity).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Floor(NdArray<T> input) => ElementWiseMathFunction<T>.FillFloor(input);
+
+        /// <summary>
+        /// Element-wise natural logarithm.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Log(NdArray<T> input) => ElementWiseMathFunction<T>.FillLog(input);
+
+        /// <summary>
+        /// Element-wise common logarithm.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Log10(NdArray<T> input) => ElementWiseMathFunction<T>.FillLog10(input);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise exponentiation.
+        /// </summary>
+        /// <param name="lsh">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Pow(NdArray<T> lsh, NdArray<T> rhs) => ElementWiseMathFunction<T>.FillPow(lsh, rhs);
+
+        /// <summary>
+        /// Element-wise rounding.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Round(NdArray<T> input) => ElementWiseMathFunction<T>.FillRound(input);
+
+        /// <summary>
+        /// Element-wise sign.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Sign(NdArray<T> input) => ElementWiseMathFunction<T>.FillSign(input);
+
+        /// <summary>
+        /// Element-wise sine.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Sin(NdArray<T> input) => ElementWiseMathFunction<T>.FillSin(input);
+
+        /// <summary>
+        /// Element-wise hyperbolic sine.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Sinh(NdArray<T> input) => ElementWiseMathFunction<T>.FillSinh(input);
+
+        /// <summary>
+        /// Element-wise square root.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Sqrt(NdArray<T> input) => ElementWiseMathFunction<T>.FillSqrt(input);
+
+        /// <summary>
+        /// Element-wise tangent.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Tan(NdArray<T> input) => ElementWiseMathFunction<T>.FillTan(input);
+
+        /// <summary>
+        /// Element-wise hyperbolic tangent.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Tanh(NdArray<T> input) => ElementWiseMathFunction<T>.FillTanh(input);
+
+        /// <summary>
+        /// Element-wise truncation (rounding towards zero).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        internal static NdArray<T> Truncate(NdArray<T> input) => ElementWiseMathFunction<T>.FillTruncate(input);
+
         internal static void AssertSameShape(NdArray<T> a, NdArray<T> b)
         {
             if (!Enumerable.SequenceEqual(a.Shape, b.Shape))
             {
-                var msg = string.Format("Tensors of shapes {0} and {1} were expected to have same shape", a.Shape, b.Shape);
+                var msg = string.Format("NdArrays of shapes {0} and {1} were expected to have same shape", a.Shape, b.Shape);
                 throw new ArgumentOutOfRangeException(msg);
             }
         }

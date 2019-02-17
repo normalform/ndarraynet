@@ -1,4 +1,4 @@
-﻿// <copyright file="OperatorTests.cs" company="NdArrayNet">
+﻿// <copyright file="ElementWiseOperatorTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -34,7 +34,7 @@ namespace NdArrayNet.NdArrayUnitTest
     using System.Numerics;
 
     [TestClass]
-    public class OperatorTests
+    public class ElementWiseOperatorTests
     {
         [TestMethod]
         public void UnaryPlus()
