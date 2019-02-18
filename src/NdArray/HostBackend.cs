@@ -425,6 +425,30 @@ namespace NdArrayNet
             ScalarOps.IsFinite<TP>(dataLayoutTrgt, dataLayout);
         }
 
+        public void MaxLastAxis(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            ScalarOps.MaxLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void MinLastAxis(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            ScalarOps.MinLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void SumLastAxis(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            ScalarOps.SumLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void ProductLastAxis(IFrontend<T> trgt, IFrontend<T> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            ScalarOps.ProductLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
         public void Copy(IFrontend<T> trgt, IFrontend<T> src)
         {
             if (Layout.HasContiguousMemory(trgt.Layout) &&

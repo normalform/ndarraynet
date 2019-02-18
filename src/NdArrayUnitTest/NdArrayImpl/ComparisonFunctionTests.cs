@@ -270,7 +270,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var equal = ComparisonFunction<int>.FillGreaterOrEqual(inputA,  inputB);
+            var equal = ComparisonFunction<int>.FillGreaterOrEqual(inputA, inputB);
 
             // assert
             CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);

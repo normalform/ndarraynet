@@ -31,6 +31,7 @@ namespace NdArrayNet
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     internal static class Primitives
     {
@@ -66,6 +67,38 @@ namespace NdArrayNet
             { typeof(bool), true },
         };
 
+        private static readonly Dictionary<Type, object> MinValueOf = new Dictionary<Type, object>
+        {
+            { typeof(byte), byte.MinValue },
+            { typeof(sbyte), sbyte.MinValue },
+            { typeof(short), short.MinValue },        // Int16
+            { typeof(ushort), ushort.MinValue },      // UInt16
+            { typeof(int), int.MinValue },                 // Int32
+            { typeof(uint), uint.MinValue },               // UInt32
+            { typeof(long), long.MinValue },               // Int64
+            { typeof(ulong), ulong.MinValue },             // Uint64
+            { typeof(float), float.MinValue },            // Single
+            { typeof(double), double.MinValue },
+            { typeof(decimal), decimal.MinValue },
+            { typeof(bool), false },
+        };
+
+        private static readonly Dictionary<Type, object> MaxValueOf = new Dictionary<Type, object>
+        {
+            { typeof(byte), byte.MaxValue },
+            { typeof(sbyte), sbyte.MaxValue },
+            { typeof(short), short.MaxValue },        // Int16
+            { typeof(ushort), ushort.MaxValue },      // UInt16
+            { typeof(int), int.MaxValue },                 // Int32
+            { typeof(uint), uint.MaxValue },               // UInt32
+            { typeof(long), long.MaxValue },               // Int64
+            { typeof(ulong), ulong.MaxValue },             // Uint64
+            { typeof(float), float.MaxValue },            // Single
+            { typeof(double), double.MaxValue },
+            { typeof(decimal), decimal.MaxValue },
+            { typeof(bool), true },
+        };
+
         public static T Zero<T>()
         {
             var type = typeof(T);
@@ -75,7 +108,7 @@ namespace NdArrayNet
                 return (T)ZeroOf[type];
             }
 
-            return default(T);
+            return (T)GetStaticProperty(typeof(T), "Zero");
         }
 
         public static T One<T>()
@@ -87,7 +120,43 @@ namespace NdArrayNet
                 return (T)OneOf[type];
             }
 
-            return default(T);
+            return (T)GetStaticProperty(typeof(T), "One");
+        }
+
+        public static T MaxValue<T>()
+        {
+            var type = typeof(T);
+
+            if (OneOf.ContainsKey(type))
+            {
+                return (T)MaxValueOf[type];
+            }
+
+            return (T)GetStaticProperty(typeof(T), "MaxValue");
+        }
+
+        public static T MinValue<T>()
+        {
+            var type = typeof(T);
+
+            if (OneOf.ContainsKey(type))
+            {
+                return (T)MinValueOf[type];
+            }
+
+            return (T)GetStaticProperty(typeof(T), "MinValue");
+        }
+
+        private static object GetStaticProperty(Type type, string name)
+        {
+            var property = type.GetProperty(name, BindingFlags.Public | BindingFlags.Static, null, type, new Type[] { }, new ParameterModifier[] { });
+            if (property == null)
+            {
+                var msg = string.Format("the type {0} must implement the static property {1}", type.Name, name);
+                throw new InvalidOperationException(msg);
+            }
+
+            return property.GetValue(null);
         }
     }
 }

@@ -100,7 +100,20 @@ namespace NdArrayNet.NdArrayUnitTest
             var list = List.Without(1, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 3}, list);
+            CollectionAssert.AreEqual(new[] { 1, 3 }, list);
+        }
+
+        [TestMethod]
+        public void Insert()
+        {
+            // arrange
+            var src = new int[] { 1, 2, 3 };
+
+            // action
+            var list = List.Insert(2, 9, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 2, 9, 3 }, list);
         }
     }
 }

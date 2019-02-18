@@ -1139,6 +1139,351 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsTrue(finite);
         }
 
+        [TestMethod]
+        public void MaxAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var max = NdArray<int>.MaxAxis(0, input);
+
+            // assert
+            Assert.AreEqual(9, max.Value);
+        }
+
+        [TestMethod]
+        public void MaxNdArray()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var max = NdArray<int>.MaxNdArray(input);
+
+            // assert
+            Assert.AreEqual(9, max.Value);
+        }
+
+        [TestMethod]
+        public void Max()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var max = NdArray<int>.Max(input);
+
+            // assert
+            Assert.AreEqual(9, max);
+        }
+
+        [TestMethod]
+        public void MinAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var min = NdArray<int>.MinAxis(0, input);
+
+            // assert
+            Assert.AreEqual(0, min.Value);
+        }
+
+        [TestMethod]
+        public void MinNdArray()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var min = NdArray<int>.MinNdArray(input);
+
+            // assert
+            Assert.AreEqual(0, min.Value);
+        }
+
+        [TestMethod]
+        public void Min()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var min = NdArray<int>.Min(input);
+
+            // assert
+            Assert.AreEqual(0, min);
+        }
+
+        [TestMethod]
+        public void SumAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var sum = NdArray<int>.SumAxis(0, input);
+
+            // assert
+            Assert.AreEqual(45, sum.Value);
+        }
+
+        [TestMethod]
+        public void SumNdArray()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var sum = NdArray<int>.SumNdArray(input);
+
+            // assert
+            Assert.AreEqual(45, sum.Value);
+        }
+
+        [TestMethod]
+        public void Sum()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 10, 1);
+
+            // action
+            var sum = NdArray<int>.Sum(input);
+
+            // assert
+            Assert.AreEqual(45, sum);
+        }
+
+        [TestMethod]
+        public void MeanAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var mean = NdArray<double>.MeanAxis(1, input);
+
+            // assert
+            Assert.AreEqual(2.5, mean[0].Value);
+        }
+
+        [TestMethod]
+        public void Mean()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var sum = NdArray<double>.Mean(input);
+
+            // assert
+            Assert.AreEqual(4.5, sum);
+        }
+
+        [TestMethod]
+        public void ProductAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var product = NdArray<double>.ProductAxis(1, input);
+
+            // assert
+            Assert.AreEqual(24.0, product[0].Value);
+        }
+
+        [TestMethod]
+        public void ProductNdArray()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var product = NdArray<double>.ProductNdArray(input);
+
+            // assert
+            Assert.AreEqual(40320.0, product[0].Value);
+        }
+
+        [TestMethod]
+        public void Product()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var product = NdArray<double>.Product(input);
+
+            // assert
+            Assert.AreEqual(40320.0, product);
+        }
+
+        [TestMethod]
+        public void VarAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var var = NdArray<double>.VarAxis(1, input);
+
+            // assert
+            Assert.AreEqual(1.25, var[0].Value);
+        }
+
+        [TestMethod]
+        public void VarAxis_Ddof1()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var var = NdArray<double>.VarAxis(1, input, 1.0);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(1.666666666 - var[0].Value) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Var()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var var = NdArray<double>.Var(input);
+
+            // assert
+            Assert.AreEqual(5.25, var);
+        }
+
+        [TestMethod]
+        public void Var_Ddof1()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var var = NdArray<double>.Var(input, 1.0);
+
+            // assert
+            Assert.AreEqual(6.0, var);
+        }
+
+        [TestMethod]
+        public void StdAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var std = NdArray<double>.StdAxis(1, input);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(1.11803399 - std[0].Value) < Epsilon);
+        }
+
+        [TestMethod]
+        public void StdAxis_Ddof1()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var std = NdArray<double>.StdAxis(1, input, 1.0);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(1.29099445 - std[0].Value) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Std()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var std = NdArray<double>.Std(input);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(2.29128784747792 - std) < Epsilon);
+        }
+
+        [TestMethod]
+        public void Std_Ddof1()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var std = NdArray<double>.Std(input, 1.0);
+
+            // assert
+            const double Epsilon = 1e-8;
+            Assert.IsTrue(Math.Abs(2.449489742783178 - std) < Epsilon);
+        }
+
+        [TestMethod]
+        public void TraceAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
+
+            // action
+            var trace = NdArray<int>.TraceAxis(0, 1, input);
+
+            // assert
+            Assert.AreEqual(36, trace[0].Value);
+            Assert.AreEqual(39, trace[1].Value);
+            Assert.AreEqual(42, trace[2].Value);
+        }
+
+        [TestMethod]
+        public void Trace()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
+
+            // action
+            var trace = NdArray<int>.Trace(input);
+
+            // assert
+            Assert.AreEqual(12, trace[0].Value);
+            Assert.AreEqual(39, trace[1].Value);
+            Assert.AreEqual(66, trace[2].Value);
+        }
+
         private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()

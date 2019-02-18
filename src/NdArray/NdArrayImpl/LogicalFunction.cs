@@ -29,8 +29,6 @@
 
 namespace NdArray.NdArrayImpl
 {
-    using NdArrayNet;
-
     internal static class LogicalFunction
     {
     }
