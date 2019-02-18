@@ -1452,7 +1452,6 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsTrue(Math.Abs(2.449489742783178 - std) < Epsilon);
         }
 
-
         [TestMethod]
         public void TraceAxis()
         {
