@@ -711,7 +711,7 @@ namespace NdArrayNet
                 throw new InvalidOperationException(msg);
             }
 
-            if(!(initial is null))
+            if (!(initial is null))
             {
                 AssertSameStorage(new[] { target, initial });
                 BroadCastTo(reducedShaped, initial);

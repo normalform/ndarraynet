@@ -672,7 +672,7 @@ namespace NdArrayNet
             // permute
             var shapeList = src.Shape.ToList();
             var strideList = src.Stride.ToList();
-            for(var srcIndex = 0; srcIndex < permut.Length; srcIndex++)
+            for (var srcIndex = 0; srcIndex < permut.Length; srcIndex++)
             {
                 var destIndex = permut[srcIndex];
 

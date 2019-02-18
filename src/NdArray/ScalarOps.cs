@@ -293,10 +293,11 @@ namespace NdArrayNet
                     }
                     else if (isIndexed)
                     {
-                        for (var d = 0; d < nd-1; d++)
+                        for (var d = 0; d < nd - 1; d++)
                         {
                             pos[d] = targetPosItr.Pos[d];
                         }
+
                         pos[nd - 1] = 0;
 
                         for (var i = 0; i < shape[nd - 1]; i++)
@@ -305,6 +306,7 @@ namespace NdArrayNet
                             srcAddr += src.FastAccess.Stride[nd - 1];
                             pos[nd - 1] = pos[nd - 1] + 1;
                         }
+
                         trgt.Data[targetPosItr.Addr] = extractOp(state);
                     }
                     else
@@ -314,6 +316,7 @@ namespace NdArrayNet
                             state = foldOp(null, state, src.Data[srcAddr]);
                             srcAddr += src.FastAccess.Stride[nd - 1];
                         }
+
                         trgt.Data[targetPosItr.Addr] = extractOp(state);
                     }
 
@@ -632,7 +635,7 @@ namespace NdArrayNet
 
         internal class InitialOption<TS>
         {
-            public InitialOption(bool useValue, TS value = default, DataAndLayout<TS> dataAndLayout = null)
+            public InitialOption(bool useValue, TS value = default(TS), DataAndLayout<TS> dataAndLayout = null)
             {
                 UseValue = useValue;
                 Value = value;
@@ -640,7 +643,9 @@ namespace NdArrayNet
             }
 
             public bool UseValue { get; }
+
             public TS Value { get; }
+
             public DataAndLayout<TS> DataAndLayout { get; }
         }
     }
