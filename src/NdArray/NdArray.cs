@@ -320,6 +320,20 @@ namespace NdArrayNet
         public static bool AlmostEqual(NdArray<float> lhs, NdArray<float> rhs, float absoluteTolerence = 1e-8f, float relativeTolerence = 1e-5f) => ComparisonFunction<float>.AlmostEqual(lhs, rhs, absoluteTolerence, relativeTolerence);
 
         /// <summary>
+        /// Element-wise finity check (not -Inf, Inf or NaN).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> IsFinite(NdArray<T> input) => ComparisonFunction<T>.FillIsFinite(input);
+
+        /// <summary>
+        /// Checks that all elements of the NdArray are finite.
+        /// </summary>
+        /// <param name="input">The NdArray to operate on.</param>
+        /// <returns>true if all elements are finite, otherwise false.</returns>
+        public static bool AllFinite(NdArray<T> input) => All(ComparisonFunction<T>.FillIsFinite(input));
+
+        /// <summary>
         /// Flattens the NdArray into a (one-dimensional) vector.
         /// </summary>
         /// <param name="a">The NdArray to operate on.</param>

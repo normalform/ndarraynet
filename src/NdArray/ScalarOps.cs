@@ -633,6 +633,13 @@ namespace NdArrayNet
             ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
         }
 
+        public static void IsFinite<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a) => p.IsFinite(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
         internal class InitialOption<TS>
         {
             public InitialOption(bool useValue, TS value = default(TS), DataAndLayout<TS> dataAndLayout = null)

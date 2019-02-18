@@ -96,7 +96,7 @@ namespace NdArrayNet
             return trgt.Relayout(tl).Backend.DataLayout;
         }
 
-        public static (DataAndLayout<T>, DataAndLayout<TA>) ElemwiseDataAndLayout<TA>(IFrontend<T> trgt, IFrontend<TA> src)
+        public static (DataAndLayout<T1>, DataAndLayout<T2>) ElemwiseDataAndLayout<T1, T2>(IFrontend<T1> trgt, IFrontend<T2> src)
         {
             var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { src.Layout });
             return (trgt.Relayout(tl).Backend.DataLayout, src.Relayout(ls[0]).Backend.DataLayout);
@@ -417,6 +417,12 @@ namespace NdArrayNet
         {
             var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
             ScalarOps.AnyLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void IsFinite<TP>(IFrontend<bool> trgt, IFrontend<TP> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.IsFinite<TP>(dataLayoutTrgt, dataLayout);
         }
 
         public void Copy(IFrontend<T> trgt, IFrontend<T> src)

@@ -1111,6 +1111,34 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(expectedLayout, newArray.Layout);
         }
 
+        [TestMethod]
+        public void IsFinite()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var inputA = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
+
+            // action
+            var finite = NdArray<int>.IsFinite(inputA);
+
+            // assert
+            Assert.IsTrue(NdArray<int>.All(finite));
+        }
+
+        [TestMethod]
+        public void AllFinite()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var inputA = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
+
+            // action
+            var finite = NdArray<int>.AllFinite(inputA);
+
+            // assert
+            Assert.IsTrue(finite);
+        }
+
         private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()

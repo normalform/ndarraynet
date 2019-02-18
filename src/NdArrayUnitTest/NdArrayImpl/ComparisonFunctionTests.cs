@@ -406,5 +406,19 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.IsFalse(almostEqual);
         }
+
+        [TestMethod]
+        public void FillIsFinite()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var inputA = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
+
+            // action
+            var finite = ComparisonFunction<int>.FillIsFinite(inputA);
+
+            // assert
+            Assert.IsTrue(NdArray<int>.All(finite));
+        }
     }
 }

@@ -183,6 +183,8 @@ namespace NdArrayNet
 
         public bool GreaterOrEqual(T a, T b) => GreaterOrEqualFunc.Invoke(a, b);
 
+        public bool IsFinite(T v) => IsFiniteFunc(v);
+
         internal static Func<T, T> CompileAny(Expression<Func<T, T>>[] fns)
         {
             foreach (var fn in fns)
@@ -256,6 +258,23 @@ namespace NdArrayNet
 
             var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
             return CompileAny(fnsWithExceptionBlock.ToArray());
+        }
+
+        internal static bool IsFiniteFunc(T v)
+        {
+            var type = typeof(T);
+            if (type == typeof(float))
+            {
+                var val = System.Convert.ToSingle(v);
+                return !(float.IsInfinity(val) || float.IsNaN(val));
+            }
+            else if (type == typeof(double))
+            {
+                var val = System.Convert.ToDouble(v);
+                return !(double.IsInfinity(val) || double.IsNaN(val));
+            }
+
+            return true;
         }
     }
 }

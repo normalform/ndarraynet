@@ -139,6 +139,14 @@ namespace NdArray.NdArrayImpl
             return IsCloseWithTolerence(lhs, rhs, absoluteTolerence, relativeTolerence);
         }
 
+        /// <summary>
+        /// Checks if two NdArrays have the same (within machine precision) values in all elements.
+        /// The default absolute tolerance is 1e-8.
+        /// The default relative tolerance is 1e-5.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>true if two NdArrays have same (within specified precision) values in all elements, otherwise false.</returns>
         public static bool AlmostEqual(NdArray<T> lhs, NdArray<T> rhs)
         {
             if (Enumerable.SequenceEqual(lhs.Shape, rhs.Shape))
@@ -149,6 +157,14 @@ namespace NdArray.NdArrayImpl
             return false;
         }
 
+        /// <summary>
+        /// Checks if two NdArrays have the same (within machine precision) values in all elements.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <param name="absoluteTolerence">The absolute tolerance. (default 1e-8)</param>
+        /// <param name="relativeTolerence">The relative tolerance. (default 1e-5)</param>
+        /// <returns>true if two NdArrays have same (within specified precision) values in all elements, otherwise false.</returns>
         public static bool AlmostEqual(NdArray<double> lhs, NdArray<double> rhs, double absoluteTolerence = 1e-8, double relativeTolerence = 1e-5)
         {
             if (Enumerable.SequenceEqual(lhs.Shape, rhs.Shape))
@@ -159,6 +175,14 @@ namespace NdArray.NdArrayImpl
             return false;
         }
 
+        /// <summary>
+        /// Checks if two NdArrays have the same (within machine precision) values in all elements.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <param name="absoluteTolerence">The absolute tolerance. (default 1e-8)</param>
+        /// <param name="relativeTolerence">The relative tolerance. (default 1e-5)</param>
+        /// <returns>true if two NdArrays have same (within specified precision) values in all elements, otherwise false.</returns>
         public static bool AlmostEqual(NdArray<float> lhs, NdArray<float> rhs, float absoluteTolerence = 1e-8f, float relativeTolerence = 1e-5f)
         {
             if (Enumerable.SequenceEqual(lhs.Shape, rhs.Shape))
@@ -167,6 +191,22 @@ namespace NdArray.NdArrayImpl
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Element-wise finity check (not -Inf, Inf or NaN).
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> FillIsFinite(NdArray<T> input)
+        {
+            var (target, src) = NdArray<T>.PrepareElemwise<bool, T>(input);
+            target.AssertBool();
+
+            var src1 = NdArray<T>.PrepareElemwiseSources(target, src);
+
+            target.Backend.IsFinite(target, src1);
+            return target;
         }
 
         private static NdArray<bool> IsCloseWithoutTolerence<P>(NdArray<P> lhs, NdArray<P> rhs)

@@ -114,5 +114,7 @@ namespace NdArrayNet
         void AllLastAxis(IFrontend<bool> trgt, IFrontend<bool> src);
 
         void AnyLastAxis(IFrontend<bool> trgt, IFrontend<bool> src);
+
+        void IsFinite<TP>(IFrontend<bool> trgt, IFrontend<TP> src);
     }
 }
