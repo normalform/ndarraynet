@@ -174,8 +174,8 @@ namespace NdArray.NdArrayImpl
             if (typeof(P) == typeof(double) || typeof(P) == typeof(float))
             {
                 var op = ScalarPrimitives.For<P, double>();
-                P absoluteTolerenceT = absoluteTolerenceT = op.Convert(1e-8);
-                P relativeTolerenceT = relativeTolerenceT = op.Convert(1e-5);
+                P absoluteTolerenceT = op.Convert(1e-8);
+                P relativeTolerenceT = op.Convert(1e-5);
 
                 return IsCloseWithTolerence(lhs, rhs, absoluteTolerenceT, relativeTolerenceT);
             }

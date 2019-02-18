@@ -665,7 +665,7 @@ namespace NdArrayNet
         {
             if (src.NumDimensions != permut.Length)
             {
-                var msg = string.Format("Permutation % A must have same rank as shape % A.", permut, src.Shape);
+                var msg = string.Format("Permutation {0} must have same rank as shape {1}.", permut, src.Shape);
                 throw new ArgumentException(msg);
             }
 

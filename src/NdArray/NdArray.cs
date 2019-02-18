@@ -707,7 +707,7 @@ namespace NdArrayNet
             var reducedShaped = List.Without(axis, array.Shape);
             if (!Enumerable.SequenceEqual(target.Shape, reducedShaped))
             {
-                var msg = string.Format("Reduction of tensor {0} along axis {1} gives shape {2} but target has shape {3}.", array.Shape, axis, reducedShaped, target.Shape);
+                var msg = string.Format("Reduction of NdArray {0} along axis {1} gives shape {2} but target has shape {3}.", array.Shape, axis, reducedShaped, target.Shape);
                 throw new InvalidOperationException(msg);
             }
 

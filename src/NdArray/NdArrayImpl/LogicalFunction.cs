@@ -31,7 +31,7 @@ namespace NdArray.NdArrayImpl
 {
     using NdArrayNet;
 
-    internal static class LogicalFunction<T>
+    internal static class LogicalFunction
     {
     }
 }

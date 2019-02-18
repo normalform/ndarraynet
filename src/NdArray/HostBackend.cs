@@ -410,13 +410,13 @@ namespace NdArrayNet
         public void AllLastAxis(IFrontend<bool> trgt, IFrontend<bool> src)
         {
             var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
-            ScalarOps.AllLastAxis<bool>(dataLayoutTrgt, dataLayout);
+            ScalarOps.AllLastAxis(dataLayoutTrgt, dataLayout);
         }
 
         public void AnyLastAxis(IFrontend<bool> trgt, IFrontend<bool> src)
         {
             var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
-            ScalarOps.AnyLastAxis<bool>(dataLayoutTrgt, dataLayout);
+            ScalarOps.AnyLastAxis(dataLayoutTrgt, dataLayout);
         }
 
         public void Copy(IFrontend<T> trgt, IFrontend<T> src)

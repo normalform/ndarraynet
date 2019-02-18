@@ -615,7 +615,7 @@ namespace NdArrayNet
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
-        public static void AllLastAxis<T1>(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
+        public static void AllLastAxis(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
         {
             bool foldOp(int[] pos, bool res, bool v) => res && v;
             bool extractOp(bool v) => v;
@@ -624,7 +624,7 @@ namespace NdArrayNet
             ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
         }
 
-        public static void AnyLastAxis<T1>(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
+        public static void AnyLastAxis(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
         {
             bool foldOp(int[] pos, bool res, bool v) => res || v;
             bool extractOp(bool v) => v;
