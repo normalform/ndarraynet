@@ -82,6 +82,9 @@ namespace NdArrayNet
         private static readonly Func<T, T, T> PowerFunc =
             TryBinary("Power", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Convert(Expression.Power(Expression.Convert(A, typeof(double)), Expression.Convert(B, typeof(double))), typeof(T)), A, B) });
 
+        private static readonly Func<T, T, T> MaximumFunc = TryBinary("Maximum", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Call(typeof(Math).GetMethod("Max", new[] { typeof(T), typeof(T) }), A, B), A, B) });
+        private static readonly Func<T, T, T> MinimumFunc = TryBinary("Minimum", new[] { Expression.Lambda<Func<T, T, T>>(Expression.Call(typeof(Math).GetMethod("Min", new[] { typeof(T), typeof(T) }), A, B), A, B) });
+
         private static readonly Func<T, T> AbsFunc = Expression.Lambda<Func<T, T>>(Expression.Call(typeof(Math).GetMethod("Abs", new[] { typeof(T) }), A), A).Compile();
         private static readonly Func<T, T> SignFunc = Expression.Lambda<Func<T, T>>(Expression.Convert(Expression.Call(typeof(Math).GetMethod("Sign", new[] { typeof(T) }), A), typeof(T)), A).Compile();
         private static readonly Func<T, T> LogFunc = Expression.Lambda<Func<T, T>>(Expression.Convert(Expression.Call(typeof(Math).GetMethod("Log", new[] { typeof(T) }), Expression.Convert(A, typeof(double))), typeof(T)), A).Compile();
@@ -154,6 +157,10 @@ namespace NdArrayNet
 
         public T Floor(T a) => FloorFunc.Invoke(a);
 
+        public T Maximum(T a, T b) => MaximumFunc.Invoke(a, b);
+
+        public T Minimum(T a, T b) => MinimumFunc.Invoke(a, b);
+
         public T Round(T a) => RoundFunc.Invoke(a);
 
         public T Truncate(T a) => TruncateFunc.Invoke(a);
@@ -175,6 +182,8 @@ namespace NdArrayNet
         public bool Greater(T a, T b) => GreaterFunc.Invoke(a, b);
 
         public bool GreaterOrEqual(T a, T b) => GreaterOrEqualFunc.Invoke(a, b);
+
+        public bool IsFinite(T v) => IsFiniteFunc(v);
 
         internal static Func<T, T> CompileAny(Expression<Func<T, T>>[] fns)
         {
@@ -249,6 +258,23 @@ namespace NdArrayNet
 
             var fnsWithExceptionBlock = fns.Concat(new[] { errExpr });
             return CompileAny(fnsWithExceptionBlock.ToArray());
+        }
+
+        internal static bool IsFiniteFunc(T v)
+        {
+            var type = typeof(T);
+            if (type == typeof(float))
+            {
+                var val = System.Convert.ToSingle(v);
+                return !(float.IsInfinity(val) || float.IsNaN(val));
+            }
+            else if (type == typeof(double))
+            {
+                var val = System.Convert.ToDouble(v);
+                return !(double.IsInfinity(val) || double.IsNaN(val));
+            }
+
+            return true;
         }
     }
 }

@@ -188,17 +188,47 @@ namespace NdArray.NdArrayImpl
         }
 
         /// <summary>
-        /// Fills this NdArray with the element-wise exponentiation.
+        /// Element-wise maximum.
         /// </summary>
-        /// <param name="lsh">The NdArray on the left side of this binary operation.</param>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillPow(NdArray<T> lsh, NdArray<T> rhs)
+        public static NdArray<T> FillMaximum(NdArray<T> lhs, NdArray<T> rhs)
         {
-            var (target, src1, src2) = NdArray<T>.PrepareElemwise<T, T, T>(lsh, rhs);
-            var (lsh1, lsh2) = NdArray<T>.PrepareElemwiseSources(target, src1, src2);
+            var (target, src1, src2) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            var (lsh1, rhs1) = NdArray<T>.PrepareElemwiseSources(target, src1, src2);
 
-            target.Backend.Pow(target, lsh1, lsh2);
+            target.Backend.Maximum(target, lsh1, rhs1);
+            return target;
+        }
+
+        /// <summary>
+        /// Element-wise minimum.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<T> FillMinimum(NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (target, src1, src2) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            var (lsh1, rhs1) = NdArray<T>.PrepareElemwiseSources(target, src1, src2);
+
+            target.Backend.Minimum(target, lsh1, rhs1);
+            return target;
+        }
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise exponentiation.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<T> FillPow(NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (target, src1, src2) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            var (lsh1, rhs1) = NdArray<T>.PrepareElemwiseSources(target, src1, src2);
+
+            target.Backend.Pow(target, lsh1, rhs1);
             return target;
         }
 

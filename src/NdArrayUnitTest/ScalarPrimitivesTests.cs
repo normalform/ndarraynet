@@ -1000,5 +1000,122 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.IsInstanceOfType(op, typeof(ScalarPrimitives<double, int>));
         }
+
+        [TestMethod]
+        public void IsFinite_WithIntValue_ReturnTrue()
+        {
+            // arrange 
+            const int Value = 1;
+
+            // action
+            var isFinite = ScalarPrimitives<int, int>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsTrue(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithDoubleValue_ReturnTrue()
+        {
+            // arrange 
+            const double Value = 1.0;
+
+            // action
+            var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsTrue(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithDoubleNan_ReturnFalse()
+        {
+            // arrange 
+            const double Value = double.NaN;
+
+            // action
+            var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsFalse(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithDoublePositiveInfinity_ReturnFalse()
+        {
+            // arrange 
+            const double Value = double.PositiveInfinity;
+
+            // action
+            var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsFalse(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithDoubleNegativeInfinity_ReturnFalse()
+        {
+            // arrange 
+            const double Value = double.NegativeInfinity;
+
+            // action
+            var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsFalse(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithFloatValue_ReturnTrue()
+        {
+            // arrange 
+            const float Value = 1.0f;
+
+            // action
+            var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsTrue(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithFloatNan_ReturnFalse()
+        {
+            // arrange 
+            const float Value = float.NaN;
+
+            // action
+            var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsFalse(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithFloatPositiveInfinity_ReturnFalse()
+        {
+            // arrange 
+            const float Value = float.PositiveInfinity;
+
+            // action
+            var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsFalse(isFinite);
+        }
+
+        [TestMethod]
+        public void IsFinite_WithFloatNegativeInfinity_ReturnFalse()
+        {
+            // arrange 
+            const float Value = float.NegativeInfinity;
+
+            // action
+            var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
+
+            // assert
+            Assert.IsFalse(isFinite);
+        }
     }
 }

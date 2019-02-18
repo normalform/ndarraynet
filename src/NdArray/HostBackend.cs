@@ -96,7 +96,7 @@ namespace NdArrayNet
             return trgt.Relayout(tl).Backend.DataLayout;
         }
 
-        public static (DataAndLayout<T>, DataAndLayout<TA>) ElemwiseDataAndLayout<TA>(IFrontend<T> trgt, IFrontend<TA> src)
+        public static (DataAndLayout<T1>, DataAndLayout<T2>) ElemwiseDataAndLayout<T1, T2>(IFrontend<T1> trgt, IFrontend<T2> src)
         {
             var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { src.Layout });
             return (trgt.Relayout(tl).Backend.DataLayout, src.Relayout(ls[0]).Backend.DataLayout);
@@ -313,6 +313,34 @@ namespace NdArrayNet
             ScalarOps.Log10(dataLayoutTrgt, dataLayout);
         }
 
+        public void Maximum(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, lhs, rhs);
+
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB))
+            {
+                VectorOps.Maximum(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+            else
+            {
+                ScalarOps.Maximum(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+        }
+
+        public void Minimum(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs)
+        {
+            var (dataLayoutTrgt, dataLayoutA, dataLayoutB) = ElemwiseDataAndLayout<T, T, T>(trgt, lhs, rhs);
+
+            if (VectorOps.CanUse(dataLayoutTrgt, dataLayoutA, dataLayoutB))
+            {
+                VectorOps.Minimum(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+            else
+            {
+                ScalarOps.Minimum(dataLayoutTrgt, dataLayoutA, dataLayoutB);
+            }
+        }
+
         public void Pow(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout<T, T, T>(trgt, lhs, rhs);
@@ -372,6 +400,29 @@ namespace NdArrayNet
         {
             var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
             ScalarOps.Truncate(dataLayoutTrgt, dataLayout);
+        }
+
+        public (DataAndLayout<T1>, DataAndLayout<T2>) GetDataAndLayout<T1, T2>(IFrontend<T2> trgt, IFrontend<T2> src)
+        {
+            return (((NdArray<T1>)trgt).Backend.DataLayout, ((NdArray<T2>)src).Backend.DataLayout);
+        }
+
+        public void AllLastAxis(IFrontend<bool> trgt, IFrontend<bool> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
+            ScalarOps.AllLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void AnyLastAxis(IFrontend<bool> trgt, IFrontend<bool> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
+            ScalarOps.AnyLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void IsFinite<TP>(IFrontend<bool> trgt, IFrontend<TP> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.IsFinite<TP>(dataLayoutTrgt, dataLayout);
         }
 
         public void Copy(IFrontend<T> trgt, IFrontend<T> src)

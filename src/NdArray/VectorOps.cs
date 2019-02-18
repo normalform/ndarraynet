@@ -123,6 +123,16 @@ namespace NdArrayNet
             Method<UnaryDelegate<T>>("AbsImpl").Invoke(trgt, src);
         }
 
+        public static void Maximum<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            Method<BinaryDelegate<T>>("MaximumImpl").Invoke(trgt, src1, src2);
+        }
+
+        public static void Minimum<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            Method<BinaryDelegate<T>>("MinimumImpl").Invoke(trgt, src1, src2);
+        }
+
         public static void Sqrt<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
             Method<UnaryDelegate<T>>("SqrtImpl").Invoke(trgt, src);
@@ -554,6 +564,20 @@ namespace NdArrayNet
             Vector<T> op(Vector<T> a) => Vector.Abs(a);
 
             ApplyUnary(op, new UnaryDataAndLayouts<T, T>(target, source));
+        }
+
+        private static void MaximumImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
+        {
+            Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Max(a, b);
+
+            ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
+        }
+
+        private static void MinimumImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source1, DataAndLayout<T> source2) where T : struct
+        {
+            Vector<T> op(Vector<T> a, Vector<T> b) => Vector.Min(a, b);
+
+            ApplyBinary(op, new BinaryDataAndLayouts<T, T, T>(target, source1, source2));
         }
 
         private static void SqrtImpl<T>(DataAndLayout<T> target, DataAndLayout<T> source) where T : struct

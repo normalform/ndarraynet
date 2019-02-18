@@ -237,6 +237,107 @@ namespace NdArrayNet
             }
         }
 
+        public static void ApplyAxisFold<TS, T, T1>(
+            Func<int[], TS, T1, TS> foldOp,
+            Func<TS, T> extractOp,
+            DataAndLayout<T> trgt,
+            DataAndLayout<T1> src,
+            InitialOption<TS> initial,
+            bool isIndexed,
+            bool useThreads)
+        {
+            var nd = src.FastAccess.NumDiensions;
+            var shape = src.FastAccess.Shape;
+
+            Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
+            {
+                var fromDim = dim0Fixed ? 1 : 0;
+                var startPos = new int[nd];
+                if (dim0Fixed)
+                {
+                    startPos[0] = dim0Pos;
+                }
+
+                var targetPosItr = new PosIter(trgt.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+
+                PosIter initialPosItr;
+                if (!initial.UseValue)
+                {
+                    var intialDataAndLayout = initial.DataAndLayout;
+                    initialPosItr = new PosIter(intialDataAndLayout.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                }
+                else
+                {
+                    // it won't be used. Only for compiler. I need a better solution.
+                    initialPosItr = new PosIter(src.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                }
+
+                var srcPosItr = new PosIter(src.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                var pos = new int[targetPosItr.Pos.Length];
+                while (targetPosItr.Active)
+                {
+                    var srcAddr = srcPosItr.Addr;
+                    TS state;
+                    if (initial.UseValue)
+                    {
+                        state = initial.Value;
+                    }
+                    else
+                    {
+                        state = initial.DataAndLayout.Data[initialPosItr.Addr];
+                    }
+
+                    if (nd == 0)
+                    {
+                        trgt.Data[targetPosItr.Addr] = extractOp(foldOp(null, state, src.Data[srcAddr]));
+                    }
+                    else if (isIndexed)
+                    {
+                        for (var d = 0; d < nd - 1; d++)
+                        {
+                            pos[d] = targetPosItr.Pos[d];
+                        }
+
+                        pos[nd - 1] = 0;
+
+                        for (var i = 0; i < shape[nd - 1]; i++)
+                        {
+                            state = foldOp(pos, state, src.Data[srcAddr]);
+                            srcAddr += src.FastAccess.Stride[nd - 1];
+                            pos[nd - 1] = pos[nd - 1] + 1;
+                        }
+
+                        trgt.Data[targetPosItr.Addr] = extractOp(state);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < shape[nd - 1]; i++)
+                        {
+                            state = foldOp(null, state, src.Data[srcAddr]);
+                            srcAddr += src.FastAccess.Stride[nd - 1];
+                        }
+
+                        trgt.Data[targetPosItr.Addr] = extractOp(state);
+                    }
+
+                    targetPosItr.MoveNext();
+                    if (!initial.UseValue)
+                    {
+                        initialPosItr.MoveNext();
+                    }
+                }
+            };
+
+            if (useThreads && nd > 1)
+            {
+                Parallel.For(0, shape[0], index => loops(true, index));
+            }
+            else
+            {
+                loops(false, 0);
+            }
+        }
+
         public static void FillIncrementing<T>(T start, T step, DataAndLayout<T> trgt)
         {
             var p = ScalarPrimitives.For<T, int>();
@@ -421,6 +522,22 @@ namespace NdArrayNet
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
+        public static void Maximum<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a, T b) => p.Maximum(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
+        public static void Minimum<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T op(int[] pos, T a, T b) => p.Minimum(a, b);
+
+            ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
+        }
+
         public static void Log<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
             var p = ScalarPrimitives.For<T, T>();
@@ -497,5 +614,46 @@ namespace NdArrayNet
             T op(int[] pos, T a) => p.Truncate(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
+
+        public static void AllLastAxis(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
+        {
+            bool foldOp(int[] pos, bool res, bool v) => res && v;
+            bool extractOp(bool v) => v;
+
+            var initial = new InitialOption<bool>(true, true);
+            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+        }
+
+        public static void AnyLastAxis(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
+        {
+            bool foldOp(int[] pos, bool res, bool v) => res || v;
+            bool extractOp(bool v) => v;
+
+            var initial = new InitialOption<bool>(true, false);
+            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+        }
+
+        public static void IsFinite<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src)
+        {
+            var p = ScalarPrimitives.For<TP, TP>();
+            bool op(int[] pos, TP a) => p.IsFinite(a);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        internal class InitialOption<TS>
+        {
+            public InitialOption(bool useValue, TS value = default(TS), DataAndLayout<TS> dataAndLayout = null)
+            {
+                UseValue = useValue;
+                Value = value;
+                DataAndLayout = dataAndLayout;
+            }
+
+            public bool UseValue { get; }
+
+            public TS Value { get; }
+
+            public DataAndLayout<TS> DataAndLayout { get; }
+        }
     }
-}
+} 
