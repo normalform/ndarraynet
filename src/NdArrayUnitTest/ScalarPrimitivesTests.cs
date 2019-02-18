@@ -1004,7 +1004,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithIntValue_ReturnTrue()
         {
-            // arrange 
+            // arrange
             const int Value = 1;
 
             // action
@@ -1017,7 +1017,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithDoubleValue_ReturnTrue()
         {
-            // arrange 
+            // arrange
             const double Value = 1.0;
 
             // action
@@ -1030,7 +1030,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithDoubleNan_ReturnFalse()
         {
-            // arrange 
+            // arrange
             const double Value = double.NaN;
 
             // action
@@ -1043,7 +1043,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithDoublePositiveInfinity_ReturnFalse()
         {
-            // arrange 
+            // arrange
             const double Value = double.PositiveInfinity;
 
             // action
@@ -1056,7 +1056,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithDoubleNegativeInfinity_ReturnFalse()
         {
-            // arrange 
+            // arrange
             const double Value = double.NegativeInfinity;
 
             // action
@@ -1069,7 +1069,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithFloatValue_ReturnTrue()
         {
-            // arrange 
+            // arrange
             const float Value = 1.0f;
 
             // action
@@ -1082,7 +1082,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithFloatNan_ReturnFalse()
         {
-            // arrange 
+            // arrange
             const float Value = float.NaN;
 
             // action
@@ -1095,7 +1095,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithFloatPositiveInfinity_ReturnFalse()
         {
-            // arrange 
+            // arrange
             const float Value = float.PositiveInfinity;
 
             // action
@@ -1108,7 +1108,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [TestMethod]
         public void IsFinite_WithFloatNegativeInfinity_ReturnFalse()
         {
-            // arrange 
+            // arrange
             const float Value = float.NegativeInfinity;
 
             // action

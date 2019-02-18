@@ -664,5 +664,77 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             CollectionAssert.AreEqual(new[] { -1.0, 0.0, 0.0, 0.0, 0.0, 1.0 }, targetData);
         }
+
+        [TestMethod]
+        public void MaxLastAxis()
+        {
+            // arrange
+            const int NumElements = 6;
+            var targetData = new double[NumElements];
+            var srcData = new[] { -1.0, -0.6, -0.2, 0.2, 0.6, 1.0 };
+
+            var target = new DataAndLayout<double>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<double>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.MaxLastAxis(target, src);
+
+            // assert
+            Assert.AreEqual(1, targetData[0]);
+        }
+
+        [TestMethod]
+        public void MinLastAxis()
+        {
+            // arrange
+            const int NumElements = 6;
+            var targetData = new double[NumElements];
+            var srcData = new[] { -1.0, -0.6, -0.2, 0.2, 0.6, 1.0 };
+
+            var target = new DataAndLayout<double>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<double>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.MinLastAxis(target, src);
+
+            // assert
+            Assert.AreEqual(-1, targetData[0]);
+        }
+
+        [TestMethod]
+        public void SumLastAxis()
+        {
+            // arrange
+            const int NumElements = 6;
+            var targetData = new double[NumElements];
+            var srcData = new[] { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
+
+            var target = new DataAndLayout<double>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<double>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.SumLastAxis(target, src);
+
+            // assert
+            Assert.AreEqual(6.0, targetData[0]);
+        }
+
+        [TestMethod]
+        public void ProductLastAxis()
+        {
+            // arrange
+            const int NumElements = 6;
+            var targetData = new double[NumElements];
+            var srcData = new[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+
+            var target = new DataAndLayout<double>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<double>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.ProductLastAxis(target, src);
+
+            // assert
+            Assert.AreEqual(720.0, targetData[0]);
+        }
     }
 }

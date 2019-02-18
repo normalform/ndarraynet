@@ -116,5 +116,13 @@ namespace NdArrayNet
         void AnyLastAxis(IFrontend<bool> trgt, IFrontend<bool> src);
 
         void IsFinite<TP>(IFrontend<bool> trgt, IFrontend<TP> src);
+
+        void MaxLastAxis(IFrontend<T> trgt, IFrontend<T> src);
+
+        void MinLastAxis(IFrontend<T> trgt, IFrontend<T> src);
+
+        void SumLastAxis(IFrontend<T> trgt, IFrontend<T> src);
+
+        void ProductLastAxis(IFrontend<T> trgt, IFrontend<T> src);
     }
 }

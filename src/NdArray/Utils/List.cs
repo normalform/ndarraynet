@@ -52,12 +52,23 @@ namespace NdArrayNet
         }
 
         /// <summary>
-        /// Removes element with index elem 
+        /// Removes element with index elem
         /// </summary>
         public static int[] Without(int indexToRemove, int[] src)
         {
             var srcList = src.ToList();
             srcList.RemoveAt(indexToRemove);
+
+            return srcList.ToArray();
+        }
+
+        /// <summary>
+        /// insert the specified value at index elem
+        /// </summary>
+        public static int[] Insert(int indexToInsert, int value, int[] src)
+        {
+            var srcList = src.ToList();
+            srcList.Insert(indexToInsert, value);
 
             return srcList.ToArray();
         }

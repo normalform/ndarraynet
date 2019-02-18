@@ -640,6 +640,46 @@ namespace NdArrayNet
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
+        public static void MaxLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T foldOp(int[] pos, T res, T v) => p.Greater(res, v) ? res : v;
+            T extractOp(T v) => v;
+
+            var initial = new InitialOption<T>(true, Primitives.MinValue<T>());
+            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+        }
+
+        public static void MinLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T foldOp(int[] pos, T res, T v) => p.Less(res, v) ? res : v;
+            T extractOp(T v) => v;
+
+            var initial = new InitialOption<T>(true, Primitives.MaxValue<T>());
+            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+        }
+
+        public static void SumLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T foldOp(int[] pos, T res, T v) => p.Add(res, v);
+            T extractOp(T v) => v;
+
+            var initial = new InitialOption<T>(true, Primitives.Zero<T>());
+            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+        }
+
+        public static void ProductLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
+        {
+            var p = ScalarPrimitives.For<T, T>();
+            T foldOp(int[] pos, T res, T v) => p.Multiply(res, v);
+            T extractOp(T v) => v;
+
+            var initial = new InitialOption<T>(true, Primitives.One<T>());
+            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+        }
+
         internal class InitialOption<TS>
         {
             public InitialOption(bool useValue, TS value = default(TS), DataAndLayout<TS> dataAndLayout = null)
@@ -656,4 +696,4 @@ namespace NdArrayNet
             public DataAndLayout<TS> DataAndLayout { get; }
         }
     }
-} 
+}

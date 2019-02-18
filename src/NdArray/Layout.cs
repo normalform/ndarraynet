@@ -320,6 +320,20 @@ namespace NdArrayNet
             return broadcastLayout;
         }
 
+        public static Layout InsertAxis(int axis, Layout input)
+        {
+            if (!(axis >= 0 && axis <= input.NumDimensions))
+            {
+                var msg = string.Format("axis {0} out of range for NdArray with shape {1}", axis, input.Shape);
+                throw new ArgumentException(msg);
+            }
+
+            return new Layout(
+                List.Insert(axis, 1, input.Shape),
+                input.Offset,
+                List.Insert(axis, 0, input.Stride));
+        }
+
         public static bool operator ==(Layout lhs, Layout rhs)
         {
             if (((object)lhs) == null || ((object)rhs) == null)
@@ -670,23 +684,13 @@ namespace NdArrayNet
             }
 
             // permute
-            var shapeList = src.Shape.ToList();
-            var strideList = src.Stride.ToList();
-            for (var srcIndex = 0; srcIndex < permut.Length; srcIndex++)
+            var shapeList = new List<int>();
+            var strideList = new List<int>();
+            for (var index = 0; index < permut.Length; index++)
             {
-                var destIndex = permut[srcIndex];
-
-                var srcShapeValue = shapeList[srcIndex];
-                var srcStrideValue = strideList[srcIndex];
-                var destShapeValue = shapeList[destIndex];
-                var destStrideValue = strideList[destIndex];
-
-                // swap
-                shapeList[srcIndex] = destShapeValue;
-                shapeList[destIndex] = srcShapeValue;
-
-                strideList[srcIndex] = destStrideValue;
-                strideList[destIndex] = srcStrideValue;
+                var permutIndex = permut[index];
+                shapeList.Add(src.Shape[permutIndex]);
+                strideList.Add(src.Stride[permutIndex]);
             }
 
             return new Layout(shapeList.ToArray(), src.Offset, strideList.ToArray());
