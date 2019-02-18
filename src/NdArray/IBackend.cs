@@ -89,6 +89,10 @@ namespace NdArrayNet
 
         void Log10(IFrontend<T> trgt, IFrontend<T> src);
 
+        void Maximum(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs);
+
+        void Minimum(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs);
+
         void Pow(IFrontend<T> trgt, IFrontend<T> lhs, IFrontend<T> rhs);
 
         void Round(IFrontend<T> trgt, IFrontend<T> src);
@@ -106,5 +110,9 @@ namespace NdArrayNet
         void Tanh(IFrontend<T> trgt, IFrontend<T> src);
 
         void Truncate(IFrontend<T> trgt, IFrontend<T> src);
+
+        void AllLastAxis(IFrontend<bool> trgt, IFrontend<bool> src);
+
+        void AnyLastAxis(IFrontend<bool> trgt, IFrontend<bool> src);
     }
 }

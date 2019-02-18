@@ -229,6 +229,38 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
+        public void Max()
+        {
+            // arrange
+            var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
+
+            // action
+            var newArray = ElementWiseMathFunction<double>.FillMaximum(srcArray1, srcArray2);
+
+            // assert
+            Assert.AreEqual(1.0, newArray[0].Value);
+            Assert.AreEqual(1.0, newArray[1].Value);
+            Assert.AreEqual(1.0, newArray[2].Value);
+        }
+
+        [TestMethod]
+        public void Min()
+        {
+            // arrange
+            var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
+
+            // action
+            var newArray = ElementWiseMathFunction<double>.FillMinimum(srcArray1, srcArray2);
+
+            // assert
+            Assert.AreEqual(0.0, newArray[0].Value);
+            Assert.AreEqual(0.0, newArray[1].Value);
+            Assert.AreEqual(0.0, newArray[2].Value);
+        }
+
+        [TestMethod]
         public void Pow()
         {
             // arrange

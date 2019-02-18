@@ -31,6 +31,7 @@ namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
+    using System;
     using System.Linq;
     using System.Numerics;
 
@@ -331,6 +332,48 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             CollectionAssert.AreEqual(new[] { 1.0, 2.0, 4.0 }, targetData);
+        }
+
+        [TestMethod]
+        public void Maximum()
+        {
+            // arrange
+            var bufferSize = 10;
+            var targetData = new int[bufferSize];
+            var src1Data = Enumerable.Range(0, bufferSize);
+            var src2Data = src1Data.Reverse();
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(src1Data.ToArray(), new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<int>(src2Data.ToArray(), new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+
+            // action
+            VectorOps.Maximum(target, src1, src2);
+
+            // assert
+            var expectedData = src1Data.Zip(src2Data, (s1, s2) => Tuple.Create(s1, s2)).Select(t => Math.Max(t.Item1, t.Item2));
+            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+        }
+
+        [TestMethod]
+        public void Minimum()
+        {
+            // arrange
+            var bufferSize = 10;
+            var targetData = new int[bufferSize];
+            var src1Data = Enumerable.Range(0, bufferSize);
+            var src2Data = src1Data.Reverse();
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(src1Data.ToArray(), new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<int>(src2Data.ToArray(), new FastAccess(new Layout(new int[] { bufferSize }, 0, new int[] { 1 })));
+
+            // action
+            VectorOps.Minimum(target, src1, src2);
+
+            // assert
+            var expectedData = src1Data.Zip(src2Data, (s1, s2) => Tuple.Create(s1, s2)).Select(t => Math.Min(t.Item1, t.Item2));
+            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
         private struct UnSupportedTypeForUnitTestOnly

@@ -661,6 +661,37 @@ namespace NdArrayNet
             return sas;
         }
 
+        internal static Layout PermuteAxes(int[] permut, Layout src)
+        {
+            if (src.NumDimensions != permut.Length)
+            {
+                var msg = string.Format("Permutation % A must have same rank as shape % A.", permut, src.Shape);
+                throw new ArgumentException(msg);
+            }
+
+            // permute
+            var shapeList = src.Shape.ToList();
+            var strideList = src.Stride.ToList();
+            for(var srcIndex = 0; srcIndex < permut.Length; srcIndex++)
+            {
+                var destIndex = permut[srcIndex];
+
+                var srcShapeValue = shapeList[srcIndex];
+                var srcStrideValue = strideList[srcIndex];
+                var destShapeValue = shapeList[destIndex];
+                var destStrideValue = strideList[destIndex];
+
+                // swap
+                shapeList[srcIndex] = destShapeValue;
+                shapeList[destIndex] = srcShapeValue;
+
+                strideList[srcIndex] = destStrideValue;
+                strideList[destIndex] = srcStrideValue;
+            }
+
+            return new Layout(shapeList.ToArray(), src.Offset, strideList.ToArray());
+        }
+
         internal static void CheckAxis(Layout layout, int axis)
         {
             if (!(axis >= 0 && axis < layout.NumDimensions))

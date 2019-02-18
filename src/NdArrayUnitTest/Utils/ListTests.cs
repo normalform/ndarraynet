@@ -89,5 +89,18 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             CollectionAssert.AreEqual(new[] { 9, 8, Value, 6, 5, 4, 3, 2, 1 }, list);
         }
+
+        [TestMethod]
+        public void Without()
+        {
+            // arrange
+            var src = new int[] { 1, 2, 3 };
+
+            // action
+            var list = List.Without(1, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 3}, list);
+        }
     }
 }

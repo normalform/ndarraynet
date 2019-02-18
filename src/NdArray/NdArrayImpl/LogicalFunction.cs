@@ -1,4 +1,4 @@
-﻿// <copyright file="List.cs" company="NdArrayNet">
+﻿// <copyright file="LogicalFunction.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,39 +27,11 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArray.NdArrayImpl
 {
-    using System;
-    using System.Linq;
+    using NdArrayNet;
 
-    internal static class List
+    internal static class LogicalFunction<T>
     {
-        /// <summary>
-        public static int[] Set(int indexToSet, int value, int[] src)
-        {
-            if (src.Length > 0 && src.Length > indexToSet)
-            {
-                var newList = new int[src.Length];
-                Array.Copy(src, newList, src.Length);
-                newList[indexToSet] = value;
-
-                return newList;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("indexToSet", "element index out of bounds");
-            }
-        }
-
-        /// <summary>
-        /// Removes element with index elem 
-        /// </summary>
-        public static int[] Without(int indexToRemove, int[] src)
-        {
-            var srcList = src.ToList();
-            srcList.RemoveAt(indexToRemove);
-
-            return srcList.ToArray();
-        }
     }
 }

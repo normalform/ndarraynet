@@ -893,6 +893,38 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
+        public void Maximum()
+        {
+            // arrange
+            var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
+
+            // action
+            var newArray = NdArray<double>.Maximum(srcArray1, srcArray2);
+
+            // assert
+            Assert.AreEqual(1.0, newArray[0].Value);
+            Assert.AreEqual(1.0, newArray[1].Value);
+            Assert.AreEqual(1.0, newArray[2].Value);
+        }
+
+        [TestMethod]
+        public void Minimum()
+        {
+            // arrange
+            var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
+
+            // action
+            var newArray = NdArray<double>.Minimum(srcArray1, srcArray2);
+
+            // assert
+            Assert.AreEqual(0.0, newArray[0].Value);
+            Assert.AreEqual(0.0, newArray[1].Value);
+            Assert.AreEqual(0.0, newArray[2].Value);
+        }
+
+        [TestMethod]
         public void Pow()
         {
             // arrange
@@ -1063,6 +1095,20 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(0.0, newArray[3].Value);
             Assert.AreEqual(0.0, newArray[4].Value);
             Assert.AreEqual(1.0, newArray[5].Value);
+        }
+
+        [TestMethod]
+        public void Flattern()
+        {
+            // arrange
+            var srcArray = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var newArray = NdArray<int>.Flattern(srcArray);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 24 }, 0, new[] { 1 });
+            Assert.AreEqual(expectedLayout, newArray.Layout);
         }
 
         private struct UnKownValueTypeForTestOnly
