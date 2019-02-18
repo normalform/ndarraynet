@@ -1452,6 +1452,39 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.IsTrue(Math.Abs(2.449489742783178 - std) < Epsilon);
         }
 
+
+        [TestMethod]
+        public void TraceAxis()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
+
+            // action
+            var trace = NdArray<int>.TraceAxis(0, 1, input);
+
+            // assert
+            Assert.AreEqual(36, trace[0].Value);
+            Assert.AreEqual(39, trace[1].Value);
+            Assert.AreEqual(42, trace[2].Value);
+        }
+
+        [TestMethod]
+        public void Trace()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
+
+            // action
+            var trace = NdArray<int>.Trace(input);
+
+            // assert
+            Assert.AreEqual(12, trace[0].Value);
+            Assert.AreEqual(39, trace[1].Value);
+            Assert.AreEqual(66, trace[2].Value);
+        }
+
         private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()

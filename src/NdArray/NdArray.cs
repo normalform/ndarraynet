@@ -703,6 +703,22 @@ namespace NdArrayNet
         /// <returns>The variance estimate.</returns>
         public static T Std(NdArray<T> input, T deltaDegreeOfFreedom) => StdAxis(0, Flattern(input), deltaDegreeOfFreedom).Value;
 
+        /// <summary>
+        /// Calculates the trace along the specified axes.
+        /// </summary>
+        /// <param name="axis1">The first axis of the diagonal to compute the trace along.</param>
+        /// <param name="axis2">The second axis of the diagonal to compute the trace along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<T> TraceAxis(int axis1, int axis2, NdArray<T> input) => ReductionFunction<T>.TraceAxis(axis1, axis2, input);
+
+        /// <summary>
+        /// Calculates the trace of the matrix.
+        /// </summary>
+        /// <param name="input">A square matrix.</param>
+        /// <returns>The trace of the matrix.</returns>
+        public static NdArray<T> Trace(NdArray<T> input) => ReductionFunction<T>.Trace(input);
+
         public override string ToString()
         {
             return Pretty;
