@@ -58,7 +58,7 @@ namespace NdArray.NdArrayImpl
             if (input.NumDimensions < 2)
             {
                 var message = string.Format("Need at least a two dimensional array for diagonal but got shape {0}.", input.Shape);
-                throw new ArgumentException(message, "array");
+                throw new ArgumentException(message, "input");
             }
 
             return DiagAxis(input.NumDimensions - 2, input.NumDimensions - 1, input);
