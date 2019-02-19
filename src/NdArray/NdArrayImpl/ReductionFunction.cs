@@ -128,7 +128,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Calculates the mean of the NdArray.
         /// </summary>
-        /// <param name="input">The tensor containing the source values.</param>
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>The mean estimate.</returns>
         public static T Mean(NdArray<T> input)
         {
@@ -231,7 +231,7 @@ namespace NdArray.NdArrayImpl
         {
             var tax = axis1 < axis2 ? axis1 : axis1 - 1;
 
-            return FillSumAxis(tax, NdArrayOperator<T>.DiagAxis(input, axis1, axis2));
+            return FillSumAxis(tax, NdArrayOperator<T>.DiagAxis(axis1, axis2, input));
         }
 
         /// <summary>

@@ -150,7 +150,7 @@ namespace NdArrayNet
         /// <param name="ax2">The dimension to swap with.</param>
         /// <param name="a">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions swapped.</returns>
-        public static Layout Swap(int ax1, int ax2, Layout a)
+        public static Layout SwapDim(int ax1, int ax2, Layout a)
         {
             if (!(ax1 >= 0 && ax1 < a.NumDimensions && ax2 >= 0 && ax2 < a.NumDimensions))
             {
@@ -186,7 +186,7 @@ namespace NdArrayNet
             return new Layout(newShape, input.Offset, newStride);
         }
 
-        public static Layout DiagAxis(Layout layout, int ax1, int ax2)
+        public static Layout DiagAxis(int ax1, int ax2, Layout layout)
         {
             CheckAxis(layout, ax1);
             CheckAxis(layout, ax2);
@@ -334,6 +334,18 @@ namespace NdArrayNet
                 List.Insert(axis, 0, input.Stride));
         }
 
+        public static Layout Transpos(Layout input)
+        {
+            var numDim = input.NumDimensions;
+            if (numDim < 2)
+            {
+                var msg = string.Format("cannot transpose non-matrix of shape {0}", input.Shape);
+                throw new ArgumentException(msg, "input");
+            }
+
+            return SwapDim(numDim - 2, numDim - 1, input);
+        }
+
         public static bool operator ==(Layout lhs, Layout rhs)
         {
             if (((object)lhs) == null || ((object)rhs) == null)
@@ -438,6 +450,16 @@ namespace NdArrayNet
                         var start = ((Range)subRanges[0]).Start;
                         var stop = ((Range)subRanges[0]).Stop;
                         var step = ((Range)subRanges[0]).Step;
+
+                        if (start == SpecialIdx.None)
+                        {
+                            start = 0;
+                        }
+
+                        if (stop == SpecialIdx.None)
+                        {
+                            stop = shape - 1;
+                        }
 
                         // This indicates for the 'All' range specifier.
                         if (start == 0 && stop == 0 && step == 0)
