@@ -283,6 +283,63 @@ namespace NdArrayNet
             return BroadcastToSameInDimsMany(Enumerable.Range(0, newSas.First().NumDimensions).ToArray(), newSas);
         }
 
+        /// <summary>
+        /// broadcasts to have the same size in the given dimensions
+        /// </summary>
+        /// <param name="dims"></param>
+        /// <param name="sas"></param>
+        /// <returns></returns>
+        public static Layout[] BroadcastToSameInDimsMany(int[] dims, Layout[] sas)
+        {
+            foreach (var dim in dims)
+            {
+                if (!sas.All(s => dim < s.NumDimensions))
+                {
+                    var msg = string.Format("Cannot broadcast shapes {0} to same size in non - existant dimension {1}.", sas, dim);
+                    throw new InvalidOperationException(msg);
+                }
+
+                var ls = sas.Select(s => s.Shape[dim]);
+                if (ls.Contains(1))
+                {
+                    var nonBc = ls.Where(s => s != 1);
+                    var set = new HashSet<int>(nonBc);
+                    var setCount = set.Count;
+                    if (setCount != 0)
+                    {
+                        if (setCount == 1)
+                        {
+                            var target = nonBc.First();
+                            for (var sasIndex = 0; sasIndex < sas.Length; sasIndex++)
+                            {
+                                var sa = sas[sasIndex];
+                                if (sa.Shape[dim] != target)
+                                {
+                                    sas[sasIndex] = BroadcastDim(dim, target, sa);
+                                }
+                                else
+                                {
+                                    sas[sasIndex] = sa;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var msg = string.Format("Cannot broadcast shapes {0} to same size in dimension {1} because they do not agree in the target size.", sas, dim);
+                            throw new InvalidOperationException(msg);
+                        }
+                    }
+                }
+                else if (new HashSet<int>(ls).Count > 1)
+                {
+                    var msg = string.Format("Non-broadcast dimension {0} of shapes {1} does not agree.", dim, sas);
+                    throw new InvalidOperationException(msg);
+                }
+            }
+
+            return sas;
+        }
+
         public static Layout BroadcastToShape(int[] broadcastShape, Layout input)
         {
             var broadcastDim = broadcastShape.Length;
@@ -638,63 +695,6 @@ namespace NdArrayNet
 
             var msg = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, a.Shape);
             throw new InvalidOperationException(msg);
-        }
-
-        /// <summary>
-        /// broadcasts to have the same size in the given dimensions
-        /// </summary>
-        /// <param name="dims"></param>
-        /// <param name="sas"></param>
-        /// <returns></returns>
-        internal static Layout[] BroadcastToSameInDimsMany(int[] dims, Layout[] sas)
-        {
-            foreach (var dim in dims)
-            {
-                if (!sas.All(s => dim < s.NumDimensions))
-                {
-                    var msg = string.Format("Cannot broadcast shapes {0} to same size in non - existant dimension {1}.", sas, dim);
-                    throw new InvalidOperationException(msg);
-                }
-
-                var ls = sas.Select(s => s.Shape[dim]);
-                if (ls.Contains(1))
-                {
-                    var nonBc = ls.Where(s => s != 1);
-                    var set = new HashSet<int>(nonBc);
-                    var setCount = set.Count;
-                    if (setCount != 0)
-                    {
-                        if (setCount == 1)
-                        {
-                            var target = nonBc.First();
-                            for (var sasIndex = 0; sasIndex < sas.Length; sasIndex++)
-                            {
-                                var sa = sas[sasIndex];
-                                if (sa.Shape[dim] != target)
-                                {
-                                    sas[sasIndex] = BroadcastDim(dim, target, sa);
-                                }
-                                else
-                                {
-                                    sas[sasIndex] = sa;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            var msg = string.Format("Cannot broadcast shapes {0} to same size in dimension {1} because they do not agree in the target size.", sas, dim);
-                            throw new InvalidOperationException(msg);
-                        }
-                    }
-                }
-                else if (new HashSet<int>(ls).Count > 1)
-                {
-                    var msg = string.Format("Non-broadcast dimension {0} of shapes {1} does not agree.", dim, sas);
-                    throw new InvalidOperationException(msg);
-                }
-            }
-
-            return sas;
         }
 
         internal static Layout PermuteAxes(int[] permut, Layout src)

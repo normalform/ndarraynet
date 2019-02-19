@@ -166,29 +166,6 @@ namespace NdArrayNet
             array[pos] = value;
         }
 
-        public static (NdArray<TA>, NdArray<TB>) ApplyLayoutFn<TA, TB>(Func<Layout[], Layout[]> fn, NdArray<TA> a, NdArray<TB> b)
-        {
-            var layouts = new[] { a.Layout, b.Layout };
-            var newLayouts = fn(layouts);
-            if (newLayouts.Length == 2 && newLayouts[0] != null && newLayouts[1] != null)
-            {
-                return (a.Relayout(newLayouts[0]), b.Relayout(newLayouts[1]));
-            }
-
-            throw new InvalidOperationException("unexpected layout function result");
-        }
-
-        public static (NdArray<TA>, NdArray<TB>) BroadCastToSame<TA, TB>(NdArray<TA> a, NdArray<TB> b)
-        {
-            return ApplyLayoutFn(Layout.BroadcastToSameMany, a, b);
-        }
-
-        public static NdArray<TA> BroadCastTo<TA>(int[] shp, NdArray<TA> target)
-        {
-            var layout = Layout.BroadcastToShape(shp, target.Layout);
-            return target.Relayout(layout);
-        }
-
         public static NdArray<T> BraodcastDim(int dim, int size, NdArray<T> target)
         {
             var layout = Layout.BraodcastDim(dim, size, target.Layout);
@@ -792,6 +769,106 @@ namespace NdArrayNet
         /// <param name="input">The NdArray to operate on.</param>
         /// <returns>The result of this operation.</returns>
         public static NdArray<T> Transpos(NdArray<T> input) => NdArrayOperator<T>.Transpos(input);
+
+        /// <summary>
+        /// Pads the NdArray from the left with size-one dimensions until it has at least the specified number of
+        /// dimensions.
+        /// </summary>
+        /// <param name="minNumDim">The minimum number of dimensions.</param>
+        /// <param name="input">The NdArray to operate on.</param>
+        /// <returns>A NdArray with at least <paramref name="minNumDim"/> dimensions.</returns>
+        public static NdArray<T> AtLeastNd(int minNumDim, NdArray<T> input) => ShapeFunction<T>.AtLeastNd(minNumDim, input);
+
+        /// <summary>
+        /// Pads the NdArray from the left with size-one dimensions until it has at least one dimension.
+        /// </summary>
+        /// <param name="input">The NdArray to operate on.</param>
+        /// <returns>A NdArray with at least one dimensions.</returns>
+        public static NdArray<T> AtLeast1d(NdArray<T> input) => ShapeFunction<T>.AtLeast1d(input);
+
+        /// <summary>
+        /// Pads the NdArray from the left with size-two dimensions until it has at least two dimension.
+        /// </summary>
+        /// <param name="input">The NdArray to operate on.</param>
+        /// <returns>A NdArray with at least two dimensions.</returns>
+        public static NdArray<T> AtLeast2d(NdArray<T> input) => ShapeFunction<T>.AtLeast2d(input);
+
+        /// <summary>
+        /// Pads the NdArray from the left with size-three dimensions until it has at least three dimension.
+        /// </summary>
+        /// <param name="input">The NdArray to operate on.</param>
+        /// <returns>A NdArray with at least three dimensions.</returns>
+        public static NdArray<T> AtLeast3d(NdArray<T> input) => ShapeFunction<T>.AtLeast3d(input);
+
+        /// <summary>
+        /// Broadcast a dimension to a specified size.
+        /// </summary>
+        /// <param name="dim">The size-one dimension to broadcast.</param>
+        /// <param name="size">The size to broadcast to.</param>    
+        /// <param name="a">The NdArray to operate on.</param>
+        /// <returns>The resulting NdArray.</returns>
+        public static NdArray<T> BroadCastDim(int dim, int size, NdArray<T> input) => ShapeFunction<T>.BroadCastDim(dim, size, input);
+
+        /// <summary>
+        /// Broadcasts the specified NdArray to the specified shape.
+        /// </summary>
+        /// <param name="shp">The target shape.</param>
+        /// <param name="input">The NdArray to operate on.</param>
+        /// <returns>NdArray of shape <paramref name="shp"/>.</returns>
+        public static NdArray<TA> BroadCastTo<TA>(int[] shp, NdArray<TA> input) => ShapeFunction<TA>.BroadCastTo(shp, input);
+
+        /// <summary>
+        /// Broadcasts all specified NdArrays to have the same shape.
+        /// </summary>
+        /// <param name="src1">The NdArray to operate on.</param>
+        /// <param name="src2">The NdArray to operate on.</param>    
+        /// <returns>A tuple of the resulting NdArrays, all having the same shape.</returns>
+        public static (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(NdArray<T1> src1, NdArray<T2> src2) => ShapeFunction<T>.BroadCastToSame(src1, src2);
+
+        /// <summary>
+        /// Broadcasts all specified NdArrays to have the same shape.
+        /// </summary>
+        /// <param name="src1">The NdArray to operate on.</param>
+        /// <param name="src2">The NdArray to operate on.</param>    
+        /// <param name="src3">The NdArray to operate on.</param>    
+        /// <returns>A tuple of the resulting NdArrays, all having the same shape.</returns>
+        public static (NdArray<T1>, NdArray<T2>, NdArray<T3>) BroadCastToSame<T1, T2, T3>(NdArray<T1> src1, NdArray<T2> src2, NdArray<T3> src3) => ShapeFunction<T>.BroadCastToSame(src1, src2, src3);
+
+        /// <summary>
+        /// Broadcasts all specified NdArrays to have the same shape.
+        /// </summary>
+        /// <param name="src1">The NdArray to operate on.</param>
+        /// <param name="src2">The NdArray to operate on.</param>    
+        /// <param name="src3">The NdArray to operate on.</param>    
+        /// <returns>A tuple of the resulting NdArrays, all having the same shape.</returns>
+        public static NdArray<T>[] BroadCastToSame(NdArray<T>[] src) => ShapeFunction<T>.BroadCastToSame(src);
+
+        /// <summary>
+        /// Broadcasts all specified NdArrays to have the same size in the specified dimensions.
+        /// </summary>
+        /// <param name="dims">A list of dimensions that should be broadcasted to have the same size.</param>
+        /// <param name="src1">The NdArray to operate on.</param>
+        /// <param name="src2">The NdArray to operate on.</param>    
+        /// <returns>A tuple of the resulting NdArrays, all having the same size in the specified dimensions.</returns>
+        public static (NdArray<T1>, NdArray<T2>) BroadCastToSameInDims<T1, T2>(int[] dims, NdArray<T1> src1, NdArray<T2> src2) => ShapeFunction<T>.BroadCastToSameInDims(dims, src1, src2);
+
+        /// <summary>
+        /// Broadcasts all specified NdArrays to have the same size in the specified dimensions.
+        /// </summary>
+        /// <param name="dims">A list of dimensions that should be broadcasted to have the same size.</param>
+        /// <param name="src1">The NdArray to operate on.</param>
+        /// <param name="src2">The NdArray to operate on.</param>    
+        /// <param name="src3">The NdArray to operate on.</param>    
+        /// <returns>A tuple of the resulting NdArrays, all having the same size in the specified dimensions.</returns>
+        public static (NdArray<T1>, NdArray<T2>, NdArray<T3>) BroadCastToSameInDims<T1, T2, T3>(int[] dims, NdArray<T1> src1, NdArray<T2> src2, NdArray<T3> src3) => ShapeFunction<T>.BroadCastToSameInDims(dims, src1, src2, src3);
+
+        /// <summary>
+        /// Broadcasts all specified NdArrays to have the same size in the specified dimensions.
+        /// </summary>
+        /// <param name="dims">A list of dimensions that should be broadcasted to have the same size.</param>
+        /// <param name="src">A list of NdArrays to operate on.</param>
+        /// <returns>A list of the resulting NdArrays, all having the same size in the specified dimensions.</returns>
+        public static NdArray<T>[] BroadCastToSameInDims(int[] dims, NdArray<T>[] src) => ShapeFunction<T>.BroadCastToSameInDims(dims, src);
 
         public override string ToString()
         {
