@@ -618,19 +618,17 @@ namespace NdArrayNet
         public static void AllLastAxis(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
         {
             bool foldOp(int[] pos, bool res, bool v) => res && v;
-            bool extractOp(bool v) => v;
 
             var initial = new InitialOption<bool>(true, true);
-            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+            ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
         }
 
         public static void AnyLastAxis(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
         {
             bool foldOp(int[] pos, bool res, bool v) => res || v;
-            bool extractOp(bool v) => v;
 
             var initial = new InitialOption<bool>(true, false);
-            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+            ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
         }
 
         public static void IsFinite<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src)
@@ -644,40 +642,36 @@ namespace NdArrayNet
         {
             var p = ScalarPrimitives.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Greater(res, v) ? res : v;
-            T extractOp(T v) => v;
 
             var initial = new InitialOption<T>(true, Primitives.MinValue<T>());
-            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+            ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
         }
 
         public static void MinLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
             var p = ScalarPrimitives.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Less(res, v) ? res : v;
-            T extractOp(T v) => v;
 
             var initial = new InitialOption<T>(true, Primitives.MaxValue<T>());
-            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+            ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
         }
 
         public static void SumLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
             var p = ScalarPrimitives.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Add(res, v);
-            T extractOp(T v) => v;
 
             var initial = new InitialOption<T>(true, Primitives.Zero<T>());
-            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+            ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
         }
 
         public static void ProductLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
             var p = ScalarPrimitives.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Multiply(res, v);
-            T extractOp(T v) => v;
 
             var initial = new InitialOption<T>(true, Primitives.One<T>());
-            ApplyAxisFold(foldOp, extractOp, trgt, src, initial, false, true);
+            ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
         }
 
         internal class InitialOption<TS>

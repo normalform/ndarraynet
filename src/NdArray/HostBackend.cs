@@ -81,8 +81,8 @@ namespace NdArrayNet
                                        .Select(d => dimGood.ElementAt(d) ? trgt.Shape[d] : -1);
                 var bestLastDim = dims.ToList().IndexOf(dims.Max());
 
-                var swapedTrgt = Layout.Swap(bestLastDim, trgt.NumDimensions - 1, trgt);
-                var swapedSrcs = srcs.Select(src => Layout.Swap(bestLastDim, trgt.NumDimensions - 1, src));
+                var swapedTrgt = Layout.SwapDim(bestLastDim, trgt.NumDimensions - 1, trgt);
+                var swapedSrcs = srcs.Select(src => Layout.SwapDim(bestLastDim, trgt.NumDimensions - 1, src));
 
                 return (swapedTrgt, swapedSrcs.ToArray());
             }

@@ -51,5 +51,7 @@ namespace NdArrayNet
         /// For search: value was not found.
         /// </summary>
         public static readonly int NotFound = int.MinValue + 4;
+
+        public static readonly int None = int.MinValue + 5;
     }
 }

@@ -166,50 +166,50 @@ namespace NdArrayNet.NdArrayUnitTest
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Swap_NegativeDimensionToSwap_ThrowExceptions()
+        public void SwapDim_NegativeDimensionToSwap_ThrowExceptions()
         {
             // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.Swap(-1, 2, layout);
+            var _ = Layout.SwapDim(-1, 2, layout);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Swap_NegativeDimensionToSwapWith_ThrowExceptions()
+        public void SwapDim_NegativeDimensionToSwapWith_ThrowExceptions()
         {
             // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.Swap(2, -1, layout);
+            var _ = Layout.SwapDim(2, -1, layout);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Swap_TooBigDimensionToSwap_ThrowExceptions()
+        public void SwapDim_TooBigDimensionToSwap_ThrowExceptions()
         {
             // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.Swap(9, 2, layout);
+            var _ = Layout.SwapDim(9, 2, layout);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Swap_TooBigDimensionToSwapWith_ThrowExceptions()
+        public void SwapDim_TooBigDimensionToSwapWith_ThrowExceptions()
         {
             // arrange
             var shape = new[] { 1, 2, 3, 4, 5 };
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.Swap(2, 9, layout);
+            var _ = Layout.SwapDim(2, 9, layout);
         }
 
         [TestMethod]
@@ -715,6 +715,28 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             Assert.IsFalse(equal);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Transpos_OneD_ThrowException()
+        {
+            // arrange
+            var layout = new Layout(new int[] { 10 }, 0, new int[] { 1 });
+
+            // action
+            Layout.Transpos(layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Transpos_Scalar_ThrowException()
+        {
+            // arrange
+            var layout = new Layout(new int[] { }, 0, new int[] { 0 });
+
+            // action
+            Layout.Transpos(layout);
         }
     }
 }

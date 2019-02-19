@@ -189,6 +189,12 @@ namespace NdArrayNet
             return target.Relayout(layout);
         }
 
+        public static NdArray<T> BraodcastDim(int dim, int size, NdArray<T> target)
+        {
+            var layout = Layout.BraodcastDim(dim, size, target.Layout);
+            return target.Relayout(layout);
+        }
+
         public static NdArray<T> operator +(NdArray<T> a) => ElementWiseOperator<T>.FillUnaryPlus(a);
 
         public static NdArray<T> operator -(NdArray<T> a) => ElementWiseOperator<T>.FillUnaryMinus(a);
@@ -609,7 +615,7 @@ namespace NdArrayNet
         /// <summary>
         /// Calculates the mean of the NdArray.
         /// </summary>
-        /// <param name="input">The tensor containing the source values.</param>
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>The mean estimate.</returns>
         public static T Mean(NdArray<T> input) => ReductionFunction<T>.Mean(input);
 
@@ -718,6 +724,74 @@ namespace NdArrayNet
         /// <param name="input">A square matrix.</param>
         /// <returns>The trace of the matrix.</returns>
         public static NdArray<T> Trace(NdArray<T> input) => ReductionFunction<T>.Trace(input);
+
+        /// <summary>
+        /// Returns a view of the diagonal along the given axes.
+        /// </summary>
+        /// <param name="ax1">The first dimension of the diagonal.</param>
+        /// <param name="ax2">The seconds dimension of the diagonal.</param>
+        /// <param name="array">The NdArray to operate on.</param>
+        /// <returns>A NdArray where dimension <paramref name="ax1"/> is the diagonal and dimension
+        public static NdArray<T> DiagAxis(int ax1, int ax2, NdArray<T> array) => NdArrayOperator<T>.DiagAxis(ax1, ax2, array);
+
+        /// <summary>
+        /// Returns a view of the diagonal of the NdArray.
+        /// </summary>
+        /// <param name="array">A square NdArray.</param>
+        /// <returns>The diagonal NdArray.</returns>
+        public static NdArray<T> Diag(NdArray<T> array) => NdArrayOperator<T>.Diag(array);
+
+        /// <summary>
+        /// Concatenates NdArrays along an axis.
+        /// </summary>
+        /// <param name="axis">The concatenation axis.</param>
+        /// <param name="inputs">Sequence of NdArrays to concatenate.</param>
+        /// <returns>The concatenated NdArray.</returns>
+        public static NdArray<T> Concat(int axis, NdArray<T>[] inputs) => NdArrayOperator<T>.Concat(axis, inputs);
+
+        /// <summary>Returns a copy of the NdArray.</summary>
+        /// <param name="input">The NdArray to copy.</param>
+        /// <param name="order">The memory layout of the copy. (default: row-major)</param>
+        /// <returns>A copy of the NdArray.</returns>
+        public static NdArray<T> Copy(NdArray<T> input, Order order = Order.RowMajor) => NdArrayOperator<T>.Copy(input, order);
+
+        /// <summary
+        /// >Creates a NdArray with the specified diagonal along the given axes.
+        /// </summary>
+        /// <param name="axis1">The first dimension of the diagonal.</param>
+        /// <param name="axis2">The seconds dimension of the diagonal.</param>
+        /// <param name="input">The values for the diagonal.</param>
+        /// <returns>A NdArray having the values <paramref name="a"/> on the diagonal specified by the axes
+        public static NdArray<T> DiagMatAxis(int axis1, int axis2, NdArray<T> input) => NdArrayOperator<T>.DiagMatAxis(axis1, axis2, input);
+
+        /// <summary>
+        /// Creates a matrix with the specified diagonal.
+        /// </summary>
+        /// <param name="input">The vector containing the values for the diagonal.</param>
+        /// <returns>A matrix having the values <paramref name="input"/> on its diagonal.</returns>
+        public static NdArray<T> DiagMat(NdArray<T> input) => NdArrayOperator<T>.DiagMat(input);
+
+        /// <summary>
+        /// Calculates the difference between adjoining elements along the specified axes.
+        /// </summary>
+        /// <param name="axis">The axis to operate along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>
+        /// <returns>The differences NdArray. It has one element less in dimension <paramref name="axis"/> as the input NdArray.</returns>
+        public static NdArray<T> DiffAxis(int axis, NdArray<T> input) => NdArrayOperator<T>.DiffAxis(axis, input);
+
+        /// <summary>
+        /// Calculates the difference between adjoining elements of the vector.
+        /// </summary>
+        /// <param name="input">The vector containing the source values.</param>
+        /// <returns>The differences vector. It has one element less than the input NdArray.</returns>
+        public static NdArray<T> Diff(NdArray<T> input) => NdArrayOperator<T>.Diff(input);
+
+        /// <summary>
+        /// Transpose of a matrix.
+        /// </summary>
+        /// <param name="input">The NdArray to operate on.</param>
+        /// <returns>The result of this operation.</returns>
+        public static NdArray<T> Transpos(NdArray<T> input) => NdArrayOperator<T>.Transpos(input);
 
         public override string ToString()
         {
