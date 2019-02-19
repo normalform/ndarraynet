@@ -16,7 +16,3 @@ Refernce designs:
  - xTensor (C++)
  - NumSharp (C#)
  - NumNet and BlasNet (C#)
-
-Using:
- - StyleCopy 6.0
- - CodeMaid 10.6
