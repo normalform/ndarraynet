@@ -29,7 +29,146 @@
 
 namespace NdArray.NdArrayImpl
 {
-    internal static class LogicalFunction
+    using System;
+    using NdArrayNet;
+
+    internal static class LogicalFunction<T>
     {
+        /// <summary>
+        /// Element-wise logical negation.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> FillNegate(NdArray<bool> input)
+        {
+            var (target, src) = NdArray<bool>.PrepareElemwise<bool, bool>(input);
+            target.AssertBool();
+
+            var src2 = NdArray<bool>.PrepareElemwiseSources(target, src);
+            target.Backend.Negate(target, src2);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Element-wise loigcal and.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> FillAnd(NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (target, lhs1, rhs1) = NdArray<bool>.PrepareElemwise<bool, bool, bool>(lhs, rhs);
+            target.AssertBool();
+
+            var (lhs2, rhs2) = NdArray<bool>.PrepareElemwiseSources(target, lhs1, rhs1);
+            target.Backend.And(target, lhs2, rhs2);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Element-wise loigcal or.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> FillOr(NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (target, lhs1, rhs1) = NdArray<bool>.PrepareElemwise<bool, bool, bool>(lhs, rhs);
+            target.AssertBool();
+
+            var (lhs2, rhs2) = NdArray<bool>.PrepareElemwiseSources(target, lhs1, rhs1);
+            target.Backend.Or(target, lhs2, rhs2);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Element-wise loigcal xor.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> FillXor(NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (target, lhs1, rhs1) = NdArray<bool>.PrepareElemwise<bool, bool, bool>(lhs, rhs);
+            target.AssertBool();
+
+            var (lhs2, rhs2) = NdArray<bool>.PrepareElemwiseSources(target, lhs1, rhs1);
+            target.Backend.Xor(target, lhs2, rhs2);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Checks if all elements of the NdArray are true.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static bool All(NdArray<bool> input)
+        {
+            return AllNdArray(input).Value;
+        }
+
+        /// <summary>
+        /// Checks if all elements of the NdArray are true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AllNdArray(NdArray<bool> input)
+        {
+            var flattendArray = NdArray<bool>.Flattern(input);
+            return AllAxis(0, flattendArray);
+        }
+
+        /// <summary>
+        /// Checks if all elements along the specified axis are true.
+        /// </summary>
+        /// <param name="axis">The axis to check along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AllAxis(int axis, NdArray<bool> input)
+        {
+            var (targt, src) = NdArray<bool>.PrepareAxisReduceTarget<bool, bool>(axis, input);
+            NdArray<bool>.FillAllAxis(targt, axis, src);
+            return targt;
+        }
+
+        /// <summary>
+        /// Checks if any elements of the NdArray are true.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static bool Any(NdArray<bool> input)
+        {
+            return AnyNdArray(input).Value;
+        }
+
+        /// <summary>
+        /// Checks if any element of the NdArray is true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AnyNdArray(NdArray<bool> input)
+        {
+            var flattendArray = NdArray<bool>.Flattern(input);
+            return AnyAxis(0, flattendArray);
+        }
+
+        /// <summary>
+        /// Checks if any element along the specified axis is true.
+        /// </summary>
+        /// <param name="axis">The axis to check along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AnyAxis(int axis, NdArray<bool> input)
+        {
+            var (target, src1) = NdArray<bool>.PrepareAxisReduceTarget<bool, bool>(axis, input);
+            var (newSrc, _) = NdArray<bool>.PrepareAxisReduceSources(target, axis, input, null);
+            target.Backend.AnyLastAxis(target, newSrc);
+
+            return target;
+        }
     }
 }

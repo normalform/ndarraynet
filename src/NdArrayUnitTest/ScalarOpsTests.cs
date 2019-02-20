@@ -736,5 +736,123 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.AreEqual(720.0, targetData[0]);
         }
+
+        [TestMethod]
+        public void Negate()
+        {
+            // arrange
+            const int NumElements = 6;
+            var targetData = new bool[NumElements];
+            var srcData = new[] { true, true, false, false, true, false };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<bool>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Negate(target, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { false, false, true, true, false, true }, targetData);
+        }
+
+        [TestMethod]
+        public void Equal_bool()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var src1Data = new[] { false, false, true, true };
+            var src2Data = new[] { false, true, false, true };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<bool>(src1Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<bool>(src2Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Equal(target, src1, src2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { true, false, false, true }, targetData);
+        }
+
+        [TestMethod]
+        public void Equal_int()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var src1Data = new[] { 0, 0, 1, 1 };
+            var src2Data = new[] { 0, 1, 0, 1 };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<int>(src1Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<int>(src2Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Equal(target, src1, src2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { true, false, false, true }, targetData);
+        }
+
+        [TestMethod]
+        public void And()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var src1Data = new[] { false, false, true, true };
+            var src2Data = new[] { false, true, false, true };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<bool>(src1Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<bool>(src2Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.And(target, src1, src2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { false, false, false, true }, targetData);
+        }
+
+        [TestMethod]
+        public void Or()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var src1Data = new[] { false, false, true, true };
+            var src2Data = new[] { false, true, false, true };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<bool>(src1Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<bool>(src2Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Or(target, src1, src2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { false, true, true, true }, targetData);
+        }
+
+        [TestMethod]
+        public void Xor()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var src1Data = new[] { false, false, true, true };
+            var src2Data = new[] { false, true, false, true };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src1 = new DataAndLayout<bool>(src1Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src2 = new DataAndLayout<bool>(src2Data, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Xor(target, src1, src2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { false, true, true, false }, targetData);
+        }
     }
 }

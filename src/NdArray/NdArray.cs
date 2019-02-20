@@ -243,6 +243,81 @@ namespace NdArrayNet
         public static NdArray<bool> operator >=(T a, NdArray<T> b) => ComparisonFunction<T>.FillGreaterOrEqual(ScalarLike(b, a), b);
 
         /// <summary>
+        /// Element-wise logical negation.
+        /// </summary>
+        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> Not(NdArray<bool> input) => LogicalFunction<bool>.FillNegate(input);
+
+        /// <summary>
+        /// Element-wise loigcal and.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> And(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillAnd(lhs, rhs);
+
+        /// <summary>
+        /// Element-wise loigcal or.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> Or(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillOr(lhs, rhs);
+
+        /// <summary>
+        /// Element-wise loigcal xor.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> Xor(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillXor(lhs, rhs);
+
+        /// <summary>
+        /// Checks if all elements of the NdArray are true.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static bool All(NdArray<bool> input) => LogicalFunction<bool>.All(input);
+
+        /// <summary>
+        /// Checks if all elements along the specified axis are true.
+        /// </summary>
+        /// <param name="axis">The axis to check along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AllAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AllAxis(axis, input);
+
+        /// <summary>
+        /// Checks if all elements of the NdArray are true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AllNdArray(NdArray<bool> input) => LogicalFunction<bool>.AllNdArray(input);
+
+        /// <summary>
+        /// Checks if any elements of the NdArray are true.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static bool Any(NdArray<bool> input) => LogicalFunction<bool>.Any(input);
+
+        /// <summary>
+        /// Checks if any element of the NdArray is true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AnyNdArray(NdArray<bool> input) => LogicalFunction<bool>.AnyNdArray(input);
+
+        /// <summary>
+        /// Checks if any element along the specified axis is true.
+        /// </summary>
+        /// <param name="axis">The axis to check along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AnyAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AnyAxis(axis, input);
+
+        /// <summary>
         /// Element-wise check if two NdArrays have same (within machine precision) values.
         /// The default absolute tolerance is 1e-8.
         /// The default relative tolerance is 1e-5.
@@ -331,24 +406,6 @@ namespace NdArrayNet
             var (newSrc, _) = PrepareAxisReduceSources(target, axis, src, null);
             target.Backend.AllLastAxis(target, newSrc);
             return target;
-        }
-
-        public static NdArray<bool> AllAxis(int axis, NdArray<bool> array)
-        {
-            var (targt, src) = PrepareAxisReduceTarget<bool, bool>(axis, array);
-            FillAllAxis(targt, axis, src);
-            return targt;
-        }
-
-        public static NdArray<bool> AllNdArray(NdArray<bool> array)
-        {
-            var flattendArray = Flattern(array);
-            return AllAxis(0, flattendArray);
-        }
-
-        public static bool All(NdArray<bool> src)
-        {
-            return AllNdArray(src).Value;
         }
 
         /// <summary>
@@ -969,6 +1026,17 @@ namespace NdArrayNet
         /// <returns>The NdArray with the dimensions swapped.</returns>
         public static NdArray<T> SwapDim(int axis1, int axis2, NdArray<T> input) => ShapeFunction<T>.SwapDim(axis1, axis2, input);
 
+        public static int[][] AllIndex(NdArray<T> input)
+        {
+            return Layout.AllIndex(input.Layout);
+        }
+
+        public static T[] AllElems(NdArray<T> input)
+        {
+            var allIdx = AllIndex(input);
+            return allIdx.Select(idx => input[idx]).ToArray();
+        }
+
         public override string ToString()
         {
             return Pretty;
@@ -1129,15 +1197,6 @@ namespace NdArrayNet
             var permutedLayout = Layout.PermuteAxes(permut, src.Layout);
 
             return src.Relayout(permutedLayout);
-        }
-
-        internal static NdArray<bool> AnyAxis(int axis, NdArray<bool> src)
-        {
-            var (target, src1) = PrepareAxisReduceTarget<bool, bool>(axis, src);
-            var (newSrc, _) = PrepareAxisReduceSources(target, axis, src, null);
-            target.Backend.AnyLastAxis(target, newSrc);
-
-            return target;
         }
 
         internal static void CheckAxis<TA>(int axis, NdArray<TA> array)

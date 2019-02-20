@@ -449,6 +449,30 @@ namespace NdArrayNet
             ScalarOps.ProductLastAxis(dataLayoutTrgt, dataLayout);
         }
 
+        public void Negate(IFrontend<bool> trgt, IFrontend<bool> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
+            ScalarOps.Negate(dataLayoutTrgt, dataLayout);
+        }
+
+        public void And(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, lhs, rhs);
+            ScalarOps.And(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void Or(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, lhs, rhs);
+            ScalarOps.Or(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
+        public void Xor(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, lhs, rhs);
+            ScalarOps.Xor(dataLayoutTrgt, dataLayout1, dataLayout2);
+        }
+
         public void Copy(IFrontend<T> trgt, IFrontend<T> src)
         {
             if (Layout.HasContiguousMemory(trgt.Layout) &&

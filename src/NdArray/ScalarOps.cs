@@ -397,34 +397,34 @@ namespace NdArrayNet
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
         }
 
-        public static void Equal<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        public static void Equal<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<TP, TP>();
-            bool op(int[] pos, TP a, TP b) => p.Equal(a, b);
+            var p = ScalarPrimitives.For<T, T>();
+            bool op(int[] pos, T a, T b) => p.Equal(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
         }
 
-        public static void NotEqual<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        public static void NotEqual<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<TP, TP>();
-            bool op(int[] pos, TP a, TP b) => p.NotEqual(a, b);
+            var p = ScalarPrimitives.For<T, T>();
+            bool op(int[] pos, T a, T b) => p.NotEqual(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
         }
 
-        public static void Less<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        public static void Less<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<TP, TP>();
-            bool op(int[] pos, TP a, TP b) => p.Less(a, b);
+            var p = ScalarPrimitives.For<T, T>();
+            bool op(int[] pos, T a, T b) => p.Less(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
         }
 
-        public static void LessOrEqual<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
+        public static void LessOrEqual<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<TP, TP>();
-            bool op(int[] pos, TP a, TP b) => p.LessOrEqual(a, b);
+            var p = ScalarPrimitives.For<T, T>();
+            bool op(int[] pos, T a, T b) => p.LessOrEqual(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
         }
@@ -672,6 +672,29 @@ namespace NdArrayNet
 
             var initial = new InitialOption<T>(true, Primitives.One<T>());
             ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
+        }
+
+        public static void Negate(DataAndLayout<bool> trgt, DataAndLayout<bool> src)
+        {
+            bool op(int[] pos, bool v) => !v;
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
+        public static void And(DataAndLayout<bool> trgt, DataAndLayout<bool> lhs, DataAndLayout<bool> rhs)
+        {
+            bool op(int[] pos, bool l, bool r) => l && r;
+            ApplyBinaryOp(op, trgt, lhs, rhs, isIndexed: false, useThreads: true);
+        }
+
+        public static void Or(DataAndLayout<bool> trgt, DataAndLayout<bool> lhs, DataAndLayout<bool> rhs)
+        {
+            bool op(int[] pos, bool l, bool r) => l || r;
+            ApplyBinaryOp(op, trgt, lhs, rhs, isIndexed: false, useThreads: true);
+        }
+        public static void Xor(DataAndLayout<bool> trgt, DataAndLayout<bool> lhs, DataAndLayout<bool> rhs)
+        {
+            bool op(int[] pos, bool l, bool r) => l ^ r;
+            ApplyBinaryOp(op, trgt, lhs, rhs, isIndexed: false, useThreads: true);
         }
 
         internal class InitialOption<TS>
