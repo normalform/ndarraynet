@@ -32,7 +32,6 @@ namespace NdArrayNet.NdArrayUnitTest
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
-    using System;
 
     [TestClass]
     public class ShapeFunctionTests
@@ -104,7 +103,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.AtLeast2d(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1}, output.Shape);
+            CollectionAssert.AreEqual(new[] { 1, 1 }, output.Shape);
         }
 
         [TestMethod]
@@ -247,6 +246,204 @@ namespace NdArrayNet.NdArrayUnitTest
             CollectionAssert.AreEqual(new[] { 2, 3, 5 }, outputs[1].Shape);
             CollectionAssert.AreEqual(new[] { 2, 4, 5 }, outputs[2].Shape);
             CollectionAssert.AreEqual(new[] { 2, 5, 5 }, outputs[3].Shape);
+        }
+
+        [TestMethod]
+        public void CutLeft()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
+
+            // action
+            var output = ShapeFunction<int>.CutLeft(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void CutRight()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
+
+            // action
+            var output = ShapeFunction<int>.CutRight(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 2 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void Flatten()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = ShapeFunction<int>.Flatten(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 24 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void InsertAxis()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = ShapeFunction<int>.InsertAxis(1, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 1, 3, 4 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void IsBroadcasted_WithBroadCastedNdArray_ReturnTrue()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 1, 4 });
+            var broadCasted = NdArray<int>.BroadCastDim(1, 2, input);
+
+            // action
+            var output = ShapeFunction<int>.IsBroadcasted(broadCasted);
+
+            // assert
+            Assert.IsTrue(output);
+        }
+
+        [TestMethod]
+        public void IsBroadcasted_WithoutBroadCastedNdArray_ReturnFalse()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = ShapeFunction<int>.IsBroadcasted(input);
+
+            // assert
+            Assert.IsFalse(output);
+        }
+
+        [TestMethod]
+        public void PadLeft()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = ShapeFunction<int>.PadLeft(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void PadRight()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = ShapeFunction<int>.PadRight(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 1 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void PadToSame_Two()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2) = ShapeFunction<int>.PadToSame(input1, input2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+        }
+
+        [TestMethod]
+        public void PadToSamee_Three()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2, output3) = ShapeFunction<int>.PadToSame(input1, input2, input3);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 1, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output2.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+        }
+
+        [TestMethod]
+        public void PadToSame_Many()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+            var input4 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 5 });
+
+            // action
+            var outputs = ShapeFunction<int>.PadToSame(new[] { input1, input2, input3, input4 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 1, 1, 5 }, outputs[0].Shape);
+            CollectionAssert.AreEqual(new[] { 1, 1, 4, 5 }, outputs[1].Shape);
+            CollectionAssert.AreEqual(new[] { 1, 3, 4, 5 }, outputs[2].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
+        }
+
+        [TestMethod]
+        public void PermuteAxes()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 5 });
+
+            // action
+            var output = ShapeFunction<int>.PermuteAxes(new[] { 1, 0, 3, 2 }, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 3, 2, 5, 4 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void ReverseAxis()
+        {
+            // arrange
+            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1);
+
+            // action
+            var output = ShapeFunction<int>.ReverseAxis(0, input);
+
+            var s = output.ToString();
+
+            // assert
+            Assert.AreEqual(4, output.Shape[0]);
+            Assert.AreEqual(-1, output.Layout.Stride[0]);
+        }
+
+        [TestMethod]
+        public void SwapDim()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = ShapeFunction<int>.SwapDim(0, 2, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 4, 3, 2 }, output.Shape);
         }
     }
 }

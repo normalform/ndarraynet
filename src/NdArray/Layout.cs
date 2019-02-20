@@ -266,6 +266,35 @@ namespace NdArrayNet
             throw new ArgumentOutOfRangeException(msg);
         }
 
+        public static Layout[] PadToSameMany(Layout[] sas)
+        {
+            var numDimsNeeded = sas.Select(l => l.NumDimensions).Max();
+
+            var result = new List<Layout>();
+            foreach (var l in sas)
+            {
+                var sa = l;
+                while (sa.NumDimensions < numDimsNeeded)
+                {
+                    sa = PadLeft(sa);
+                }
+
+                result.Add(sa);
+            }
+
+            return result.ToArray();
+        }
+
+        public static Layout ReverseAxis(int axis, Layout input)
+        {
+            CheckAxis(input, axis);
+
+            return new Layout(
+                input.Shape,
+                input.Offset + ((input.Shape[axis] - 1) * input.Stride[axis]),
+                List.Set(axis, -input.Stride[axis], input.Stride));
+        }
+
         /// <summary>
         /// broadcasts to have the same size
         /// </summary>
@@ -401,6 +430,52 @@ namespace NdArrayNet
             }
 
             return SwapDim(numDim - 2, numDim - 1, input);
+        }
+
+        public static Layout CutLeft(Layout input)
+        {
+            if (input.NumDimensions == 0)
+            {
+                throw new ArgumentException("cannot remove dimensions from scalar", "input");
+            }
+
+            return new Layout(input.Shape.Skip(1).ToArray(), input.Offset, input.Stride.Skip(1).ToArray());
+        }
+
+        public static Layout CutRight(Layout input)
+        {
+            if (input.NumDimensions == 0)
+            {
+                throw new ArgumentException("cannot remove dimensions from scalar", "input");
+            }
+
+            return new Layout(input.Shape.SkipLast(1).ToArray(), input.Offset, input.Stride.SkipLast(1).ToArray());
+        }
+
+        public static bool IsBroadcasted(Layout input)
+        {
+            return input.Shape.Zip(input.Stride, (sh, st) => (sh, st)).Where(shst => shst.sh > 1 && shst.st == 0).Any();
+        }
+
+        public static Layout PermuteAxes(int[] permut, Layout src)
+        {
+            if (src.NumDimensions != permut.Length)
+            {
+                var msg = string.Format("Permutation {0} must have same rank as shape {1}.", permut, src.Shape);
+                throw new ArgumentException(msg);
+            }
+
+            // permute
+            var shapeList = new List<int>();
+            var strideList = new List<int>();
+            for (var index = 0; index < permut.Length; index++)
+            {
+                var permutIndex = permut[index];
+                shapeList.Add(src.Shape[permutIndex]);
+                strideList.Add(src.Stride[permutIndex]);
+            }
+
+            return new Layout(shapeList.ToArray(), src.Offset, strideList.ToArray());
         }
 
         public static bool operator ==(Layout lhs, Layout rhs)
@@ -662,25 +737,6 @@ namespace NdArrayNet
             return null;
         }
 
-        internal static Layout[] PadToSameMany(Layout[] sas)
-        {
-            var numDimsNeeded = sas.Select(l => l.NumDimensions).Max();
-
-            var result = new List<Layout>();
-            foreach (var l in sas)
-            {
-                var sa = l;
-                while (sa.NumDimensions < numDimsNeeded)
-                {
-                    sa = PadLeft(sa);
-                }
-
-                result.Add(sa);
-            }
-
-            return result.ToArray();
-        }
-
         internal static Layout BroadcastDim(int dim, int size, Layout a)
         {
             if (size < 0)
@@ -695,27 +751,6 @@ namespace NdArrayNet
 
             var msg = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, a.Shape);
             throw new InvalidOperationException(msg);
-        }
-
-        internal static Layout PermuteAxes(int[] permut, Layout src)
-        {
-            if (src.NumDimensions != permut.Length)
-            {
-                var msg = string.Format("Permutation {0} must have same rank as shape {1}.", permut, src.Shape);
-                throw new ArgumentException(msg);
-            }
-
-            // permute
-            var shapeList = new List<int>();
-            var strideList = new List<int>();
-            for (var index = 0; index < permut.Length; index++)
-            {
-                var permutIndex = permut[index];
-                shapeList.Add(src.Shape[permutIndex]);
-                strideList.Add(src.Stride[permutIndex]);
-            }
-
-            return new Layout(shapeList.ToArray(), src.Offset, strideList.ToArray());
         }
 
         internal static void CheckAxis(Layout layout, int axis)
