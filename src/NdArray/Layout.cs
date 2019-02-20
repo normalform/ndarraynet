@@ -454,7 +454,7 @@ namespace NdArrayNet
 
         public static bool IsBroadcasted(Layout input)
         {
-            return input.Shape.Zip(input.Stride, (sh, st) => (sh, st)).Where(shst => shst.sh > 1 && shst.st == 0).Any();
+            return input.Shape.Zip(input.Stride, (sh, st) => (sh, st)).Any(shst => shst.sh > 1 && shst.st == 0);
         }
 
         public static Layout PermuteAxes(int[] permut, Layout src)
