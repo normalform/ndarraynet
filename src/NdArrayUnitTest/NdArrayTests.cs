@@ -1604,6 +1604,375 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(3, result[new[] { 1, 1 }]);
         }
 
+        [TestMethod]
+        public void AtLeastNd()
+        {
+            // arrange
+            const int MinNumDim = 3;
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 2 });
+
+            // action
+            var output = NdArray<int>.AtLeastNd(MinNumDim, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 2, 2 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void AtLeast1d()
+        {
+            // arrange
+            const int DummyValue = 1;
+            var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
+
+            // action
+            var output = NdArray<int>.AtLeast1d(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void AtLeast2d()
+        {
+            // arrange
+            const int DummyValue = 1;
+            var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
+
+            // action
+            var output = NdArray<int>.AtLeast2d(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 1 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void AtLeast3d()
+        {
+            // arrange
+            const int DummyValue = 1;
+            var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
+
+            // action
+            var output = NdArray<int>.AtLeast3d(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 1, 1 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastDim()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 1, 5 });
+
+            // action
+            var output = NdArray<int>.BroadCastDim(1, 9, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 3, 9, 5 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastTo()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 7, 1 });
+
+            // action
+            var output = NdArray<int>.BroadCastTo(new[] { 2, 7, 3 }, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 7, 3 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastToSame_Two()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2) = NdArray<int>.BroadCastToSame(input1, input2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastToSame_Three()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2, output3) = NdArray<int>.BroadCastToSame(input1, input2, input3);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastToSame_Many()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+            var input4 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 5 });
+
+            // action
+            var outputs = NdArray<int>.BroadCastToSame(new[] { input1, input2, input3, input4 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[0].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[1].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[2].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastToSameInDims_Two()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 7, 1 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2) = NdArray<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 3, 7, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastToSameInDims_Three()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 1 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 5, 1 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2, output3) = NdArray<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2, input3);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 3, 2, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 5, 5 }, output2.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+        }
+
+        [TestMethod]
+        public void BroadCastToSameInDims_Many()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 1 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 5 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 4, 1 });
+            var input4 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 5, 5 });
+
+            // action
+            var outputs = NdArray<int>.BroadCastToSameInDims(new[] { 0, 2 }, new[] { input1, input2, input3, input4 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 2, 5 }, outputs[0].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 3, 5 }, outputs[1].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 4, 5 }, outputs[2].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 5, 5 }, outputs[3].Shape);
+        }
+
+        [TestMethod]
+        public void CutLeft()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
+
+            // action
+            var output = NdArray<int>.CutLeft(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void CutRight()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
+
+            // action
+            var output = NdArray<int>.CutRight(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 2 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void Flatten()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = NdArray<int>.Flatten(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 24 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void InsertAxis()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = NdArray<int>.InsertAxis(1, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 1, 3, 4 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void IsBroadcasted_WithBroadCastedNdArray_ReturnTrue()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 1, 4 });
+            var broadCasted = NdArray<int>.BroadCastDim(1, 2, input);
+
+            // action
+            var output = NdArray<int>.IsBroadcasted(broadCasted);
+
+            // assert
+            Assert.IsTrue(output);
+        }
+
+        [TestMethod]
+        public void PadLeft()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = NdArray<int>.PadLeft(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void PadRight()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = NdArray<int>.PadRight(input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 1 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void PadToSame_Two()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2) = NdArray<int>.PadToSame(input1, input2);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+        }
+
+        [TestMethod]
+        public void PadToSamee_Three()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+
+            // action
+            var (output1, output2, output3) = NdArray<int>.PadToSame(input1, input2, input3);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 1, 5 }, output1.Shape);
+            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output2.Shape);
+            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+        }
+
+        [TestMethod]
+        public void PadToSame_Many()
+        {
+            // arrange
+            var input1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 4, 5 });
+            var input4 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 5 });
+
+            // action
+            var outputs = NdArray<int>.PadToSame(new[] { input1, input2, input3, input4 });
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 1, 1, 5 }, outputs[0].Shape);
+            CollectionAssert.AreEqual(new[] { 1, 1, 4, 5 }, outputs[1].Shape);
+            CollectionAssert.AreEqual(new[] { 1, 3, 4, 5 }, outputs[2].Shape);
+            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
+        }
+
+        [TestMethod]
+        public void PermuteAxes()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 5 });
+
+            // action
+            var output = NdArray<int>.PermuteAxes(new[] { 1, 0, 3, 2 }, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 3, 2, 5, 4 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void ReverseAxis()
+        {
+            // arrange
+            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1);
+
+            // action
+            var output = NdArray<int>.ReverseAxis(0, input);
+
+            var s = output.ToString();
+
+            // assert
+            Assert.AreEqual(4, output.Shape[0]);
+            Assert.AreEqual(-1, output.Layout.Stride[0]);
+        }
+
+        [TestMethod]
+        public void SwapDim()
+        {
+            // arrange
+            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var output = NdArray<int>.SwapDim(0, 2, input);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 4, 3, 2 }, output.Shape);
+        }
+
         private struct UnKownValueTypeForTestOnly
         {
             public override string ToString()

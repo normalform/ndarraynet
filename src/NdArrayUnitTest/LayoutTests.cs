@@ -738,5 +738,109 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             Layout.Transpos(layout);
         }
+
+        [TestMethod]
+        public void Transpos()
+        {
+            // arrange
+            var layout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+
+            // action
+            var output = Layout.Transpos(layout);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 1, 3, 2 }, 0, new[] { 6, 1, 3 });
+            Assert.AreEqual(expectedLayout, output);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CutLeft_Scalar_ThrowException()
+        {
+            // arrange
+            var layout = new Layout(new int[] { }, 0, new int[] { 0 });
+
+            // action
+            Layout.CutLeft(layout);
+        }
+
+        [TestMethod]
+        public void CutLeft()
+        {
+            // arrange
+            var layout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+
+            // action
+            var output = Layout.CutLeft(layout);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 2, 3 }, 0, new[] { 3, 1 });
+            Assert.AreEqual(expectedLayout, output);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CutRight_Scalar_ThrowException()
+        {
+            // arrange
+            var layout = new Layout(new int[] { }, 0, new int[] { 0 });
+
+            // action
+            Layout.CutRight(layout);
+        }
+
+        [TestMethod]
+        public void CutRight()
+        {
+            // arrange
+            var layout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+
+            // action
+            var output = Layout.CutRight(layout);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 1, 2 }, 0, new[] { 6, 3 });
+            Assert.AreEqual(expectedLayout, output);
+        }
+
+        [TestMethod]
+        public void IsBroadcasted_WithBroadCastedLayout_ReturnTrue()
+        {
+            // arrange
+            var layout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 3, 0, 1 });
+
+            // action
+            var output = Layout.IsBroadcasted(layout);
+
+            // assert
+            Assert.IsTrue(output);
+        }
+
+        [TestMethod]
+        public void IsBroadcasted_WithoutBroadCastedLayout_ReturnFalse()
+        {
+            // arrange
+            var layout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+
+            // action
+            var output = Layout.IsBroadcasted(layout);
+
+            // assert
+            Assert.IsFalse(output);
+        }
+
+        [TestMethod]
+        public void ReverseAxis()
+        {
+            // arrange
+            var layout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+
+            // action
+            var output = Layout.ReverseAxis(1, layout);
+
+            // assert
+            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 3, new[] { 6, -3, 1 });
+            Assert.AreEqual(expectedLayout, output);
+        }
     }
 }
