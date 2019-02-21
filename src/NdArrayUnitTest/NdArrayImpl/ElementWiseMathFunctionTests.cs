@@ -44,7 +44,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<int>.Linspace(HostDevice.Instance, -4, 4, 8);
 
             // action
-            var newArray = ElementWiseMathFunction<int>.FillAbs(srcArray);
+            var newArray = ElementWiseMathFunction<int>.Abs(srcArray);
 
             // assert
             Assert.IsTrue(newArray[0].Value > 0);
@@ -57,7 +57,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillAcos(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Acos(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -73,7 +73,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillAsin(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Asin(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -89,7 +89,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillAtan(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Atan(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -105,7 +105,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillCeiling(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Ceiling(srcArray);
 
             // assert
             Assert.AreEqual(-1.0, newArray[0].Value);
@@ -123,7 +123,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = Math.PI / 2.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillCos(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Cos(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -142,7 +142,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = Math.PI / 2.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillCosh(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Cosh(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -162,7 +162,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[3].Value = 10.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillExp(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Exp(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -179,7 +179,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillFloor(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Floor(srcArray);
 
             // assert
             Assert.AreEqual(-1.0, newArray[0].Value);
@@ -200,7 +200,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = 4.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillLog(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Log(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -219,7 +219,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = 100.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillLog10(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Log10(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -229,14 +229,14 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void Max()
+        public void Maximum()
         {
             // arrange
             var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
             var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillMaximum(srcArray1, srcArray2);
+            var newArray = ElementWiseMathFunction<double>.Maximum(srcArray1, srcArray2);
 
             // assert
             Assert.AreEqual(1.0, newArray[0].Value);
@@ -245,14 +245,14 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void Min()
+        public void Minimum()
         {
             // arrange
             var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
             var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillMinimum(srcArray1, srcArray2);
+            var newArray = ElementWiseMathFunction<double>.Minimum(srcArray1, srcArray2);
 
             // assert
             Assert.AreEqual(0.0, newArray[0].Value);
@@ -275,7 +275,7 @@ namespace NdArrayNet.NdArrayUnitTest
             rhs[2].Value = 4.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillPow(lhs, rhs);
+            var newArray = ElementWiseMathFunction<double>.Pow(lhs, rhs);
 
             // assert
             Assert.AreEqual(25.0, newArray[0].Value);
@@ -290,7 +290,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillRound(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Round(srcArray);
 
             // assert
             Assert.AreEqual(-1.0, newArray[0].Value);
@@ -312,7 +312,7 @@ namespace NdArrayNet.NdArrayUnitTest
             src[3].Value = 1.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillSign(src);
+            var newArray = ElementWiseMathFunction<double>.Sign(src);
 
             // assert
             Assert.AreEqual(-1.0, newArray[0].Value);
@@ -331,7 +331,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = Math.PI / 2.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillSin(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Sin(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -350,7 +350,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = Math.PI / 2.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillSinh(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Sinh(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -369,7 +369,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = 16.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillSqrt(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Sqrt(srcArray);
 
             // assert
             Assert.AreEqual(1.0, newArray[0].Value);
@@ -387,7 +387,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = Math.PI / 2.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillTan(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Tan(srcArray);
 
             // assert
             const double Epsilon = 1e10;
@@ -406,7 +406,7 @@ namespace NdArrayNet.NdArrayUnitTest
             srcArray[2].Value = Math.PI / 2.0;
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillTanh(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Tanh(srcArray);
 
             // assert
             const double Epsilon = 1e-8;
@@ -422,7 +422,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
 
             // action
-            var newArray = ElementWiseMathFunction<double>.FillTruncate(srcArray);
+            var newArray = ElementWiseMathFunction<double>.Truncate(srcArray);
 
             // assert
             Assert.AreEqual(-1.0, newArray[0].Value);

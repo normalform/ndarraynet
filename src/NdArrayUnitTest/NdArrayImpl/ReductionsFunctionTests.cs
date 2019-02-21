@@ -38,28 +38,28 @@ namespace NdArrayNet.NdArrayUnitTest
     public class ReductionsFunctionTests
     {
         [TestMethod]
-        public void FillMaxAxis()
+        public void MaxAxis()
         {
             // arrange
             var device = HostDevice.Instance;
             var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var max = ReductionFunction<double>.FillMaxAxis(1, input);
+            var max = ReductionFunction<double>.MaxAxis(1, input);
 
             // assert
             Assert.AreEqual(4.0, max[0].Value);
         }
 
         [TestMethod]
-        public void FillMinAxis()
+        public void MinAxis()
         {
             // arrange
             var device = HostDevice.Instance;
             var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var min = ReductionFunction<double>.FillMinAxis(1, input);
+            var min = ReductionFunction<double>.MinAxis(1, input);
 
             // assert
             Assert.AreEqual(1.0, min[0].Value);
@@ -94,14 +94,14 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void FillSumAxis()
+        public void SumAxis()
         {
             // arrange
             var device = HostDevice.Instance;
             var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var sum = ReductionFunction<double>.FillSumAxis(1, input);
+            var sum = ReductionFunction<double>.SumAxis(1, input);
 
             // assert
             Assert.AreEqual(10.0, sum[0].Value);
@@ -150,14 +150,14 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void FillProductAxis()
+        public void ProductAxis()
         {
             // arrange
             var device = HostDevice.Instance;
             var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var product = ReductionFunction<double>.FillProductAxis(1, input);
+            var product = ReductionFunction<double>.ProductAxis(1, input);
 
             // assert
             Assert.AreEqual(24.0, product[0].Value);

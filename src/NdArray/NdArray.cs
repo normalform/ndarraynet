@@ -172,82 +172,82 @@ namespace NdArrayNet
             return target.Relayout(layout);
         }
 
-        public static NdArray<T> operator +(NdArray<T> a) => ElementWiseOperator<T>.FillUnaryPlus(a);
+        public static NdArray<T> operator +(NdArray<T> input) => ElementWiseOperator<T>.UnaryPlus(input);
 
-        public static NdArray<T> operator -(NdArray<T> a) => ElementWiseOperator<T>.FillUnaryMinus(a);
+        public static NdArray<T> operator -(NdArray<T> input) => ElementWiseOperator<T>.UnaryMinus(input);
 
-        public static NdArray<T> operator +(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillAdd(a, b);
+        public static NdArray<T> operator +(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Add(lhs, rhs);
 
-        public static NdArray<T> operator +(NdArray<T> a, T b) => ElementWiseOperator<T>.FillAdd(a, ScalarLike(a, b));
+        public static NdArray<T> operator +(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.Add(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<T> operator +(T a, NdArray<T> b) => ElementWiseOperator<T>.FillAdd(ScalarLike(b, a), b);
+        public static NdArray<T> operator +(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Add(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<T> operator -(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillSubtract(a, b);
+        public static NdArray<T> operator -(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Subtract(lhs, rhs);
 
-        public static NdArray<T> operator -(NdArray<T> a, T b) => ElementWiseOperator<T>.FillSubtract(a, ScalarLike(a, b));
+        public static NdArray<T> operator -(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.Subtract(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<T> operator -(T a, NdArray<T> b) => ElementWiseOperator<T>.FillSubtract(ScalarLike(b, a), b);
+        public static NdArray<T> operator -(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Subtract(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<T> operator *(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillMultiply(a, b);
+        public static NdArray<T> operator *(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Multiply(lhs, rhs);
 
-        public static NdArray<T> operator *(NdArray<T> a, T b) => ElementWiseOperator<T>.FillMultiply(a, ScalarLike(a, b));
+        public static NdArray<T> operator *(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.Multiply(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<T> operator *(T a, NdArray<T> b) => ElementWiseOperator<T>.FillMultiply(ScalarLike(b, a), b);
+        public static NdArray<T> operator *(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Multiply(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<T> operator /(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillDivide(a, b);
+        public static NdArray<T> operator /(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Divide(lhs, rhs);
 
-        public static NdArray<T> operator /(NdArray<T> a, T b) => ElementWiseOperator<T>.FillDivide(a, ScalarLike(a, b));
+        public static NdArray<T> operator /(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.Divide(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<T> operator /(T a, NdArray<T> b) => ElementWiseOperator<T>.FillDivide(ScalarLike(b, a), b);
+        public static NdArray<T> operator /(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Divide(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<T> operator %(NdArray<T> a, NdArray<T> b) => ElementWiseOperator<T>.FillModulo(a, b);
+        public static NdArray<T> operator %(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Modulo(lhs, rhs);
 
-        public static NdArray<T> operator %(NdArray<T> a, T b) => ElementWiseOperator<T>.FillModulo(a, ScalarLike(a, b));
+        public static NdArray<T> operator %(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.Modulo(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<T> operator %(T a, NdArray<T> b) => ElementWiseOperator<T>.FillModulo(ScalarLike(b, a), b);
+        public static NdArray<T> operator %(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Modulo(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator ==(NdArray<T> a, NdArray<T> b) => ComparisonFunction<T>.FillEqual(a, b);
+        public static NdArray<bool> operator ==(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.Equal(lhs, rhs);
 
-        public static NdArray<bool> operator ==(NdArray<T> a, T b) => ComparisonFunction<T>.FillEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator ==(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.Equal(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator ==(T a, NdArray<T> b) => ComparisonFunction<T>.FillEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator ==(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.Equal(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator !=(NdArray<T> a, NdArray<T> b) => ComparisonFunction<T>.FillNotEqual(a, b);
+        public static NdArray<bool> operator !=(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.NotEqual(lhs, rhs);
 
-        public static NdArray<bool> operator !=(NdArray<T> a, T b) => ComparisonFunction<T>.FillNotEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator !=(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.NotEqual(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator !=(T a, NdArray<T> b) => ComparisonFunction<T>.FillNotEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator !=(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.NotEqual(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator <(NdArray<T> a, NdArray<T> b) => ComparisonFunction<T>.FillLess(a, b);
+        public static NdArray<bool> operator <(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.Less(lhs, rhs);
 
-        public static NdArray<bool> operator <(NdArray<T> a, T b) => ComparisonFunction<T>.FillLess(a, ScalarLike(a, b));
+        public static NdArray<bool> operator <(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.Less(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator <(T a, NdArray<T> b) => ComparisonFunction<T>.FillLess(ScalarLike(b, a), b);
+        public static NdArray<bool> operator <(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.Less(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator <=(NdArray<T> a, NdArray<T> b) => ComparisonFunction<T>.FillLessOrEqual(a, b);
+        public static NdArray<bool> operator <=(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.LessOrEqual(lhs, rhs);
 
-        public static NdArray<bool> operator <=(NdArray<T> a, T b) => ComparisonFunction<T>.FillLessOrEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator <=(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.LessOrEqual(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator <=(T a, NdArray<T> b) => ComparisonFunction<T>.FillLessOrEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator <=(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.LessOrEqual(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator >(NdArray<T> a, NdArray<T> b) => ComparisonFunction<T>.FillGreater(a, b);
+        public static NdArray<bool> operator >(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.Greater(lhs, rhs);
 
-        public static NdArray<bool> operator >(NdArray<T> a, T b) => ComparisonFunction<T>.FillGreater(a, ScalarLike(a, b));
+        public static NdArray<bool> operator >(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.Greater(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator >(T a, NdArray<T> b) => ComparisonFunction<T>.FillGreater(ScalarLike(b, a), b);
+        public static NdArray<bool> operator >(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.Greater(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator >=(NdArray<T> a, NdArray<T> b) => ComparisonFunction<T>.FillGreaterOrEqual(a, b);
+        public static NdArray<bool> operator >=(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.GreaterOrEqual(lhs, rhs);
 
-        public static NdArray<bool> operator >=(NdArray<T> a, T b) => ComparisonFunction<T>.FillGreaterOrEqual(a, ScalarLike(a, b));
+        public static NdArray<bool> operator >=(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.GreaterOrEqual(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator >=(T a, NdArray<T> b) => ComparisonFunction<T>.FillGreaterOrEqual(ScalarLike(b, a), b);
+        public static NdArray<bool> operator >=(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.GreaterOrEqual(ScalarLike(rhs, lhs), rhs);
 
         /// <summary>
         /// Element-wise logical negation.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> Not(NdArray<bool> input) => LogicalFunction<bool>.FillNegate(input);
+        public static NdArray<bool> Not(NdArray<bool> input) => LogicalFunction<bool>.Negate(input);
 
         /// <summary>
         /// Element-wise loigcal and.
@@ -255,7 +255,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> And(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillAnd(lhs, rhs);
+        public static NdArray<bool> And(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.And(lhs, rhs);
 
         /// <summary>
         /// Element-wise loigcal or.
@@ -263,7 +263,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> Or(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillOr(lhs, rhs);
+        public static NdArray<bool> Or(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.Or(lhs, rhs);
 
         /// <summary>
         /// Element-wise loigcal xor.
@@ -271,7 +271,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> Xor(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillXor(lhs, rhs);
+        public static NdArray<bool> Xor(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.Xor(lhs, rhs);
 
         /// <summary>
         /// Checks if all elements of the NdArray are true.
@@ -281,19 +281,19 @@ namespace NdArrayNet
         public static bool All(NdArray<bool> input) => LogicalFunction<bool>.All(input);
 
         /// <summary>
+        /// Checks if all elements of the NdArray are true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<bool> AllNdArray(NdArray<bool> input) => LogicalFunction<bool>.AllNdArray(input);
+
+        /// <summary>
         /// Checks if all elements along the specified axis are true.
         /// </summary>
         /// <param name="axis">The axis to check along.</param>
         /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AllAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AllAxis(axis, input);
-
-        /// <summary>
-        /// Checks if all elements of the NdArray are true returning the result as a NdArray.
-        /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
-        /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> AllNdArray(NdArray<bool> input) => LogicalFunction<bool>.AllNdArray(input);
 
         /// <summary>
         /// Checks if any elements of the NdArray are true.
@@ -317,12 +317,10 @@ namespace NdArrayNet
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AnyAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AnyAxis(axis, input);
 
-        /// <summary>
-        /// Counts the elements being true along the specified axis.
-        /// </summary>
-        /// <param name="axis">The axis the count along.</param>
+        /// <summary>Counts the elements being true.</summary>
         /// <param name="input">The NdArray containing the source values.</param>
-        public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.FillCountTrueAxis(axis, input);
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static int CountTrue(NdArray<bool> input) => LogicalFunction<bool>.CountTrue(input);
 
         /// <summary>
         /// Counts the elements being true returning the result as a NdArray.
@@ -331,10 +329,12 @@ namespace NdArrayNet
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
         public static NdArray<int> CountTrueNdArray(NdArray<bool> input) => LogicalFunction<bool>.CountTrueNdArray(input);
 
-        /// <summary>Counts the elements being true.</summary>
+        /// <summary>
+        /// Counts the elements being true along the specified axis.
+        /// </summary>
+        /// <param name="axis">The axis the count along.</param>
         /// <param name="input">The NdArray containing the source values.</param>
-        /// <returns>A scalar containing the result of this operation.</returns>
-        public static int CountTrue(NdArray<bool> input) => LogicalFunction<bool>.CountTrue(input);
+        public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.CountTrueAxis(axis, input);
 
         /// <summary>
         /// Element-wise choice between two sources depending on a condition.
@@ -410,14 +410,14 @@ namespace NdArrayNet
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsFinite(NdArray<T> input) => ComparisonFunction<T>.FillIsFinite(input);
+        public static NdArray<bool> IsFinite(NdArray<T> input) => ComparisonFunction<T>.IsFinite(input);
 
         /// <summary>
         /// Checks that all elements of the NdArray are finite.
         /// </summary>
         /// <param name="input">The NdArray to operate on.</param>
         /// <returns>true if all elements are finite, otherwise false.</returns>
-        public static bool AllFinite(NdArray<T> input) => All(ComparisonFunction<T>.FillIsFinite(input));
+        public static bool AllFinite(NdArray<T> input) => All(ComparisonFunction<T>.IsFinite(input));
 
         /// <summary>
         /// Flattens the NdArray into a (one-dimensional) vector.
@@ -427,13 +427,6 @@ namespace NdArrayNet
         public static NdArray<T1> Flattern<T1>(NdArray<T1> array)
         {
             return array.Reshape(new[] { SpecialIdx.Remainder });
-        }
-
-        public static NdArray<bool> FillAllAxis(NdArray<bool> target, int axis, NdArray<bool> src)
-        {
-            var (newSrc, _) = PrepareAxisReduceSources(target, axis, src, null);
-            target.Backend.AllLastAxis(target, newSrc);
-            return target;
         }
 
         /// <summary>
@@ -448,77 +441,77 @@ namespace NdArrayNet
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Abs(NdArray<T> input) => ElementWiseMathFunction<T>.FillAbs(input);
+        public static NdArray<T> Abs(NdArray<T> input) => ElementWiseMathFunction<T>.Abs(input);
 
         /// <summary>
         /// Element-wise arccosine (inverse cosine).
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Acos(NdArray<T> input) => ElementWiseMathFunction<T>.FillAcos(input);
+        public static NdArray<T> Acos(NdArray<T> input) => ElementWiseMathFunction<T>.Acos(input);
 
         /// <summary>
         /// Element-wise arcsine (inverse sine).
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Asin(NdArray<T> input) => ElementWiseMathFunction<T>.FillAsin(input);
+        public static NdArray<T> Asin(NdArray<T> input) => ElementWiseMathFunction<T>.Asin(input);
 
         /// <summary>
         /// Element-wise arctanget (inverse tangent).
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Atan(NdArray<T> input) => ElementWiseMathFunction<T>.FillAtan(input);
+        public static NdArray<T> Atan(NdArray<T> input) => ElementWiseMathFunction<T>.Atan(input);
 
         /// <summary>
         /// Element-wise ceiling (round towards positive infinity).
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Ceiling(NdArray<T> input) => ElementWiseMathFunction<T>.FillCeiling(input);
+        public static NdArray<T> Ceiling(NdArray<T> input) => ElementWiseMathFunction<T>.Ceiling(input);
 
         /// <summary>
         /// Element-wise cosine.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Cos(NdArray<T> input) => ElementWiseMathFunction<T>.FillCos(input);
+        public static NdArray<T> Cos(NdArray<T> input) => ElementWiseMathFunction<T>.Cos(input);
 
         /// <summary>
         /// Element-wise hyperbolic cosine.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Cosh(NdArray<T> input) => ElementWiseMathFunction<T>.FillCosh(input);
+        public static NdArray<T> Cosh(NdArray<T> input) => ElementWiseMathFunction<T>.Cosh(input);
 
         /// <summary>
         /// Element-wise exponential function.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Exp(NdArray<T> input) => ElementWiseMathFunction<T>.FillExp(input);
+        public static NdArray<T> Exp(NdArray<T> input) => ElementWiseMathFunction<T>.Exp(input);
 
         /// <summary>
         /// Element-wise floor (round towards negative infinity).
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Floor(NdArray<T> input) => ElementWiseMathFunction<T>.FillFloor(input);
+        public static NdArray<T> Floor(NdArray<T> input) => ElementWiseMathFunction<T>.Floor(input);
 
         /// <summary>
         /// Element-wise natural logarithm.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Log(NdArray<T> input) => ElementWiseMathFunction<T>.FillLog(input);
+        public static NdArray<T> Log(NdArray<T> input) => ElementWiseMathFunction<T>.Log(input);
 
         /// <summary>
         /// Element-wise common logarithm.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Log10(NdArray<T> input) => ElementWiseMathFunction<T>.FillLog10(input);
+        public static NdArray<T> Log10(NdArray<T> input) => ElementWiseMathFunction<T>.Log10(input);
 
         /// <summary>
         /// Element-wise maximum.
@@ -526,7 +519,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Maximum(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.FillMaximum(lhs, rhs);
+        public static NdArray<T> Maximum(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.Maximum(lhs, rhs);
 
         /// <summary>
         /// Element-wise minimum.
@@ -534,7 +527,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Minimum(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.FillMinimum(lhs, rhs);
+        public static NdArray<T> Minimum(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.Minimum(lhs, rhs);
 
         /// <summary>
         /// Fills this NdArray with the element-wise exponentiation.
@@ -542,63 +535,63 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Pow(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.FillPow(lhs, rhs);
+        public static NdArray<T> Pow(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.Pow(lhs, rhs);
 
         /// <summary>
         /// Element-wise rounding.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Round(NdArray<T> input) => ElementWiseMathFunction<T>.FillRound(input);
+        public static NdArray<T> Round(NdArray<T> source) => ElementWiseMathFunction<T>.Round(source);
 
         /// <summary>
         /// Element-wise sign.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sign(NdArray<T> input) => ElementWiseMathFunction<T>.FillSign(input);
+        public static NdArray<T> Sign(NdArray<T> input) => ElementWiseMathFunction<T>.Sign(input);
 
         /// <summary>
         /// Element-wise sine.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sin(NdArray<T> input) => ElementWiseMathFunction<T>.FillSin(input);
+        public static NdArray<T> Sin(NdArray<T> input) => ElementWiseMathFunction<T>.Sin(input);
 
         /// <summary>
         /// Element-wise hyperbolic sine.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sinh(NdArray<T> input) => ElementWiseMathFunction<T>.FillSinh(input);
+        public static NdArray<T> Sinh(NdArray<T> input) => ElementWiseMathFunction<T>.Sinh(input);
 
         /// <summary>
         /// Element-wise square root.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sqrt(NdArray<T> input) => ElementWiseMathFunction<T>.FillSqrt(input);
+        public static NdArray<T> Sqrt(NdArray<T> input) => ElementWiseMathFunction<T>.Sqrt(input);
 
         /// <summary>
         /// Element-wise tangent.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Tan(NdArray<T> input) => ElementWiseMathFunction<T>.FillTan(input);
+        public static NdArray<T> Tan(NdArray<T> input) => ElementWiseMathFunction<T>.Tan(input);
 
         /// <summary>
         /// Element-wise hyperbolic tangent.
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Tanh(NdArray<T> input) => ElementWiseMathFunction<T>.FillTanh(input);
+        public static NdArray<T> Tanh(NdArray<T> input) => ElementWiseMathFunction<T>.Tanh(input);
 
         /// <summary>
         /// Element-wise truncation (rounding towards zero).
         /// </summary>
         /// <param name="input">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Truncate(NdArray<T> input) => ElementWiseMathFunction<T>.FillTruncate(input);
+        public static NdArray<T> Truncate(NdArray<T> input) => ElementWiseMathFunction<T>.Truncate(input);
 
         /// <summary>
         /// Calculates the maximum value of the elements along the specified axis.
@@ -606,7 +599,7 @@ namespace NdArrayNet
         /// <param name="axis">The axis to calculate the maximum along.</param>
         /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MaxAxis(int axis, NdArray<T> input) => ReductionFunction<T>.FillMaxAxis(axis, input);
+        public static NdArray<T> MaxAxis(int axis, NdArray<T> input) => ReductionFunction<T>.MaxAxis(axis, input);
 
         /// <summary>
         /// Calculates the minimum value of the elements along the specified axis.
@@ -614,7 +607,7 @@ namespace NdArrayNet
         /// <param name="axis">The axis to calculate the minimum along.</param>
         /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MinAxis(int axis, NdArray<T> input) => ReductionFunction<T>.FillMinAxis(axis, input);
+        public static NdArray<T> MinAxis(int axis, NdArray<T> input) => ReductionFunction<T>.MinAxis(axis, input);
 
         /// <summary>
         /// Calculates the maximum all elements returning a NdArray.
@@ -650,7 +643,7 @@ namespace NdArrayNet
         /// <param name="axis">The axis to sum along.</param>
         /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> SumAxis(int axis, NdArray<T> input) => ReductionFunction<T>.FillSumAxis(axis, input);
+        public static NdArray<T> SumAxis(int axis, NdArray<T> input) => ReductionFunction<T>.SumAxis(axis, input);
 
         /// <summary>
         /// Sums all elements returning a NdArray.
@@ -687,7 +680,7 @@ namespace NdArrayNet
         /// <param name="axis">The axis to calculate the product along.</param>
         /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> ProductAxis(int axis, NdArray<T> input) => ReductionFunction<T>.FillProductAxis(axis, input);
+        public static NdArray<T> ProductAxis(int axis, NdArray<T> input) => ReductionFunction<T>.ProductAxis(axis, input);
 
         /// <summary>
         /// Calculates the product all elements returning a NdArray.
@@ -1065,6 +1058,293 @@ namespace NdArrayNet
             return allIdx.Select(idx => input[idx]).ToArray();
         }
 
+        public void FillUnaryPlus(NdArray<T> input) => ElementWiseOperator<T>.FillUnaryPlus(this, input);
+
+        public void FillUnaryMinum(NdArray<T> input) => ElementWiseOperator<T>.FillUnaryMinus(this, input);
+
+        public void FillAdd(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillAdd(this, lhs, rhs);
+
+        public void FillAdd(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.FillAdd(this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillAdd(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillAdd(this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillSubtract(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillSubtract(this, lhs, rhs);
+
+        public void FillSubtract(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.FillSubtract(this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillSubtract(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillSubtract(this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillMultiply(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillMultiply(this, lhs, rhs);
+
+        public void FillMultiply(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.FillMultiply(this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillMultiply(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillMultiply(this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillDivide(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillDivide(this, lhs, rhs);
+
+        public void FillDivide(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.FillDivide(this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillDivide(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillDivide(this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillModulo(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillModulo(this, lhs, rhs);
+
+        public void FillModulo(NdArray<T> lhs, T rhs) => ElementWiseOperator<T>.FillModulo(this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillModulo(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillModulo(this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, rhs);
+
+        public void FillEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillNotEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, rhs);
+
+        public void FillNotEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillNotEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillLess(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, lhs, rhs);
+
+        public void FillLess(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillLess(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillLessOrEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, lhs, rhs);
+
+        public void FillLessOrEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillLessOrEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillGreater(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, lhs, rhs);
+
+        public void FillGreater(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillGreater(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, ScalarLike(rhs, lhs), rhs);
+
+        public void FillGreaterOrEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, lhs, rhs);
+
+        public void FillGreaterOrEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+
+        public void FillGreaterOrEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+
+        /// <summary>
+        /// Counts the elements being true along the specified axis and writes the result into this NdArray.
+        /// </summary>
+        /// <param name="axis">The axis the count along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillCountTrueAxis(int axis, NdArray<bool> source) => LogicalFunction<bool>.FillCountTrueAxis((dynamic)this, axis, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise logical negation of the argument.
+        /// </summary>
+        /// <param name="source">The tensor to apply this operation to.</param>
+        public void FillNot(NdArray<bool> source) => LogicalFunction<bool>.FillNegate((dynamic)this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise logical and of the arguments.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        public void FillAnd(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillAnd((dynamic)this, lhs, rhs);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise logical or of the arguments.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        public void FillOr(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillOr((dynamic)this, lhs, rhs);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise logical xor of the arguments.
+        /// </summary>
+        /// <param name="lhs">The FillXor on the left side of this binary operation.</param>
+        /// <param name="rhs">The FillXor on the right side of this binary operation.</param>
+        public void FillXor(NdArray<bool> lhs, NdArray<bool> rhs) => LogicalFunction<bool>.FillXor((dynamic)this, lhs, rhs);
+
+        /// <summary>
+        /// Checks if all elements along the specified axis are true using this NdArray as target.
+        /// </summary>
+        /// <param name="axis">The axis to check along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillAllAxis(int axis, NdArray<bool> source) => LogicalFunction<bool>.FillAllAxis((dynamic)this, axis, source);
+
+        /// <summary>
+        /// Checks if any element along the specified axis is true using this NdArray as target.
+        /// </summary>
+        /// <param name="axis">The axis to check along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillAnyAxis(int axis, NdArray<bool> source) => LogicalFunction<bool>.FillAnyAxis((dynamic)this, axis, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise finity check (not -Inf, Inf or NaN) of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillIsFinite<TP>(NdArray<TP> source) => ComparisonFunction<bool>.FillIsFinite((dynamic)this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise absolute value of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillAbs(NdArray<T> source) => ElementWiseMathFunction<T>.FillAbs(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise arccosine (inverse cosine) of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillAcos(NdArray<T> source) => ElementWiseMathFunction<T>.FillAcos(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise arcsine (inverse sine) of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillAsin(NdArray<T> source) => ElementWiseMathFunction<T>.FillAsin(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise arctanget (inverse tangent) of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillAtan(NdArray<T> source) => ElementWiseMathFunction<T>.FillAtan(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise ceiling (round towards positive infinity) of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillCeiling(NdArray<T> source) => ElementWiseMathFunction<T>.FillCeiling(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise cosine of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillCos(NdArray<T> source) => ElementWiseMathFunction<T>.FillCos(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise hyperbolic cosine of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillCosh(NdArray<T> source) => ElementWiseMathFunction<T>.FillCosh(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise exponential function of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillExp(NdArray<T> source) => ElementWiseMathFunction<T>.FillExp(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise floor (round towards negative infinity) of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillFloor(NdArray<T> source) => ElementWiseMathFunction<T>.FillFloor(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise natural logarithm of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillLog(NdArray<T> source) => ElementWiseMathFunction<T>.FillLog(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise common logarithm of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillLog10(NdArray<T> source) => ElementWiseMathFunction<T>.FillLog10(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise maximum of the arguments.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        public void FillMaximum(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.FillMaximum(this, lhs, rhs);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise minimum of the arguments.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        public void FillMinimum(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.FillMinimum(this, lhs, rhs);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise exponentiation.
+        /// </summary>
+        /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
+        /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
+        public void FillPow(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseMathFunction<T>.FillPow(this, lhs, rhs);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise rounding of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillRound(NdArray<T> source) => ElementWiseMathFunction<T>.FillRound(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise sign of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillSign(NdArray<T> source) => ElementWiseMathFunction<T>.FillSign(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise sine of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillSin(NdArray<T> source) => ElementWiseMathFunction<T>.FillSin(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise hyperbolic sine of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillSinh(NdArray<T> source) => ElementWiseMathFunction<T>.FillSinh(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise square root of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillSqrt(NdArray<T> source) => ElementWiseMathFunction<T>.FillSqrt(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise tangent of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillTan(NdArray<T> source) => ElementWiseMathFunction<T>.FillTan(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise hyperbolic tangent of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillTanh(NdArray<T> source) => ElementWiseMathFunction<T>.FillTanh(this, source);
+
+        /// <summary>
+        /// Fills this NdArray with the element-wise truncation (rounding towards zero) of the argument.
+        /// </summary>
+        /// <param name="source">The NdArray to apply this operation to.</param>
+        public void FillTruncate(NdArray<T> source) => ElementWiseMathFunction<T>.FillTruncate(this, source);
+
+        /// <summary>
+        /// Calculates the maximum value of the elements over the specified axis and writes the result into this NdArray.
+        /// </summary>
+        /// <param name="axis">The axis to calculate the maximum along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillMaxAxis(int axis, NdArray<T> source) => ReductionFunction<T>.FillMaxAxis(this, axis, source);
+
+        /// <summary>
+        /// Calculates the minimum value of the elements over the specified axis and writes the result into this NdArray.
+        /// </summary>
+        /// <param name="axis">The axis to calculate the minimum along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillMinAxis(int axis, NdArray<T> source) => ReductionFunction<T>.FillMinAxis(this, axis, source);
+
+        /// <summary>
+        /// Sums the elements over the specified axis and writes the result into this NdArray.
+        /// </summary>
+        /// <param name="axis">The axis to sum along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillSumAxis(int axis, NdArray<T> source) => ReductionFunction<T>.FillSumAxis(this, axis, source);
+
+        /// <summary>
+        /// Calculates the product of the elements over the specified axis and writes the result into this tensor.
+        /// </summary>
+        /// <param name="axis">The axis to calculate the product along.</param>
+        /// <param name="source">The tensor containing the source values.</param>
+        public void FillProductAxis(int axis, NdArray<T> source) => ReductionFunction<T>.FillProductAxis(this, axis, source);
+
         public override string ToString()
         {
             return Pretty;
@@ -1202,7 +1482,7 @@ namespace NdArrayNet
         /// <param name="tmpl">template template NdArray.</param>
         /// <param name="value">The value of the new, scalar NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> ScalarLike(NdArray<T> array, T value) => Constructor<T>.ScalarLike(array, value);
+        internal static NdArray<TP> ScalarLike<TP>(NdArray<TP> array, TP value) => Constructor<TP>.ScalarLike(array, value);
 
         /// <summary>
         /// Creates a new boolean NdArray filled with trues.

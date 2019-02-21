@@ -33,158 +33,219 @@ namespace NdArray.NdArrayImpl
 
     internal static class ElementWiseMathFunction<T>
     {
+        public static void FillAbs(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Abs(target, preparedSource);
+        }
+
         /// <summary>
         /// Element-wise absolute value.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillAbs(NdArray<T> input)
+        public static NdArray<T> Abs(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSrouce) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillAbs(preparedTarget, preparedSrouce);
 
-            target.Backend.Abs(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillAcos(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Acos(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise arccosine (inverse cosine).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillAcos(NdArray<T> input)
+        public static NdArray<T> Acos(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillAcos(preparedTarget, preparedSource);
 
-            target.Backend.Acos(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillAsin(NdArray<T> target, NdArray<T> source)
+        {
+            var src2 = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Asin(target, src2);
         }
 
         /// <summary>
         /// Element-wise arcsine (inverse sine).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillAsin(NdArray<T> input)
+        public static NdArray<T> Asin(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillAsin(preparedTarget, preparedSource);
 
-            target.Backend.Asin(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillAtan(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Atan(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise arctanget (inverse tangent).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillAtan(NdArray<T> input)
+        public static NdArray<T> Atan(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillAtan(preparedTarget, preparedSource);
 
-            target.Backend.Atan(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillCeiling(NdArray<T> target, NdArray<T> source)
+        {
+            var src2 = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Ceiling(target, src2);
         }
 
         /// <summary>
         /// Element-wise ceiling (round towards positive infinity).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillCeiling(NdArray<T> input)
+        public static NdArray<T> Ceiling(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillCeiling(preparedTarget, preparedSource);
 
-            target.Backend.Ceiling(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillCos(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Cos(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise cosine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillCos(NdArray<T> input)
+        public static NdArray<T> Cos(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillCos(preparedTarget, preparedSource);
 
-            target.Backend.Cos(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillCosh(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Cosh(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise hyperbolic cosine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillCosh(NdArray<T> input)
+        public static NdArray<T> Cosh(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillCosh(preparedTarget, preparedSource);
 
-            target.Backend.Cosh(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillExp(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Exp(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise exponential function.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillExp(NdArray<T> input)
+        public static NdArray<T> Exp(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillExp(preparedTarget, preparedSource);
 
-            target.Backend.Exp(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillFloor(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Floor(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise floor (round towards negative infinity).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillFloor(NdArray<T> input)
+        public static NdArray<T> Floor(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillFloor(preparedTarget, preparedSource);
 
-            target.Backend.Floor(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillLog(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Log(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise natural logarithm.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillLog(NdArray<T> input)
+        public static NdArray<T> Log(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillLog(preparedTarget, preparedSource);
 
-            target.Backend.Log(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillLog10(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Log10(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise common logarithm.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillLog10(NdArray<T> input)
+        public static NdArray<T> Log10(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillLog10(preparedTarget, preparedSource);
 
-            target.Backend.Log10(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillMaximum(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Maximum(target, preparedLhs, preparedRhs);
         }
 
         /// <summary>
@@ -193,13 +254,18 @@ namespace NdArray.NdArrayImpl
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillMaximum(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<T> Maximum(NdArray<T> lhs, NdArray<T> rhs)
         {
-            var (target, src1, src2) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (lsh1, rhs1) = NdArray<T>.PrepareElemwiseSources(target, src1, src2);
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillMaximum(preparedTarget, preparedLhs, preparedRhs);
 
-            target.Backend.Maximum(target, lsh1, rhs1);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillMinimum(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Minimum(target, preparedLhs, preparedRhs);
         }
 
         /// <summary>
@@ -208,13 +274,18 @@ namespace NdArray.NdArrayImpl
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillMinimum(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<T> Minimum(NdArray<T> lhs, NdArray<T> rhs)
         {
-            var (target, src1, src2) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (lsh1, rhs1) = NdArray<T>.PrepareElemwiseSources(target, src1, src2);
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillMinimum(preparedTarget, preparedLhs, preparedRhs);
 
-            target.Backend.Minimum(target, lsh1, rhs1);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillPow(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Pow(target, preparedLhs, preparedRhs);
         }
 
         /// <summary>
@@ -223,125 +294,164 @@ namespace NdArray.NdArrayImpl
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillPow(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<T> Pow(NdArray<T> lhs, NdArray<T> rhs)
         {
-            var (target, src1, src2) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (lsh1, rhs1) = NdArray<T>.PrepareElemwiseSources(target, src1, src2);
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillPow(preparedTarget, preparedLhs, preparedRhs);
 
-            target.Backend.Pow(target, lsh1, rhs1);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillRound(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Round(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise rounding.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillRound(NdArray<T> input)
+        public static NdArray<T> Round(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillRound(preparedTarget, preparedSource);
 
-            target.Backend.Round(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillSign(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Sign(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise sign.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillSign(NdArray<T> input)
+        public static NdArray<T> Sign(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillSign(preparedTarget, preparedSource);
 
-            target.Backend.Sign(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillSin(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Sin(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise sine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillSin(NdArray<T> input)
+        public static NdArray<T> Sin(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillSin(preparedTarget, preparedSource);
 
-            target.Backend.Sin(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillSinh(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Sinh(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise hyperbolic sine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillSinh(NdArray<T> input)
+        public static NdArray<T> Sinh(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillSinh(preparedTarget, preparedSource);
 
-            target.Backend.Sinh(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillSqrt(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Sqrt(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise square root.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillSqrt(NdArray<T> input)
+        public static NdArray<T> Sqrt(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillSqrt(preparedTarget, preparedSource);
 
-            target.Backend.Sqrt(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillTan(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Tan(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise tangent.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillTan(NdArray<T> input)
+        public static NdArray<T> Tan(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillTan(preparedTarget, preparedSource);
 
-            target.Backend.Tan(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillTanh(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Tanh(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise hyperbolic tangent.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillTanh(NdArray<T> input)
+        public static NdArray<T> Tanh(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillTanh(preparedTarget, preparedSource);
 
-            target.Backend.Tanh(target, src2);
-            return target;
+            return preparedTarget;
+        }
+
+        public static void FillTruncate(NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.Truncate(target, preparedSource);
         }
 
         /// <summary>
         /// Element-wise truncation (rounding towards zero).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillTruncate(NdArray<T> input)
+        public static NdArray<T> Truncate(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillTruncate(preparedTarget, preparedSource);
 
-            target.Backend.Truncate(target, src2);
-            return target;
+            return preparedTarget;
         }
     }
 }
