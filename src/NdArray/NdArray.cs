@@ -1092,41 +1092,41 @@ namespace NdArrayNet
 
         public void FillModulo(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillModulo(this, ScalarLike(rhs, lhs), rhs);
 
-        public void FillEqual<TP>(NdArray<TP> lhs, NdArray<TP> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, rhs);
+        public void FillEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, rhs);
 
-        public void FillEqual<TP>(NdArray<TP> lhs, TP rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
 
-        public void FillEqual<TP>(TP lhs, NdArray<TP> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
 
-        public void FillNotEqual<TP>(NdArray<TP> lhs, NdArray<TP> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, rhs);
+        public void FillNotEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, rhs);
 
-        public void FillNotEqual<TP>(NdArray<TP> lhs, TP rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillNotEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
 
-        public void FillNotEqual<TP>(TP lhs, NdArray<TP> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillNotEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
 
-        public void FillLess<TP>(NdArray<TP> lhs, NdArray<TP> rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, lhs, rhs);
+        public void FillLess(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, lhs, rhs);
 
-        public void FillLess<TP>(NdArray<TP> lhs, TP rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillLess(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, lhs, ScalarLike(lhs, rhs));
 
-        public void FillLess<TP>(TP lhs, NdArray<TP> rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillLess(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, ScalarLike(rhs, lhs), rhs);
 
-        public void FillLessOrEqual<TP>(NdArray<TP> lhs, NdArray<TP> rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, lhs, rhs);
+        public void FillLessOrEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, lhs, rhs);
 
-        public void FillLessOrEqual<TP>(NdArray<TP> lhs, TP rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillLessOrEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
 
-        public void FillLessOrEqual<TP>(TP lhs, NdArray<TP> rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillLessOrEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillLessOrEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
 
-        public void FillGreater<TP>(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, lhs, rhs);
+        public void FillGreater(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, lhs, rhs);
 
-        public void FillGreater<TP>(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillGreater(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, lhs, ScalarLike(lhs, rhs));
 
-        public void FillGreater<TP>(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillGreater(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreater((dynamic)this, ScalarLike(rhs, lhs), rhs);
 
-        public void FillGreaterOrEqual<TP>(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, lhs, rhs);
+        public void FillGreaterOrEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, lhs, rhs);
 
-        public void FillGreaterOrEqual<TP>(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillGreaterOrEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
 
-        public void FillGreaterOrEqual<TP>(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillGreaterOrEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<T>.FillGreaterOrEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
 
         /// <summary>
         /// Counts the elements being true along the specified axis and writes the result into this NdArray.

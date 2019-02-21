@@ -58,7 +58,7 @@ namespace NdArray.NdArrayImpl
             if (source.NumDimensions < 2)
             {
                 var message = string.Format("Need at least a two dimensional array for diagonal but got shape {0}.", source.Shape);
-                throw new ArgumentException(message, "input");
+                throw new ArgumentException(message, "source");
             }
 
             return DiagAxis(source.NumDimensions - 2, source.NumDimensions - 1, source);
@@ -74,7 +74,7 @@ namespace NdArray.NdArrayImpl
         {
             if (sources.Length == 0)
             {
-                throw new ArgumentException("Cannot concatenate empty sequence of NdArray.", "inputs");
+                throw new ArgumentException("Cannot concatenate empty sequence of NdArray.", "source");
             }
 
             var shape = sources[0].Shape.Select(s => s).ToArray();
@@ -124,12 +124,12 @@ namespace NdArray.NdArrayImpl
         }
 
         /// <summary>Returns a copy of the NdArray.</summary>
-        /// <param name="input">The NdArray to copy.</param>
+        /// <param name="source">The NdArray to copy.</param>
         /// <param name="order">The memory layout of the copy. (default: row-major)</param>
         /// <returns>A copy of the NdArray.</returns>
-        public static NdArray<T> Copy(NdArray<T> input, Order order = Order.RowMajor)
+        public static NdArray<T> Copy(NdArray<T> source, Order order = Order.RowMajor)
         {
-            return input.Copy(order);
+            return source.Copy(order);
         }
 
         /// <summary
@@ -173,7 +173,7 @@ namespace NdArray.NdArrayImpl
         {
             if (source.NumDimensions < 1)
             {
-                throw new ArgumentException("need at leat a one-dimensional array to create a diagonal matrix", "input");
+                throw new ArgumentException("need at leat a one-dimensional array to create a diagonal matrix", "source");
             }
 
             return DiagMatAxis(source.NumDimensions - 1, source.NumDimensions, source);
@@ -214,16 +214,16 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Calculates the difference between adjoining elements of the vector.
         /// </summary>
-        /// <param name="input">The vector containing the source values.</param>
+        /// <param name="source">The vector containing the source values.</param>
         /// <returns>The differences vector. It has one element less than the input NdArray.</returns>
-        public static NdArray<T> Diff(NdArray<T> input)
+        public static NdArray<T> Diff(NdArray<T> source)
         {
-            if (input.NumDimensions < 1)
+            if (source.NumDimensions < 1)
             {
-                throw new ArgumentException("Need at least a vector to calculate diff.", "input");
+                throw new ArgumentException("Need at least a vector to calculate diff.", "source");
             }
 
-            return DiffAxis(input.NumDimensions - 1, input);
+            return DiffAxis(source.NumDimensions - 1, source);
         }
 
         /// <summary>
