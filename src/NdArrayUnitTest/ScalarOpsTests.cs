@@ -854,5 +854,116 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             CollectionAssert.AreEqual(new[] { false, true, true, false }, targetData);
         }
+
+        [TestMethod]
+        public void AllLastAxis_AllTrue()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var srcData = new[] { true, true, true, true };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<bool>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.AllLastAxis(target, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { true, false, false, false }, targetData);
+        }
+
+        [TestMethod]
+        public void AllLastAxis_NotAllTrue()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var srcData = new[] { false, false, true, true };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<bool>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.AllLastAxis(target, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { false, false, false, false }, targetData);
+        }
+
+        [TestMethod]
+        public void AnyLastAxis_AllFalse()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var srcData = new[] { false, false, false, false };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<bool>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.AnyLastAxis(target, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { false, false, false, false }, targetData);
+        }
+
+        [TestMethod]
+        public void AnyLastAxis_NotAllFalse()
+        {
+            // arrange
+            const int NumElements = 4;
+            var targetData = new bool[NumElements];
+            var srcData = new[] { false, false, true, true };
+
+            var target = new DataAndLayout<bool>(targetData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<bool>(srcData, new FastAccess(new Layout(new int[] { NumElements }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.AnyLastAxis(target, src);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { true, false, false, false }, targetData);
+        }
+
+        [TestMethod]
+        public void CountTrueLastAxis()
+        {
+            // arrange
+            var targetData = new int[1];
+            var srcData = new[] { false, false, true, true };
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 1 }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<bool>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.CountTrueLastAxis(target, src);
+
+            // assert
+            Assert.AreEqual(2, targetData[0]);
+        }
+
+        [TestMethod]
+        public void IfThenElse()
+        {
+            // arrange
+            const int NumElements = 4;
+            var conditionData = new[] { false, true, false, true };
+            var targetData = new int[NumElements];
+            var ifTrueData = new[] { 1, 2, 3, 4 };
+            var ifFalseData = new[] { 5, 6, 7, 8 };
+
+            var condition = new DataAndLayout<bool>(conditionData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var ifTrue = new DataAndLayout<int>(ifTrueData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var ifFalse = new DataAndLayout<int>(ifFalseData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.IfThenElse(target, condition, ifTrue, ifFalse);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 5, 2, 7, 4 }, targetData);
+        }
     }
 }

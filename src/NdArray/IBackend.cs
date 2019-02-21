@@ -132,5 +132,9 @@ namespace NdArrayNet
         void Or(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs);
 
         void Xor(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs);
+
+        void CountTrueLastAxis(IFrontend<int> trgt, IFrontend<bool> src);
+
+        void IfThenElse(IFrontend<T> trgt, IFrontend<bool> condition, IFrontend<T> ifTrue, IFrontend<T> ifFalse);
     }
 }

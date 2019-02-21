@@ -114,6 +114,12 @@ namespace NdArrayNet
             return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout);
         }
 
+        public static (DataAndLayout<TR>, DataAndLayout<TA>, DataAndLayout<TB>, DataAndLayout<TC>) ElemwiseDataAndLayout<TR, TA, TB, TC>(IFrontend<TR> trgt, IFrontend<TA> a, IFrontend<TB> b, IFrontend<TC> c)
+        {
+            var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { a.Layout, b.Layout, c.Layout });
+            return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout, c.Relayout(ls[2]).Backend.DataLayout);
+        }
+
         public void FillIncrementing(T start, T step, IFrontend<T> trgt)
         {
             var dataAndLayout = ElemwiseDataAndLayout(trgt);
@@ -402,20 +408,20 @@ namespace NdArrayNet
             ScalarOps.Truncate(dataLayoutTrgt, dataLayout);
         }
 
-        public (DataAndLayout<T1>, DataAndLayout<T2>) GetDataAndLayout<T1, T2>(IFrontend<T2> trgt, IFrontend<T2> src)
+        public (DataAndLayout<T1>, DataAndLayout<T2>) GetDataAndLayout<T1, T2>(IFrontend<T1> trgt, IFrontend<T2> src)
         {
             return (((NdArray<T1>)trgt).Backend.DataLayout, ((NdArray<T2>)src).Backend.DataLayout);
         }
 
         public void AllLastAxis(IFrontend<bool> trgt, IFrontend<bool> src)
         {
-            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.AllLastAxis(dataLayoutTrgt, dataLayout);
         }
 
         public void AnyLastAxis(IFrontend<bool> trgt, IFrontend<bool> src)
         {
-            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.AnyLastAxis(dataLayoutTrgt, dataLayout);
         }
 
@@ -427,31 +433,31 @@ namespace NdArrayNet
 
         public void MaxLastAxis(IFrontend<T> trgt, IFrontend<T> src)
         {
-            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.MaxLastAxis(dataLayoutTrgt, dataLayout);
         }
 
         public void MinLastAxis(IFrontend<T> trgt, IFrontend<T> src)
         {
-            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.MinLastAxis(dataLayoutTrgt, dataLayout);
         }
 
         public void SumLastAxis(IFrontend<T> trgt, IFrontend<T> src)
         {
-            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.SumLastAxis(dataLayoutTrgt, dataLayout);
         }
 
         public void ProductLastAxis(IFrontend<T> trgt, IFrontend<T> src)
         {
-            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<T, T>(trgt, src);
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.ProductLastAxis(dataLayoutTrgt, dataLayout);
         }
 
         public void Negate(IFrontend<bool> trgt, IFrontend<bool> src)
         {
-            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout<bool, bool>(trgt, src);
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.Negate(dataLayoutTrgt, dataLayout);
         }
 
@@ -498,6 +504,18 @@ namespace NdArrayNet
                     ScalarOps.Copy(t, s);
                 }
             }
+        }
+
+        public void CountTrueLastAxis(IFrontend<int> trgt, IFrontend<bool> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
+            ScalarOps.CountTrueLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void IfThenElse(IFrontend<T> trgt, IFrontend<bool> condition, IFrontend<T> ifTrue, IFrontend<T> ifFalse)
+        {
+            var (dataLayoutTrgt, dataLayout1, dataLayout2, dataLayout3) = ElemwiseDataAndLayout(trgt, condition, ifTrue, ifFalse);
+            ScalarOps.IfThenElse(dataLayoutTrgt, dataLayout1, dataLayout2, dataLayout3);
         }
     }
 }

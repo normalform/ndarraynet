@@ -237,6 +237,83 @@ namespace NdArrayNet
             }
         }
 
+        public static void ApplyTernaryOp<T, T1, T2, T3>(Func<int[], T1, T2, T3, T> op, DataAndLayout<T> trgt, DataAndLayout<T1> src1, DataAndLayout<T2> src2, DataAndLayout<T3> src3, bool isIndexed, bool useThreads)
+        {
+            var nd = trgt.FastAccess.NumDiensions;
+            var shape = trgt.FastAccess.Shape;
+
+            Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
+            {
+                var fromDim = dim0Fixed ? 1 : 0;
+                var startPos = new int[nd];
+                if (dim0Fixed)
+                {
+                    startPos[0] = dim0Pos;
+                }
+
+                var targetPosItr = new PosIter(trgt.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                var src1PosItr = new PosIter(src1.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                var src2PosItr = new PosIter(src2.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                var src3PosItr = new PosIter(src3.FastAccess, startPos, fromDim: fromDim, toDim: nd - 2);
+                var pos = new int[targetPosItr.Pos.Length];
+
+                while (targetPosItr.Active)
+                {
+                    var targetAddr = targetPosItr.Addr;
+                    var src1Addr = src1PosItr.Addr;
+                    var src2Addr = src2PosItr.Addr;
+                    var src3Addr = src3PosItr.Addr;
+
+                    if (nd == 0)
+                    {
+                        trgt.Data[targetPosItr.Addr] = op(null, src1.Data[src1Addr], src2.Data[src2Addr], src3.Data[src3Addr]);
+                    }
+                    else if (isIndexed)
+                    {
+                        for (var d = 0; d < nd; d++)
+                        {
+                            pos[d] = targetPosItr.Pos[d];
+                        }
+
+                        for (var i = 0; i < shape[nd - 1]; i++)
+                        {
+                            trgt.Data[targetAddr] = op(pos, src1.Data[src1Addr], src2.Data[src2Addr], src3.Data[src3Addr]);
+                            targetAddr = targetAddr + trgt.FastAccess.Stride[nd - 1];
+                            src1Addr = src1Addr + src1.FastAccess.Stride[nd - 1];
+                            src2Addr = src2Addr + src2.FastAccess.Stride[nd - 1];
+                            src3Addr = src3Addr + src3.FastAccess.Stride[nd - 1];
+                            pos[nd - 1] = pos[nd - 1] + 1;
+                        }
+                    }
+                    else
+                    {
+                        for (var i = 0; i < shape[nd - 1]; i++)
+                        {
+                            trgt.Data[targetAddr] = op(null, src1.Data[src1Addr], src2.Data[src2Addr], src3.Data[src3Addr]);
+                            targetAddr = targetAddr + trgt.FastAccess.Stride[nd - 1];
+                            src1Addr = src1Addr + src1.FastAccess.Stride[nd - 1];
+                            src2Addr = src2Addr + src2.FastAccess.Stride[nd - 1];
+                            src3Addr = src3Addr + src3.FastAccess.Stride[nd - 1];
+                        }
+                    }
+
+                    targetPosItr.MoveNext();
+                    src1PosItr.MoveNext();
+                    src2PosItr.MoveNext();
+                    src3PosItr.MoveNext();
+                }
+            };
+
+            if (useThreads && nd > 1)
+            {
+                Parallel.For(0, shape[0], index => loops(true, index));
+            }
+            else
+            {
+                loops(false, 0);
+            }
+        }
+
         public static void ApplyAxisFold<TS, T, T1>(
             Func<int[], TS, T1, TS> foldOp,
             Func<TS, T> extractOp,
@@ -691,10 +768,27 @@ namespace NdArrayNet
             bool op(int[] pos, bool l, bool r) => l || r;
             ApplyBinaryOp(op, trgt, lhs, rhs, isIndexed: false, useThreads: true);
         }
+
         public static void Xor(DataAndLayout<bool> trgt, DataAndLayout<bool> lhs, DataAndLayout<bool> rhs)
         {
             bool op(int[] pos, bool l, bool r) => l ^ r;
             ApplyBinaryOp(op, trgt, lhs, rhs, isIndexed: false, useThreads: true);
+        }
+
+        public static void CountTrueLastAxis(DataAndLayout<int> trgt, DataAndLayout<bool> src)
+        {
+            int foldOp(int[] pos, int res, bool v) => v ? res + 1 : res;
+
+            var initial = new InitialOption<int>(true, 0);
+            ApplyAxisFold(foldOp, v => v, trgt, src, initial, false, true);
+        }
+
+        public static void IfThenElse<T>(DataAndLayout<T> trgt, DataAndLayout<bool> condition, DataAndLayout<T> ifTrue, DataAndLayout<T> ifFalse)
+        {
+            T op(int[] pos, bool cond, T t, T f) => cond ? t : f;
+
+            var initial = new InitialOption<int>(true, 0);
+            ApplyTernaryOp(op, trgt, condition, ifTrue, ifFalse, isIndexed: false, useThreads: true);
         }
 
         internal class InitialOption<TS>

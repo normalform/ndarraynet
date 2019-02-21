@@ -276,7 +276,7 @@ namespace NdArrayNet
         /// <summary>
         /// Checks if all elements of the NdArray are true.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
         public static bool All(NdArray<bool> input) => LogicalFunction<bool>.All(input);
 
@@ -284,28 +284,28 @@ namespace NdArrayNet
         /// Checks if all elements along the specified axis are true.
         /// </summary>
         /// <param name="axis">The axis to check along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AllAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AllAxis(axis, input);
 
         /// <summary>
         /// Checks if all elements of the NdArray are true returning the result as a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AllNdArray(NdArray<bool> input) => LogicalFunction<bool>.AllNdArray(input);
 
         /// <summary>
         /// Checks if any elements of the NdArray are true.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
         public static bool Any(NdArray<bool> input) => LogicalFunction<bool>.Any(input);
 
         /// <summary>
         /// Checks if any element of the NdArray is true returning the result as a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AnyNdArray(NdArray<bool> input) => LogicalFunction<bool>.AnyNdArray(input);
 
@@ -313,9 +313,37 @@ namespace NdArrayNet
         /// Checks if any element along the specified axis is true.
         /// </summary>
         /// <param name="axis">The axis to check along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AnyAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AnyAxis(axis, input);
+
+        /// <summary>
+        /// Counts the elements being true along the specified axis.
+        /// </summary>
+        /// <param name="axis">The axis the count along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>
+        public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.FillCountTrueAxis(axis, input);
+
+        /// <summary>
+        /// Counts the elements being true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>
+        /// <returns>A new scalar NdArray containing the result of this operation.</returns>
+        public static NdArray<int> CountTrueNdArray(NdArray<bool> input) => LogicalFunction<bool>.CountTrueNdArray(input);
+
+        /// <summary>Counts the elements being true.</summary>
+        /// <param name="input">The NdArray containing the source values.</param>
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static int CountTrue(NdArray<bool> input) => LogicalFunction<bool>.CountTrue(input);
+
+        /// <summary>
+        /// Element-wise choice between two sources depending on a condition.
+        /// </summary>
+        /// <param name="cond">The condition NdArray.</param>
+        /// <param name="ifTrue">The NdArray containing the values to use for when an element of the condition is true.</param>
+        /// <param name="ifFalse">The NdArray containing the values to use for when an element of the condition is false.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<T> IfThenElse(NdArray<bool> condition, NdArray<T> ifTrue, NdArray<T> ifFalse) => LogicalFunction<T>.IfThenElse(condition, ifTrue, ifFalse);
 
         /// <summary>
         /// Element-wise check if two NdArrays have same (within machine precision) values.
@@ -1354,7 +1382,16 @@ namespace NdArrayNet
             var (arrA, arrB) = BroadCastToSame(arrayA, arrayB);
             var target = new NdArray<TR>(arrA.Shape, arrA.Storage.Device, order);
 
-            return (target, arrayA, arrB);
+            return (target, arrA, arrB);
+        }
+
+        internal static (NdArray<TR>, NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwise<TR, TA, TB, TC>(NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC, Order order = Order.RowMajor)
+        {
+            // AssertSameStorage [later..]
+            var (arrA, arrB, arrC) = BroadCastToSame(arrayA, arrayB, arrayC);
+            var target = new NdArray<TR>(arrA.Shape, arrA.Storage.Device, order);
+
+            return (target, arrA, arrB, arrC);
         }
 
         internal static NdArray<TA> PrepareElemwiseSources<TR, TA>(NdArray<TR> target, NdArray<TA> array)
@@ -1370,6 +1407,16 @@ namespace NdArrayNet
             var arrB = BroadCastTo(target.Shape, arrayB);
 
             return (arrA, arrB);
+        }
+
+        internal static (NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwiseSources<TR, TA, TB, TC>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC)
+        {
+            // AssertSameStorage [later..]
+            var arrA = BroadCastTo(target.Shape, arrayA);
+            var arrB = BroadCastTo(target.Shape, arrayB);
+            var arrC = BroadCastTo(target.Shape, arrayC);
+
+            return (arrA, arrB, arrC);
         }
 
         internal NdArray<T> AssertBool()
@@ -1465,6 +1512,17 @@ namespace NdArrayNet
                 var msg = string.Format("This operation requires a scalar (0-dimensional) NdArray, but its shape is {0}", Shape);
                 throw new InvalidOperationException(msg);
             }
+        }
+
+        internal NdArray<T> AssertInt()
+        {
+            if (DataType != typeof(int))
+            {
+                var msg = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
+                throw new InvalidOperationException(msg);
+            }
+
+            return this;
         }
     }
 }

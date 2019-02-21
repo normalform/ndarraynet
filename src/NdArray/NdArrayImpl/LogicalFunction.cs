@@ -29,7 +29,6 @@
 
 namespace NdArray.NdArrayImpl
 {
-    using System;
     using NdArrayNet;
 
     internal static class LogicalFunction<T>
@@ -104,7 +103,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Checks if all elements of the NdArray are true.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
         public static bool All(NdArray<bool> input)
         {
@@ -114,7 +113,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Checks if all elements of the NdArray are true returning the result as a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AllNdArray(NdArray<bool> input)
         {
@@ -126,7 +125,7 @@ namespace NdArray.NdArrayImpl
         /// Checks if all elements along the specified axis are true.
         /// </summary>
         /// <param name="axis">The axis to check along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AllAxis(int axis, NdArray<bool> input)
         {
@@ -138,7 +137,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Checks if any elements of the NdArray are true.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
         public static bool Any(NdArray<bool> input)
         {
@@ -148,7 +147,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Checks if any element of the NdArray is true returning the result as a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AnyNdArray(NdArray<bool> input)
         {
@@ -160,13 +159,64 @@ namespace NdArray.NdArrayImpl
         /// Checks if any element along the specified axis is true.
         /// </summary>
         /// <param name="axis">The axis to check along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>    
+        /// <param name="input">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AnyAxis(int axis, NdArray<bool> input)
         {
             var (target, src1) = NdArray<bool>.PrepareAxisReduceTarget<bool, bool>(axis, input);
             var (newSrc, _) = NdArray<bool>.PrepareAxisReduceSources(target, axis, input, null);
             target.Backend.AnyLastAxis(target, newSrc);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Counts the elements being true along the specified axis.
+        /// </summary>
+        /// <param name="axis">The axis the count along.</param>
+        /// <param name="input">The NdArray containing the source values.</param>
+        public static NdArray<int> FillCountTrueAxis(int axis, NdArray<bool> input)
+        {
+            var (target, src1) = NdArray<int>.PrepareAxisReduceTarget<int, bool>(axis, input);
+            target.AssertInt();
+
+            var (newSrc, _) = NdArray<int>.PrepareAxisReduceSources(target, axis, input, null);
+            target.Backend.CountTrueLastAxis(target, newSrc);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Counts the elements being true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="input">The NdArray containing the source values.</param>
+        /// <returns>A new scalar NdArray containing the result of this operation.</returns>
+        public static NdArray<int> CountTrueNdArray(NdArray<bool> input)
+        {
+            return FillCountTrueAxis(0, NdArray<bool>.Flatten(input));
+        }
+
+        /// <summary>Counts the elements being true.</summary>
+        /// <param name="input">The NdArray containing the source values.</param>
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static int CountTrue(NdArray<bool> input)
+        {
+            return CountTrueNdArray(input).Value;
+        }
+
+        /// <summary>
+        /// Element-wise choice between two sources depending on a condition.
+        /// </summary>
+        /// <param name="cond">The condition NdArray.</param>
+        /// <param name="ifTrue">The NdArray containing the values to use for when an element of the condition is true.</param>
+        /// <param name="ifFalse">The NdArray containing the values to use for when an element of the condition is false.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<T> IfThenElse(NdArray<bool> condition, NdArray<T> ifTrue, NdArray<T> ifFalse)
+        {
+            var (target, cond, ift, iff) = NdArray<T>.PrepareElemwise<T, bool, T, T>(condition, ifTrue, ifFalse);
+
+            var (cond2, ift2, iff2) = NdArray<T>.PrepareElemwiseSources(target, cond, ift, iff);
+            target.Backend.IfThenElse(target, cond2, ift2, iff2);
 
             return target;
         }
