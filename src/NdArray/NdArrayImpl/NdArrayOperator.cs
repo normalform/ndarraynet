@@ -74,7 +74,7 @@ namespace NdArray.NdArrayImpl
         {
             if (sources.Length == 0)
             {
-                throw new ArgumentException("Cannot concatenate empty sequence of NdArray.", "source");
+                throw new ArgumentException("Cannot concatenate empty sequence of NdArray.", "sources");
             }
 
             var shape = sources[0].Shape.Select(s => s).ToArray();
@@ -90,7 +90,7 @@ namespace NdArray.NdArrayImpl
                 if (!Enumerable.SequenceEqual(List.Without(axis, input.Shape), List.Without(axis, shape)))
                 {
                     var message = string.Format("Concatentation element with index {0} with shape{1} must be equal to shape {2} of the first element, except in the concatenation axis {3}", arrayIndex, input.Shape, shape, axis);
-                    throw new ArgumentException(message, "inputs");
+                    throw new ArgumentException(message, "sources");
                 }
 
                 arrayIndex++;
