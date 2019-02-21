@@ -786,8 +786,6 @@ namespace NdArrayNet
         public static void IfThenElse<T>(DataAndLayout<T> trgt, DataAndLayout<bool> condition, DataAndLayout<T> ifTrue, DataAndLayout<T> ifFalse)
         {
             T op(int[] pos, bool cond, T t, T f) => cond ? t : f;
-
-            var initial = new InitialOption<int>(true, 0);
             ApplyTernaryOp(op, trgt, condition, ifTrue, ifFalse, isIndexed: false, useThreads: true);
         }
 
