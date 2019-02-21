@@ -33,67 +33,103 @@ namespace NdArray.NdArrayImpl
 
     internal static class ElementWiseOperator<T>
     {
-        public static NdArray<T> FillUnaryPlus(NdArray<T> input)
+        public static void FillUnaryPlus(NdArray<T> target, NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
-
-            target.Backend.UnaryPlus(target, src2);
-            return target;
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
+            target.Backend.UnaryPlus(target, preparedSource);
         }
 
-        public static NdArray<T> FillUnaryMinus(NdArray<T> input)
+        public static NdArray<T> UnaryPlus(NdArray<T> source)
         {
-            var (target, src) = NdArray<T>.PrepareElemwise<T, T>(input);
-            var src2 = NdArray<T>.PrepareElemwiseSources(target, src);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillUnaryPlus(preparedTarget, preparedSource);
 
-            target.Backend.UnaryMinus(target, src2);
-            return target;
+            return preparedTarget;
         }
 
-        public static NdArray<T> FillAdd(NdArray<T> lhs, NdArray<T> rhs)
+        public static void FillUnaryMinus(NdArray<T> target, NdArray<T> source)
         {
-            var (target, l, r) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (l2, r2) = NdArray<T>.PrepareElemwiseSources(target, l, r);
-            target.Backend.Add(target, l2, r2);
+            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
 
-            return target;
+            target.Backend.UnaryMinus(target, preparedSource);
         }
 
-        public static NdArray<T> FillSubtract(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<T> UnaryMinus(NdArray<T> source)
         {
-            var (target, l, r) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (l2, r2) = NdArray<T>.PrepareElemwiseSources(target, l, r);
-            target.Backend.Subtract(target, l2, r2);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, T>(source);
+            FillUnaryMinus(preparedTarget, preparedSource);
 
-            return target;
+            return preparedTarget;
         }
 
-        internal static NdArray<T> FillMultiply(NdArray<T> lhs, NdArray<T> rhs)
+        public static void FillAdd(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
         {
-            var (target, l, r) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (l2, r2) = NdArray<T>.PrepareElemwiseSources(target, l, r);
-            target.Backend.Multiply(target, l2, r2);
-
-            return target;
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Add(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<T> FillDivide(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<T> Add(NdArray<T> lhs, NdArray<T> rhs)
         {
-            var (target, l, r) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (l2, r2) = NdArray<T>.PrepareElemwiseSources(target, l, r);
-            target.Backend.Divide(target, l2, r2);
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillAdd(preparedTarget, preparedLhs, preparedRhs);
 
-            return target;
+            return preparedTarget;
         }
 
-        internal static NdArray<T> FillModulo(NdArray<T> lhs, NdArray<T> rhs)
+        public static void FillSubtract(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
         {
-            var (target, l, r) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
-            var (l2, r2) = NdArray<T>.PrepareElemwiseSources(target, l, r);
-            target.Backend.Modulo(target, l2, r2);
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Subtract(target, preparedLhs, preparedRhs);
+        }
 
-            return target;
+        public static NdArray<T> Subtract(NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillSubtract(preparedTarget, preparedLhs, preparedRhs);
+
+            return preparedTarget;
+        }
+
+        internal static void FillMultiply(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Multiply(target, preparedLhs, preparedRhs);
+        }
+
+        internal static NdArray<T> Multiply(NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillMultiply(preparedTarget, preparedLhs, preparedRhs);
+
+            return preparedTarget;
+        }
+
+        internal static void FillDivide(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Divide(target, preparedLhs, preparedRhs);
+        }
+
+        internal static NdArray<T> Divide(NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillDivide(preparedTarget, preparedLhs, preparedRhs);
+
+            return preparedTarget;
+        }
+
+        internal static void FillModulo(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Modulo(target, preparedLhs, preparedRhs);
+        }
+
+        internal static NdArray<T> Modulo(NdArray<T> lhs, NdArray<T> rhs)
+        {
+            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<T>.PrepareElemwise<T, T, T>(lhs, rhs);
+            FillModulo(preparedTarget, preparedLhs, preparedRhs);
+
+            return preparedTarget;
         }
     }
 }

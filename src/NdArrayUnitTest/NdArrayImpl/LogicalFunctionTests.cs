@@ -37,27 +37,27 @@ namespace NdArrayNet.NdArrayUnitTest
     public class LogicalFunctionTests
     {
         [TestMethod]
-        public void FillNegate()
+        public void Negate()
         {
             // arrange
             var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 10 });
 
             // action
-            var output = LogicalFunction<bool>.FillNegate(input);
+            var output = LogicalFunction<bool>.Negate(input);
 
             // assert
             Assert.IsTrue(NdArray<bool>.All(output));
         }
 
         [TestMethod]
-        public void FillAnd()
+        public void And()
         {
             // arrange
             var input1 = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
             var input2 = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
 
             // action
-            var output = LogicalFunction<bool>.FillAnd(input1, input2);
+            var output = LogicalFunction<bool>.And(input1, input2);
 
             // assert
             var expected = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
@@ -66,14 +66,14 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void FillOr()
+        public void Or()
         {
             // arrange
             var input1 = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
             var input2 = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
 
             // action
-            var output = LogicalFunction<bool>.FillOr(input1, input2);
+            var output = LogicalFunction<bool>.Or(input1, input2);
 
             // assert
             var expected = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
@@ -82,7 +82,7 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void FillXor()
+        public void Xor()
         {
             // arrange
             var input1 = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2 });
@@ -90,7 +90,7 @@ namespace NdArrayNet.NdArrayUnitTest
             input2[0].Value = false;
 
             // action
-            var output = LogicalFunction<bool>.FillXor(input1, input2);
+            var output = LogicalFunction<bool>.Xor(input1, input2);
 
             // assert
             Assert.AreEqual(false, output[0].Value);
@@ -186,7 +186,7 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void FillCountTrueAxis()
+        public void CountTrueAxis()
         {
             // arrange
             var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
@@ -195,8 +195,8 @@ namespace NdArrayNet.NdArrayUnitTest
             input[new[] { 1, 3 }] = false;
 
             // action
-            var output0 = LogicalFunction<bool>.FillCountTrueAxis(0, input);
-            var output1 = LogicalFunction<bool>.FillCountTrueAxis(1, input);
+            var output0 = LogicalFunction<bool>.CountTrueAxis(0, input);
+            var output1 = LogicalFunction<bool>.CountTrueAxis(1, input);
 
             // assert
             Assert.AreEqual(1, output0[0].Value);

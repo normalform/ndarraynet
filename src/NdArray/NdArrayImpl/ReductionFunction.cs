@@ -34,69 +34,84 @@ namespace NdArray.NdArrayImpl
 
     internal static class ReductionFunction<T>
     {
+        public static void FillMaxAxis(NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
+            target.Backend.MaxLastAxis(target, preparedSource);
+        }
+
         /// <summary>
         /// Calculates the maximum value of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to calculate the maximum along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillMaxAxis(int axis, NdArray<T> input)
+        public static NdArray<T> MaxAxis(int axis, NdArray<T> source)
         {
-            var (result, src) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, input);
-            var (src1, _) = NdArray<T>.PrepareAxisReduceSources(result, axis, input, null);
-            result.Backend.MaxLastAxis(result, src1);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
+            FillMaxAxis(preparedTarget, axis, preparedSource);
 
-            return result;
+            return preparedTarget;
+        }
+
+        public static void FillMinAxis(NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
+            target.Backend.MinLastAxis(target, preparedSource);
         }
 
         /// <summary>
         /// Calculates the minimum value of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to calculate the minimum along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillMinAxis(int axis, NdArray<T> input)
+        public static NdArray<T> MinAxis(int axis, NdArray<T> source)
         {
-            var (result, src) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, input);
-            var (src1, _) = NdArray<T>.PrepareAxisReduceSources(result, axis, input, null);
-            result.Backend.MinLastAxis(result, src1);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
+            FillMinAxis(preparedTarget, axis, preparedSource);
 
-            return result;
+            return preparedTarget;
         }
 
         /// <summary>
         /// Calculates the maximum all elements returning a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MaxNdArray(NdArray<T> input)
+        public static NdArray<T> MaxNdArray(NdArray<T> source)
         {
-            return FillMaxAxis(0, NdArray<T>.Flattern(input));
+            return MaxAxis(0, NdArray<T>.Flattern(source));
         }
 
         /// <summary>
         /// Calculates the minimum all elements returning a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MinNdArray(NdArray<T> input)
+        public static NdArray<T> MinNdArray(NdArray<T> source)
         {
-            return FillMinAxis(0, NdArray<T>.Flattern(input));
+            return MinAxis(0, NdArray<T>.Flattern(source));
+        }
+
+        public static void FillSumAxis(NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
+            target.Backend.SumLastAxis(target, preparedSource);
         }
 
         /// <summary>
         /// Sums the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to sum along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillSumAxis(int axis, NdArray<T> input)
+        public static NdArray<T> SumAxis(int axis, NdArray<T> source)
         {
-            var (result, src) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, input);
-            var (src1, _) = NdArray<T>.PrepareAxisReduceSources(result, axis, input, null);
-            result.Backend.SumLastAxis(result, src1);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
+            FillSumAxis(preparedTarget, axis, preparedSource);
 
-            return result;
+            return preparedTarget;
         }
 
         /// <summary>
@@ -104,23 +119,23 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="sinputrc">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> SumNdArray(NdArray<T> input)
+        public static NdArray<T> SumNdArray(NdArray<T> source)
         {
-            return FillSumAxis(0, NdArray<T>.Flattern(input));
+            return SumAxis(0, NdArray<T>.Flattern(source));
         }
 
         /// <summary>
         /// Calculates the mean of the elements along the specified axis
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MeanAxis(int axis, NdArray<T> input)
+        public static NdArray<T> MeanAxis(int axis, NdArray<T> source)
         {
             var sp = ScalarPrimitives.For<T, int>();
 
-            var sum = FillSumAxis(axis, input);
-            var scalar = NdArray<T>.ScalarLike(input, sp.Convert(input.Shape[axis]));
+            var sum = SumAxis(axis, source);
+            var scalar = NdArray<T>.ScalarLike(source, sp.Convert(source.Shape[axis]));
 
             return sum / scalar;
         }
@@ -128,23 +143,29 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Calculates the mean of the NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>The mean estimate.</returns>
-        public static T Mean(NdArray<T> input)
+        public static T Mean(NdArray<T> source)
         {
-            return MeanAxis(0, NdArray<T>.Flattern(input)).Value;
+            return MeanAxis(0, NdArray<T>.Flattern(source)).Value;
+        }
+
+        public static void FillProductAxis(NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
+            target.Backend.ProductLastAxis(target, preparedSource);
         }
 
         /// <summary>
         /// Calculates the product of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to calculate the product along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> FillProductAxis(int axis, NdArray<T> input)
+        public static NdArray<T> ProductAxis(int axis, NdArray<T> source)
         {
-            var (result, src) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, input);
-            var (src1, _) = NdArray<T>.PrepareAxisReduceSources(result, axis, input, null);
+            var (result, src) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
+            var (src1, _) = NdArray<T>.PrepareAxisReduceSources(result, axis, source, null);
             result.Backend.ProductLastAxis(result, src1);
 
             return result;
@@ -157,7 +178,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
         public static NdArray<T> ProductNdArray(NdArray<T> input)
         {
-            return FillProductAxis(0, NdArray<T>.Flattern(input));
+            return ProductAxis(0, NdArray<T>.Flattern(input));
         }
 
         /// <summary>
@@ -190,7 +211,7 @@ namespace NdArray.NdArrayImpl
             var v = input - mean;
             var n = sp.Convert(input.Shape[axis] - spc.Convert(deltaDegreeOfFreedom));
 
-            return FillSumAxis(axis, (v * v) / NdArray<T>.ScalarLike(input, n));
+            return SumAxis(axis, (v * v) / NdArray<T>.ScalarLike(input, n));
         }
 
         /// <summary>
@@ -231,7 +252,7 @@ namespace NdArray.NdArrayImpl
         {
             var tax = axis1 < axis2 ? axis1 : axis1 - 1;
 
-            return FillSumAxis(tax, NdArrayOperator<T>.DiagAxis(axis1, axis2, input));
+            return SumAxis(tax, NdArrayOperator<T>.DiagAxis(axis1, axis2, input));
         }
 
         /// <summary>

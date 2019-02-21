@@ -41,43 +41,43 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="ax1">The first dimension of the diagonal.</param>
         /// <param name="ax2">The seconds dimension of the diagonal.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray where dimension <paramref name="ax1"/> is the diagonal and dimension
-        public static NdArray<T> DiagAxis(int ax1, int ax2, NdArray<T> input)
+        public static NdArray<T> DiagAxis(int ax1, int ax2, NdArray<T> source)
         {
-            return input.Relayout(Layout.DiagAxis(ax1, ax2, input.Layout));
+            return source.Relayout(Layout.DiagAxis(ax1, ax2, source.Layout));
         }
 
         /// <summary>
         /// Returns a view of the diagonal of the NdArray.
         /// </summary>
-        /// <param name="input">A square NdArray.</param>
+        /// <param name="source">A square NdArray.</param>
         /// <returns>The diagonal NdArray.</returns>
-        public static NdArray<T> Diag(NdArray<T> input)
+        public static NdArray<T> Diag(NdArray<T> source)
         {
-            if (input.NumDimensions < 2)
+            if (source.NumDimensions < 2)
             {
-                var message = string.Format("Need at least a two dimensional array for diagonal but got shape {0}.", input.Shape);
+                var message = string.Format("Need at least a two dimensional array for diagonal but got shape {0}.", source.Shape);
                 throw new ArgumentException(message, "input");
             }
 
-            return DiagAxis(input.NumDimensions - 2, input.NumDimensions - 1, input);
+            return DiagAxis(source.NumDimensions - 2, source.NumDimensions - 1, source);
         }
 
         /// <summary>
         /// Concatenates NdArrays along an axis.
         /// </summary>
         /// <param name="axis">The concatenation axis.</param>
-        /// <param name="inputs">Sequence of NdArrays to concatenate.</param>
+        /// <param name="sources">Sequence of NdArrays to concatenate.</param>
         /// <returns>The concatenated NdArray.</returns>
-        public static NdArray<T> Concat(int axis, NdArray<T>[] inputs)
+        public static NdArray<T> Concat(int axis, NdArray<T>[] sources)
         {
-            if (inputs.Length == 0)
+            if (sources.Length == 0)
             {
                 throw new ArgumentException("Cannot concatenate empty sequence of NdArray.", "inputs");
             }
 
-            var shape = inputs[0].Shape.Select(s => s).ToArray();
+            var shape = sources[0].Shape.Select(s => s).ToArray();
             if (!(axis >= 0 && axis < shape.Length))
             {
                 var message = string.Format("Concatenation axis {0} is out of range for shape {1}.", axis, shape);
@@ -85,7 +85,7 @@ namespace NdArray.NdArrayImpl
             }
 
             var arrayIndex = 0;
-            foreach (var input in inputs)
+            foreach (var input in sources)
             {
                 if (!Enumerable.SequenceEqual(List.Without(axis, input.Shape), List.Without(axis, shape)))
                 {
@@ -96,12 +96,12 @@ namespace NdArray.NdArrayImpl
                 arrayIndex++;
             }
 
-            var totalSize = inputs.Sum(i => i.Shape[axis]);
+            var totalSize = sources.Sum(i => i.Shape[axis]);
             var concatShape = List.Set(axis, totalSize, shape);
 
-            var result = new NdArray<T>(concatShape, inputs[0].Storage.Device);
+            var result = new NdArray<T>(concatShape, sources[0].Storage.Device);
             var position = 0;
-            foreach (var input in inputs)
+            foreach (var input in sources)
             {
                 var arrayLength = input.Shape[axis];
                 if (arrayLength > 0)
@@ -137,9 +137,9 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="axis1">The first dimension of the diagonal.</param>
         /// <param name="axis2">The seconds dimension of the diagonal.</param>
-        /// <param name="input">The values for the diagonal.</param>
+        /// <param name="source">The values for the diagonal.</param>
         /// <returns>A NdArray having the values <paramref name="a"/> on the diagonal specified by the axes
-        public static NdArray<T> DiagMatAxis(int axis1, int axis2, NdArray<T> input)
+        public static NdArray<T> DiagMatAxis(int axis1, int axis2, NdArray<T> source)
         {
             if (axis1 == axis2)
             {
@@ -149,17 +149,17 @@ namespace NdArray.NdArrayImpl
             var ax1 = axis1 < axis2 ? axis1 : axis2;
             var ax2 = axis1 < axis2 ? axis2 : axis1;
 
-            NdArray<T>.CheckAxis(ax1, input);
-            if (!(ax2 >= 0 && ax2 <= input.NumDimensions))
+            NdArray<T>.CheckAxis(ax1, source);
+            if (!(ax2 >= 0 && ax2 <= source.NumDimensions))
             {
-                var message = string.Format("Cannot insert axis at position {0} into array of shape {1}.", ax2, input.Shape);
+                var message = string.Format("Cannot insert axis at position {0} into array of shape {1}.", ax2, source.Shape);
                 throw new ArgumentException(message, "axis2");
             }
 
-            var shape = List.Insert(ax2, input.Shape[ax1], input.Shape);
-            var result = NdArray<T>.Zeros(input.Storage.Device, shape);
+            var shape = List.Insert(ax2, source.Shape[ax1], source.Shape);
+            var result = NdArray<T>.Zeros(source.Storage.Device, shape);
             var diag = DiagAxis(ax1, ax2, result);
-            FillFrom(diag, input);
+            FillFrom(diag, source);
 
             return result;
         }
@@ -167,36 +167,36 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Creates a matrix with the specified diagonal.
         /// </summary>
-        /// <param name="input">The vector containing the values for the diagonal.</param>
-        /// <returns>A matrix having the values <paramref name="input"/> on its diagonal.</returns>
-        public static NdArray<T> DiagMat(NdArray<T> input)
+        /// <param name="source">The vector containing the values for the diagonal.</param>
+        /// <returns>A matrix having the values <paramref name="source"/> on its diagonal.</returns>
+        public static NdArray<T> DiagMat(NdArray<T> source)
         {
-            if (input.NumDimensions < 1)
+            if (source.NumDimensions < 1)
             {
                 throw new ArgumentException("need at leat a one-dimensional array to create a diagonal matrix", "input");
             }
 
-            return DiagMatAxis(input.NumDimensions - 1, input.NumDimensions, input);
+            return DiagMatAxis(source.NumDimensions - 1, source.NumDimensions, source);
         }
 
         /// <summary>
         /// Calculates the difference between adjoining elements along the specified axes.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>The differences NdArray. It has one element less in dimension <paramref name="axis"/> as the input NdArray.</returns>
-        public static NdArray<T> DiffAxis(int axis, NdArray<T> input)
+        public static NdArray<T> DiffAxis(int axis, NdArray<T> source)
         {
-            NdArray<T>.CheckAxis(axis, input);
+            NdArray<T>.CheckAxis(axis, source);
             var shiftRanges = new List<IRange>();
             var cutRanges = new List<IRange>();
 
-            for (var index = 0; index < input.NumDimensions; index++)
+            for (var index = 0; index < source.NumDimensions; index++)
             {
                 if (index == axis)
                 {
                     shiftRanges.Add(RangeFactory.Range(1, SpecialIdx.None));
-                    cutRanges.Add(RangeFactory.Range(SpecialIdx.None, input.Shape[index] - 2));
+                    cutRanges.Add(RangeFactory.Range(SpecialIdx.None, source.Shape[index] - 2));
                 }
                 else
                 {
@@ -205,8 +205,8 @@ namespace NdArray.NdArrayImpl
                 }
             }
 
-            var shiftArray = input[shiftRanges.ToArray()];
-            var cutArray = input[cutRanges.ToArray()];
+            var shiftArray = source[shiftRanges.ToArray()];
+            var cutArray = source[cutRanges.ToArray()];
 
             return shiftArray - cutArray;
         }
@@ -231,11 +231,11 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="axis">The axis to repeat along.</param>
         /// <param name="repeats">The number of repetitions.</param>
-        /// <param name="input">The NdArray to repeat.</param>
+        /// <param name="source">The NdArray to repeat.</param>
         /// <returns>The repeated NdArray.</returns>
-        public static NdArray<T> Replicate(int axis, int repeats, NdArray<T> input)
+        public static NdArray<T> Replicate(int axis, int repeats, NdArray<T> source)
         {
-            NdArray<T>.CheckAxis(axis, input);
+            NdArray<T>.CheckAxis(axis, source);
             if (repeats < 0)
             {
                 throw new ArgumentException("Number of repetitions cannot be negative.", "repeats");
@@ -244,9 +244,9 @@ namespace NdArray.NdArrayImpl
             // 1. insert axis of size one left to repetition axis
             // 2. broadcast along the new axis to number of repetitions
             // 3. reshape to result shape
-            var step1 = input.Reshape(List.Insert(axis, 1, input.Shape));
+            var step1 = source.Reshape(List.Insert(axis, 1, source.Shape));
             var step2 = NdArray<T>.BraodcastDim(axis, repeats, step1);
-            var step3 = step2.Reshape(List.Set(axis, repeats * input.Shape[axis], input.Shape));
+            var step3 = step2.Reshape(List.Set(axis, repeats * source.Shape[axis], source.Shape));
 
             return step3;
         }
@@ -254,16 +254,16 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Transpose of a matrix.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The result of this operation.</returns>
-        public static NdArray<T> Transpos(NdArray<T> input)
+        public static NdArray<T> Transpos(NdArray<T> source)
         {
-            return input.Relayout(Layout.Transpos(input.Layout));
+            return source.Relayout(Layout.Transpos(source.Layout));
         }
 
-        internal static NdArray<T> FillFrom(NdArray<T> target, NdArray<T> input)
+        internal static NdArray<T> FillFrom(NdArray<T> target, NdArray<T> source)
         {
-            var src1 = NdArray<T>.PrepareElemwiseSources(target, input);
+            var src1 = NdArray<T>.PrepareElemwiseSources(target, source);
             target.CopyFrom(src1);
 
             return target;

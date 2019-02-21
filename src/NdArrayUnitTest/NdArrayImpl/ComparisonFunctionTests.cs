@@ -37,7 +37,23 @@ namespace NdArrayNet.NdArrayUnitTest
     public class ComparisonFunctionTests
     {
         [TestMethod]
-        public void Equal_VectorWithVector()
+        public void FillEqual()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
+            var inputB = NdArray<int>.Arange(device, 0, 10, 1);
+            var result = NdArray<bool>.Zeros(device, new[] { 10 });
+
+            // action
+            ComparisonFunction<bool>.FillEqual(result, inputA, inputB);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+        }
+
+        [TestMethod]
+        public void Equal()
         {
             // arrange
             var device = HostDevice.Instance;
@@ -45,44 +61,30 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var equal = ComparisonFunction<int>.FillEqual(inputA, inputB);
+            var result = ComparisonFunction<int>.Equal(inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void Equal_VectorWithScalar()
+        public void FillNotEqual()
         {
             // arrange
             var device = HostDevice.Instance;
             var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
+            var inputB = NdArray<int>.Arange(device, 0, 10, 1);
+            var result = NdArray<bool>.Zeros(device, new[] { 10 });
 
             // action
-            var equal = ComparisonFunction<int>.FillEqual(inputA, inputB);
+            ComparisonFunction<bool>.FillNotEqual(result, inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void Equal_ScalarWithVector()
-        {
-            // arrange
-            var device = HostDevice.Instance;
-            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
-
-            // action
-            var equal = ComparisonFunction<int>.FillEqual(inputB, inputA);
-
-            // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
-        }
-
-        [TestMethod]
-        public void NotEqual_VectorWithVector()
+        public void NotEqual()
         {
             // arrange
             var device = HostDevice.Instance;
@@ -90,44 +92,30 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var equal = ComparisonFunction<int>.FillNotEqual(inputA, inputB);
+            var result = ComparisonFunction<int>.NotEqual(inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void NotEqual_VectorWithScalar()
+        public void FillLess()
         {
             // arrange
             var device = HostDevice.Instance;
             var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
+            var inputB = NdArray<int>.Arange(device, 0, 10, 1);
+            var result = NdArray<bool>.Zeros(device, new[] { 10 });
 
             // action
-            var equal = ComparisonFunction<int>.FillNotEqual(inputA, inputB);
+            ComparisonFunction<bool>.FillLess(result, inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void NotEqual_ScalarWithVector()
-        {
-            // arrange
-            var device = HostDevice.Instance;
-            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
-
-            // action
-            var equal = ComparisonFunction<int>.FillNotEqual(inputB, inputA);
-
-            // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
-        }
-
-        [TestMethod]
-        public void Less_VectorWithVector()
+        public void Less()
         {
             // arrange
             var device = HostDevice.Instance;
@@ -135,44 +123,30 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var equal = ComparisonFunction<int>.FillLess(inputA, inputB);
+            var result = ComparisonFunction<int>.Less(inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void Less_VectorWithScalar()
+        public void FillLessOrEqual()
         {
             // arrange
             var device = HostDevice.Instance;
             var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
+            var inputB = NdArray<int>.Arange(device, 0, 10, 1);
+            var result = NdArray<bool>.Zeros(device, new[] { 10 });
 
             // action
-            var equal = ComparisonFunction<int>.FillLess(inputA, inputB);
+            ComparisonFunction<bool>.FillLessOrEqual(result, inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void Less_ScalarWithVector()
-        {
-            // arrange
-            var device = HostDevice.Instance;
-            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
-
-            // action
-            var equal = ComparisonFunction<int>.FillLess(inputB, inputA);
-
-            // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
-        }
-
-        [TestMethod]
-        public void LessOrEqual_VectorWithVector()
+        public void LessOrEqual()
         {
             // arrange
             var device = HostDevice.Instance;
@@ -180,44 +154,30 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var equal = ComparisonFunction<int>.FillLessOrEqual(inputA, inputB);
+            var result = ComparisonFunction<int>.LessOrEqual(inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void LessOrEqual_VectorWithScalar()
+        public void FillGreater()
         {
             // arrange
             var device = HostDevice.Instance;
             var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
+            var inputB = NdArray<int>.Arange(device, 0, 10, 1);
+            var result = NdArray<bool>.Zeros(device, new[] { 10 });
 
             // action
-            var equal = ComparisonFunction<int>.FillLessOrEqual(inputA, inputB);
+            ComparisonFunction<bool>.FillGreater(result, inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void LessOrEqual_ScalarWithVector()
-        {
-            // arrange
-            var device = HostDevice.Instance;
-            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
-
-            // action
-            var equal = ComparisonFunction<int>.FillLessOrEqual(inputB, inputA);
-
-            // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
-        }
-
-        [TestMethod]
-        public void Greater_VectorWithVector()
+        public void Greater()
         {
             // arrange
             var device = HostDevice.Instance;
@@ -225,44 +185,30 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var equal = ComparisonFunction<int>.FillGreater(inputA, inputB);
+            var result = ComparisonFunction<int>.Greater(inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void Greater_VectorWithScalar()
+        public void FillGreaterOrEqual()
         {
             // arrange
             var device = HostDevice.Instance;
             var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
+            var inputB = NdArray<int>.Arange(device, 0, 10, 1);
+            var result = NdArray<bool>.Zeros(device, new[] { 10 });
 
             // action
-            var equal = ComparisonFunction<int>.FillGreater(inputA, inputB);
+            ComparisonFunction<bool>.FillGreaterOrEqual(result, inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
-        public void Greater_ScalarWithVector()
-        {
-            // arrange
-            var device = HostDevice.Instance;
-            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
-
-            // action
-            var equal = ComparisonFunction<int>.FillGreater(inputB, inputA);
-
-            // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
-        }
-
-        [TestMethod]
-        public void GreaterOrEqual_VectorWithVector()
+        public void GreaterOrEqual()
         {
             // arrange
             var device = HostDevice.Instance;
@@ -270,40 +216,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var equal = ComparisonFunction<int>.FillGreaterOrEqual(inputA, inputB);
+            var result = ComparisonFunction<int>.GreaterOrEqual(inputA, inputB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
-        }
-
-        [TestMethod]
-        public void GreaterOrEqual_VectorWithScalar()
-        {
-            // arrange
-            var device = HostDevice.Instance;
-            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
-
-            // action
-            var equal = ComparisonFunction<int>.FillGreaterOrEqual(inputA, inputB);
-
-            // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
-        }
-
-        [TestMethod]
-        public void GreaterOrEqual_ScalarWithVector()
-        {
-            // arrange
-            var device = HostDevice.Instance;
-            var inputA = NdArray<int>.Arange(device, 0, 10, 1);
-            var inputB = NdArray<int>.Scalar(device, 3);
-
-            // action
-            var equal = ComparisonFunction<int>.FillGreaterOrEqual(inputB, inputA);
-
-            // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
         }
 
         [TestMethod]
@@ -413,12 +329,27 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var device = HostDevice.Instance;
             var inputA = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
+            var result = NdArray<bool>.Ones(device, new[] { 2, 3, 4 });
 
             // action
-            var finite = ComparisonFunction<int>.FillIsFinite(inputA);
+            ComparisonFunction<int>.FillIsFinite(result, inputA);
 
             // assert
-            Assert.IsTrue(NdArray<int>.All(finite));
+            Assert.IsTrue(NdArray<int>.All(result));
+        }
+
+        [TestMethod]
+        public void IsFinite()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var inputA = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
+
+            // action
+            var result = ComparisonFunction<int>.IsFinite(inputA);
+
+            // assert
+            Assert.IsTrue(NdArray<int>.All(result));
         }
     }
 }
