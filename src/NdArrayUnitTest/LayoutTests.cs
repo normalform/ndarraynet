@@ -842,5 +842,41 @@ namespace NdArrayNet.NdArrayUnitTest
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 3, new[] { 6, -3, 1 });
             Assert.AreEqual(expectedLayout, output);
         }
+
+        [TestMethod]
+        public void AllIndex()
+        {
+            // arrange
+            var layout = new Layout(new[] { 2, 1, 3 }, 0, new[] { 3, 3, 1 });
+
+            // action
+            var output = Layout.AllIndex(layout);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 0, 0, 0 }, output[0]);
+            CollectionAssert.AreEqual(new[] { 0, 0, 1 }, output[1]);
+            CollectionAssert.AreEqual(new[] { 0, 0, 2 }, output[2]);
+            CollectionAssert.AreEqual(new[] { 1, 0, 0 }, output[3]);
+            CollectionAssert.AreEqual(new[] { 1, 0, 1 }, output[4]);
+            CollectionAssert.AreEqual(new[] { 1, 0, 2 }, output[5]);
+        }
+
+        [TestMethod]
+        public void AllIndexOfShape()
+        {
+            // arrange
+            var shape = new int[] { 2, 1, 3 };
+
+            // action
+            var output = Layout.AllIndexOfShape(shape).ToArray();
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 0, 0, 0 }, output[0]);
+            CollectionAssert.AreEqual(new[] { 0, 0, 1 }, output[1]);
+            CollectionAssert.AreEqual(new[] { 0, 0, 2 }, output[2]);
+            CollectionAssert.AreEqual(new[] { 1, 0, 0 }, output[3]);
+            CollectionAssert.AreEqual(new[] { 1, 0, 1 }, output[4]);
+            CollectionAssert.AreEqual(new[] { 1, 0, 2 }, output[5]);
+        }
     }
 }

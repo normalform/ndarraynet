@@ -124,5 +124,17 @@ namespace NdArrayNet
         void SumLastAxis(IFrontend<T> trgt, IFrontend<T> src);
 
         void ProductLastAxis(IFrontend<T> trgt, IFrontend<T> src);
+
+        void Negate(IFrontend<bool> trgt, IFrontend<bool> src);
+
+        void And(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs);
+
+        void Or(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs);
+
+        void Xor(IFrontend<bool> trgt, IFrontend<bool> lhs, IFrontend<bool> rhs);
+
+        void CountTrueLastAxis(IFrontend<int> trgt, IFrontend<bool> src);
+
+        void IfThenElse(IFrontend<T> trgt, IFrontend<bool> condition, IFrontend<T> ifTrue, IFrontend<T> ifFalse);
     }
 }

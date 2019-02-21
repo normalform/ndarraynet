@@ -32,6 +32,7 @@ namespace NdArrayNet.NdArrayUnitTest
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
+    using System.Linq;
 
     [TestClass]
     public class NdArrayTests
@@ -1971,6 +1972,260 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             CollectionAssert.AreEqual(new[] { 4, 3, 2 }, output.Shape);
+        }
+
+        [TestMethod]
+        public void LogicalNegate()
+        {
+            // arrange
+            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 10 });
+
+            // action
+            var output = NdArray<bool>.Not(input);
+
+            // assert
+            Assert.IsTrue(NdArray<bool>.All(output));
+        }
+
+        [TestMethod]
+        public void LogicalAnd()
+        {
+            // arrange
+            var input1 = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
+            var input2 = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
+
+            // action
+            var output = NdArray<bool>.And(input1, input2);
+
+            // assert
+            var expected = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
+            var result = expected == output;
+            Assert.IsTrue(NdArray<bool>.All(result));
+        }
+
+        [TestMethod]
+        public void LogicalOr()
+        {
+            // arrange
+            var input1 = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
+            var input2 = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
+
+            // action
+            var output = NdArray<bool>.Or(input1, input2);
+
+            // assert
+            var expected = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
+            var result = expected == output;
+            Assert.IsTrue(NdArray<bool>.All(result));
+        }
+
+        [TestMethod]
+        public void LogicalXor()
+        {
+            // arrange
+            var input1 = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2 });
+            var input2 = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2 });
+            input2[0].Value = false;
+
+            // action
+            var output = NdArray<bool>.Xor(input1, input2);
+
+            // assert
+            Assert.AreEqual(false, output[0].Value);
+            Assert.AreEqual(true, output[1].Value);
+        }
+
+        [TestMethod]
+        public void AllIndex()
+        {
+            // arrange
+            var array = NdArray<int>.Arange(HostDevice.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
+
+            // action
+            var output = NdArray<int>.AllIndex(array);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 0, 0 }, output[0]);
+            CollectionAssert.AreEqual(new[] { 0, 1 }, output[1]);
+            CollectionAssert.AreEqual(new[] { 0, 2 }, output[2]);
+            CollectionAssert.AreEqual(new[] { 1, 0 }, output[3]);
+            CollectionAssert.AreEqual(new[] { 1, 1 }, output[4]);
+            CollectionAssert.AreEqual(new[] { 1, 2 }, output[5]);
+            CollectionAssert.AreEqual(new[] { 2, 0 }, output[6]);
+            CollectionAssert.AreEqual(new[] { 2, 1 }, output[7]);
+            CollectionAssert.AreEqual(new[] { 2, 2 }, output[8]);
+        }
+
+        [TestMethod]
+        public void AllElems()
+        {
+            // arrange
+            var array = NdArray<int>.Arange(HostDevice.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
+
+            // action
+            var output = NdArray<int>.AllElems(array);
+
+            // assert
+            CollectionAssert.AreEqual(Enumerable.Range(0, 9).ToArray(), output);
+        }
+
+        [TestMethod]
+        public void AllAxis()
+        {
+            // arrange
+            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = false;
+
+            // action
+            var output0 = NdArray<bool>.AllAxis(0, input);
+            var output1 = NdArray<bool>.AllAxis(1, input);
+
+            // assert
+            Assert.AreEqual(true, output0[0].Value);
+            Assert.AreEqual(true, output1[1].Value);
+        }
+
+        [TestMethod]
+        public void AllNdArray()
+        {
+            // arrange
+            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = false;
+
+            // action
+            var output = NdArray<bool>.AllNdArray(input);
+
+            // assert
+            Assert.AreEqual(false, output[0].Value);
+        }
+
+        [TestMethod]
+        public void All()
+        {
+            // arrange
+            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = false;
+
+            // action
+            var output = NdArray<bool>.All(input);
+
+            // assert
+            Assert.AreEqual(false, output);
+        }
+
+        [TestMethod]
+        public void AnyAxis()
+        {
+            // arrange
+            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = true;
+
+            // action
+            var output0 = NdArray<bool>.AnyAxis(0, input);
+            var output1 = NdArray<bool>.AnyAxis(1, input);
+
+            // assert
+            Assert.AreEqual(true, output0[1].Value);
+            Assert.AreEqual(false, output1[1].Value);
+        }
+
+        [TestMethod]
+        public void AnyNdArray()
+        {
+            // arrange
+            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = true;
+
+            // action
+            var output = NdArray<bool>.AnyNdArray(input);
+
+            // assert
+            Assert.AreEqual(true, output[0].Value);
+        }
+
+        [TestMethod]
+        public void Any()
+        {
+            // arrange
+            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = true;
+
+            // action
+            var output = NdArray<bool>.Any(input);
+
+            // assert
+            Assert.AreEqual(true, output);
+        }
+
+        [TestMethod]
+        public void CountTrueAxis()
+        {
+            // arrange
+            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = false;
+            input[new[] { 1, 0 }] = false;
+            input[new[] { 1, 3 }] = false;
+
+            // action
+            var output0 = NdArray<bool>.CountTrueAxis(0, input);
+            var output1 = NdArray<bool>.CountTrueAxis(1, input);
+
+            // assert
+            Assert.AreEqual(1, output0[0].Value);
+            Assert.AreEqual(2, output1[1].Value);
+        }
+
+        [TestMethod]
+        public void CountTrueNdArray()
+        {
+            // arrange
+            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = false;
+            input[new[] { 1, 0 }] = false;
+            input[new[] { 1, 3 }] = false;
+
+            // action
+            var output = NdArray<bool>.CountTrueNdArray(input);
+
+            // assert
+            Assert.AreEqual(5, output[0].Value);
+        }
+
+        [TestMethod]
+        public void CountTrue()
+        {
+            // arrange
+            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            input[new[] { 0, 1 }] = false;
+            input[new[] { 1, 0 }] = false;
+            input[new[] { 1, 3 }] = false;
+
+            // action
+            var output = NdArray<bool>.CountTrue(input);
+
+            // assert
+            Assert.AreEqual(5, output);
+        }
+
+        [TestMethod]
+        public void IfThenElse()
+        {
+            // arrange
+            var condition = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
+            var ifTrue = NdArray<int>.Ones(HostDevice.Instance, new int[] { 4 });
+            var ifFalse = NdArray<int>.Zeros(HostDevice.Instance, new int[] { 4 });
+
+            condition[new[] { 0 }] = false;
+            condition[new[] { 2 }] = false;
+
+            // action
+            var output = NdArray<int>.IfThenElse(condition, ifTrue, ifFalse);
+
+            // assert
+            Assert.AreEqual(0, output[0].Value);
+            Assert.AreEqual(1, output[1].Value);
+            Assert.AreEqual(0, output[2].Value);
+            Assert.AreEqual(1, output[3].Value);
         }
 
         private struct UnKownValueTypeForTestOnly

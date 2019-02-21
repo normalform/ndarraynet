@@ -478,6 +478,11 @@ namespace NdArrayNet
             return new Layout(shapeList.ToArray(), src.Offset, strideList.ToArray());
         }
 
+        public static int[][] AllIndex(Layout layout)
+        {
+            return AllIndexOfShape(layout.Shape).ToArray();
+        }
+
         public static bool operator ==(Layout lhs, Layout rhs)
         {
             if (((object)lhs) == null || ((object)rhs) == null)
@@ -769,6 +774,27 @@ namespace NdArrayNet
             {
                 var msg = string.Format("Index {0} out of range in slice {1} for shape {2}.", index, ranges, shp);
                 throw new ArgumentOutOfRangeException(msg);
+            }
+        }
+
+        internal static IEnumerable<int[]> AllIndexOfShape(int[] shape)
+        {
+            if (shape.Length == 0)
+            {
+                yield return new int[] { };
+            }
+            else
+            {
+                var first = shape.First();
+                var rest = shape.Skip(1).ToArray();
+                for (var index = 0; index < first; index++)
+                {
+                    var subShape = AllIndexOfShape(rest);
+                    foreach (var ss in subShape)
+                    {
+                        yield return new[] { index }.Concat(ss).ToArray();
+                    }
+                }
             }
         }
     }
