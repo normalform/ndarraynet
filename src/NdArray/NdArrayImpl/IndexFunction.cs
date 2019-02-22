@@ -236,5 +236,19 @@ namespace NdArray.NdArrayImpl
         {
             return CountTrueNdArray(source).Value;
         }
+
+        /// <summary>
+        /// Finds the indices of all element that are true.
+        /// </summary>
+        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <returns>A matrix that has one row per true entry in <paramref name="source"/>.
+        public static NdArray<int> TrueIndices(NdArray<bool> source)
+        {
+            var count = CountTrue(source);
+            var target = new NdArray<int>(new[] { count, source.NumDimensions }, source.Storage.Device);
+            target.Backend.TrueIndices(target, source);
+
+            return target;
+        }
     }
 }

@@ -143,6 +143,8 @@ namespace NdArrayNet
 
         void FindLastAxis<T1>(T1 value, IFrontend<int> trgt, IFrontend<T1> src);
 
+        void TrueIndices(IFrontend<int> trgt, IFrontend<bool> src);
+
         void Convert<TC>(IFrontend<T> trgt, IFrontend<TC> src);
     }
 }
