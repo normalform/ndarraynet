@@ -240,5 +240,29 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.AreEqual(4, output);
         }
+
+        [TestMethod]
+        public void TrueIndices()
+        {
+            // arrange
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            source[new[] { 0, 0 }] = true;
+            source[new[] { 0, 2 }] = true;
+            source[new[] { 1, 1 }] = true;
+            source[new[] { 1, 2 }] = true;
+
+            // action
+            var output = IndexFunction<bool>.TrueIndices(source);
+
+            // assert
+            Assert.AreEqual(0, output[new[] { 0, 0 }]);
+            Assert.AreEqual(0, output[new[] { 0, 1 }]);
+            Assert.AreEqual(0, output[new[] { 1, 0 }]);
+            Assert.AreEqual(2, output[new[] { 1, 1 }]);
+            Assert.AreEqual(1, output[new[] { 2, 0 }]);
+            Assert.AreEqual(1, output[new[] { 2, 1 }]);
+            Assert.AreEqual(1, output[new[] { 3, 0 }]);
+            Assert.AreEqual(2, output[new[] { 3, 1 }]);
+        }
     }
 }
