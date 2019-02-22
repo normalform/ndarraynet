@@ -517,5 +517,23 @@ namespace NdArrayNet
             var (dataLayoutTrgt, dataLayout1, dataLayout2, dataLayout3) = ElemwiseDataAndLayout(trgt, condition, ifTrue, ifFalse);
             ScalarOps.IfThenElse(dataLayoutTrgt, dataLayout1, dataLayout2, dataLayout3);
         }
+
+        public void ArgMaxLastAxis<T1>(IFrontend<int> trgt, IFrontend<T1> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
+            ScalarOps.ArgMaxLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void ArgMinLastAxis<T1>(IFrontend<int> trgt, IFrontend<T1> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
+            ScalarOps.ArgMinLastAxis(dataLayoutTrgt, dataLayout);
+        }
+
+        public void FindLastAxis<T1>(T1 value, IFrontend<int> trgt, IFrontend<T1> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
+            ScalarOps.FindLastAxis(value, dataLayoutTrgt, dataLayout);
+        }
     }
 }

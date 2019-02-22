@@ -878,5 +878,19 @@ namespace NdArrayNet.NdArrayUnitTest
             CollectionAssert.AreEqual(new[] { 1, 0, 1 }, output[4]);
             CollectionAssert.AreEqual(new[] { 1, 0, 2 }, output[5]);
         }
+
+        [TestMethod]
+        public void LinearToIndex()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var output = Layout.LinearToIndex(layout, 73);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 0, 1, 0, 2, 3 }, output);
+        }
     }
 }

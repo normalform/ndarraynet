@@ -170,20 +170,20 @@ namespace NdArrayNet
             return new Layout(newShp, a.Offset, newStr);
         }
 
-        public static Layout PadLeft(Layout input)
+        public static Layout PadLeft(Layout source)
         {
-            var newShape = new[] { 1 }.Concat(input.Shape).ToArray();
-            var newStride = new[] { 0 }.Concat(input.Stride).ToArray();
+            var newShape = new[] { 1 }.Concat(source.Shape).ToArray();
+            var newStride = new[] { 0 }.Concat(source.Stride).ToArray();
 
-            return new Layout(newShape, input.Offset, newStride);
+            return new Layout(newShape, source.Offset, newStride);
         }
 
-        public static Layout PadRight(Layout input)
+        public static Layout PadRight(Layout source)
         {
-            var newShape = input.Shape.Concat(new[] { 1 }).ToArray();
-            var newStride = input.Stride.Concat(new[] { 0 }).ToArray();
+            var newShape = source.Shape.Concat(new[] { 1 }).ToArray();
+            var newStride = source.Stride.Concat(new[] { 0 }).ToArray();
 
-            return new Layout(newShape, input.Offset, newStride);
+            return new Layout(newShape, source.Offset, newStride);
         }
 
         public static Layout DiagAxis(int ax1, int ax2, Layout layout)
@@ -235,19 +235,19 @@ namespace NdArrayNet
             return zip.All(z => (z.Shape == 0) || (z.StribeA == z.StribeB));
         }
 
-        public static bool IsC(Layout input)
+        public static bool IsC(Layout source)
         {
-            return StrideEqual(input.Shape, input.Stride, CStride(input.Shape));
+            return StrideEqual(source.Shape, source.Stride, CStride(source.Shape));
         }
 
-        public static bool IsF(Layout input)
+        public static bool IsF(Layout source)
         {
-            return StrideEqual(input.Shape, input.Stride, FStride(input.Shape));
+            return StrideEqual(source.Shape, source.Stride, FStride(source.Shape));
         }
 
-        public static bool HasContiguousMemory(Layout input)
+        public static bool HasContiguousMemory(Layout source)
         {
-            return IsC(input) || IsF(input);
+            return IsC(source) || IsF(source);
         }
 
         public static Layout BraodcastDim(int dim, int size, Layout layout)
@@ -285,14 +285,14 @@ namespace NdArrayNet
             return result.ToArray();
         }
 
-        public static Layout ReverseAxis(int axis, Layout input)
+        public static Layout ReverseAxis(int axis, Layout source)
         {
-            CheckAxis(input, axis);
+            CheckAxis(source, axis);
 
             return new Layout(
-                input.Shape,
-                input.Offset + ((input.Shape[axis] - 1) * input.Stride[axis]),
-                List.Set(axis, -input.Stride[axis], input.Stride));
+                source.Shape,
+                source.Offset + ((source.Shape[axis] - 1) * source.Stride[axis]),
+                List.Set(axis, -source.Stride[axis], source.Stride));
         }
 
         /// <summary>
@@ -369,16 +369,16 @@ namespace NdArrayNet
             return sas;
         }
 
-        public static Layout BroadcastToShape(int[] broadcastShape, Layout input)
+        public static Layout BroadcastToShape(int[] broadcastShape, Layout source)
         {
             var broadcastDim = broadcastShape.Length;
-            if (broadcastDim < input.NumDimensions)
+            if (broadcastDim < source.NumDimensions)
             {
-                var msg = string.Format("Cannot broadcast to shape {0} from shape {1} of higher rank.", broadcastShape, input.Shape);
+                var msg = string.Format("Cannot broadcast to shape {0} from shape {1} of higher rank.", broadcastShape, source.Shape);
                 throw new InvalidOperationException(msg);
             }
 
-            var broadcastLayout = new Layout(input.Shape, input.Offset, input.Stride);
+            var broadcastLayout = new Layout(source.Shape, source.Offset, source.Stride);
 
             while (broadcastLayout.NumDimensions < broadcastDim)
             {
@@ -397,7 +397,7 @@ namespace NdArrayNet
                     }
                     else
                     {
-                        var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", input.Shape, broadcastShape);
+                        var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", source.Shape, broadcastShape);
                         throw new InvalidOperationException(msg);
                     }
                 }
@@ -406,55 +406,55 @@ namespace NdArrayNet
             return broadcastLayout;
         }
 
-        public static Layout InsertAxis(int axis, Layout input)
+        public static Layout InsertAxis(int axis, Layout source)
         {
-            if (!(axis >= 0 && axis <= input.NumDimensions))
+            if (!(axis >= 0 && axis <= source.NumDimensions))
             {
-                var msg = string.Format("axis {0} out of range for NdArray with shape {1}", axis, input.Shape);
+                var msg = string.Format("axis {0} out of range for NdArray with shape {1}", axis, source.Shape);
                 throw new ArgumentException(msg);
             }
 
             return new Layout(
-                List.Insert(axis, 1, input.Shape),
-                input.Offset,
-                List.Insert(axis, 0, input.Stride));
+                List.Insert(axis, 1, source.Shape),
+                source.Offset,
+                List.Insert(axis, 0, source.Stride));
         }
 
-        public static Layout Transpos(Layout input)
+        public static Layout Transpos(Layout source)
         {
-            var numDim = input.NumDimensions;
+            var numDim = source.NumDimensions;
             if (numDim < 2)
             {
-                var msg = string.Format("cannot transpose non-matrix of shape {0}", input.Shape);
-                throw new ArgumentException(msg, "input");
+                var msg = string.Format("cannot transpose non-matrix of shape {0}", source.Shape);
+                throw new ArgumentException(msg, "source");
             }
 
-            return SwapDim(numDim - 2, numDim - 1, input);
+            return SwapDim(numDim - 2, numDim - 1, source);
         }
 
-        public static Layout CutLeft(Layout input)
+        public static Layout CutLeft(Layout source)
         {
-            if (input.NumDimensions == 0)
+            if (source.NumDimensions == 0)
             {
-                throw new ArgumentException("cannot remove dimensions from scalar", "input");
+                throw new ArgumentException("cannot remove dimensions from scalar", "source");
             }
 
-            return new Layout(input.Shape.Skip(1).ToArray(), input.Offset, input.Stride.Skip(1).ToArray());
+            return new Layout(source.Shape.Skip(1).ToArray(), source.Offset, source.Stride.Skip(1).ToArray());
         }
 
-        public static Layout CutRight(Layout input)
+        public static Layout CutRight(Layout source)
         {
-            if (input.NumDimensions == 0)
+            if (source.NumDimensions == 0)
             {
-                throw new ArgumentException("cannot remove dimensions from scalar", "input");
+                throw new ArgumentException("cannot remove dimensions from scalar", "source");
             }
 
-            return new Layout(input.Shape.SkipLast(1).ToArray(), input.Offset, input.Stride.SkipLast(1).ToArray());
+            return new Layout(source.Shape.SkipLast(1).ToArray(), source.Offset, source.Stride.SkipLast(1).ToArray());
         }
 
-        public static bool IsBroadcasted(Layout input)
+        public static bool IsBroadcasted(Layout source)
         {
-            return input.Shape.Zip(input.Stride, (sh, st) => (sh, st)).Any(shst => shst.sh > 1 && shst.st == 0);
+            return source.Shape.Zip(source.Stride, (sh, st) => (sh, st)).Any(shst => shst.sh > 1 && shst.st == 0);
         }
 
         public static Layout PermuteAxes(int[] permut, Layout src)
@@ -501,6 +501,24 @@ namespace NdArrayNet
             }
 
             return !lhs.Equals(rhs);
+        }
+
+        /// Computes the index of a given linear index.
+        public static int[] LinearToIndex(Layout layout, int linear)
+        {
+            var stride = CStride(layout.Shape);
+            var outputIndex = new int[stride.Length];
+
+            var currentLinear = linear;
+            for (var index = 0; index < stride.Length; index++)
+            {
+                var currentStride = stride[index];
+                outputIndex[index] = currentLinear / currentStride;
+
+                currentLinear = currentLinear % currentStride;
+            }
+
+            return outputIndex;
         }
 
         public bool Equals(Layout other)

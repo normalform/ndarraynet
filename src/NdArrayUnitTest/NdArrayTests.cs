@@ -1145,10 +1145,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var max = NdArray<int>.MaxAxis(0, input);
+            var max = NdArray<int>.MaxAxis(0, source);
 
             // assert
             Assert.AreEqual(9, max.Value);
@@ -1159,10 +1159,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var max = NdArray<int>.MaxNdArray(input);
+            var max = NdArray<int>.MaxNdArray(source);
 
             // assert
             Assert.AreEqual(9, max.Value);
@@ -1173,10 +1173,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var max = NdArray<int>.Max(input);
+            var max = NdArray<int>.Max(source);
 
             // assert
             Assert.AreEqual(9, max);
@@ -1187,10 +1187,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var min = NdArray<int>.MinAxis(0, input);
+            var min = NdArray<int>.MinAxis(0, source);
 
             // assert
             Assert.AreEqual(0, min.Value);
@@ -1201,10 +1201,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var min = NdArray<int>.MinNdArray(input);
+            var min = NdArray<int>.MinNdArray(source);
 
             // assert
             Assert.AreEqual(0, min.Value);
@@ -1215,10 +1215,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var min = NdArray<int>.Min(input);
+            var min = NdArray<int>.Min(source);
 
             // assert
             Assert.AreEqual(0, min);
@@ -1229,10 +1229,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var sum = NdArray<int>.SumAxis(0, input);
+            var sum = NdArray<int>.SumAxis(0, source);
 
             // assert
             Assert.AreEqual(45, sum.Value);
@@ -1243,10 +1243,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var sum = NdArray<int>.SumNdArray(input);
+            var sum = NdArray<int>.SumNdArray(source);
 
             // assert
             Assert.AreEqual(45, sum.Value);
@@ -1257,10 +1257,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 10, 1);
+            var source = NdArray<int>.Arange(device, 0, 10, 1);
 
             // action
-            var sum = NdArray<int>.Sum(input);
+            var sum = NdArray<int>.Sum(source);
 
             // assert
             Assert.AreEqual(45, sum);
@@ -1271,10 +1271,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var mean = NdArray<double>.MeanAxis(1, input);
+            var mean = NdArray<double>.MeanAxis(1, source);
 
             // assert
             Assert.AreEqual(2.5, mean[0].Value);
@@ -1285,10 +1285,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var sum = NdArray<double>.Mean(input);
+            var sum = NdArray<double>.Mean(source);
 
             // assert
             Assert.AreEqual(4.5, sum);
@@ -1299,10 +1299,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var product = NdArray<double>.ProductAxis(1, input);
+            var product = NdArray<double>.ProductAxis(1, source);
 
             // assert
             Assert.AreEqual(24.0, product[0].Value);
@@ -1313,10 +1313,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var product = NdArray<double>.ProductNdArray(input);
+            var product = NdArray<double>.ProductNdArray(source);
 
             // assert
             Assert.AreEqual(40320.0, product[0].Value);
@@ -1327,10 +1327,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var product = NdArray<double>.Product(input);
+            var product = NdArray<double>.Product(source);
 
             // assert
             Assert.AreEqual(40320.0, product);
@@ -1341,10 +1341,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var var = NdArray<double>.VarAxis(1, input);
+            var var = NdArray<double>.VarAxis(1, source);
 
             // assert
             Assert.AreEqual(1.25, var[0].Value);
@@ -1355,10 +1355,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var var = NdArray<double>.VarAxis(1, input, 1.0);
+            var var = NdArray<double>.VarAxis(1, source, 1.0);
 
             // assert
             const double Epsilon = 1e-8;
@@ -1370,10 +1370,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var var = NdArray<double>.Var(input);
+            var var = NdArray<double>.Var(source);
 
             // assert
             Assert.AreEqual(5.25, var);
@@ -1384,10 +1384,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var var = NdArray<double>.Var(input, 1.0);
+            var var = NdArray<double>.Var(source, 1.0);
 
             // assert
             Assert.AreEqual(6.0, var);
@@ -1398,10 +1398,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var std = NdArray<double>.StdAxis(1, input);
+            var std = NdArray<double>.StdAxis(1, source);
 
             // assert
             const double Epsilon = 1e-8;
@@ -1413,10 +1413,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var std = NdArray<double>.StdAxis(1, input, 1.0);
+            var std = NdArray<double>.StdAxis(1, source, 1.0);
 
             // assert
             const double Epsilon = 1e-8;
@@ -1428,10 +1428,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var std = NdArray<double>.Std(input);
+            var std = NdArray<double>.Std(source);
 
             // assert
             const double Epsilon = 1e-8;
@@ -1443,10 +1443,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(device, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var std = NdArray<double>.Std(input, 1.0);
+            var std = NdArray<double>.Std(source, 1.0);
 
             // assert
             const double Epsilon = 1e-8;
@@ -1458,10 +1458,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
+            var source = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
 
             // action
-            var trace = NdArray<int>.TraceAxis(0, 1, input);
+            var trace = NdArray<int>.TraceAxis(0, 1, source);
 
             // assert
             Assert.AreEqual(36, trace[0].Value);
@@ -1474,10 +1474,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
+            var source = NdArray<int>.Arange(device, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
 
             // action
-            var trace = NdArray<int>.Trace(input);
+            var trace = NdArray<int>.Trace(source);
 
             // assert
             Assert.AreEqual(12, trace[0].Value);
@@ -1490,10 +1490,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Zeros(device, new[] { 4, 3, 3, 5 });
+            var source = NdArray<int>.Zeros(device, new[] { 4, 3, 3, 5 });
 
             // action
-            var diag = NdArray<int>.DiagAxis(1, 2, input);
+            var diag = NdArray<int>.DiagAxis(1, 2, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 4, 3, 5 }, diag.Shape);
@@ -1504,10 +1504,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var device = HostDevice.Instance;
-            var input = NdArray<int>.Arange(device, 0, 9, 1).Reshape(new[] { 3, 3 });
+            var source = NdArray<int>.Arange(device, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
-            var diag = NdArray<int>.Diag(input);
+            var diag = NdArray<int>.Diag(source);
 
             // assert
             Assert.AreEqual(0, diag[0].Value);
@@ -1538,10 +1538,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Copy_ColumnMajor()
         {
             // arrange
-            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
 
             // action
-            var copy = NdArray<int>.Copy(input, Order.ColumnMajor);
+            var copy = NdArray<int>.Copy(source, Order.ColumnMajor);
 
             // assert
             CollectionAssert.AreEqual(new[] { 2, 5 }, copy.Shape);
@@ -1554,10 +1554,10 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var axis1 = 0;
             var axis2 = 1;
-            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 12, 1).Reshape(new[] { 4, 3 });
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 12, 1).Reshape(new[] { 4, 3 });
 
             // action
-            var diagMat = NdArray<int>.DiagMatAxis(axis1, axis2, input);
+            var diagMat = NdArray<int>.DiagMatAxis(axis1, axis2, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 4, 4, 3 }, diagMat.Shape);
@@ -1567,10 +1567,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void DiagMat()
         {
             // arrange
-            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 3, 1);
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 3, 1);
 
             // action
-            var diagMat = NdArray<int>.DiagMat(input);
+            var diagMat = NdArray<int>.DiagMat(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 3, 3 }, diagMat.Shape);
@@ -1580,10 +1580,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void DiffAxis()
         {
             // arrange
-            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
-            var result = NdArray<int>.DiffAxis(1, input);
+            var result = NdArray<int>.DiffAxis(1, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 3, 2 }, result.Shape);
@@ -1593,10 +1593,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Transpos()
         {
             // arrange
-            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
 
             // action
-            var result = NdArray<int>.Transpos(input);
+            var result = NdArray<int>.Transpos(source);
 
             // assert
             Assert.AreEqual(0, result[new[] { 0, 0 }]);
@@ -1610,10 +1610,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int MinNumDim = 3;
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 2 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 2 });
 
             // action
-            var output = NdArray<int>.AtLeastNd(MinNumDim, input);
+            var output = NdArray<int>.AtLeastNd(MinNumDim, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 1, 2, 2 }, output.Shape);
@@ -1624,10 +1624,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 1;
-            var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
+            var source = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
 
             // action
-            var output = NdArray<int>.AtLeast1d(input);
+            var output = NdArray<int>.AtLeast1d(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 1 }, output.Shape);
@@ -1638,10 +1638,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 1;
-            var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
+            var source = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
 
             // action
-            var output = NdArray<int>.AtLeast2d(input);
+            var output = NdArray<int>.AtLeast2d(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 1, 1 }, output.Shape);
@@ -1652,10 +1652,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 1;
-            var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
+            var source = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
 
             // action
-            var output = NdArray<int>.AtLeast3d(input);
+            var output = NdArray<int>.AtLeast3d(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 1, 1, 1 }, output.Shape);
@@ -1665,10 +1665,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastDim()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 1, 5 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 1, 5 });
 
             // action
-            var output = NdArray<int>.BroadCastDim(1, 9, input);
+            var output = NdArray<int>.BroadCastDim(1, 9, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 3, 9, 5 }, output.Shape);
@@ -1678,10 +1678,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastTo()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 7, 1 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 7, 1 });
 
             // action
-            var output = NdArray<int>.BroadCastTo(new[] { 2, 7, 3 }, input);
+            var output = NdArray<int>.BroadCastTo(new[] { 2, 7, 3 }, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 2, 7, 3 }, output.Shape);
@@ -1793,10 +1793,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CutLeft()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
 
             // action
-            var output = NdArray<int>.CutLeft(input);
+            var output = NdArray<int>.CutLeft(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 2, 3 }, output.Shape);
@@ -1806,10 +1806,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CutRight()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
 
             // action
-            var output = NdArray<int>.CutRight(input);
+            var output = NdArray<int>.CutRight(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 1, 2 }, output.Shape);
@@ -1819,10 +1819,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Flatten()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
 
             // action
-            var output = NdArray<int>.Flatten(input);
+            var output = NdArray<int>.Flatten(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 24 }, output.Shape);
@@ -1832,10 +1832,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void InsertAxis()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
 
             // action
-            var output = NdArray<int>.InsertAxis(1, input);
+            var output = NdArray<int>.InsertAxis(1, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 2, 1, 3, 4 }, output.Shape);
@@ -1845,8 +1845,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsBroadcasted_WithBroadCastedNdArray_ReturnTrue()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 1, 4 });
-            var broadCasted = NdArray<int>.BroadCastDim(1, 2, input);
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 1, 4 });
+            var broadCasted = NdArray<int>.BroadCastDim(1, 2, source);
 
             // action
             var output = NdArray<int>.IsBroadcasted(broadCasted);
@@ -1859,10 +1859,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PadLeft()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
 
             // action
-            var output = NdArray<int>.PadLeft(input);
+            var output = NdArray<int>.PadLeft(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, output.Shape);
@@ -1872,10 +1872,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PadRight()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
 
             // action
-            var output = NdArray<int>.PadRight(input);
+            var output = NdArray<int>.PadRight(source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 2, 3, 4, 1 }, output.Shape);
@@ -1936,10 +1936,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PermuteAxes()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 5 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 5 });
 
             // action
-            var output = NdArray<int>.PermuteAxes(new[] { 1, 0, 3, 2 }, input);
+            var output = NdArray<int>.PermuteAxes(new[] { 1, 0, 3, 2 }, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 3, 2, 5, 4 }, output.Shape);
@@ -1949,10 +1949,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ReverseAxis()
         {
             // arrange
-            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1);
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1);
 
             // action
-            var output = NdArray<int>.ReverseAxis(0, input);
+            var output = NdArray<int>.ReverseAxis(0, source);
 
             var s = output.ToString();
 
@@ -1965,10 +1965,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void SwapDim()
         {
             // arrange
-            var input = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
 
             // action
-            var output = NdArray<int>.SwapDim(0, 2, input);
+            var output = NdArray<int>.SwapDim(0, 2, source);
 
             // assert
             CollectionAssert.AreEqual(new[] { 4, 3, 2 }, output.Shape);
@@ -1978,10 +1978,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void LogicalNegate()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 10 });
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 10 });
 
             // action
-            var output = NdArray<bool>.Not(input);
+            var output = NdArray<bool>.Not(source);
 
             // assert
             Assert.IsTrue(NdArray<bool>.All(output));
@@ -2057,13 +2057,13 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void AllElems()
+        public void AllElements()
         {
             // arrange
             var array = NdArray<int>.Arange(HostDevice.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
-            var output = NdArray<int>.AllElems(array);
+            var output = NdArray<int>.AllElements(array);
 
             // assert
             CollectionAssert.AreEqual(Enumerable.Range(0, 9).ToArray(), output);
@@ -2073,12 +2073,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AllAxis()
         {
             // arrange
-            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = false;
+            var source = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = false;
 
             // action
-            var output0 = NdArray<bool>.AllAxis(0, input);
-            var output1 = NdArray<bool>.AllAxis(1, input);
+            var output0 = NdArray<bool>.AllAxis(0, source);
+            var output1 = NdArray<bool>.AllAxis(1, source);
 
             // assert
             Assert.AreEqual(true, output0[0].Value);
@@ -2089,11 +2089,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AllNdArray()
         {
             // arrange
-            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = false;
+            var source = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = false;
 
             // action
-            var output = NdArray<bool>.AllNdArray(input);
+            var output = NdArray<bool>.AllNdArray(source);
 
             // assert
             Assert.AreEqual(false, output[0].Value);
@@ -2103,11 +2103,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void All()
         {
             // arrange
-            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = false;
+            var source = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = false;
 
             // action
-            var output = NdArray<bool>.All(input);
+            var output = NdArray<bool>.All(source);
 
             // assert
             Assert.AreEqual(false, output);
@@ -2117,12 +2117,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AnyAxis()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = true;
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = true;
 
             // action
-            var output0 = NdArray<bool>.AnyAxis(0, input);
-            var output1 = NdArray<bool>.AnyAxis(1, input);
+            var output0 = NdArray<bool>.AnyAxis(0, source);
+            var output1 = NdArray<bool>.AnyAxis(1, source);
 
             // assert
             Assert.AreEqual(true, output0[1].Value);
@@ -2133,11 +2133,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AnyNdArray()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = true;
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = true;
 
             // action
-            var output = NdArray<bool>.AnyNdArray(input);
+            var output = NdArray<bool>.AnyNdArray(source);
 
             // assert
             Assert.AreEqual(true, output[0].Value);
@@ -2147,11 +2147,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Any()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = true;
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = true;
 
             // action
-            var output = NdArray<bool>.Any(input);
+            var output = NdArray<bool>.Any(source);
 
             // assert
             Assert.AreEqual(true, output);
@@ -2161,14 +2161,14 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrueAxis()
         {
             // arrange
-            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = false;
-            input[new[] { 1, 0 }] = false;
-            input[new[] { 1, 3 }] = false;
+            var source = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = false;
+            source[new[] { 1, 0 }] = false;
+            source[new[] { 1, 3 }] = false;
 
             // action
-            var output0 = NdArray<bool>.CountTrueAxis(0, input);
-            var output1 = NdArray<bool>.CountTrueAxis(1, input);
+            var output0 = NdArray<bool>.CountTrueAxis(0, source);
+            var output1 = NdArray<bool>.CountTrueAxis(1, source);
 
             // assert
             Assert.AreEqual(1, output0[0].Value);
@@ -2179,13 +2179,13 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrueNdArray()
         {
             // arrange
-            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = false;
-            input[new[] { 1, 0 }] = false;
-            input[new[] { 1, 3 }] = false;
+            var source = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = false;
+            source[new[] { 1, 0 }] = false;
+            source[new[] { 1, 3 }] = false;
 
             // action
-            var output = NdArray<bool>.CountTrueNdArray(input);
+            var output = NdArray<bool>.CountTrueNdArray(source);
 
             // assert
             Assert.AreEqual(5, output[0].Value);
@@ -2195,13 +2195,13 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrue()
         {
             // arrange
-            var input = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
-            input[new[] { 0, 1 }] = false;
-            input[new[] { 1, 0 }] = false;
-            input[new[] { 1, 3 }] = false;
+            var source = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 2, 4 });
+            source[new[] { 0, 1 }] = false;
+            source[new[] { 1, 0 }] = false;
+            source[new[] { 1, 3 }] = false;
 
             // action
-            var output = NdArray<bool>.CountTrue(input);
+            var output = NdArray<bool>.CountTrue(source);
 
             // assert
             Assert.AreEqual(5, output);
@@ -2226,6 +2226,126 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(1, output[1].Value);
             Assert.AreEqual(0, output[2].Value);
             Assert.AreEqual(1, output[3].Value);
+        }
+
+        [TestMethod]
+        public void ArgMaxAxis()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var output = NdArray<int>.ArgMaxAxis(1, source);
+
+            // assert
+            Assert.AreEqual(3, output[0].Value);
+            Assert.AreEqual(3, output[1].Value);
+        }
+
+        [TestMethod]
+        public void ArgMax()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var output = NdArray<int>.ArgMax(source);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 3 }, output);
+        }
+
+        [TestMethod]
+        public void ArgMinAxis()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var output = NdArray<int>.ArgMinAxis(1, source);
+
+            // assert
+            Assert.AreEqual(0, output[0].Value);
+            Assert.AreEqual(0, output[1].Value);
+        }
+
+        [TestMethod]
+        public void ArgMin()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var output = NdArray<int>.ArgMin(source);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 0, 0 }, output);
+        }
+
+        [TestMethod]
+        public void FindAxis()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var output = NdArray<int>.FindAxis(2, 1, source);
+
+            // assert
+            Assert.AreEqual(2, output[0].Value);
+            Assert.AreEqual(SpecialIdx.NotFound, output[1].Value);
+        }
+
+        [TestMethod]
+        public void TryFind()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            source[new[] { 1, 3 }] = 2;
+
+            // action
+            var output = NdArray<int>.TryFind(2, source);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 0, 1 }, output);
+        }
+
+        [TestMethod]
+        public void TryFind_NotFound()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var output = NdArray<int>.TryFind(10, source);
+
+            // assert
+            Assert.IsTrue(output.Length == 0);
+        }
+
+        [TestMethod]
+        public void Find()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            source[new[] { 1, 3 }] = 2;
+
+            // action
+            var output = NdArray<int>.Find(2, source);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 0, 1 }, output);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Find_NotFound_ThrowException()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+
+            // action
+            var output = NdArray<int>.Find(10, source);
         }
 
         private struct UnKownValueTypeForTestOnly

@@ -232,11 +232,11 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Element-wise finity check (not -Inf, Inf or NaN).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsFinite(NdArray<T> input)
+        public static NdArray<bool> IsFinite(NdArray<T> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<bool, T>(input);
+            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<bool, T>(source);
             preparedTarget.AssertBool();
 
             FillIsFinite(preparedTarget, preparedSource);
@@ -248,7 +248,7 @@ namespace NdArray.NdArrayImpl
         {
             if (typeof(P) == typeof(double) || typeof(P) == typeof(float))
             {
-                var op = ScalarPrimitives.For<P, double>();
+                var op = ScalarPrimitivesRegistry.For<P, double>();
                 P absoluteTolerenceT = op.Convert(1e-8);
                 P relativeTolerenceT = op.Convert(1e-5);
 
