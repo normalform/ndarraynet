@@ -1033,5 +1033,54 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.AreEqual(SpecialIdx.NotFound, targetData[0]);
         }
+
+        [TestMethod]
+        public void Convert()
+        {
+            // arrange
+            var targetData = new double[4];
+            var srcData = new[] { 4, 2, 7, 1 };
+
+            var target = new DataAndLayout<double>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var source = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Convert(target, source);
+
+            // assert
+            Assert.IsInstanceOfType(targetData, typeof(double[]));
+            CollectionAssert.AreEqual(new[] { 4.0, 2.0, 7.0, 1.0}, targetData);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Convert_InvalidConvert_ThrowException()
+        {
+            var targetData = new string[4];
+            var srcData = new[] { 4, 2, 7, 1 };
+
+            var target = new DataAndLayout<string>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var source = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.Convert(target, source);
+        }
+
+        [TestMethod]
+        public void TrueIndices()
+        {
+            // arrange
+            var targetData = new int[4];
+            var srcData = new bool[] { false, true, false, true };
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var source = new DataAndLayout<bool>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.TrueIndices(target, source);
+
+            // assert
+            CollectionAssert.AreEqual(new[] { 1, 3, 1, 3 }, targetData);
+        }
     }
 }

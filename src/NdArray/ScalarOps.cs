@@ -834,6 +834,31 @@ namespace NdArrayNet
             ApplyAxisFold(op, v => v, trgt, src, initial, true, true);
         }
 
+        public static void TrueIndices(DataAndLayout<int> trgt, DataAndLayout<bool> src)
+        {
+            var targetPosItr = new PosIter(trgt.FastAccess);
+            var srcPosItr = new PosIter(src.FastAccess);
+            while (targetPosItr.Active)
+            {
+                if (src.Data[srcPosItr.Addr])
+                {
+                    for (var d = 0; d < src.FastAccess.NumDiensions; d++)
+                    {
+                        trgt.Data[targetPosItr.Addr] = srcPosItr.Pos[d];
+                        targetPosItr.MoveNext();
+                    }
+                }
+                srcPosItr.MoveNext();
+            }
+        }
+
+        public static void Convert<T, TC>(DataAndLayout<T> trgt, DataAndLayout<TC> src)
+        {
+            var p = ScalarPrimitivesRegistry.For<T, TC>();
+            T op(int[] pos, TC v) => p.Convert(v);
+            ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
+        }
+
         internal class InitialOption<TS>
         {
             public InitialOption(bool useValue, TS value = default(TS), DataAndLayout<TS> dataAndLayout = null)
