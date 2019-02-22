@@ -30,30 +30,8 @@
 namespace NdArrayNet
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
-    internal static class ScalarPrimitives
-    {
-        private static Dictionary<Tuple<Type, Type>, object> instances = new Dictionary<Tuple<Type, Type>, object>();
-
-        public static ScalarPrimitives<T, TC> For<T, TC>()
-        {
-            lock (instances)
-            {
-                var types = Tuple.Create(typeof(T), typeof(TC));
-                if (instances.ContainsKey(types))
-                {
-                    return instances[types] as ScalarPrimitives<T, TC>;
-                }
-
-                var sp = new ScalarPrimitives<T, TC>();
-                instances.Add(types, sp);
-                return sp;
-            }
-        }
-    }
 
     internal class ScalarPrimitives<T, TC>
     {

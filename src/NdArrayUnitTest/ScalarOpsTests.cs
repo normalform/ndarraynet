@@ -965,5 +965,73 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             CollectionAssert.AreEqual(new[] { 5, 2, 7, 4 }, targetData);
         }
+
+        [TestMethod]
+        public void ArgMaxLastAxis()
+        {
+            // arrange
+            var targetData = new int[4];
+            var srcData = new[] { 4, 2, 7, 1 };
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.ArgMaxLastAxis(target, src);
+
+            // assert
+            Assert.AreEqual(2, targetData[0]);
+        }
+
+        [TestMethod]
+        public void ArgMinLastAxis()
+        {
+            // arrange
+            var targetData = new int[4];
+            var srcData = new[] { 4, 2, 7, 1 };
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.ArgMinLastAxis(target, src);
+
+            // assert
+            Assert.AreEqual(3, targetData[0]);
+        }
+
+        [TestMethod]
+        public void FindLastAxis()
+        {
+            // arrange
+            var targetData = new int[4];
+            var srcData = new[] { 4, 2, 7, 1 };
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.FindLastAxis(2, target, src);
+
+            // assert
+            Assert.AreEqual(1, targetData[0]);
+        }
+
+        [TestMethod]
+        public void FindLastAxis_Notfound()
+        {
+            // arrange
+            var targetData = new int[4];
+            var srcData = new[] { 4, 2, 7, 1 };
+
+            var target = new DataAndLayout<int>(targetData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+            var src = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
+
+            // action
+            ScalarOps.FindLastAxis(9, target, src);
+
+            // assert
+            Assert.AreEqual(SpecialIdx.NotFound, targetData[0]);
+        }
     }
 }

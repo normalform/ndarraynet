@@ -172,9 +172,9 @@ namespace NdArrayNet
             return target.Relayout(layout);
         }
 
-        public static NdArray<T> operator +(NdArray<T> input) => ElementWiseOperator<T>.UnaryPlus(input);
+        public static NdArray<T> operator +(NdArray<T> source) => ElementWiseOperator<T>.UnaryPlus(source);
 
-        public static NdArray<T> operator -(NdArray<T> input) => ElementWiseOperator<T>.UnaryMinus(input);
+        public static NdArray<T> operator -(NdArray<T> source) => ElementWiseOperator<T>.UnaryMinus(source);
 
         public static NdArray<T> operator +(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Add(lhs, rhs);
 
@@ -245,9 +245,9 @@ namespace NdArrayNet
         /// <summary>
         /// Element-wise logical negation.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> Not(NdArray<bool> input) => LogicalFunction<bool>.Negate(input);
+        public static NdArray<bool> Not(NdArray<bool> source) => LogicalFunction<bool>.Negate(source);
 
         /// <summary>
         /// Element-wise loigcal and.
@@ -276,65 +276,65 @@ namespace NdArrayNet
         /// <summary>
         /// Checks if all elements of the NdArray are true.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
-        public static bool All(NdArray<bool> input) => LogicalFunction<bool>.All(input);
+        public static bool All(NdArray<bool> source) => LogicalFunction<bool>.All(source);
 
         /// <summary>
         /// Checks if all elements of the NdArray are true returning the result as a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> AllNdArray(NdArray<bool> input) => LogicalFunction<bool>.AllNdArray(input);
+        public static NdArray<bool> AllNdArray(NdArray<bool> source) => LogicalFunction<bool>.AllNdArray(source);
 
         /// <summary>
         /// Checks if all elements along the specified axis are true.
         /// </summary>
         /// <param name="axis">The axis to check along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> AllAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AllAxis(axis, input);
+        public static NdArray<bool> AllAxis(int axis, NdArray<bool> source) => LogicalFunction<bool>.AllAxis(axis, source);
 
         /// <summary>
         /// Checks if any elements of the NdArray are true.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
-        public static bool Any(NdArray<bool> input) => LogicalFunction<bool>.Any(input);
+        public static bool Any(NdArray<bool> source) => LogicalFunction<bool>.Any(source);
 
         /// <summary>
         /// Checks if any element of the NdArray is true returning the result as a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> AnyNdArray(NdArray<bool> input) => LogicalFunction<bool>.AnyNdArray(input);
+        public static NdArray<bool> AnyNdArray(NdArray<bool> source) => LogicalFunction<bool>.AnyNdArray(source);
 
         /// <summary>
         /// Checks if any element along the specified axis is true.
         /// </summary>
         /// <param name="axis">The axis to check along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> AnyAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.AnyAxis(axis, input);
+        public static NdArray<bool> AnyAxis(int axis, NdArray<bool> source) => LogicalFunction<bool>.AnyAxis(axis, source);
 
         /// <summary>Counts the elements being true.</summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
-        public static int CountTrue(NdArray<bool> input) => LogicalFunction<bool>.CountTrue(input);
+        public static int CountTrue(NdArray<bool> source) => LogicalFunction<bool>.CountTrue(source);
 
         /// <summary>
         /// Counts the elements being true returning the result as a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<int> CountTrueNdArray(NdArray<bool> input) => LogicalFunction<bool>.CountTrueNdArray(input);
+        public static NdArray<int> CountTrueNdArray(NdArray<bool> source) => LogicalFunction<bool>.CountTrueNdArray(source);
 
         /// <summary>
         /// Counts the elements being true along the specified axis.
         /// </summary>
         /// <param name="axis">The axis the count along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
-        public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> input) => LogicalFunction<bool>.CountTrueAxis(axis, input);
+        /// <param name="source">The NdArray containing the source values.</param>
+        public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> source) => LogicalFunction<bool>.CountTrueAxis(axis, source);
 
         /// <summary>
         /// Element-wise choice between two sources depending on a condition.
@@ -408,16 +408,16 @@ namespace NdArrayNet
         /// <summary>
         /// Element-wise finity check (not -Inf, Inf or NaN).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsFinite(NdArray<T> input) => ComparisonFunction<T>.IsFinite(input);
+        public static NdArray<bool> IsFinite(NdArray<T> source) => ComparisonFunction<T>.IsFinite(source);
 
         /// <summary>
         /// Checks that all elements of the NdArray are finite.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>true if all elements are finite, otherwise false.</returns>
-        public static bool AllFinite(NdArray<T> input) => All(ComparisonFunction<T>.IsFinite(input));
+        public static bool AllFinite(NdArray<T> source) => All(ComparisonFunction<T>.IsFinite(source));
 
         /// <summary>
         /// Flattens the NdArray into a (one-dimensional) vector.
@@ -439,79 +439,79 @@ namespace NdArrayNet
         /// <summary>
         /// Element-wise absolute value.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Abs(NdArray<T> input) => ElementWiseMathFunction<T>.Abs(input);
+        public static NdArray<T> Abs(NdArray<T> source) => ElementWiseMathFunction<T>.Abs(source);
 
         /// <summary>
         /// Element-wise arccosine (inverse cosine).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Acos(NdArray<T> input) => ElementWiseMathFunction<T>.Acos(input);
+        public static NdArray<T> Acos(NdArray<T> source) => ElementWiseMathFunction<T>.Acos(source);
 
         /// <summary>
         /// Element-wise arcsine (inverse sine).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Asin(NdArray<T> input) => ElementWiseMathFunction<T>.Asin(input);
+        public static NdArray<T> Asin(NdArray<T> source) => ElementWiseMathFunction<T>.Asin(source);
 
         /// <summary>
         /// Element-wise arctanget (inverse tangent).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Atan(NdArray<T> input) => ElementWiseMathFunction<T>.Atan(input);
+        public static NdArray<T> Atan(NdArray<T> source) => ElementWiseMathFunction<T>.Atan(source);
 
         /// <summary>
         /// Element-wise ceiling (round towards positive infinity).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Ceiling(NdArray<T> input) => ElementWiseMathFunction<T>.Ceiling(input);
+        public static NdArray<T> Ceiling(NdArray<T> source) => ElementWiseMathFunction<T>.Ceiling(source);
 
         /// <summary>
         /// Element-wise cosine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Cos(NdArray<T> input) => ElementWiseMathFunction<T>.Cos(input);
+        public static NdArray<T> Cos(NdArray<T> source) => ElementWiseMathFunction<T>.Cos(source);
 
         /// <summary>
         /// Element-wise hyperbolic cosine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Cosh(NdArray<T> input) => ElementWiseMathFunction<T>.Cosh(input);
+        public static NdArray<T> Cosh(NdArray<T> source) => ElementWiseMathFunction<T>.Cosh(source);
 
         /// <summary>
         /// Element-wise exponential function.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Exp(NdArray<T> input) => ElementWiseMathFunction<T>.Exp(input);
+        public static NdArray<T> Exp(NdArray<T> source) => ElementWiseMathFunction<T>.Exp(source);
 
         /// <summary>
         /// Element-wise floor (round towards negative infinity).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Floor(NdArray<T> input) => ElementWiseMathFunction<T>.Floor(input);
+        public static NdArray<T> Floor(NdArray<T> source) => ElementWiseMathFunction<T>.Floor(source);
 
         /// <summary>
         /// Element-wise natural logarithm.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Log(NdArray<T> input) => ElementWiseMathFunction<T>.Log(input);
+        public static NdArray<T> Log(NdArray<T> source) => ElementWiseMathFunction<T>.Log(source);
 
         /// <summary>
         /// Element-wise common logarithm.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Log10(NdArray<T> input) => ElementWiseMathFunction<T>.Log10(input);
+        public static NdArray<T> Log10(NdArray<T> source) => ElementWiseMathFunction<T>.Log10(source);
 
         /// <summary>
         /// Element-wise maximum.
@@ -547,238 +547,238 @@ namespace NdArrayNet
         /// <summary>
         /// Element-wise sign.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sign(NdArray<T> input) => ElementWiseMathFunction<T>.Sign(input);
+        public static NdArray<T> Sign(NdArray<T> source) => ElementWiseMathFunction<T>.Sign(source);
 
         /// <summary>
         /// Element-wise sine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sin(NdArray<T> input) => ElementWiseMathFunction<T>.Sin(input);
+        public static NdArray<T> Sin(NdArray<T> source) => ElementWiseMathFunction<T>.Sin(source);
 
         /// <summary>
         /// Element-wise hyperbolic sine.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sinh(NdArray<T> input) => ElementWiseMathFunction<T>.Sinh(input);
+        public static NdArray<T> Sinh(NdArray<T> source) => ElementWiseMathFunction<T>.Sinh(source);
 
         /// <summary>
         /// Element-wise square root.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Sqrt(NdArray<T> input) => ElementWiseMathFunction<T>.Sqrt(input);
+        public static NdArray<T> Sqrt(NdArray<T> source) => ElementWiseMathFunction<T>.Sqrt(source);
 
         /// <summary>
         /// Element-wise tangent.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Tan(NdArray<T> input) => ElementWiseMathFunction<T>.Tan(input);
+        public static NdArray<T> Tan(NdArray<T> source) => ElementWiseMathFunction<T>.Tan(source);
 
         /// <summary>
         /// Element-wise hyperbolic tangent.
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Tanh(NdArray<T> input) => ElementWiseMathFunction<T>.Tanh(input);
+        public static NdArray<T> Tanh(NdArray<T> source) => ElementWiseMathFunction<T>.Tanh(source);
 
         /// <summary>
         /// Element-wise truncation (rounding towards zero).
         /// </summary>
-        /// <param name="input">The NdArray to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Truncate(NdArray<T> input) => ElementWiseMathFunction<T>.Truncate(input);
+        public static NdArray<T> Truncate(NdArray<T> source) => ElementWiseMathFunction<T>.Truncate(source);
 
         /// <summary>
         /// Calculates the maximum value of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to calculate the maximum along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MaxAxis(int axis, NdArray<T> input) => ReductionFunction<T>.MaxAxis(axis, input);
+        public static NdArray<T> MaxAxis(int axis, NdArray<T> source) => ReductionFunction<T>.MaxAxis(axis, source);
 
         /// <summary>
         /// Calculates the minimum value of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to calculate the minimum along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MinAxis(int axis, NdArray<T> input) => ReductionFunction<T>.MinAxis(axis, input);
+        public static NdArray<T> MinAxis(int axis, NdArray<T> source) => ReductionFunction<T>.MinAxis(axis, source);
 
         /// <summary>
         /// Calculates the maximum all elements returning a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MaxNdArray(NdArray<T> input) => ReductionFunction<T>.MaxNdArray(input);
+        public static NdArray<T> MaxNdArray(NdArray<T> source) => ReductionFunction<T>.MaxNdArray(source);
 
         /// <summary>
         /// Calculates the maximum of all elements.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
-        public static T Max(NdArray<T> input) => MaxNdArray(input).Value;
+        public static T Max(NdArray<T> source) => MaxNdArray(source).Value;
 
         /// <summary>
         /// Calculates the minimum all elements returning a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MinNdArray(NdArray<T> input) => ReductionFunction<T>.MinNdArray(input);
+        public static NdArray<T> MinNdArray(NdArray<T> source) => ReductionFunction<T>.MinNdArray(source);
 
         /// <summary>
         /// Calculates the minimum of all elements.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
-        public static T Min(NdArray<T> input) => MinNdArray(input).Value;
+        public static T Min(NdArray<T> source) => MinNdArray(source).Value;
 
         /// <summary>
         /// Sums the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to sum along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> SumAxis(int axis, NdArray<T> input) => ReductionFunction<T>.SumAxis(axis, input);
+        public static NdArray<T> SumAxis(int axis, NdArray<T> source) => ReductionFunction<T>.SumAxis(axis, source);
 
         /// <summary>
         /// Sums all elements returning a NdArray.
         /// </summary>
-        /// <param name="sinputrc">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> SumNdArray(NdArray<T> input) => ReductionFunction<T>.SumNdArray(input);
+        public static NdArray<T> SumNdArray(NdArray<T> source) => ReductionFunction<T>.SumNdArray(source);
 
         /// <summary>
         /// Sums all elements.
         /// </summary>
-        /// <param name="sinputrc">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar the result of this operation.</returns>
-        public static T Sum(NdArray<T> input) => SumNdArray(input).Value;
+        public static T Sum(NdArray<T> source) => SumNdArray(source).Value;
 
         /// <summary>
         /// Calculates the mean of the elements along the specified axis
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> MeanAxis(int axis, NdArray<T> input) => ReductionFunction<T>.MeanAxis(axis, input);
+        public static NdArray<T> MeanAxis(int axis, NdArray<T> source) => ReductionFunction<T>.MeanAxis(axis, source);
 
         /// <summary>
         /// Calculates the mean of the NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>The mean estimate.</returns>
-        public static T Mean(NdArray<T> input) => ReductionFunction<T>.Mean(input);
+        public static T Mean(NdArray<T> source) => ReductionFunction<T>.Mean(source);
 
         /// <summary>
         /// Calculates the product of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to calculate the product along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> ProductAxis(int axis, NdArray<T> input) => ReductionFunction<T>.ProductAxis(axis, input);
+        public static NdArray<T> ProductAxis(int axis, NdArray<T> source) => ReductionFunction<T>.ProductAxis(axis, source);
 
         /// <summary>
         /// Calculates the product all elements returning a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> ProductNdArray(NdArray<T> input) => ReductionFunction<T>.ProductNdArray(input);
+        public static NdArray<T> ProductNdArray(NdArray<T> source) => ReductionFunction<T>.ProductNdArray(source);
 
         /// <summary>
         /// Calculates the product of all elements.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
-        public static T Product(NdArray<T> input) => ProductNdArray(input).Value;
+        public static T Product(NdArray<T> source) => ProductNdArray(source).Value;
 
         /// <summary>
         /// Calculates the variance of the elements along the specified axis.
         /// The default delta degrees of freedom is 0.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> VarAxis(int axis, NdArray<T> input) => ReductionFunction<T>.VarAxis(axis, input);
+        public static NdArray<T> VarAxis(int axis, NdArray<T> source) => ReductionFunction<T>.VarAxis(axis, source);
 
         /// <summary>
         /// Calculates the variance of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <param name="ddof">The delta degrees of freedom.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> VarAxis(int axis, NdArray<T> input, T deltaDegreeOfFreedom) => ReductionFunction<T>.VarAxis(axis, input, deltaDegreeOfFreedom);
+        public static NdArray<T> VarAxis(int axis, NdArray<T> source, T deltaDegreeOfFreedom) => ReductionFunction<T>.VarAxis(axis, source, deltaDegreeOfFreedom);
 
         /// <summary>
         /// Calculates the variance of the NdArray.
         /// The default delta degrees of freedom is 0.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>The variance estimate.</returns>
-        public static T Var(NdArray<T> input) => VarAxis(0, Flattern(input)).Value;
+        public static T Var(NdArray<T> source) => VarAxis(0, Flattern(source)).Value;
 
         /// <summary>
         /// Calculates the variance of the NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <param name="ddof">The delta degrees of freedom.</param>
         /// <returns>The variance estimate.</returns>
-        public static T Var(NdArray<T> input, T deltaDegreeOfFreedom) => VarAxis(0, Flattern(input), deltaDegreeOfFreedom).Value;
+        public static T Var(NdArray<T> source, T deltaDegreeOfFreedom) => VarAxis(0, Flattern(source), deltaDegreeOfFreedom).Value;
 
         /// <summary>
         /// Calculates the variance of the elements along the specified axis.
         /// The default delta degrees of freedom is 0.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> StdAxis(int axis, NdArray<T> input) => ReductionFunction<T>.StdAxis(axis, input);
+        public static NdArray<T> StdAxis(int axis, NdArray<T> source) => ReductionFunction<T>.StdAxis(axis, source);
 
         /// <summary>
         /// Calculates the variance of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <param name="ddof">The delta degrees of freedom.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> StdAxis(int axis, NdArray<T> input, T deltaDegreeOfFreedom) => ReductionFunction<T>.StdAxis(axis, input, deltaDegreeOfFreedom);
+        public static NdArray<T> StdAxis(int axis, NdArray<T> source, T deltaDegreeOfFreedom) => ReductionFunction<T>.StdAxis(axis, source, deltaDegreeOfFreedom);
 
         /// <summary>
         /// Calculates the variance of the NdArray.
         /// The default delta degrees of freedom is 0.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>The variance estimate.</returns>
-        public static T Std(NdArray<T> input) => StdAxis(0, Flattern(input)).Value;
+        public static T Std(NdArray<T> source) => StdAxis(0, Flattern(source)).Value;
 
         /// <summary>
         /// Calculates the variance of the NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <param name="ddof">The delta degrees of freedom.</param>
         /// <returns>The variance estimate.</returns>
-        public static T Std(NdArray<T> input, T deltaDegreeOfFreedom) => StdAxis(0, Flattern(input), deltaDegreeOfFreedom).Value;
+        public static T Std(NdArray<T> source, T deltaDegreeOfFreedom) => StdAxis(0, Flattern(source), deltaDegreeOfFreedom).Value;
 
         /// <summary>
         /// Calculates the trace along the specified axes.
         /// </summary>
         /// <param name="axis1">The first axis of the diagonal to compute the trace along.</param>
         /// <param name="axis2">The second axis of the diagonal to compute the trace along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> TraceAxis(int axis1, int axis2, NdArray<T> input) => ReductionFunction<T>.TraceAxis(axis1, axis2, input);
+        public static NdArray<T> TraceAxis(int axis1, int axis2, NdArray<T> source) => ReductionFunction<T>.TraceAxis(axis1, axis2, source);
 
         /// <summary>
         /// Calculates the trace of the matrix.
         /// </summary>
-        /// <param name="input">A square matrix.</param>
+        /// <param name="source">A square matrix.</param>
         /// <returns>The trace of the matrix.</returns>
-        public static NdArray<T> Trace(NdArray<T> input) => ReductionFunction<T>.Trace(input);
+        public static NdArray<T> Trace(NdArray<T> source) => ReductionFunction<T>.Trace(source);
 
         /// <summary>
         /// Returns a view of the diagonal along the given axes.
@@ -800,83 +800,83 @@ namespace NdArrayNet
         /// Concatenates NdArrays along an axis.
         /// </summary>
         /// <param name="axis">The concatenation axis.</param>
-        /// <param name="inputs">Sequence of NdArrays to concatenate.</param>
+        /// <param name="source">Sequence of NdArrays to concatenate.</param>
         /// <returns>The concatenated NdArray.</returns>
-        public static NdArray<T> Concat(int axis, NdArray<T>[] inputs) => NdArrayOperator<T>.Concat(axis, inputs);
+        public static NdArray<T> Concat(int axis, NdArray<T>[] source) => NdArrayOperator<T>.Concat(axis, source);
 
         /// <summary>Returns a copy of the NdArray.</summary>
-        /// <param name="input">The NdArray to copy.</param>
+        /// <param name="source">The NdArray to copy.</param>
         /// <param name="order">The memory layout of the copy. (default: row-major)</param>
         /// <returns>A copy of the NdArray.</returns>
-        public static NdArray<T> Copy(NdArray<T> input, Order order = Order.RowMajor) => NdArrayOperator<T>.Copy(input, order);
+        public static NdArray<T> Copy(NdArray<T> source, Order order = Order.RowMajor) => NdArrayOperator<T>.Copy(source, order);
 
         /// <summary
         /// >Creates a NdArray with the specified diagonal along the given axes.
         /// </summary>
         /// <param name="axis1">The first dimension of the diagonal.</param>
         /// <param name="axis2">The seconds dimension of the diagonal.</param>
-        /// <param name="input">The values for the diagonal.</param>
+        /// <param name="source">The values for the diagonal.</param>
         /// <returns>A NdArray having the values <paramref name="a"/> on the diagonal specified by the axes
-        public static NdArray<T> DiagMatAxis(int axis1, int axis2, NdArray<T> input) => NdArrayOperator<T>.DiagMatAxis(axis1, axis2, input);
+        public static NdArray<T> DiagMatAxis(int axis1, int axis2, NdArray<T> source) => NdArrayOperator<T>.DiagMatAxis(axis1, axis2, source);
 
         /// <summary>
         /// Creates a matrix with the specified diagonal.
         /// </summary>
-        /// <param name="input">The vector containing the values for the diagonal.</param>
-        /// <returns>A matrix having the values <paramref name="input"/> on its diagonal.</returns>
-        public static NdArray<T> DiagMat(NdArray<T> input) => NdArrayOperator<T>.DiagMat(input);
+        /// <param name="source">The vector containing the values for the diagonal.</param>
+        /// <returns>A matrix having the values <paramref name="source"/> on its diagonal.</returns>
+        public static NdArray<T> DiagMat(NdArray<T> source) => NdArrayOperator<T>.DiagMat(source);
 
         /// <summary>
         /// Calculates the difference between adjoining elements along the specified axes.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
-        /// <returns>The differences NdArray. It has one element less in dimension <paramref name="axis"/> as the input NdArray.</returns>
-        public static NdArray<T> DiffAxis(int axis, NdArray<T> input) => NdArrayOperator<T>.DiffAxis(axis, input);
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>The differences NdArray. It has one element less in dimension <paramref name="axis"/> as the source NdArray.</returns>
+        public static NdArray<T> DiffAxis(int axis, NdArray<T> source) => NdArrayOperator<T>.DiffAxis(axis, source);
 
         /// <summary>
         /// Calculates the difference between adjoining elements of the vector.
         /// </summary>
-        /// <param name="input">The vector containing the source values.</param>
-        /// <returns>The differences vector. It has one element less than the input NdArray.</returns>
-        public static NdArray<T> Diff(NdArray<T> input) => NdArrayOperator<T>.Diff(input);
+        /// <param name="source">The vector containing the source values.</param>
+        /// <returns>The differences vector. It has one element less than the source NdArray.</returns>
+        public static NdArray<T> Diff(NdArray<T> source) => NdArrayOperator<T>.Diff(source);
 
         /// <summary>
         /// Transpose of a matrix.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The result of this operation.</returns>
-        public static NdArray<T> Transpos(NdArray<T> input) => NdArrayOperator<T>.Transpos(input);
+        public static NdArray<T> Transpos(NdArray<T> source) => NdArrayOperator<T>.Transpos(source);
 
         /// <summary>
         /// Pads the NdArray from the left with size-one dimensions until it has at least the specified number of
         /// dimensions.
         /// </summary>
         /// <param name="minNumDim">The minimum number of dimensions.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least <paramref name="minNumDim"/> dimensions.</returns>
-        public static NdArray<T> AtLeastNd(int minNumDim, NdArray<T> input) => ShapeFunction<T>.AtLeastNd(minNumDim, input);
+        public static NdArray<T> AtLeastNd(int minNumDim, NdArray<T> source) => ShapeFunction<T>.AtLeastNd(minNumDim, source);
 
         /// <summary>
         /// Pads the NdArray from the left with size-one dimensions until it has at least one dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least one dimensions.</returns>
-        public static NdArray<T> AtLeast1d(NdArray<T> input) => ShapeFunction<T>.AtLeast1d(input);
+        public static NdArray<T> AtLeast1d(NdArray<T> source) => ShapeFunction<T>.AtLeast1d(source);
 
         /// <summary>
         /// Pads the NdArray from the left with size-two dimensions until it has at least two dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least two dimensions.</returns>
-        public static NdArray<T> AtLeast2d(NdArray<T> input) => ShapeFunction<T>.AtLeast2d(input);
+        public static NdArray<T> AtLeast2d(NdArray<T> source) => ShapeFunction<T>.AtLeast2d(source);
 
         /// <summary>
         /// Pads the NdArray from the left with size-three dimensions until it has at least three dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least three dimensions.</returns>
-        public static NdArray<T> AtLeast3d(NdArray<T> input) => ShapeFunction<T>.AtLeast3d(input);
+        public static NdArray<T> AtLeast3d(NdArray<T> source) => ShapeFunction<T>.AtLeast3d(source);
 
         /// <summary>
         /// Broadcast a dimension to a specified size.
@@ -885,15 +885,15 @@ namespace NdArrayNet
         /// <param name="size">The size to broadcast to.</param>
         /// <param name="a">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> BroadCastDim(int dim, int size, NdArray<T> input) => ShapeFunction<T>.BroadCastDim(dim, size, input);
+        public static NdArray<T> BroadCastDim(int dim, int size, NdArray<T> source) => ShapeFunction<T>.BroadCastDim(dim, size, source);
 
         /// <summary>
         /// Broadcasts the specified NdArray to the specified shape.
         /// </summary>
         /// <param name="shp">The target shape.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>NdArray of shape <paramref name="shp"/>.</returns>
-        public static NdArray<TA> BroadCastTo<TA>(int[] shp, NdArray<TA> input) => ShapeFunction<TA>.BroadCastTo(shp, input);
+        public static NdArray<TA> BroadCastTo<TA>(int[] shp, NdArray<TA> source) => ShapeFunction<TA>.BroadCastTo(shp, source);
 
         /// <summary>
         /// Broadcasts all specified NdArrays to have the same shape.
@@ -951,52 +951,52 @@ namespace NdArrayNet
         /// <summary>
         /// Removes the first dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> CutLeft(NdArray<T> input) => ShapeFunction<T>.CutLeft(input);
+        public static NdArray<T> CutLeft(NdArray<T> source) => ShapeFunction<T>.CutLeft(source);
 
         /// <summary>
         /// Removes the last dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> CutRight(NdArray<T> input) => ShapeFunction<T>.CutRight(input);
+        public static NdArray<T> CutRight(NdArray<T> source) => ShapeFunction<T>.CutRight(source);
 
         /// <summary>
         /// Flattens the NdArray into a (one-dimensional) vector.
         /// </summary>
         /// <param name="a">The NdArray to operate on.</param>
         /// <returns>A vector.</returns>
-        public static NdArray<T> Flatten(NdArray<T> input) => ShapeFunction<T>.Flatten(input);
+        public static NdArray<T> Flatten(NdArray<T> source) => ShapeFunction<T>.Flatten(source);
 
         /// <summary>
         /// Insert a dimension of size one before the specifed dimension.
         /// </summary>
         /// <param name="axis">The dimension to insert before.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> InsertAxis(int axis, NdArray<T> input) => ShapeFunction<T>.InsertAxis(axis, input);
+        public static NdArray<T> InsertAxis(int axis, NdArray<T> source) => ShapeFunction<T>.InsertAxis(axis, source);
 
         /// <summary>
         /// Checks if the specified NdArray is broadcasted in at least one dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>true if at least one dimension is broadcasted, otherwise false.</returns>
-        public static bool IsBroadcasted(NdArray<T> input) => ShapeFunction<T>.IsBroadcasted(input);
+        public static bool IsBroadcasted(NdArray<T> source) => ShapeFunction<T>.IsBroadcasted(source);
 
         /// <summary>
         /// Insert a dimension of size one as the first dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> PadLeft(NdArray<T> input) => ShapeFunction<T>.PadLeft(input);
+        public static NdArray<T> PadLeft(NdArray<T> source) => ShapeFunction<T>.PadLeft(source);
 
         /// <summary>
         /// Append a dimension of size one after the last dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> PadRight(NdArray<T> input) => ShapeFunction<T>.PadRight(input);
+        public static NdArray<T> PadRight(NdArray<T> source) => ShapeFunction<T>.PadRight(source);
 
         /// <summary>
         /// Pads all specified NdArrays to have the same shape.
@@ -1026,41 +1026,99 @@ namespace NdArrayNet
         /// Permutes the axes as specified.
         /// </summary>
         /// <param name="permut">The permutation to apply to the dimensions of NdArray.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions permuted.</returns>
-        public static NdArray<T> PermuteAxes(int[] permut, NdArray<T> input) => ShapeFunction<T>.PermuteAxes(permut, input);
+        public static NdArray<T> PermuteAxes(int[] permut, NdArray<T> source) => ShapeFunction<T>.PermuteAxes(permut, source);
 
         /// <summary>
         /// Reverses the elements in the specified dimension.
         /// </summary>
         /// <param name="axis">The axis to reverse.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions Reversed.</returns>
-        public static NdArray<T> ReverseAxis(int axis, NdArray<T> input) => ShapeFunction<T>.ReverseAxis(axis, input);
+        public static NdArray<T> ReverseAxis(int axis, NdArray<T> source) => ShapeFunction<T>.ReverseAxis(axis, source);
 
         /// <summary>
         /// Swaps the specified dimensions of the NdArray.
         /// </summary>
         /// <param name="axis1">The dimension to swap.</param>
         /// <param name="axis2">The dimension to swap with.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions swapped.</returns>
-        public static NdArray<T> SwapDim(int axis1, int axis2, NdArray<T> input) => ShapeFunction<T>.SwapDim(axis1, axis2, input);
+        public static NdArray<T> SwapDim(int axis1, int axis2, NdArray<T> source) => ShapeFunction<T>.SwapDim(axis1, axis2, source);
 
-        public static int[][] AllIndex(NdArray<T> input)
-        {
-            return Layout.AllIndex(input.Layout);
-        }
+        /// <summary>
+        /// Gets a sequence of all indices to enumerate all elements within the NdArray.
+        /// </summary>
+        /// <param name="source">The NdArray to operate on.</param>
+        /// <returns>Sequence of indicies.</returns>
+        public static int[][] AllIndex(NdArray<T> source) => IndexFunction<T>.AllIndex(source);
 
-        public static T[] AllElems(NdArray<T> input)
-        {
-            var allIdx = AllIndex(input);
-            return allIdx.Select(idx => input[idx]).ToArray();
-        }
+        /// <summary>
+        /// Gets a sequence of all all elements within the NdArray.</summary>
+        /// <param name="source">The NdArray to operate on.</param>
+        /// <returns>Sequence of elements.</returns>
+        public static T[] AllElems(NdArray<T> source) => IndexFunction<T>.AllElems(source);
 
-        public void FillUnaryPlus(NdArray<T> input) => ElementWiseOperator<T>.FillUnaryPlus(this, input);
+        /// <summary>
+        /// Finds the index of the maximum value along the specified axis.
+        /// </summary>
+        /// <param name="axis">The axis to calculate the maximum along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<int> ArgMaxAxis(int axis, NdArray<T> source) => IndexFunction<T>.ArgMaxAxis(axis, source);
 
-        public void FillUnaryMinum(NdArray<T> input) => ElementWiseOperator<T>.FillUnaryMinus(this, input);
+        /// <summary>
+        /// Finds the indicies of the maximum value of the NdArray.
+        /// </summary>
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>The indices of the position of the maximum value.</returns>
+        public static int[] ArgMax(NdArray<T> source) => IndexFunction<T>.ArgMax(source);
+
+        /// <summary>
+        /// Finds the index of the minimum value along the specified axis.
+        /// </summary>
+        /// <param name="axis">The axis to calculate the minimum along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<int> ArgMinAxis(int axis, NdArray<T> source) => IndexFunction<T>.ArgMinAxis(axis, source);
+
+        /// <summary>
+        /// Finds the indicies of the minimum value of the NdArray.
+        /// </summary>
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>The indices of the position of the minimum value.</returns>
+        public static int[] ArgMin(NdArray<T> source) => IndexFunction<T>.ArgMin(source);
+
+        /// <summary>
+        /// Finds the first occurence of the specfied value along the specified axis and returns its index.
+        /// </summary>
+        /// <param name="value">The value to find.</param>
+        /// <param name="axis">The axis to find the value along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>A new NdArray containing the indices of the first occurence of <paramref name="value"/>.</returns>
+        public static NdArray<int> FindAxis(T value, int axis, NdArray<T> source) => IndexFunction<T>.FindAxis(value, axis, source);
+
+        /// <summary>
+        /// Finds the first occurence of the specfied value along the specified axis and returns its index.
+        /// </summary>
+        /// <param name="value">The value to find.</param>
+        /// <param name="axis">The axis to find the value along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>A new NdArray containing the indices of the first occurence of <paramref name="value"/>.</returns>
+        public static int[] TryFind(T value, NdArray<T> source) => IndexFunction<T>.TryFind(value, source);
+
+        /// <summary>
+        /// Finds the first occurence of the specfied value and returns its indices.
+        /// </summary>
+        /// <param name="value">The value to find.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        /// <returns>The indices of the value.</returns>
+        public static int[] Find(T value, NdArray<T> source) => IndexFunction<T>.Find(value, source);
+
+        public void FillUnaryPlus(NdArray<T> source) => ElementWiseOperator<T>.FillUnaryPlus(this, source);
+
+        public void FillUnaryMinum(NdArray<T> source) => ElementWiseOperator<T>.FillUnaryMinus(this, source);
 
         public void FillAdd(NdArray<T> lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillAdd(this, lhs, rhs);
 
@@ -1344,6 +1402,28 @@ namespace NdArrayNet
         /// <param name="axis">The axis to calculate the product along.</param>
         /// <param name="source">The tensor containing the source values.</param>
         public void FillProductAxis(int axis, NdArray<T> source) => ReductionFunction<T>.FillProductAxis(this, axis, source);
+
+        /// <summary>
+        /// Finds the index of the maximum value along the specified axis and writes it into this NdArray.
+        /// </summary>
+        /// <param name="axis">The axis to calculate the maximum along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillArgMaxAxis(int axis, NdArray<T> source) => IndexFunction<T>.FillArgMaxAxis((dynamic)this, axis, source);
+
+        /// <summary>
+        /// Finds the index of the minimum value along the specified axis and writes it into this NdArray.
+        /// </summary>
+        /// <param name="axis">The axis to calculate the minimum along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillArgMinAxis(int axis, NdArray<T> source) => IndexFunction<T>.FillArgMinAxis((dynamic)this, axis, source);
+
+        /// <summary>
+        /// Finds the first occurence of the specfied value along the specified axis and write its index into this NdArray.
+        /// </summary>
+        /// <param name="value">The value to find.</param>
+        /// <param name="axis">The axis to find the value along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public void FillFindAxis(T value, int axis, NdArray<T> source) => IndexFunction<T>.FillFindAxis((dynamic)this, value, axis, source);
 
         public override string ToString()
         {

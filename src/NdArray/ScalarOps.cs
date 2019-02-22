@@ -417,7 +417,7 @@ namespace NdArrayNet
 
         public static void FillIncrementing<T>(T start, T step, DataAndLayout<T> trgt)
         {
-            var p = ScalarPrimitives.For<T, int>();
+            var p = ScalarPrimitivesRegistry.For<T, int>();
             T op(int[] pos) => p.Add(start, p.Multiply(step, p.Convert(pos[0])));
             ApplyNoaryOp(op, trgt, isIndexed: true, useThreads: true);
         }
@@ -436,7 +436,7 @@ namespace NdArrayNet
 
         public static void Add<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a, T b) => p.Add(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -444,7 +444,7 @@ namespace NdArrayNet
 
         public static void Subtract<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a, T b) => p.Subtract(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -452,7 +452,7 @@ namespace NdArrayNet
 
         public static void Multiply<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a, T b) => p.Multiply(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -460,7 +460,7 @@ namespace NdArrayNet
 
         public static void Divide<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a, T b) => p.Divide(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -468,7 +468,7 @@ namespace NdArrayNet
 
         public static void Modulo<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a, T b) => p.Modulo(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -476,7 +476,7 @@ namespace NdArrayNet
 
         public static void Equal<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             bool op(int[] pos, T a, T b) => p.Equal(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -484,7 +484,7 @@ namespace NdArrayNet
 
         public static void NotEqual<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             bool op(int[] pos, T a, T b) => p.NotEqual(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -492,7 +492,7 @@ namespace NdArrayNet
 
         public static void Less<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             bool op(int[] pos, T a, T b) => p.Less(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -500,7 +500,7 @@ namespace NdArrayNet
 
         public static void LessOrEqual<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             bool op(int[] pos, T a, T b) => p.LessOrEqual(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -508,7 +508,7 @@ namespace NdArrayNet
 
         public static void Greater<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
         {
-            var p = ScalarPrimitives.For<TP, TP>();
+            var p = ScalarPrimitivesRegistry.For<TP, TP>();
             bool op(int[] pos, TP a, TP b) => p.Greater(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -516,7 +516,7 @@ namespace NdArrayNet
 
         public static void GreaterOrEqual<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src1, DataAndLayout<TP> src2)
         {
-            var p = ScalarPrimitives.For<TP, TP>();
+            var p = ScalarPrimitivesRegistry.For<TP, TP>();
             bool op(int[] pos, TP a, TP b) => p.GreaterOrEqual(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -524,84 +524,84 @@ namespace NdArrayNet
 
         public static void UnaryPlus<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.UnaryPlus(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void UnaryMinus<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.UnaryMinus(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Abs<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Abs(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Acos<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Acos(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Asin<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Asin(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Atan<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Atan(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Ceiling<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Ceiling(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Cos<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Cos(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Cosh<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Cosh(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Exp<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Exp(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Floor<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Floor(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Maximum<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a, T b) => p.Maximum(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -609,7 +609,7 @@ namespace NdArrayNet
 
         public static void Minimum<T>(DataAndLayout<T> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a, T b) => p.Minimum(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
@@ -617,77 +617,77 @@ namespace NdArrayNet
 
         public static void Log<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Log(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Log10<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Log10(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Pow<T>(DataAndLayout<T> trgt, DataAndLayout<T> lhs, DataAndLayout<T> rhs)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T l, T t) => p.Power(l, t);
             ApplyBinaryOp(op, trgt, lhs, rhs, isIndexed: false, useThreads: true);
         }
 
         public static void Round<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Round(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Sign<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Sign(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Sin<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Sin(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Sinh<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Sinh(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Sqrt<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Sqrt(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Tan<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Tan(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Tanh<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Tanh(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void Truncate<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T op(int[] pos, T a) => p.Truncate(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
@@ -710,14 +710,14 @@ namespace NdArrayNet
 
         public static void IsFinite<TP>(DataAndLayout<bool> trgt, DataAndLayout<TP> src)
         {
-            var p = ScalarPrimitives.For<TP, TP>();
+            var p = ScalarPrimitivesRegistry.For<TP, TP>();
             bool op(int[] pos, TP a) => p.IsFinite(a);
             ApplyUnaryOp(op, trgt, src, isIndexed: false, useThreads: true);
         }
 
         public static void MaxLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Greater(res, v) ? res : v;
 
             var initial = new InitialOption<T>(true, Primitives.MinValue<T>());
@@ -726,7 +726,7 @@ namespace NdArrayNet
 
         public static void MinLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Less(res, v) ? res : v;
 
             var initial = new InitialOption<T>(true, Primitives.MaxValue<T>());
@@ -735,7 +735,7 @@ namespace NdArrayNet
 
         public static void SumLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Add(res, v);
 
             var initial = new InitialOption<T>(true, Primitives.Zero<T>());
@@ -744,7 +744,7 @@ namespace NdArrayNet
 
         public static void ProductLastAxis<T>(DataAndLayout<T> trgt, DataAndLayout<T> src)
         {
-            var p = ScalarPrimitives.For<T, T>();
+            var p = ScalarPrimitivesRegistry.For<T, T>();
             T foldOp(int[] pos, T res, T v) => p.Multiply(res, v);
 
             var initial = new InitialOption<T>(true, Primitives.One<T>());
@@ -787,6 +787,34 @@ namespace NdArrayNet
         {
             T op(int[] pos, bool cond, T t, T f) => cond ? t : f;
             ApplyTernaryOp(op, trgt, condition, ifTrue, ifFalse, isIndexed: false, useThreads: true);
+        }
+
+        public static void ArgMaxLastAxis<T>(DataAndLayout<int> trgt, DataAndLayout<T> src)
+        {
+            var nd = src.FastAccess.NumDiensions;
+            var sp = ScalarPrimitivesRegistry.For<T, T>();
+            (int pos, T val) op(int[] pos, (int maxPos, T maxVal) maxInfo, T value) => sp.Greater(value, maxInfo.maxVal) ? (pos[nd - 1], value) : maxInfo;
+            var initial = new InitialOption<(int, T)>(true, (SpecialIdx.NotFound, Primitives.MinValue<T>()));
+            ApplyAxisFold(op, v => v.Item1, trgt, src, initial, true, true);
+        }
+
+        public static void ArgMinLastAxis<T>(DataAndLayout<int> trgt, DataAndLayout<T> src)
+        {
+            var nd = src.FastAccess.NumDiensions;
+            var sp = ScalarPrimitivesRegistry.For<T, T>();
+            (int pos, T val) op(int[] pos, (int minPos, T minVal) minInfo, T value) => sp.Less(value, minInfo.minVal) ? (pos[nd - 1], value) : minInfo;
+            var initial = new InitialOption<(int, T)>(true, (SpecialIdx.NotFound, Primitives.MaxValue<T>()));
+            ApplyAxisFold(op, v => v.Item1, trgt, src, initial, true, true);
+        }
+
+        public static void FindLastAxis<T>(T value, DataAndLayout<int> trgt, DataAndLayout<T> src)
+        {
+            var nd = src.FastAccess.NumDiensions;
+            var sp = ScalarPrimitivesRegistry.For<T, T>();
+            int op(int[] srcIndex, int pos, T val) => pos != SpecialIdx.NotFound ? pos : sp.Equal(val, value) ? srcIndex[nd - 1] : SpecialIdx.NotFound;
+
+            var initial = new InitialOption<int>(true, SpecialIdx.NotFound);
+            ApplyAxisFold(op, v => v, trgt, src, initial, true, true);
         }
 
         internal class InitialOption<TS>

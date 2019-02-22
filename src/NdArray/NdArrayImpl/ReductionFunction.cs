@@ -117,7 +117,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Sums all elements returning a NdArray.
         /// </summary>
-        /// <param name="sinputrc">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
         public static NdArray<T> SumNdArray(NdArray<T> source)
         {
@@ -132,7 +132,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<T> MeanAxis(int axis, NdArray<T> source)
         {
-            var sp = ScalarPrimitives.For<T, int>();
+            var sp = ScalarPrimitivesRegistry.For<T, int>();
 
             var sum = SumAxis(axis, source);
             var scalar = NdArray<T>.ScalarLike(source, sp.Convert(source.Shape[axis]));
@@ -174,11 +174,11 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Calculates the product all elements returning a NdArray.
         /// </summary>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
-        public static NdArray<T> ProductNdArray(NdArray<T> input)
+        public static NdArray<T> ProductNdArray(NdArray<T> source)
         {
-            return ProductAxis(0, NdArray<T>.Flattern(input));
+            return ProductAxis(0, NdArray<T>.Flattern(source));
         }
 
         /// <summary>
@@ -186,32 +186,32 @@ namespace NdArray.NdArrayImpl
         /// The default delta degrees of freedom is 0.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> VarAxis(int axis, NdArray<T> input)
+        public static NdArray<T> VarAxis(int axis, NdArray<T> source)
         {
             var deltaDegreeOfFreedom = Primitives.Zero<T>();
 
-            return VarAxis(axis, input, deltaDegreeOfFreedom);
+            return VarAxis(axis, source, deltaDegreeOfFreedom);
         }
 
         /// <summary>
         /// Calculates the variance of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <param name="ddof">The delta degrees of freedom.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> VarAxis(int axis, NdArray<T> input, T deltaDegreeOfFreedom)
+        public static NdArray<T> VarAxis(int axis, NdArray<T> source, T deltaDegreeOfFreedom)
         {
-            var sp = ScalarPrimitives.For<T, int>();
-            var spc = ScalarPrimitives.For<int, T>();
+            var sp = ScalarPrimitivesRegistry.For<T, int>();
+            var spc = ScalarPrimitivesRegistry.For<int, T>();
 
-            var mean = NdArray<T>.InsertAxis(axis, NdArray<T>.MeanAxis(axis, input));
-            var v = input - mean;
-            var n = sp.Convert(input.Shape[axis] - spc.Convert(deltaDegreeOfFreedom));
+            var mean = NdArray<T>.InsertAxis(axis, NdArray<T>.MeanAxis(axis, source));
+            var v = source - mean;
+            var n = sp.Convert(source.Shape[axis] - spc.Convert(deltaDegreeOfFreedom));
 
-            return SumAxis(axis, (v * v) / NdArray<T>.ScalarLike(input, n));
+            return SumAxis(axis, (v * v) / NdArray<T>.ScalarLike(source, n));
         }
 
         /// <summary>
@@ -219,26 +219,26 @@ namespace NdArray.NdArrayImpl
         /// The default delta degrees of freedom is 0.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <param name="deltaDegreeOfFreedom">The delta degrees of freedom. (default: 0)</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> StdAxis(int axis, NdArray<T> input)
+        public static NdArray<T> StdAxis(int axis, NdArray<T> source)
         {
             var deltaDegreeOfFreedom = Primitives.Zero<T>();
 
-            return StdAxis(axis, input, deltaDegreeOfFreedom);
+            return StdAxis(axis, source, deltaDegreeOfFreedom);
         }
 
         /// <summary>
         /// Calculates the standard deviation of the elements along the specified axis.
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <param name="deltaDegreeOfFreedom">The delta degrees of freedom.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> StdAxis(int axis, NdArray<T> input, T deltaDegreeOfFreedom)
+        public static NdArray<T> StdAxis(int axis, NdArray<T> source, T deltaDegreeOfFreedom)
         {
-            return NdArray<T>.Sqrt(VarAxis(axis, input, deltaDegreeOfFreedom));
+            return NdArray<T>.Sqrt(VarAxis(axis, source, deltaDegreeOfFreedom));
         }
 
         /// <summary>
@@ -246,29 +246,29 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="axis1">The first axis of the diagonal to compute the trace along.</param>
         /// <param name="axis2">The second axis of the diagonal to compute the trace along.</param>
-        /// <param name="input">The NdArray containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> TraceAxis(int axis1, int axis2, NdArray<T> input)
+        public static NdArray<T> TraceAxis(int axis1, int axis2, NdArray<T> source)
         {
             var tax = axis1 < axis2 ? axis1 : axis1 - 1;
 
-            return SumAxis(tax, NdArrayOperator<T>.DiagAxis(axis1, axis2, input));
+            return SumAxis(tax, NdArrayOperator<T>.DiagAxis(axis1, axis2, source));
         }
 
         /// <summary>
         /// Calculates the trace of the matrix.
         /// </summary>
-        /// <param name="input">A square matrix.</param>
+        /// <param name="source">A square matrix.</param>
         /// <returns>The trace of the matrix.</returns>
-        public static NdArray<T> Trace(NdArray<T> input)
+        public static NdArray<T> Trace(NdArray<T> source)
         {
-            if (input.NumDimensions < 2)
+            if (source.NumDimensions < 2)
             {
-                var msg = string.Format("Need at least a two dimensional array for trace but got shape {0}.", input.Shape);
+                var msg = string.Format("Need at least a two dimensional array for trace but got shape {0}.", source.Shape);
                 throw new ArgumentException(msg);
             }
 
-            return TraceAxis(input.NumDimensions - 2, input.NumDimensions - 1, input);
+            return TraceAxis(source.NumDimensions - 2, source.NumDimensions - 1, source);
         }
     }
 }

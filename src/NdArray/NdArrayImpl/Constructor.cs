@@ -44,8 +44,8 @@ namespace NdArray.NdArrayImpl
         /// <typeparam name="T">The new NdArray.</typeparam>
         public static NdArray<T> Arange(IDevice device, T start, T stop, T step)
         {
-            var op = ScalarPrimitives.For<T, T>();
-            var opc = ScalarPrimitives.For<int, T>();
+            var op = ScalarPrimitivesRegistry.For<T, T>();
+            var opc = ScalarPrimitivesRegistry.For<int, T>();
 
             var numberOfElementT = op.Divide(op.Subtract(stop, start), step);
             var numberOfElementInt = opc.Convert(numberOfElementT);
@@ -164,7 +164,7 @@ namespace NdArray.NdArrayImpl
                 throw new ArgumentException("linspace requires at least two elements.", "numElement");
             }
 
-            var op = ScalarPrimitives.For<T, int>();
+            var op = ScalarPrimitivesRegistry.For<T, int>();
 
             var numElementT = op.Convert(numElement - 1);
             var increment = op.Divide(op.Subtract(stop, start), numElementT);

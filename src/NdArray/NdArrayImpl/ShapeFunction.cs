@@ -40,48 +40,48 @@ namespace NdArray.NdArrayImpl
         /// dimensions.
         /// </summary>
         /// <param name="minNumDim">The minimum number of dimensions.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least <paramref name="minNumDim"/> dimensions.</returns>
-        public static NdArray<T> AtLeastNd(int minNumDim, NdArray<T> input)
+        public static NdArray<T> AtLeastNd(int minNumDim, NdArray<T> source)
         {
-            if (input.NumDimensions >= minNumDim)
+            if (source.NumDimensions >= minNumDim)
             {
-                return input;
+                return source;
             }
 
-            var newShape = Enumerable.Repeat(1, minNumDim - input.NumDimensions).Concat(input.Shape).ToArray();
+            var newShape = Enumerable.Repeat(1, minNumDim - source.NumDimensions).Concat(source.Shape).ToArray();
 
-            return input.Reshape(newShape);
+            return source.Reshape(newShape);
         }
 
         /// <summary>
         /// Pads the NdArray from the left with size-one dimensions until it has at least one dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least one dimensions.</returns>
-        public static NdArray<T> AtLeast1d(NdArray<T> input)
+        public static NdArray<T> AtLeast1d(NdArray<T> source)
         {
-            return AtLeastNd(1, input);
+            return AtLeastNd(1, source);
         }
 
         /// <summary>
         /// Pads the NdArray from the left with size-two dimensions until it has at least two dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least two dimensions.</returns>
-        public static NdArray<T> AtLeast2d(NdArray<T> input)
+        public static NdArray<T> AtLeast2d(NdArray<T> source)
         {
-            return AtLeastNd(2, input);
+            return AtLeastNd(2, source);
         }
 
         /// <summary>
         /// Pads the NdArray from the left with size-three dimensions until it has at least three dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A NdArray with at least three dimensions.</returns>
-        public static NdArray<T> AtLeast3d(NdArray<T> input)
+        public static NdArray<T> AtLeast3d(NdArray<T> source)
         {
-            return AtLeastNd(3, input);
+            return AtLeastNd(3, source);
         }
 
         /// <summary>
@@ -91,21 +91,21 @@ namespace NdArray.NdArrayImpl
         /// <param name="size">The size to broadcast to.</param>
         /// <param name="a">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> BroadCastDim(int dim, int size, NdArray<T> input)
+        public static NdArray<T> BroadCastDim(int dim, int size, NdArray<T> source)
         {
-            return input.Relayout(Layout.BroadcastDim(dim, size, input.Layout));
+            return source.Relayout(Layout.BroadcastDim(dim, size, source.Layout));
         }
 
         /// <summary>
         /// Broadcasts the specified NdArray to the specified shape.
         /// </summary>
         /// <param name="shp">The target shape.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>NdArray of shape <paramref name="shp"/>.</returns>
-        public static NdArray<T> BroadCastTo(int[] shp, NdArray<T> input)
+        public static NdArray<T> BroadCastTo(int[] shp, NdArray<T> source)
         {
-            var layout = Layout.BroadcastToShape(shp, input.Layout);
-            return input.Relayout(layout);
+            var layout = Layout.BroadcastToShape(shp, source.Layout);
+            return source.Relayout(layout);
         }
 
         /// <summary>
@@ -134,11 +134,11 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Broadcasts all specified NdArrays to have the same shape.
         /// </summary>
-        /// <param name="inputs">A list of NdArrays to operate on.</param>
+        /// <param name="sources">A list of NdArrays to operate on.</param>
         /// <returns>A list of the resulting NdArrays, all having the same shape.</returns>
-        public static NdArray<T>[] BroadCastToSame(NdArray<T>[] inputs)
+        public static NdArray<T>[] BroadCastToSame(NdArray<T>[] sources)
         {
-            return ApplyLayoutFn(Layout.BroadcastToSameMany, inputs);
+            return ApplyLayoutFn(Layout.BroadcastToSameMany, sources);
         }
 
         /// <summary>
@@ -170,82 +170,82 @@ namespace NdArray.NdArrayImpl
         /// Broadcasts all specified NdArrays to have the same size in the specified dimensions.
         /// </summary>
         /// <param name="dims">A list of dimensions that should be broadcasted to have the same size.</param>
-        /// <param name="inputs">A list of NdArrays to operate on.</param>
+        /// <param name="sources">A list of NdArrays to operate on.</param>
         /// <returns>A list of the resulting NdArrays, all having the same size in the specified dimensions.</returns>
-        public static NdArray<T>[] BroadCastToSameInDims(int[] dims, NdArray<T>[] inputs)
+        public static NdArray<T>[] BroadCastToSameInDims(int[] dims, NdArray<T>[] sources)
         {
-            return ApplyLayoutFn(Layout.BroadcastToSameInDimsMany, dims, inputs);
+            return ApplyLayoutFn(Layout.BroadcastToSameInDimsMany, dims, sources);
         }
 
         /// <summary>
         /// Removes the first dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> CutLeft(NdArray<T> input)
+        public static NdArray<T> CutLeft(NdArray<T> source)
         {
-            return input.Relayout(Layout.CutLeft(input.Layout));
+            return source.Relayout(Layout.CutLeft(source.Layout));
         }
 
         /// <summary>
         /// Removes the last dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> CutRight(NdArray<T> input)
+        public static NdArray<T> CutRight(NdArray<T> source)
         {
-            return input.Relayout(Layout.CutRight(input.Layout));
+            return source.Relayout(Layout.CutRight(source.Layout));
         }
 
         /// <summary>
         /// Flattens the NdArray into a (one-dimensional) vector.
         /// </summary>
-        /// <param name="a">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>A vector.</returns>
-        public static NdArray<T> Flatten(NdArray<T> input)
+        public static NdArray<T> Flatten(NdArray<T> source)
         {
-            return input.Reshape(new[] { SpecialIdx.Remainder });
+            return source.Reshape(new[] { SpecialIdx.Remainder });
         }
 
         /// <summary>
         /// Insert a dimension of size one before the specifed dimension.
         /// </summary>
         /// <param name="axis">The dimension to insert before.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> InsertAxis(int axis, NdArray<T> input)
+        public static NdArray<T> InsertAxis(int axis, NdArray<T> source)
         {
-            return input.Relayout(Layout.InsertAxis(axis, input.Layout));
+            return source.Relayout(Layout.InsertAxis(axis, source.Layout));
         }
 
         /// <summary>
         /// Checks if the specified NdArray is broadcasted in at least one dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>true if at least one dimension is broadcasted, otherwise false.</returns>
-        public static bool IsBroadcasted(NdArray<T> input)
+        public static bool IsBroadcasted(NdArray<T> source)
         {
-            return Layout.IsBroadcasted(input.Layout);
+            return Layout.IsBroadcasted(source.Layout);
         }
 
         /// <summary>
         /// Insert a dimension of size one as the first dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> PadLeft(NdArray<T> input)
+        public static NdArray<T> PadLeft(NdArray<T> source)
         {
-            return input.Relayout(Layout.PadLeft(input.Layout));
+            return source.Relayout(Layout.PadLeft(source.Layout));
         }
 
         /// <summary>
         /// Append a dimension of size one after the last dimension.
         /// </summary>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The resulting NdArray.</returns>
-        public static NdArray<T> PadRight(NdArray<T> input)
+        public static NdArray<T> PadRight(NdArray<T> source)
         {
-            return input.Relayout(Layout.PadRight(input.Layout));
+            return source.Relayout(Layout.PadRight(source.Layout));
         }
 
         /// <summary>
@@ -274,33 +274,33 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Pads all specified NdArrays to have the same shape.
         /// </summary>
-        /// <param name="inputs">A list of NdArrays to operate on.</param>
+        /// <param name="sources">A list of NdArrays to operate on.</param>
         /// <returns>A list of the resulting NdArrays, all having the same shape.</returns>
-        public static NdArray<T>[] PadToSame(NdArray<T>[] inputs)
+        public static NdArray<T>[] PadToSame(NdArray<T>[] sources)
         {
-            return ApplyLayoutFn(Layout.PadToSameMany, inputs);
+            return ApplyLayoutFn(Layout.PadToSameMany, sources);
         }
 
         /// <summary>
         /// Permutes the axes as specified.
         /// </summary>
         /// <param name="permut">The permutation to apply to the dimensions of NdArray.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions permuted.</returns>
-        public static NdArray<T> PermuteAxes(int[] permut, NdArray<T> input)
+        public static NdArray<T> PermuteAxes(int[] permut, NdArray<T> source)
         {
-            return input.Relayout(Layout.PermuteAxes(permut, input.Layout));
+            return source.Relayout(Layout.PermuteAxes(permut, source.Layout));
         }
 
         /// <summary>
         /// Reverses the elements in the specified dimension.
         /// </summary>
         /// <param name="axis">The axis to reverse.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions Reversed.</returns>
-        public static NdArray<T> ReverseAxis(int axis, NdArray<T> input)
+        public static NdArray<T> ReverseAxis(int axis, NdArray<T> source)
         {
-            return input.Relayout(Layout.ReverseAxis(axis, input.Layout));
+            return source.Relayout(Layout.ReverseAxis(axis, source.Layout));
         }
 
         /// <summary>
@@ -308,11 +308,11 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="axis1">The dimension to swap.</param>
         /// <param name="axis2">The dimension to swap with.</param>
-        /// <param name="input">The NdArray to operate on.</param>
+        /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions swapped.</returns>
-        public static NdArray<T> SwapDim(int axis1, int axis2, NdArray<T> input)
+        public static NdArray<T> SwapDim(int axis1, int axis2, NdArray<T> source)
         {
-            return input.Relayout(Layout.SwapDim(axis1, axis2, input.Layout));
+            return source.Relayout(Layout.SwapDim(axis1, axis2, source.Layout));
         }
 
         internal static (NdArray<T1>, NdArray<T2>) ApplyLayoutFn<T1, T2>(Func<Layout[], Layout[]> fn, NdArray<T1> src1, NdArray<T2> src2)
@@ -339,12 +339,12 @@ namespace NdArray.NdArrayImpl
             throw new InvalidOperationException("unexpected layout function result");
         }
 
-        internal static NdArray<T>[] ApplyLayoutFn(Func<Layout[], Layout[]> fn, NdArray<T>[] inputs)
+        internal static NdArray<T>[] ApplyLayoutFn(Func<Layout[], Layout[]> fn, NdArray<T>[] sources)
         {
-            var layouts = inputs.Select(l => l.Layout).ToArray();
+            var layouts = sources.Select(l => l.Layout).ToArray();
             var newLayouts = fn(layouts);
 
-            return inputs.Select((s, idx) => s.Relayout(newLayouts[idx])).ToArray();
+            return sources.Select((s, idx) => s.Relayout(newLayouts[idx])).ToArray();
         }
 
         internal static (NdArray<T1>, NdArray<T2>) ApplyLayoutFn<T1, T2>(Func<int[], Layout[], Layout[]> fn, int[] dims, NdArray<T1> src1, NdArray<T2> src2)
@@ -371,12 +371,12 @@ namespace NdArray.NdArrayImpl
             throw new InvalidOperationException("unexpected layout function result");
         }
 
-        internal static NdArray<T>[] ApplyLayoutFn(Func<int[], Layout[], Layout[]> fn, int[] dims, NdArray<T>[] inputs)
+        internal static NdArray<T>[] ApplyLayoutFn(Func<int[], Layout[], Layout[]> fn, int[] dims, NdArray<T>[] sources)
         {
-            var layouts = inputs.Select(l => l.Layout).ToArray();
+            var layouts = sources.Select(l => l.Layout).ToArray();
             var newLayouts = fn(dims, layouts);
 
-            return inputs.Select((s, idx) => s.Relayout(newLayouts[idx])).ToArray();
+            return sources.Select((s, idx) => s.Relayout(newLayouts[idx])).ToArray();
         }
     }
 }

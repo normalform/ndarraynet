@@ -85,11 +85,11 @@ namespace NdArray.NdArrayImpl
             }
 
             var arrayIndex = 0;
-            foreach (var input in sources)
+            foreach (var source in sources)
             {
-                if (!Enumerable.SequenceEqual(List.Without(axis, input.Shape), List.Without(axis, shape)))
+                if (!Enumerable.SequenceEqual(List.Without(axis, source.Shape), List.Without(axis, shape)))
                 {
-                    var message = string.Format("Concatentation element with index {0} with shape{1} must be equal to shape {2} of the first element, except in the concatenation axis {3}", arrayIndex, input.Shape, shape, axis);
+                    var message = string.Format("Concatentation element with index {0} with shape{1} must be equal to shape {2} of the first element, except in the concatenation axis {3}", arrayIndex, source.Shape, shape, axis);
                     throw new ArgumentException(message, "sources");
                 }
 
@@ -101,9 +101,9 @@ namespace NdArray.NdArrayImpl
 
             var result = new NdArray<T>(concatShape, sources[0].Storage.Device);
             var position = 0;
-            foreach (var input in sources)
+            foreach (var source in sources)
             {
-                var arrayLength = input.Shape[axis];
+                var arrayLength = source.Shape[axis];
                 if (arrayLength > 0)
                 {
                     var range = Enumerable.Range(0, shape.Length).Select(idx =>
@@ -115,7 +115,7 @@ namespace NdArray.NdArrayImpl
 
                         return RangeFactory.All;
                     });
-                    result[range.ToArray()] = input;
+                    result[range.ToArray()] = source;
                     position += arrayLength;
                 }
             }
@@ -184,7 +184,7 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="axis">The axis to operate along.</param>
         /// <param name="source">The NdArray containing the source values.</param>
-        /// <returns>The differences NdArray. It has one element less in dimension <paramref name="axis"/> as the input NdArray.</returns>
+        /// <returns>The differences NdArray. It has one element less in dimension <paramref name="axis"/> as the source NdArray.</returns>
         public static NdArray<T> DiffAxis(int axis, NdArray<T> source)
         {
             NdArray<T>.CheckAxis(axis, source);
@@ -215,7 +215,7 @@ namespace NdArray.NdArrayImpl
         /// Calculates the difference between adjoining elements of the vector.
         /// </summary>
         /// <param name="source">The vector containing the source values.</param>
-        /// <returns>The differences vector. It has one element less than the input NdArray.</returns>
+        /// <returns>The differences vector. It has one element less than the source NdArray.</returns>
         public static NdArray<T> Diff(NdArray<T> source)
         {
             if (source.NumDimensions < 1)

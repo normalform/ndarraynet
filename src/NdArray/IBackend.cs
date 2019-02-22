@@ -136,5 +136,11 @@ namespace NdArrayNet
         void CountTrueLastAxis(IFrontend<int> trgt, IFrontend<bool> src);
 
         void IfThenElse(IFrontend<T> trgt, IFrontend<bool> condition, IFrontend<T> ifTrue, IFrontend<T> ifFalse);
+
+        void ArgMaxLastAxis<T1>(IFrontend<int> trgt, IFrontend<T1> src);
+
+        void ArgMinLastAxis<T1>(IFrontend<int> trgt, IFrontend<T1> src);
+
+        void FindLastAxis<T1>(T1 value, IFrontend<int> trgt, IFrontend<T1> src);
     }
 }

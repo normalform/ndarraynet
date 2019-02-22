@@ -985,7 +985,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void For_IntInt_ReturnScalarPrimitivesIntInt()
         {
             // arrange & action
-            var op = ScalarPrimitives.For<int, int>();
+            var op = ScalarPrimitivesRegistry.For<int, int>();
 
             // assert
             Assert.IsInstanceOfType(op, typeof(ScalarPrimitives<int, int>));
@@ -995,7 +995,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void For_DoubleInt_ReturnScalarPrimitivesDoubleInt()
         {
             // arrange & action
-            var op = ScalarPrimitives.For<double, int>();
+            var op = ScalarPrimitivesRegistry.For<double, int>();
 
             // assert
             Assert.IsInstanceOfType(op, typeof(ScalarPrimitives<double, int>));
