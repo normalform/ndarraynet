@@ -57,13 +57,13 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void AllElems()
+        public void AllElements()
         {
             // arrange
             var source = NdArray<int>.Arange(HostDevice.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
-            var output = IndexFunction<int>.AllElems(source);
+            var output = IndexFunction<int>.AllElements(source);
 
             // assert
             CollectionAssert.AreEqual(Enumerable.Range(0, 9).ToArray(), output);

@@ -1058,7 +1058,7 @@ namespace NdArrayNet
         /// Gets a sequence of all all elements within the NdArray.</summary>
         /// <param name="source">The NdArray to operate on.</param>
         /// <returns>Sequence of elements.</returns>
-        public static T[] AllElems(NdArray<T> source) => IndexFunction<T>.AllElems(source);
+        public static T[] AllElements(NdArray<T> source) => IndexFunction<T>.AllElements(source);
 
         /// <summary>
         /// Finds the index of the maximum value along the specified axis.
