@@ -848,6 +848,7 @@ namespace NdArrayNet
                         targetPosItr.MoveNext();
                     }
                 }
+
                 srcPosItr.MoveNext();
             }
         }
