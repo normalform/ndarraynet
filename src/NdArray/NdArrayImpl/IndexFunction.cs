@@ -190,5 +190,51 @@ namespace NdArray.NdArrayImpl
             var msg = string.Format("Value {0} was not found in specifed NdArray.", value);
             throw new InvalidOperationException(msg);
         }
+
+        /// <summary>
+        /// Counts the elements being true along the specified axis and writes the result into this NdArray.
+        /// </summary>
+        /// <param name="target">A target NdArray containing the result of this operation.</param>
+        /// <param name="axis">The axis the count along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
+        public static void FillCountTrueAxis(NdArray<int> target, int axis, NdArray<bool> source)
+        {
+            var (preparedSource, _) = NdArray<bool>.PrepareAxisReduceSources(target, axis, source, null);
+            target.Backend.CountTrueLastAxis(target, preparedSource);
+        }
+
+        /// <summary>
+        /// Counts the elements being true along the specified axis.
+        /// </summary>
+        /// <param name="axis">The axis the count along.</param>
+        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <returns>A new NdArray containing the result of this operation.</returns>
+        public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> source)
+        {
+            var (preparedTargt, preparedSource) = NdArray<bool>.PrepareAxisReduceTarget<int, bool>(axis, source);
+            FillCountTrueAxis(preparedTargt, axis, preparedSource);
+
+            return preparedTargt;
+        }
+
+        /// <summary>
+        /// Counts the elements being true returning the result as a NdArray.
+        /// </summary>
+        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <returns>A new scalar NdArray containing the result of this operation.</returns>
+        public static NdArray<int> CountTrueNdArray(NdArray<bool> source)
+        {
+            return CountTrueAxis(0, NdArray<bool>.Flatten(source));
+        }
+
+        /// <summary>
+        /// Counts the elements being true.
+        /// </summary>
+        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <returns>A scalar containing the result of this operation.</returns>
+        public static int CountTrue(NdArray<bool> source)
+        {
+            return CountTrueNdArray(source).Value;
+        }
     }
 }

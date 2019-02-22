@@ -1196,7 +1196,7 @@ namespace NdArrayNet
         /// <summary>
         /// Fills this NdArray with the element-wise logical negation of the argument.
         /// </summary>
-        /// <param name="source">The tensor to apply this operation to.</param>
+        /// <param name="source">The NdArray to apply this operation to.</param>
         public void FillNot(NdArray<bool> source) => LogicalFunction<bool>.FillNegate((dynamic)this, source);
 
         /// <summary>
@@ -1397,10 +1397,10 @@ namespace NdArrayNet
         public void FillSumAxis(int axis, NdArray<T> source) => ReductionFunction<T>.FillSumAxis(this, axis, source);
 
         /// <summary>
-        /// Calculates the product of the elements over the specified axis and writes the result into this tensor.
+        /// Calculates the product of the elements over the specified axis and writes the result into this NdArray.
         /// </summary>
         /// <param name="axis">The axis to calculate the product along.</param>
-        /// <param name="source">The tensor containing the source values.</param>
+        /// <param name="source">The NdArray containing the source values.</param>
         public void FillProductAxis(int axis, NdArray<T> source) => ReductionFunction<T>.FillProductAxis(this, axis, source);
 
         /// <summary>

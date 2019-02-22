@@ -188,5 +188,57 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             var output = IndexFunction<int>.Find(10, source);
         }
+
+        [TestMethod]
+        public void CountTrueAxis()
+        {
+            // arrange
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            source[new[] { 0, 0 }] = true;
+            source[new[] { 0, 2 }] = true;
+            source[new[] { 1, 1 }] = true;
+            source[new[] { 1, 2 }] = true;
+
+            // action
+            var output = IndexFunction<bool>.CountTrueAxis(1, source);
+
+            // assert
+            Assert.AreEqual(2, output[0].Value);
+            Assert.AreEqual(2, output[1].Value);
+        }
+
+        [TestMethod]
+        public void CountTrueNdArray()
+        {
+            // arrange
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            source[new[] { 0, 0 }] = true;
+            source[new[] { 0, 2 }] = true;
+            source[new[] { 1, 1 }] = true;
+            source[new[] { 1, 2 }] = true;
+
+            // action
+            var output = IndexFunction<bool>.CountTrueNdArray(source);
+
+            // assert
+            Assert.AreEqual(4, output[0].Value);
+        }
+
+        [TestMethod]
+        public void CountTrue()
+        {
+            // arrange
+            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            source[new[] { 0, 0 }] = true;
+            source[new[] { 0, 2 }] = true;
+            source[new[] { 1, 1 }] = true;
+            source[new[] { 1, 2 }] = true;
+
+            // action
+            var output = IndexFunction<bool>.CountTrue(source);
+
+            // assert
+            Assert.AreEqual(4, output);
+        }
     }
 }

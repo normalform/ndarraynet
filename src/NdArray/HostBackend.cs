@@ -535,5 +535,17 @@ namespace NdArrayNet
             var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
             ScalarOps.FindLastAxis(value, dataLayoutTrgt, dataLayout);
         }
+
+        public void TrueIndices(IFrontend<int> trgt, IFrontend<bool> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = GetDataAndLayout(trgt, src);
+            ScalarOps.TrueIndices(dataLayoutTrgt, dataLayout);
+        }
+
+        public void Convert<TC>(IFrontend<T> trgt, IFrontend<TC> src)
+        {
+            var (dataLayoutTrgt, dataLayout) = ElemwiseDataAndLayout(trgt, src);
+            ScalarOps.Convert(dataLayoutTrgt, dataLayout);
+        }
     }
 }

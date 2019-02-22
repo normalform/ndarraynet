@@ -142,5 +142,7 @@ namespace NdArrayNet
         void ArgMinLastAxis<T1>(IFrontend<int> trgt, IFrontend<T1> src);
 
         void FindLastAxis<T1>(T1 value, IFrontend<int> trgt, IFrontend<T1> src);
+
+        void Convert<TC>(IFrontend<T> trgt, IFrontend<TC> src);
     }
 }
