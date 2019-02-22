@@ -426,7 +426,7 @@ namespace NdArrayNet
             if (numDim < 2)
             {
                 var msg = string.Format("cannot transpose non-matrix of shape {0}", source.Shape);
-                throw new ArgumentException(msg, "input");
+                throw new ArgumentException(msg, "source");
             }
 
             return SwapDim(numDim - 2, numDim - 1, source);
@@ -436,7 +436,7 @@ namespace NdArrayNet
         {
             if (source.NumDimensions == 0)
             {
-                throw new ArgumentException("cannot remove dimensions from scalar", "input");
+                throw new ArgumentException("cannot remove dimensions from scalar", "source");
             }
 
             return new Layout(source.Shape.Skip(1).ToArray(), source.Offset, source.Stride.Skip(1).ToArray());
@@ -446,7 +446,7 @@ namespace NdArrayNet
         {
             if (source.NumDimensions == 0)
             {
-                throw new ArgumentException("cannot remove dimensions from scalar", "input");
+                throw new ArgumentException("cannot remove dimensions from scalar", "source");
             }
 
             return new Layout(source.Shape.SkipLast(1).ToArray(), source.Offset, source.Stride.SkipLast(1).ToArray());

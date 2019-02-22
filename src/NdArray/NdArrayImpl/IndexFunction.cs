@@ -170,7 +170,7 @@ namespace NdArray.NdArrayImpl
                 return Layout.LinearToIndex(source.Layout, pos);
             }
 
-            return null;
+            return new int[] { };
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace NdArray.NdArrayImpl
         public static int[] Find(T value, NdArray<T> source)
         {
             var result = TryFind(value, source);
-            if (result != null)
+            if (result.Length != 0)
             {
                 return result;
             }

@@ -42,7 +42,7 @@ namespace NdArrayNet
             var nd = trgt.FastAccess.NumDiensions;
             var shape = trgt.FastAccess.Shape;
 
-            Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
+            void loops(bool dim0Fixed, int dim0Pos)
             {
                 var fromDim = dim0Fixed ? 1 : 0;
                 var startPos = new int[nd];
@@ -86,7 +86,7 @@ namespace NdArrayNet
 
                     targetPosItr.MoveNext();
                 }
-            };
+            }
 
             if (useThreads && nd > 1)
             {
@@ -103,7 +103,7 @@ namespace NdArrayNet
             var nd = trgt.FastAccess.NumDiensions;
             var shape = trgt.FastAccess.Shape;
 
-            Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
+            void loops(bool dim0Fixed, int dim0Pos)
             {
                 var fromDim = dim0Fixed ? 1 : 0;
                 var startPos = new int[nd];
@@ -153,7 +153,7 @@ namespace NdArrayNet
                     targetPosItr.MoveNext();
                     srcPosItr.MoveNext();
                 }
-            };
+            }
 
             if (useThreads && nd > 1)
             {
@@ -242,7 +242,7 @@ namespace NdArrayNet
             var nd = trgt.FastAccess.NumDiensions;
             var shape = trgt.FastAccess.Shape;
 
-            Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
+            void loops(bool dim0Fixed, int dim0Pos)
             {
                 var fromDim = dim0Fixed ? 1 : 0;
                 var startPos = new int[nd];
@@ -302,7 +302,7 @@ namespace NdArrayNet
                     src2PosItr.MoveNext();
                     src3PosItr.MoveNext();
                 }
-            };
+            }
 
             if (useThreads && nd > 1)
             {
@@ -326,7 +326,7 @@ namespace NdArrayNet
             var nd = src.FastAccess.NumDiensions;
             var shape = src.FastAccess.Shape;
 
-            Action<bool, int> loops = (bool dim0Fixed, int dim0Pos) =>
+            void loops(bool dim0Fixed, int dim0Pos)
             {
                 var fromDim = dim0Fixed ? 1 : 0;
                 var startPos = new int[nd];
@@ -403,7 +403,7 @@ namespace NdArrayNet
                         initialPosItr.MoveNext();
                     }
                 }
-            };
+            }
 
             if (useThreads && nd > 1)
             {
@@ -811,7 +811,24 @@ namespace NdArrayNet
         {
             var nd = src.FastAccess.NumDiensions;
             var sp = ScalarPrimitivesRegistry.For<T, T>();
-            int op(int[] srcIndex, int pos, T val) => pos != SpecialIdx.NotFound ? pos : sp.Equal(val, value) ? srcIndex[nd - 1] : SpecialIdx.NotFound;
+            int op(int[] srcIndex, int pos, T val)
+            {
+                if (pos != SpecialIdx.NotFound)
+                {
+                    return pos;
+                }
+                else
+                {
+                    if (sp.Equal(val, value))
+                    {
+                        return srcIndex[nd - 1];
+                    }
+                    else
+                    {
+                        return SpecialIdx.NotFound;
+                    }
+                }
+            }
 
             var initial = new InitialOption<int>(true, SpecialIdx.NotFound);
             ApplyAxisFold(op, v => v, trgt, src, initial, true, true);

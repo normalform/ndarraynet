@@ -161,7 +161,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.TryFind(10, source);
 
             // assert
-            Assert.IsNull(output);
+            Assert.IsTrue(output.Length == 0);
         }
 
         [TestMethod]
