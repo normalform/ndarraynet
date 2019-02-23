@@ -30,6 +30,7 @@
 namespace NdArrayNet
 {
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     internal class PosIter
     {
@@ -75,6 +76,7 @@ namespace NdArrayNet
 
         public int ToDim { get; }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void MoveNext()
         {
             // try incrementing starting from last axis

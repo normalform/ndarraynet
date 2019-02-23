@@ -391,9 +391,9 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e10;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -1.63312394e+16) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[0].Value - -16331778728383844) < Epsilon);
             Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.63312394e+16) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 16331778728383844) < Epsilon);
         }
 
         [TestMethod]

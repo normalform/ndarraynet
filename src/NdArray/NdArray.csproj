@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E8620759-9D0B-4CCC-8C11-CE3E2C2B65DF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NdArray</RootNamespace>
+    <AssemblyName>NdArray</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseDevice.cs" />
+    <Compile Include="DataAndLayout.cs" />
+    <Compile Include="FastAccess.cs" />
+    <Compile Include="HostBackend.cs" />
+    <Compile Include="HostDevice.cs" />
+    <Compile Include="HostStorage.cs" />
+    <Compile Include="IBackend.cs" />
+    <Compile Include="IDevice.cs" />
+    <Compile Include="IFrontend.cs" />
+    <Compile Include="IHostStorage.cs" />
+    <Compile Include="IStorage.cs" />
+    <Compile Include="Layout.cs" />
+    <Compile Include="NdArray.cs" />
+    <Compile Include="NdArrayImpl\ComparisonFunction.cs" />
+    <Compile Include="NdArrayImpl\Constructor.cs" />
+    <Compile Include="NdArrayImpl\DataFunction.cs" />
+    <Compile Include="NdArrayImpl\ElementWiseMathFunction.cs" />
+    <Compile Include="NdArrayImpl\ElementWiseOperator.cs" />
+    <Compile Include="NdArrayImpl\IndexFunction.cs" />
+    <Compile Include="NdArrayImpl\LogicalFunction.cs" />
+    <Compile Include="NdArrayImpl\NdArrayOperator.cs" />
+    <Compile Include="NdArrayImpl\ReductionFunction.cs" />
+    <Compile Include="NdArrayImpl\ShapeFunction.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="PinnedMemory.cs" />
+    <Compile Include="PosIter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Range\AllFill.cs" />
+    <Compile Include="Range\Elem.cs" />
+    <Compile Include="Range\IRange.cs" />
+    <Compile Include="Range\NewAxis.cs" />
+    <Compile Include="Range\Range.cs" />
+    <Compile Include="Range\RangeArgParser.cs" />
+    <Compile Include="Range\RangeBase.cs" />
+    <Compile Include="Range\RangeFactory.cs" />
+    <Compile Include="Range\SpecialIdx.cs" />
+    <Compile Include="ScalarOps.cs" />
+    <Compile Include="ScalarPrimitives.cs" />
+    <Compile Include="ScalarPrimitivesRegistry.cs" />
+    <Compile Include="Utils\ErrorMessage.cs" />
+    <Compile Include="Utils\List.cs" />
+    <Compile Include="Utils\Permutation.cs" />
+    <Compile Include="Utils\Primitives.cs" />
+    <Compile Include="VectorOps.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
