@@ -19,10 +19,12 @@
 
   <PropertyGroup>
     <IsTestProject>true</IsTestProject>
+    <AssemblyName>NumCsUnitTest</AssemblyName>
+    <RootNamespace>NumCsUnitTest</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NumCs\NumCs.csproj" />
+    <ProjectReference Include="..\NumCs\NumCs.netcore.csproj" />
   </ItemGroup>
 
 </Project>

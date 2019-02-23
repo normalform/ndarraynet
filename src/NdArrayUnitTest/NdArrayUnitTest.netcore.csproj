@@ -16,6 +16,8 @@
 
   <PropertyGroup>
     <IsTestProject>true</IsTestProject>
+    <AssemblyName>NdArrayUnitTest</AssemblyName>
+    <RootNamespace>NdArrayUnitTest</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,7 +26,7 @@
   </PropertyGroup>
       
   <ItemGroup>
-    <ProjectReference Include="..\NdArray\NdArray.csproj" />
+    <ProjectReference Include="..\NdArray\NdArray.netcore.csproj" />
   </ItemGroup>
 
 </Project>
