@@ -5,6 +5,6 @@ dist: xenial
 solution: ./src/NdArrayNet.netcore.sln
 dotnet: 2.2
 script:
-    - dotnet restore ./src
-    - dotnet build ./src
-    - dotnet test ./src
+    - dotnet restore ./src/NdArrayNet.netcore.sln
+    - dotnet build ./src/NdArrayNet.netcore.sln
+    - dotnet test ./src/NdArrayNet.netcore.sln

@@ -620,7 +620,7 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Tan(target, src);
 
             // assert
-            const double Epsilon = 1e10;
+            const double Epsilon = 1e12;
             Assert.IsTrue(Math.Abs(targetData[0] - -16331778728383844) < Epsilon);
             Assert.IsTrue(Math.Abs(targetData[1] - 0.0) < Epsilon);
             Assert.IsTrue(Math.Abs(targetData[2] - 16331778728383844) < Epsilon);
