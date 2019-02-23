@@ -458,7 +458,10 @@ namespace NdArrayNet
                 throw new ArgumentException("cannot remove dimensions from scalar", "source");
             }
 
-            return new Layout(source.Shape.SkipLast(1).ToArray(), source.Offset, source.Stride.SkipLast(1).ToArray());
+            return new Layout(
+                source.Shape.Take(source.Shape.Length - 1).ToArray(), 
+                source.Offset, 
+                source.Stride.Take(source.Shape.Length - 1).ToArray());
         }
 
         public static bool IsBroadcasted(Layout source)
@@ -663,11 +666,13 @@ namespace NdArrayNet
 
         public override int GetHashCode()
         {
-            var hash = new HashCode();
-            hash.Add(Shape);
-            hash.Add(Stride);
-            hash.Add(Offset);
-            return hash.ToHashCode();
+            unchecked
+            {
+                var hashCode = 397 ^ Shape.GetHashCode();
+                hashCode = (hashCode * 397) ^ Stride.GetHashCode();
+                hashCode = (hashCode * 397) ^ Offset.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>

@@ -1464,11 +1464,13 @@ namespace NdArrayNet
 
         public override int GetHashCode()
         {
-            var hash = new HashCode();
-            hash.Add(DataType);
-            hash.Add(Layout);
-            hash.Add(Storage);
-            return hash.ToHashCode();
+            unchecked
+            {
+                var hashCode = 397 ^ DataType.GetHashCode();
+                hashCode = (hashCode * 397) ^ Layout.GetHashCode();
+                hashCode = (hashCode * 397) ^ Storage.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>

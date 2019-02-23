@@ -1,9 +1,9 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 before_build:
-- cmd: dotnet restore ./src
+- cmd: dotnet restore ./src/NdArrayNet.netcore.sln
 build:
-  project: src/NdArrayNet.sln
+  project: src/NdArrayNet.netcore.sln
   verbosity: minimal
 test_script:
 - ps: >-
@@ -11,9 +11,9 @@ test_script:
 
     Write-Host "Path of OpenCover: $opencover"
 
-    dotnet test ./src
+    dotnet test ./src/NdArrayNet.netcore.sln
 
-    & $opencover -register:user -target:dotnet.exe -targetargs:test -output:"coverage.xml" -filter:"+NdArrayNetUnitTest" -oldstyle
+    & $opencover -register:user -target:dotnet.exe -targetargs:"test ./src/NdArrayNet.netcore.sln" -output:"coverage.xml" -filter:"+NdArrayNetUnitTest" -oldstyle
 
     Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
 

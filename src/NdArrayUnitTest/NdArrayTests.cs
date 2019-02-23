@@ -1055,11 +1055,25 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Tan(srcArray);
 
             // assert
-            const double Epsilon = 1e10;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -1.63312394e+16) < Epsilon);
+            const double Epsilon = 1e12;
+            Assert.IsTrue(Math.Abs(newArray[0].Value - -16331778728383844) < Epsilon);
             Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.63312394e+16) < Epsilon);
+            Assert.IsTrue(Math.Abs(newArray[2].Value - 16331778728383844) < Epsilon);
         }
+
+        [TestMethod]
+        public void Perf()
+        {
+            var a0 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 2 });
+            var a1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3, 4, 2 });
+            var c = NdArray<double>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 2 });
+            for (var i = 0; i < 10000; i++)
+            {
+                c = a0 * a1;
+            }
+            Assert.IsTrue(true);
+        }
+
 
         [TestMethod]
         public void Tanh()
