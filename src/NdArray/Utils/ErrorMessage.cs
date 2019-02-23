@@ -32,7 +32,7 @@ namespace NdArrayNet
     using System.Linq;
     using System.Text;
 
-    internal class ErrorMessage
+    internal static class ErrorMessage
     {
         public static string ArrayToString(int[] array)
         {
@@ -103,9 +103,9 @@ namespace NdArrayNet
                     {
                         sb.AppendFormat("{0}:{1}", range.Start, range.Stop);
                     }
-                    else if (range.Start == 0 & range.Stop == 0 & range.Step == 0)
+                    else if (range.Start == 0 && range.Stop == 0 && range.Step == 0)
                     {
-                        sb.AppendFormat(":");
+                        sb.Append(":");
                     }
                     else
                     {
@@ -118,11 +118,11 @@ namespace NdArrayNet
                 }
                 else if (arg is AllFill)
                 {
-                    sb.AppendFormat("...");
+                    sb.Append("...");
                 }
                 else if (arg is NewAxis)
                 {
-                    sb.AppendFormat("NewAxis");
+                    sb.Append("NewAxis");
                 }
                 else
                 {
