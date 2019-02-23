@@ -1062,20 +1062,6 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        public void Perf()
-        {
-            var a0 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 2 });
-            var a1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3, 4, 2 });
-            var c = NdArray<double>.Zeros(HostDevice.Instance, new[] { 2, 3, 4, 2 });
-            for (var i = 0; i < 10000; i++)
-            {
-                c = a0 * a1;
-            }
-            Assert.IsTrue(true);
-        }
-
-
-        [TestMethod]
         public void Tanh()
         {
             // arrange
