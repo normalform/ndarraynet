@@ -147,13 +147,13 @@ namespace NdArrayNet
             return (T)GetStaticProperty(typeof(T), "MinValue");
         }
 
-        private static object GetStaticProperty(Type type, string name)
+        internal static object GetStaticProperty(Type type, string name)
         {
             var property = type.GetProperty(name, BindingFlags.Public | BindingFlags.Static, null, type, new Type[] { }, new ParameterModifier[] { });
             if (property == null)
             {
-                var msg = string.Format("the type {0} must implement the static property {1}", type.Name, name);
-                throw new InvalidOperationException(msg);
+                var errorMessage = string.Format("The type {0} must implement the static property {1}", type.Name, name);
+                throw new InvalidOperationException(errorMessage);
             }
 
             return property.GetValue(null);

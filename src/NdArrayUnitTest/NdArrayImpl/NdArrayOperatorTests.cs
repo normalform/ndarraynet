@@ -69,6 +69,18 @@ namespace NdArrayNet.NdArrayUnitTest
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
+        public void Diag_OneDimensionalArray_ThrowException()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 9, 1);
+
+            // action
+            var diag = NdArrayOperator<int>.Diag(input);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void Concat_EmptyInput_ThrowException()
         {
             // arrange
@@ -281,6 +293,17 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             CollectionAssert.AreEqual(new[] { 20, 3 }, result.Shape);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Replicate_NegativeRepeats_ThrowException()
+        {
+            // arrange
+            var input = NdArray<int>.Arange(HostDevice.Instance, 0, 2 * 3, 1).Reshape(new[] { 2, 3 });
+
+            // action
+            var result = NdArrayOperator<int>.Replicate(0, -10, input);
         }
 
         [TestMethod]

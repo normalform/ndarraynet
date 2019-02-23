@@ -624,7 +624,7 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void TryReshape_DifferentNumElements_ThrowException()
         {
             // arrange
@@ -632,6 +632,42 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var newShape = new[] { 3, 2, 5 };
+            var newLayout = Layout.TryReshape(newShape, array);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TryReshape_WithRemainderAndInvalidNewShape_ThrowException()
+        {
+            // arrange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var newShape = new[] { 3, SpecialIdx.Remainder, 3 };
+            var newLayout = Layout.TryReshape(newShape, array);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TryReshape_WithRemainderAndInvalidNewShape_ThrowException1()
+        {
+            // arrange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var newShape = new[] { 3, SpecialIdx.Remainder, 3 };
+            var newLayout = Layout.TryReshape(newShape, array);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TryReshape_TwoRemainders_ThrowException()
+        {
+            // arrange
+            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 2, 3, 4 });
+
+            // action
+            var newShape = new[] { 3, SpecialIdx.Remainder, SpecialIdx.Remainder };
             var newLayout = Layout.TryReshape(newShape, array);
         }
 
@@ -891,6 +927,240 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             CollectionAssert.AreEqual(new[] { 0, 1, 0, 2, 3 }, output);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Check_InvalidShapeAndStrideLenth_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, new int[] { });
+
+            // action
+            Layout.Check(layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Check_NegativeShape_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+            shape[2] = -1;
+
+            // action
+            Layout.Check(layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DiagAxis_SameAxes_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+            shape[2] = -1;
+
+            // action
+            var _ = Layout.DiagAxis(1, 1, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DiagAxis_DifferntShapes_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var _ = Layout.DiagAxis(1, 2, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void BroadcastToSameInDimsMany_BigDim_ThrowException()
+        {
+            // arrange
+            var dims = new int[] { 2, 8, 1 };
+            var array = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 2, 3 });
+            var layouts = new Layout[] { array.Layout, array.Layout, array.Layout };
+
+            // action
+            var _ = Layout.BroadcastToSameInDimsMany(dims, layouts);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void BroadcastToSameInDimsMany_NotCompatible_ThrowException()
+        {
+            // arrange
+            var dims = new int[] { 0 };
+            var array1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 3, 4 });
+            var array2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 3, 4 });
+            var array3 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            var layouts = new Layout[] { array1.Layout, array2.Layout, array3.Layout };
+
+            // action
+            var _ = Layout.BroadcastToSameInDimsMany(dims, layouts);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void BroadcastToSameInDimsMany_UnableToBroadCast_ThrowException()
+        {
+            // arrange
+            var dims = new int[] { 0 };
+            var array1 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            var array2 = NdArray<int>.Zeros(HostDevice.Instance, new[] { 3, 3, 4 });
+            var layouts = new Layout[] { array2.Layout, array1.Layout, array2.Layout };
+
+            // action
+            var _ = Layout.BroadcastToSameInDimsMany(dims, layouts);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void InsertAxis_NegativeAxis_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var _ = Layout.InsertAxis(-1, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void InsertAxis_BigAxis_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var _ = Layout.InsertAxis(100, layout);
+        }
+
+        [TestMethod]
+        public void PermuteAxes()
+        {
+            // arrange
+            var shape = new int[] { 2, 3, 4 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var output = Layout.PermuteAxes(new[] { 2, 1, 0 }, layout);
+
+            // assert
+            var expectedShape = new int[] { 4, 3, 2 };
+            CollectionAssert.AreEqual(expectedShape, output.Shape);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void PermuteAxes_InvalidPermut_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var _ = Layout.PermuteAxes(new[] { 2, 3, 4 }, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void View_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var _ = Layout.View(new[] { new InvalidRangeTypeForTest() }, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void BroadcastDim_NegativeSize_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var _ = Layout.BroadcastDim(0, -1, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void BroadcastDim_UnableToBroadCast_ThrowException1()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            var _ = Layout.BroadcastDim(1, 2, layout);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void CheckAxis_NegativeAxis_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            Layout.CheckAxis(layout, -1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void CheckAxis_TooBigAxis_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            Layout.CheckAxis(layout, 100);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void CheckElementRange_NegativeIndex_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            Layout.CheckElementRange(false, 10, -1, new[] { RangeFactory.Elem(0) }, layout.Shape);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void CheckElementRange_TooBigIndex_ThrowException()
+        {
+            // arrange
+            var shape = new int[] { 1, 2, 3, 4, 5 };
+            var layout = new Layout(shape, 0, Layout.CStride(shape));
+
+            // action
+            Layout.CheckElementRange(false, 10, 100, new[] { RangeFactory.Elem(0) }, layout.Shape);
+        }
+
+        private class InvalidRangeTypeForTest : RangeBase
+        {
+            public InvalidRangeTypeForTest() : base((RangeType)9)
+            {
+            }
         }
     }
 }

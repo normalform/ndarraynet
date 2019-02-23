@@ -264,8 +264,8 @@ namespace NdArray.NdArrayImpl
         {
             if (source.NumDimensions < 2)
             {
-                var msg = string.Format("Need at least a two dimensional array for trace but got shape {0}.", source.Shape);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("Need at least a two dimensional array for trace but got {0} dimensional and it's shape is {1}.", source.NumDimensions, ErrorMessage.ShapeToString(source.Shape));
+                throw new ArgumentException(errorMessage, "source");
             }
 
             return TraceAxis(source.NumDimensions - 2, source.NumDimensions - 1, source);

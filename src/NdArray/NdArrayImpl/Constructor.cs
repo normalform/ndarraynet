@@ -161,7 +161,7 @@ namespace NdArray.NdArrayImpl
         {
             if (numElement < 2)
             {
-                throw new ArgumentException("linspace requires at least two elements.", "numElement");
+                throw new ArgumentException("Linspace requires at least two elements.", "numElement");
             }
 
             var op = ScalarPrimitivesRegistry.For<T, int>();

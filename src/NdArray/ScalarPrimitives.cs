@@ -173,8 +173,8 @@ namespace NdArrayNet
                 }
             }
 
-            var msg = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
-            throw new InvalidOperationException(msg);
+            var errorMessage = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
+            throw new InvalidOperationException(errorMessage);
         }
 
         internal static Func<T, T, T> CompileAny(Expression<Func<T, T, T>>[] fns)
@@ -188,8 +188,8 @@ namespace NdArrayNet
                 }
             }
 
-            var msg = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
-            throw new InvalidOperationException(msg);
+            var errorMessage = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
+            throw new InvalidOperationException(errorMessage);
         }
 
         internal static Func<T, T, bool> CompileAny(Expression<Func<T, T, bool>>[] fns)
@@ -203,8 +203,8 @@ namespace NdArrayNet
                 }
             }
 
-            var msg = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
-            throw new InvalidOperationException(msg);
+            var errorMessage = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
+            throw new InvalidOperationException(errorMessage);
         }
 
         internal static Func<T, T> TryUnary(string op, Expression<Func<T, T>>[] fns)

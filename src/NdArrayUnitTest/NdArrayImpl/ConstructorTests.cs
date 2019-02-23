@@ -32,6 +32,7 @@ namespace NdArrayNet.NdArrayUnitTest
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
+    using System;
 
     [TestClass]
     public class ConstructorTests
@@ -294,6 +295,17 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(1.5, array[new[] { 2 }]);
             Assert.AreEqual(1.75, array[new[] { 3 }]);
             Assert.AreEqual(2.0, array[new[] { 4 }]);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Linspace_InvalidNumElements_ThrowException()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+
+            // action
+            var array = Constructor<int>.Linspace(device, 0, 5, 1);
         }
 
         [TestMethod]

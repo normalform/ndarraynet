@@ -267,5 +267,17 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.AreEqual(39, trace[1].Value);
             Assert.AreEqual(66, trace[2].Value);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Trace_WithInvalidDimension_ThrowException()
+        {
+            // arrange
+            var device = HostDevice.Instance;
+            var input = NdArray<int>.Arange(device, 0, 27, 1);
+
+            // action
+            var trace = ReductionFunction<int>.Trace(input);
+        }
     }
 }

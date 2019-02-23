@@ -47,8 +47,8 @@ namespace NdArrayNet
         {
             if (numberOfElements > int.MaxValue)
             {
-                var msg = string.Format("Cannot create host NdArray storage for {0} elements, the current limit is {1} elements.", numberOfElements, int.MaxValue);
-                throw new ArgumentOutOfRangeException(msg);
+                var errorMessage = string.Format("Cannot create host NdArray storage for {0} elements, the current limit is {1} elements.", numberOfElements, int.MaxValue);
+                throw new ArgumentOutOfRangeException(errorMessage);
             }
 
             Data = new T[numberOfElements];

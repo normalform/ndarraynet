@@ -57,8 +57,8 @@ namespace NdArray.NdArrayImpl
         {
             if (source.NumDimensions < 2)
             {
-                var message = string.Format("Need at least a two dimensional array for diagonal but got shape {0}.", source.Shape);
-                throw new ArgumentException(message, "source");
+                var errorMessage = string.Format("Need at least a two dimensional array for diagonal but got shape {0}.", ErrorMessage.ShapeToString(source.Shape));
+                throw new ArgumentException(errorMessage, "source");
             }
 
             return DiagAxis(source.NumDimensions - 2, source.NumDimensions - 1, source);
@@ -80,8 +80,8 @@ namespace NdArray.NdArrayImpl
             var shape = sources[0].Shape.Select(s => s).ToArray();
             if (!(axis >= 0 && axis < shape.Length))
             {
-                var message = string.Format("Concatenation axis {0} is out of range for shape {1}.", axis, shape);
-                throw new ArgumentOutOfRangeException("axis", message);
+                var errorMessage = string.Format("Concatenation axis {0} is out of range for shape {1}.", axis, ErrorMessage.ShapeToString(shape));
+                throw new ArgumentOutOfRangeException("axis", errorMessage);
             }
 
             var arrayIndex = 0;
@@ -89,8 +89,8 @@ namespace NdArray.NdArrayImpl
             {
                 if (!Enumerable.SequenceEqual(List.Without(axis, source.Shape), List.Without(axis, shape)))
                 {
-                    var message = string.Format("Concatentation element with index {0} with shape{1} must be equal to shape {2} of the first element, except in the concatenation axis {3}", arrayIndex, source.Shape, shape, axis);
-                    throw new ArgumentException(message, "sources");
+                    var errorMessage = string.Format("Concatentation element with index {0} with shape{1} must be equal to shape {2} of the first element, except in the concatenation axis {3}", arrayIndex, ErrorMessage.ShapeToString(source.Shape), ErrorMessage.ShapeToString(shape), axis);
+                    throw new ArgumentException(errorMessage, "sources");
                 }
 
                 arrayIndex++;
@@ -143,7 +143,8 @@ namespace NdArray.NdArrayImpl
         {
             if (axis1 == axis2)
             {
-                throw new ArgumentException("axes to use for diagonal must be different", "axis1");
+                var errorMessage = string.Format("axes [axis1={0}, axis2={1}] to use for diagonal must be different", axis1, axis2);
+                throw new ArgumentException(errorMessage, "axis2");
             }
 
             var ax1 = axis1 < axis2 ? axis1 : axis2;
@@ -152,8 +153,8 @@ namespace NdArray.NdArrayImpl
             NdArray<T>.CheckAxis(ax1, source);
             if (!(ax2 >= 0 && ax2 <= source.NumDimensions))
             {
-                var message = string.Format("Cannot insert axis at position {0} into array of shape {1}.", ax2, source.Shape);
-                throw new ArgumentException(message, "axis2");
+                var errorMessage = string.Format("Cannot insert axis at position {0} into array of shape {1}.", ax2, ErrorMessage.ShapeToString(source.Shape));
+                throw new ArgumentException(errorMessage, "axis2");
             }
 
             var shape = List.Insert(ax2, source.Shape[ax1], source.Shape);

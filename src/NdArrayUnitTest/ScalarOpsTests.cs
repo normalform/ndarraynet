@@ -1049,7 +1049,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             Assert.IsInstanceOfType(targetData, typeof(double[]));
-            CollectionAssert.AreEqual(new[] { 4.0, 2.0, 7.0, 1.0}, targetData);
+            CollectionAssert.AreEqual(new[] { 4.0, 2.0, 7.0, 1.0 }, targetData);
         }
 
         [TestMethod]

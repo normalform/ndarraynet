@@ -47,7 +47,8 @@ namespace NdArrayNet
             }
             else
             {
-                throw new ArgumentOutOfRangeException("indexToSet", "element index out of bounds");
+                var errorMessage = string.Format("element index {0} out of bounds {1}", indexToSet, src.Length);
+                throw new ArgumentOutOfRangeException("indexToSet", errorMessage);
             }
         }
 
