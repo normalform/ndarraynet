@@ -35,6 +35,7 @@ namespace NdArrayNet
     using System.Linq;
     using System.Numerics;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Scalar operations on host NdArray.
@@ -274,6 +275,7 @@ namespace NdArrayNet
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Stride111InnerLoop<T, T1, T2>(
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,
@@ -321,6 +323,7 @@ namespace NdArrayNet
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Stride110InnerLoop<T, T1, T2>(
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,
@@ -362,6 +365,7 @@ namespace NdArrayNet
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Stride101InnerLoop<T, T1, T2>(
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,
@@ -403,6 +407,7 @@ namespace NdArrayNet
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Stride100InnerLoop<T, T1, T2>(
             Func<Vector<T1>, Vector<T2>, Vector<T>> vectorOp,
             int[] shape,

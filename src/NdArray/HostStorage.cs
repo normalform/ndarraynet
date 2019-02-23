@@ -30,8 +30,10 @@
 namespace NdArrayNet
 {
     using System;
+    using System.Diagnostics;
     using System.Runtime.InteropServices;
 
+    [DebuggerDisplay("Count={DataSize}, InBytes={DataSizeInBytes}")]
     internal class HostStorage<T> : IStorage<T>, IHostStorage<T>
     {
         private readonly int unitSize = Marshal.SizeOf(typeof(T));

@@ -31,7 +31,7 @@ namespace NdArrayNet
 {
     internal interface IBackend<T>
     {
-        DataAndLayout<T> DataLayout { get; }
+        DataAndLayout<T> DataAndLayout { get; }
 
         T this[int[] index] { get; set; }
 
