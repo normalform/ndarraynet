@@ -62,8 +62,8 @@ namespace NdArrayNet
                         stop == SpecialIdx.NewAxis || stop == SpecialIdx.Fill ||
                         step == SpecialIdx.NewAxis || step == SpecialIdx.Fill)
                     {
-                        var msg = string.Format("invalidArg item Specified items / slices are invalid: {0}.", allArgs);
-                        throw new InvalidOperationException(msg);
+                        var errorMessage = string.Format("InvalidArg item Specified items / slices are invalid: {0}.", ErrorMessage.RangeArgsToString(allArgs));
+                        throw new InvalidOperationException(errorMessage);
                     }
 
                     return new[] { RangeFactory.Range(start, stop, step) }.Concat(toRng(args.Skip(3).ToArray())).ToArray();
@@ -76,15 +76,14 @@ namespace NdArrayNet
                     if (start == SpecialIdx.NewAxis || start == SpecialIdx.Fill ||
                         stop == SpecialIdx.NewAxis || stop == SpecialIdx.Fill)
                     {
-                        var msg = string.Format("invalidArg item Specified items / slices are invalid: {0}.", allArgs);
-                        throw new InvalidOperationException(msg);
+                        var errorMessage = string.Format("invalidArg item Specified items / slices are invalid: {0}.", ErrorMessage.RangeArgsToString(allArgs));
+                        throw new InvalidOperationException(errorMessage);
                     }
 
                     return new[] { RangeFactory.Range(start, stop) }.Concat(toRng(args.Skip(2).ToArray())).ToArray();
                 }
-                else if (args[0] is int)
+                else if (args[0] is int idx)
                 {
-                    var idx = (int)args[0];
                     if (idx == SpecialIdx.NewAxis)
                     {
                         return new[] { RangeFactory.NewAxis }.Concat(toRng(args.Skip(1).ToArray())).ToArray();
@@ -100,8 +99,8 @@ namespace NdArrayNet
                 }
                 else
                 {
-                    var msg = string.Format("invalidArg item Specified items / slices are invalid: {0}.", allArgs);
-                    throw new InvalidOperationException(msg);
+                    var errorMessage = string.Format("invalidArg item Specified items / slices are invalid: {0}.", ErrorMessage.RangeArgsToString(allArgs));
+                    throw new InvalidOperationException(errorMessage);
                 }
             }
 

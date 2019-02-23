@@ -1600,8 +1600,8 @@ namespace NdArrayNet
             var reducedShaped = List.Without(axis, array.Shape);
             if (!Enumerable.SequenceEqual(target.Shape, reducedShaped))
             {
-                var msg = string.Format("Reduction of NdArray {0} along axis {1} gives shape {2} but target has shape {3}.", array.Shape, axis, reducedShaped, target.Shape);
-                throw new InvalidOperationException(msg);
+                var errorMessage = string.Format("Reduction of NdArray {0} along axis {1} gives shape {2} but target has shape {3}.", ErrorMessage.ShapeToString(array.Shape), axis, ErrorMessage.ShapeToString(reducedShaped), ErrorMessage.ShapeToString(target.Shape));
+                throw new InvalidOperationException(errorMessage);
             }
 
             if (!(initial is null))
@@ -1637,8 +1637,8 @@ namespace NdArrayNet
         {
             if (!Enumerable.SequenceEqual(a.Shape, b.Shape))
             {
-                var msg = string.Format("NdArrays of shapes {0} and {1} were expected to have same shape", a.Shape, b.Shape);
-                throw new ArgumentOutOfRangeException(msg);
+                var errorMessage = string.Format("NdArrays of shapes {0} and {1} were expected to have same shape", ErrorMessage.ShapeToString(a.Shape), ErrorMessage.ShapeToString(b.Shape));
+                throw new ArgumentOutOfRangeException(errorMessage);
             }
         }
 
@@ -1783,8 +1783,8 @@ namespace NdArrayNet
         {
             if (DataType != typeof(bool))
             {
-                var msg = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
-                throw new InvalidOperationException(msg);
+                var errorMessage = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
+                throw new InvalidOperationException(errorMessage);
             }
 
             return this;
@@ -1828,8 +1828,8 @@ namespace NdArrayNet
             var newNdArray = TryReshapeView(shape);
             if (newNdArray is null)
             {
-                var msg = string.Format("Cannot reshape NdArray of shape {0} and strides {1} without copying.", Shape, Layout.Stride);
-                throw new InvalidOperationException(msg);
+                var errorMessage = string.Format("Cannot reshape NdArray of shape {0} and strides {1} without copying.", ErrorMessage.ShapeToString(Shape), ErrorMessage.ArrayToString(Layout.Stride));
+                throw new InvalidOperationException(errorMessage);
             }
 
             return newNdArray;
@@ -1869,8 +1869,8 @@ namespace NdArrayNet
         {
             if (NumDimensions != 0)
             {
-                var msg = string.Format("This operation requires a scalar (0-dimensional) NdArray, but its shape is {0}", Shape);
-                throw new InvalidOperationException(msg);
+                var errorMessage = string.Format("This operation requires a scalar (0-dimensional) NdArray, but its shape is {0}", ErrorMessage.ShapeToString(Shape));
+                throw new InvalidOperationException(errorMessage);
             }
         }
 
@@ -1878,8 +1878,8 @@ namespace NdArrayNet
         {
             if (DataType != typeof(int))
             {
-                var msg = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
-                throw new InvalidOperationException(msg);
+                var errorMessage = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
+                throw new InvalidOperationException(errorMessage);
             }
 
             return this;

@@ -187,8 +187,8 @@ namespace NdArray.NdArrayImpl
                 return result;
             }
 
-            var msg = string.Format("Value {0} was not found in specifed NdArray.", value);
-            throw new InvalidOperationException(msg);
+            var errorMessage = string.Format("Value {0} was not found in specifed NdArray.", value);
+            throw new InvalidOperationException(errorMessage);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace NdArray.NdArrayImpl
         /// Counts the elements being true along the specified axis.
         /// </summary>
         /// <param name="axis">The axis the count along.</param>
-        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> source)
         {
@@ -220,7 +220,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Counts the elements being true returning the result as a NdArray.
         /// </summary>
-        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A new scalar NdArray containing the result of this operation.</returns>
         public static NdArray<int> CountTrueNdArray(NdArray<bool> source)
         {
@@ -230,7 +230,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Counts the elements being true.
         /// </summary>
-        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A scalar containing the result of this operation.</returns>
         public static int CountTrue(NdArray<bool> source)
         {
@@ -240,7 +240,7 @@ namespace NdArray.NdArrayImpl
         /// <summary>
         /// Finds the indices of all element that are true.
         /// </summary>
-        /// <param name="source">The NdArray containing the source values.</param>    
+        /// <param name="source">The NdArray containing the source values.</param>
         /// <returns>A matrix that has one row per true entry in <paramref name="source"/>.
         public static NdArray<int> TrueIndices(NdArray<bool> source)
         {

@@ -32,6 +32,7 @@ namespace NdArrayNet.NdArrayUnitTest
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
+    using System;
 
     [TestClass]
     public class ShapeFunctionTests
@@ -444,6 +445,54 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             CollectionAssert.AreEqual(new[] { 4, 3, 2 }, output.Shape);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ApplyLayoutFn2_InvalidFuncReturn_ThrowException()
+        {
+            // arrange
+            var dummy = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            Layout[] invalidFunc(Layout[] _) => new Layout[] { };
+
+            // action
+            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, dummy, dummy);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ApplyLayoutFn3_InvalidFuncReturn_ThrowException()
+        {
+            // arrange
+            var dummy = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            Layout[] invalidFunc(Layout[] _) => new Layout[] { };
+
+            // action
+            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, dummy, dummy, dummy);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ApplyLayoutFn2Dim_InvalidFuncReturn_ThrowException()
+        {
+            // arrange
+            var dummy = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            Layout[] invalidFunc(int[] dim, Layout[] _) => new Layout[] { };
+
+            // action
+            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, new int[] { }, dummy, dummy);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ApplyLayoutFn3Dim_InvalidFuncReturn_ThrowException()
+        {
+            // arrange
+            var dummy = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 3, 4 });
+            Layout[] invalidFunc(int[] dim, Layout[] _) => new Layout[] { };
+
+            // action
+            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, new int[] { }, dummy, dummy, dummy);
         }
     }
 }

@@ -33,7 +33,6 @@ namespace NdArrayNet
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Layout (shape, offset, stride) of a NdArray.
@@ -82,6 +81,10 @@ namespace NdArrayNet
         /// </summary>
         public int NumElements { get; }
 
+        private string DebuggerShape => "Shape=[" + string.Join(",", Shape.Select(s => s.ToString()).ToArray()) + "]";
+
+        private string DebuggerStride => "Stride=[" + string.Join(",", Stride.Select(s => s.ToString()).ToArray()) + "]";
+
         public static Layout NewC(int[] shape)
         {
             return new Layout(shape, 0, CStride(shape));
@@ -96,14 +99,14 @@ namespace NdArrayNet
         {
             if (layout.Shape.Length != layout.Stride.Length)
             {
-                var msg = string.Format("shape {0} and stride {1} must have same number of entries", layout.Shape, layout.Stride);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("shape {0} and stride {1} must have same number of entries", ErrorMessage.ShapeToString(layout.Shape), ErrorMessage.ArrayToString(layout.Stride));
+                throw new ArgumentException(errorMessage);
             }
 
             if (layout.Shape.Any(s => s < 0))
             {
-                var msg = string.Format("shape {0} cannot have negative entires", layout.Shape);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("shape {0} cannot have negative entires", ErrorMessage.ShapeToString(layout.Shape));
+                throw new ArgumentException(errorMessage);
             }
         }
 
@@ -111,14 +114,14 @@ namespace NdArrayNet
         {
             if (!Permutation.Is(order))
             {
-                var msg = string.Format("The stride order {0} is not a permutation", order);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("The stride order {0} is not a permutation", ErrorMessage.ArrayToString(order));
+                throw new ArgumentException(errorMessage);
             }
 
             if (order.Length != shape.Length)
             {
-                var msg = string.Format("The stride order {0} is incompatible with the shape {1}", order, shape);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("The stride order {0} is incompatible with the shape {1}", ErrorMessage.ArrayToString(order), ErrorMessage.ShapeToString(shape));
+                throw new ArgumentException(errorMessage);
             }
 
             var cumElems = 1;
@@ -149,28 +152,28 @@ namespace NdArrayNet
         /// <summary>
         /// Swaps the specified dimensions of the NdArray.
         /// </summary>
-        /// <param name="ax1">The dimension to swap.</param>
-        /// <param name="ax2">The dimension to swap with.</param>
-        /// <param name="a">The NdArray to operate on.</param>
+        /// <param name="axis1">The dimension to swap.</param>
+        /// <param name="axis2">The dimension to swap with.</param>
+        /// <param name="layout">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions swapped.</returns>
-        public static Layout SwapDim(int ax1, int ax2, Layout a)
+        public static Layout SwapDim(int axis1, int axis2, Layout layout)
         {
-            if (!(ax1 >= 0 && ax1 < a.NumDimensions && ax2 >= 0 && ax2 < a.NumDimensions))
+            if (!(axis1 >= 0 && axis1 < layout.NumDimensions && axis2 >= 0 && axis2 < layout.NumDimensions))
             {
-                var msg = string.Format("Cannot swap dimension {0} with {1} of for shape {2}.", ax1, ax2, a.Shape);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("Cannot swap dimension {0} with {1} of for shape {2}.", axis1, axis2, ErrorMessage.ShapeToString(layout.Shape));
+                throw new ArgumentException(errorMessage);
             }
 
-            var newShp = a.Shape.Select(x => x).ToArray();
-            var newStr = a.Stride.Select(x => x).ToArray();
+            var newShp = layout.Shape.Select(x => x).ToArray();
+            var newStr = layout.Stride.Select(x => x).ToArray();
 
-            newShp[ax1] = a.Shape[ax2];
-            newShp[ax2] = a.Shape[ax1];
+            newShp[axis1] = layout.Shape[axis2];
+            newShp[axis2] = layout.Shape[axis1];
 
-            newStr[ax1] = a.Stride[ax2];
-            newStr[ax2] = a.Stride[ax1];
+            newStr[axis1] = layout.Stride[axis2];
+            newStr[axis2] = layout.Stride[axis1];
 
-            return new Layout(newShp, a.Offset, newStr);
+            return new Layout(newShp, layout.Offset, newStr);
         }
 
         public static Layout PadLeft(Layout source)
@@ -201,8 +204,8 @@ namespace NdArrayNet
 
             if (layout.Shape[ax1] != layout.Shape[ax2])
             {
-                var msg = string.Format("Array must have same dimensions along axis {0} and {1} to extract diagonal but it has shape {2}", ax1, ax2, layout.Shape);
-                throw new ArgumentException(msg, "layout");
+                var errorMessage = string.Format("Array must have same dimensions along axis {0} and {1} to extract diagonal but it has shape {2}", ax1, ax2, ErrorMessage.ShapeToString(layout.Shape));
+                throw new ArgumentException(errorMessage, "layout");
             }
 
             var newShape = new List<int>();
@@ -265,8 +268,8 @@ namespace NdArrayNet
                 return new Layout(List.Set(dim, size, layout.Shape), layout.Offset, List.Set(dim, 0, layout.Stride));
             }
 
-            var msg = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, layout.Shape);
-            throw new ArgumentOutOfRangeException(msg);
+            var errorMessage = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, ErrorMessage.ShapeToString(layout.Shape));
+            throw new ArgumentOutOfRangeException(errorMessage);
         }
 
         public static Layout[] PadToSameMany(Layout[] sas)
@@ -319,19 +322,20 @@ namespace NdArrayNet
         /// broadcasts to have the same size in the given dimensions
         /// </summary>
         /// <param name="dims"></param>
-        /// <param name="sas"></param>
+        /// <param name="layouts"></param>
         /// <returns></returns>
-        public static Layout[] BroadcastToSameInDimsMany(int[] dims, Layout[] sas)
+        public static Layout[] BroadcastToSameInDimsMany(int[] dims, Layout[] layouts)
         {
             foreach (var dim in dims)
             {
-                if (!sas.All(s => dim < s.NumDimensions))
+                if (!layouts.All(layout => dim < layout.NumDimensions))
                 {
-                    var msg = string.Format("Cannot broadcast shapes {0} to same size in non - existant dimension {1}.", sas, dim);
-                    throw new InvalidOperationException(msg);
+                    var shapesStr = string.Join(",", layouts.Select(l => ErrorMessage.ShapeToString(l.Shape)));
+                    var errorMessage = string.Format("Cannot broadcast shapes {0} to same size in non - existant dimension {1}.", shapesStr, dim);
+                    throw new InvalidOperationException(errorMessage);
                 }
 
-                var ls = sas.Select(s => s.Shape[dim]);
+                var ls = layouts.Select(s => s.Shape[dim]);
                 if (ls.Contains(1))
                 {
                     var nonBc = ls.Where(s => s != 1);
@@ -342,44 +346,45 @@ namespace NdArrayNet
                         if (setCount == 1)
                         {
                             var target = nonBc.First();
-                            for (var sasIndex = 0; sasIndex < sas.Length; sasIndex++)
+                            for (var sasIndex = 0; sasIndex < layouts.Length; sasIndex++)
                             {
-                                var sa = sas[sasIndex];
+                                var sa = layouts[sasIndex];
                                 if (sa.Shape[dim] != target)
                                 {
-                                    sas[sasIndex] = BroadcastDim(dim, target, sa);
+                                    layouts[sasIndex] = BroadcastDim(dim, target, sa);
                                 }
                                 else
                                 {
-                                    sas[sasIndex] = sa;
+                                    layouts[sasIndex] = sa;
                                 }
                             }
                         }
                         else
                         {
-                            var msg = string.Format("Cannot broadcast shapes {0} to same size in dimension {1} because they do not agree in the target size.", sas, dim);
-                            throw new InvalidOperationException(msg);
+                            var shapesStr = string.Join(",", layouts.Select(l => ErrorMessage.ShapeToString(l.Shape)));
+                            var errorMessage = string.Format("Cannot broadcast shapes {0} to same size in dimension {1} because they do not agree in the target size.", shapesStr, dim);
+                            throw new InvalidOperationException(errorMessage);
                         }
                     }
                 }
                 else if (new HashSet<int>(ls).Count > 1)
                 {
-                    var msg = string.Format("Non-broadcast dimension {0} of shapes {1} does not agree.", dim, sas);
-                    throw new InvalidOperationException(msg);
+                    var shapesStr = string.Join(",", layouts.Select(l => ErrorMessage.ShapeToString(l.Shape)));
+                    var errorMessage = string.Format("Non-broadcast dimension {0} of shapes {1} does not agree.", dim, shapesStr);
+                    throw new InvalidOperationException(errorMessage);
                 }
             }
 
-            return sas;
+            return layouts;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Layout BroadcastToShape(int[] broadcastShape, Layout source)
         {
             var broadcastDim = broadcastShape.Length;
             if (broadcastDim < source.NumDimensions)
             {
-                var msg = string.Format("Cannot broadcast to shape {0} from shape {1} of higher rank.", broadcastShape, source.Shape);
-                throw new InvalidOperationException(msg);
+                var errorMessage = string.Format("Cannot broadcast to shape {0} from shape {1} of higher rank.", ErrorMessage.ShapeToString(broadcastShape), ErrorMessage.ShapeToString(source.Shape));
+                throw new InvalidOperationException(errorMessage);
             }
 
             var broadcastLayout = new Layout(source.Shape, source.Offset, source.Stride);
@@ -401,8 +406,8 @@ namespace NdArrayNet
                     }
                     else
                     {
-                        var msg = string.Format("Cannot broadcast shape {0} to shape {1}.", source.Shape, broadcastShape);
-                        throw new InvalidOperationException(msg);
+                        var errorMessage = string.Format("Cannot broadcast shape {0} to shape {1}.", ErrorMessage.ShapeToString(source.Shape), ErrorMessage.ShapeToString(broadcastShape));
+                        throw new InvalidOperationException(errorMessage);
                     }
                 }
             }
@@ -414,8 +419,8 @@ namespace NdArrayNet
         {
             if (!(axis >= 0 && axis <= source.NumDimensions))
             {
-                var msg = string.Format("axis {0} out of range for NdArray with shape {1}", axis, source.Shape);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("axis {0} out of range for NdArray with shape {1}", axis, ErrorMessage.ShapeToString(source.Shape));
+                throw new ArgumentException(errorMessage);
             }
 
             return new Layout(
@@ -429,8 +434,8 @@ namespace NdArrayNet
             var numDim = source.NumDimensions;
             if (numDim < 2)
             {
-                var msg = string.Format("cannot transpose non-matrix of shape {0}", source.Shape);
-                throw new ArgumentException(msg, "source");
+                var errorMessage = string.Format("cannot transpose non-matrix of shape {0}", ErrorMessage.ShapeToString(source.Shape));
+                throw new ArgumentException(errorMessage, "source");
             }
 
             return SwapDim(numDim - 2, numDim - 1, source);
@@ -465,8 +470,8 @@ namespace NdArrayNet
         {
             if (src.NumDimensions != permut.Length)
             {
-                var msg = string.Format("Permutation {0} must have same rank as shape {1}.", permut, src.Shape);
-                throw new ArgumentException(msg);
+                var errorMessage = string.Format("Permutation {0} must have same rank as shape {1}.", ErrorMessage.ArrayToString(permut), ErrorMessage.ShapeToString(src.Shape));
+                throw new ArgumentException(errorMessage, "permut");
             }
 
             // permute
@@ -525,41 +530,7 @@ namespace NdArrayNet
             return outputIndex;
         }
 
-        public bool Equals(Layout other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return other.Offset == Offset && Enumerable.SequenceEqual(other.Shape, Shape) && Enumerable.SequenceEqual(other.Stride, Stride);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (!(obj is Layout layoutObj))
-            {
-                return false;
-            }
-
-            return this.Equals(layoutObj);
-        }
-
-        public override int GetHashCode()
-        {
-            var hash = new HashCode();
-            hash.Add(Shape);
-            hash.Add(Stride);
-            hash.Add(Offset);
-            return hash.ToHashCode();
-        }
-
-        public Layout View(IRange[] ranges, Layout layout)
+        public static Layout View(IRange[] ranges, Layout layout)
         {
             Layout SubView(IRange[] subRanges, Layout subLayout)
             {
@@ -658,11 +629,45 @@ namespace NdArrayNet
                         new[] { 0 }.Concat(restLayout.Stride).ToArray());
                 }
 
-                var msg = string.Format("Slice {0} is incompatible with shape {1}.", ranges, subLayout);
-                throw new ArgumentOutOfRangeException(msg);
+                var errorMessage = string.Format("Slice {0} is incompatible with shape {1}.", ErrorMessage.RangeArgsToString(ranges), ErrorMessage.ShapeToString(subLayout.Shape));
+                throw new ArgumentException(errorMessage, "ranges");
             }
 
             return SubView(ranges, layout);
+        }
+
+        public bool Equals(Layout other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return other.Offset == Offset && Enumerable.SequenceEqual(other.Shape, Shape) && Enumerable.SequenceEqual(other.Stride, Stride);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (!(obj is Layout layoutObj))
+            {
+                return false;
+            }
+
+            return this.Equals(layoutObj);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(Shape);
+            hash.Add(Stride);
+            hash.Add(Offset);
+            return hash.ToHashCode();
         }
 
         /// <summary>
@@ -696,22 +701,22 @@ namespace NdArrayNet
                 }
                 else
                 {
-                    var msg = string.Format("cannot reshape from {0} to {1} because {2} / {3} is not an integer", array.Shape, shape, elemsNeeded, elemsSoFar);
-                    throw new ArgumentOutOfRangeException("shape", msg);
+                    var errorMessage = string.Format("cannot reshape from {0} to {1} because {2} / {3} is not an integer", ErrorMessage.ShapeToString(array.Shape), ErrorMessage.ShapeToString(shape), elemsNeeded, elemsSoFar);
+                    throw new ArgumentException(errorMessage, "shape");
                 }
             }
             else
             {
-                var msg = string.Format("only the size of one dimension can be determined automatically, but shape was {0}", shape);
-                throw new ArgumentOutOfRangeException("shape", msg);
+                var errorMessage = string.Format("only the size of one dimension can be determined automatically, but shape was {0}", ErrorMessage.ShapeToString(shape));
+                throw new ArgumentException(errorMessage, "shape");
             }
 
             // check that number of elements does not change
             var shpElems = newShape.Aggregate(1, (a, b) => a * b);
             if (shpElems != array.NumElements)
             {
-                var msg = string.Format("cannot reshape from shape {0} (with {1} elements) to shape {2} (with {3} elements)", array.Shape, array.NumElements, newShape, shpElems);
-                throw new ArgumentOutOfRangeException("shape", msg);
+                var errorMessage = string.Format("cannot reshape from shape {0} (with {1} elements) to shape {2} (with {3} elements)", ErrorMessage.ShapeToString(array.Shape), array.NumElements, ErrorMessage.ShapeToString(newShape), shpElems);
+                throw new ArgumentException(errorMessage, "shape");
             }
 
             var newStride = TfStride(new int[] { }, newShape, array.Layout.Stride, array.Layout.Shape);
@@ -764,28 +769,28 @@ namespace NdArrayNet
             return null;
         }
 
-        internal static Layout BroadcastDim(int dim, int size, Layout a)
+        internal static Layout BroadcastDim(int dim, int size, Layout layout)
         {
             if (size < 0)
             {
                 throw new ArgumentOutOfRangeException("size", "size must be positive");
             }
 
-            if (a.Shape[dim] == 1)
+            if (layout.Shape[dim] == 1)
             {
-                return new Layout(List.Set(dim, size, a.Shape), a.Offset, List.Set(dim, 0, a.Stride));
+                return new Layout(List.Set(dim, size, layout.Shape), layout.Offset, List.Set(dim, 0, layout.Stride));
             }
 
-            var msg = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, a.Shape);
-            throw new InvalidOperationException(msg);
+            var errorMessage = string.Format("Dimension {0} of shape {1} must be of size 1 to broadcast.", dim, ErrorMessage.ShapeToString(layout.Shape));
+            throw new ArgumentException(errorMessage, "dim");
         }
 
         internal static void CheckAxis(Layout layout, int axis)
         {
             if (!(axis >= 0 && axis < layout.NumDimensions))
             {
-                var msg = string.Format("axis {0} out of range for NdArray with shape {1}", axis, layout.Shape);
-                throw new ArgumentOutOfRangeException(msg);
+                var errorMessage = string.Format("axis {0} out of range for NdArray with shape {1}", axis, ErrorMessage.ShapeToString(layout.Shape));
+                throw new ArgumentOutOfRangeException(errorMessage);
             }
         }
 
@@ -794,8 +799,8 @@ namespace NdArrayNet
             var numEl = isEnd ? numElements + 1 : numElements;
             if (!(index >= 0 && index < numEl))
             {
-                var msg = string.Format("Index {0} out of range in slice {1} for shape {2}.", index, ranges, shp);
-                throw new ArgumentOutOfRangeException(msg);
+                var errorMessage = string.Format("Index {0} out of range in slice {1} for shape {2}.", index, ErrorMessage.RangeArgsToString(ranges), ErrorMessage.ShapeToString(shp));
+                throw new ArgumentOutOfRangeException(errorMessage);
             }
         }
 
@@ -819,9 +824,5 @@ namespace NdArrayNet
                 }
             }
         }
-
-        private string DebuggerShape => "Shape=[" + string.Join(",", Shape.Select(s => s.ToString()).ToArray()) + "]";
-
-        private string DebuggerStride => "Stride=[" + string.Join(",", Stride.Select(s => s.ToString()).ToArray()) + "]";
     }
 }

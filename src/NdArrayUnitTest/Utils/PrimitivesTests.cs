@@ -30,8 +30,8 @@
 namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using NdArrayNet;
+    using System;
 
     [TestClass]
     public class PrimitivesTests
@@ -276,6 +276,14 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             Assert.AreEqual(decimal.One, one);
             Assert.IsInstanceOfType(one, typeof(decimal));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void GetStaticProperty_InvalidMethod_ThrowException()
+        {
+            // action
+            var _ = Primitives.GetStaticProperty(typeof(int), "INVALID_METHOD");
         }
     }
 }
