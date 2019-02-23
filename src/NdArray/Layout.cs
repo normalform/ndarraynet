@@ -31,11 +31,14 @@ namespace NdArrayNet
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Layout (shape, offset, stride) of a NdArray.
     /// </summary>
+    [DebuggerDisplay("{DebuggerShape, nq}, Offset={Offset}, {DebuggerStride, nq}")]
     public sealed class Layout : IEquatable<Layout>
     {
         /// <summary>
@@ -369,6 +372,7 @@ namespace NdArrayNet
             return sas;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Layout BroadcastToShape(int[] broadcastShape, Layout source)
         {
             var broadcastDim = broadcastShape.Length;
@@ -815,5 +819,9 @@ namespace NdArrayNet
                 }
             }
         }
+
+        private string DebuggerShape => "Shape=[" + string.Join(",", Shape.Select(s => s.ToString()).ToArray()) + "]";
+
+        private string DebuggerStride => "Stride=[" + string.Join(",", Stride.Select(s => s.ToString()).ToArray()) + "]";
     }
 }

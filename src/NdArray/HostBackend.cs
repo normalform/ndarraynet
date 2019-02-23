@@ -48,7 +48,7 @@ namespace NdArrayNet
 
         public FastAccess FastAccess { get; }
 
-        public DataAndLayout<T> DataLayout => new DataAndLayout<T>(data, FastAccess);
+        public DataAndLayout<T> DataAndLayout => new DataAndLayout<T>(data, FastAccess);
 
         public T this[int[] index]
         {
@@ -93,31 +93,31 @@ namespace NdArrayNet
         public static DataAndLayout<T> ElemwiseDataAndLayout(IFrontend<T> trgt)
         {
             var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { });
-            return trgt.Relayout(tl).Backend.DataLayout;
+            return trgt.Relayout(tl).Backend.DataAndLayout;
         }
 
         public static (DataAndLayout<T1>, DataAndLayout<T2>) ElemwiseDataAndLayout<T1, T2>(IFrontend<T1> trgt, IFrontend<T2> src)
         {
             var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { src.Layout });
-            return (trgt.Relayout(tl).Backend.DataLayout, src.Relayout(ls[0]).Backend.DataLayout);
+            return (trgt.Relayout(tl).Backend.DataAndLayout, src.Relayout(ls[0]).Backend.DataAndLayout);
         }
 
         public static (DataAndLayout<T>, DataAndLayout<TA>, DataAndLayout<TB>) ElemwiseDataAndLayout<TA, TB>(IFrontend<T> trgt, IFrontend<TA> a, IFrontend<TB> b)
         {
             var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { a.Layout, b.Layout });
-            return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout);
+            return (trgt.Relayout(tl).Backend.DataAndLayout, a.Relayout(ls[0]).Backend.DataAndLayout, b.Relayout(ls[1]).Backend.DataAndLayout);
         }
 
         public static (DataAndLayout<TR>, DataAndLayout<TA>, DataAndLayout<TB>) ElemwiseDataAndLayout<TR, TA, TB>(IFrontend<TR> trgt, IFrontend<TA> a, IFrontend<TB> b)
         {
             var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { a.Layout, b.Layout });
-            return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout);
+            return (trgt.Relayout(tl).Backend.DataAndLayout, a.Relayout(ls[0]).Backend.DataAndLayout, b.Relayout(ls[1]).Backend.DataAndLayout);
         }
 
         public static (DataAndLayout<TR>, DataAndLayout<TA>, DataAndLayout<TB>, DataAndLayout<TC>) ElemwiseDataAndLayout<TR, TA, TB, TC>(IFrontend<TR> trgt, IFrontend<TA> a, IFrontend<TB> b, IFrontend<TC> c)
         {
             var (tl, ls) = ElemwiseLayouts(trgt.Layout, new Layout[] { a.Layout, b.Layout, c.Layout });
-            return (trgt.Relayout(tl).Backend.DataLayout, a.Relayout(ls[0]).Backend.DataLayout, b.Relayout(ls[1]).Backend.DataLayout, c.Relayout(ls[2]).Backend.DataLayout);
+            return (trgt.Relayout(tl).Backend.DataAndLayout, a.Relayout(ls[0]).Backend.DataAndLayout, b.Relayout(ls[1]).Backend.DataAndLayout, c.Relayout(ls[2]).Backend.DataAndLayout);
         }
 
         public void FillIncrementing(T start, T step, IFrontend<T> trgt)
@@ -410,7 +410,7 @@ namespace NdArrayNet
 
         public (DataAndLayout<T1>, DataAndLayout<T2>) GetDataAndLayout<T1, T2>(IFrontend<T1> trgt, IFrontend<T2> src)
         {
-            return (((NdArray<T1>)trgt).Backend.DataLayout, ((NdArray<T2>)src).Backend.DataLayout);
+            return (((NdArray<T1>)trgt).Backend.DataAndLayout, ((NdArray<T2>)src).Backend.DataAndLayout);
         }
 
         public void AllLastAxis(IFrontend<bool> trgt, IFrontend<bool> src)
