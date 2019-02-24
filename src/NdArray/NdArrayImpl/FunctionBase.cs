@@ -35,5 +35,9 @@ namespace NdArray.NdArrayImpl
     internal class FunctionBase
     {
         internal static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
+
+        protected FunctionBase()
+        {
+        }
     }
 }

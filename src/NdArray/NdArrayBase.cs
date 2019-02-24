@@ -34,5 +34,9 @@ namespace NdArrayNet
     public class NdArrayBase
     {
         internal static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
+
+        protected NdArrayBase()
+        {
+        }
     }
 }
