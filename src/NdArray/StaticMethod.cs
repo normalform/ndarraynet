@@ -70,7 +70,7 @@ namespace NdArrayNet
             return (target, arrA, arrB);
         }
 
-        public (NdArray<TR>, NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwise<TR, TA, TB, TC>(NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC, Order order = Order.RowMajor)
+        public (NdArray<TR>, NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwise<TR, TA, TB, TC>(NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC, Order order)
         {
             // AssertSameStorage [later..]
             var (arrA, arrB, arrC) = BroadCastToSame(arrayA, arrayB, arrayC);
@@ -151,7 +151,7 @@ namespace NdArrayNet
             return (newArray, initial);
         }
 
-        public (NdArray<TR>, NdArray<TA>) PrepareAxisReduceTarget<TR, TA>(int axis, NdArray<TA> array, Order order = Order.RowMajor)
+        public (NdArray<TR>, NdArray<TA>) PrepareAxisReduceTarget<TR, TA>(int axis, NdArray<TA> array, Order order)
         {
             CheckAxis(axis, array);
             var reducedShaped = List.Without(axis, array.Shape);

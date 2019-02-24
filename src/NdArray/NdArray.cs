@@ -38,7 +38,7 @@ namespace NdArrayNet
     /// An N-dimensional array with elements of type T.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class NdArray<T> : IFrontend, IFrontend<T>
+    public class NdArray<T> : IFrontend<T>
     {
         internal readonly ComparisonFunction<T> ComparisonFunction;
 
