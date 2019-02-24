@@ -151,7 +151,7 @@ namespace NdArrayNet
             ScalarOps.UnaryMinus(t, s);
         }
 
-        public void Equal<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2)
+        public void Equal<T1>(IFrontend<bool> trgt, IFrontend<T1> src1, IFrontend<T1> src2)
         {
             var (dataLayoutTrgt, dataLayout1, dataLayout2) = ElemwiseDataAndLayout(trgt, src1, src2);
             ScalarOps.Equal(dataLayoutTrgt, dataLayout1, dataLayout2);

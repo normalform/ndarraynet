@@ -459,8 +459,8 @@ namespace NdArrayNet
             }
 
             return new Layout(
-                source.Shape.Take(source.Shape.Length - 1).ToArray(), 
-                source.Offset, 
+                source.Shape.Take(source.Shape.Length - 1).ToArray(),
+                source.Offset,
                 source.Stride.Take(source.Shape.Length - 1).ToArray());
         }
 

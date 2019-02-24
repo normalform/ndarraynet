@@ -40,6 +40,8 @@ namespace NdArrayNet
     /// <typeparam name="T"></typeparam>
     public class NdArray<T> : IFrontend, IFrontend<T>
     {
+        internal readonly ComparisonFunction<T> ComparisonFunction;
+
         private static readonly Dictionary<Type, Func<T, string>> StringCoverter = new Dictionary<Type, Func<T, string>>
         {
             { typeof(float), (T v) => { var val = Convert.ToSingle(v); return val >= 0.0f ? string.Format("{0,9:F4}", val) : string.Format("{0,9:F3}", val); } },
@@ -49,6 +51,8 @@ namespace NdArrayNet
             { typeof(byte), (T v) => { var val = Convert.ToByte(v); return string.Format("{0,3:D}", val); } },
             { typeof(bool), (T v) => { var val = Convert.ToBoolean(v); return val ? "true" : "false"; } },
         };
+
+        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
 
         /// <summary>
         /// Implicit constructor.
@@ -60,6 +64,8 @@ namespace NdArrayNet
 
             Layout = layout;
             Storage = storage;
+
+            ComparisonFunction = new ComparisonFunction<T>(this, storage.Backend(Layout));
         }
 
         /// <summary>
@@ -80,6 +86,8 @@ namespace NdArrayNet
             }
 
             Storage = device.Create<T>(Layout.NumElements);
+
+            ComparisonFunction = new ComparisonFunction<T>(this, Storage.Backend(Layout));
         }
 
         public int NumDimensions => Layout.NumDimensions;
@@ -891,9 +899,9 @@ namespace NdArrayNet
         /// Broadcasts the specified NdArray to the specified shape.
         /// </summary>
         /// <param name="shp">The target shape.</param>
-        /// <param name="source">The NdArray to operate on.</param>
+        /// <param name="frontend">The NdArray to operate on.</param>
         /// <returns>NdArray of shape <paramref name="shp"/>.</returns>
-        public static NdArray<TA> BroadCastTo<TA>(int[] shp, NdArray<TA> source) => ShapeFunction<TA>.BroadCastTo(shp, source);
+        public static NdArray<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend) => ShapeFunction<TA>.BroadCastTo(shp, frontend);
 
         /// <summary>
         /// Broadcasts all specified NdArrays to have the same shape.
@@ -901,7 +909,7 @@ namespace NdArrayNet
         /// <param name="src1">The NdArray to operate on.</param>
         /// <param name="src2">The NdArray to operate on.</param>
         /// <returns>A tuple of the resulting NdArrays, all having the same shape.</returns>
-        public static (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(NdArray<T1> src1, NdArray<T2> src2) => ShapeFunction<T>.BroadCastToSame(src1, src2);
+        public static (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(IFrontend<T1> src1, IFrontend<T2> src2) => ShapeFunction<T>.BroadCastToSame(src1, src2);
 
         /// <summary>
         /// Broadcasts all specified NdArrays to have the same shape.
@@ -1028,7 +1036,7 @@ namespace NdArrayNet
         /// <param name="permut">The permutation to apply to the dimensions of NdArray.</param>
         /// <param name="source">The NdArray to operate on.</param>
         /// <returns>The NdArray with the dimensions permuted.</returns>
-        public static NdArray<T> PermuteAxes(int[] permut, NdArray<T> source) => ShapeFunction<T>.PermuteAxes(permut, source);
+        public static NdArray<T> PermuteAxes(int[] permut, NdArray<T> source) => StaticMethod.Value.PermuteAxes(permut, source);
 
         /// <summary>
         /// Reverses the elements in the specified dimension.
@@ -1150,17 +1158,17 @@ namespace NdArrayNet
 
         public void FillModulo(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillModulo(this, ScalarLike(rhs, lhs), rhs);
 
-        public void FillEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, rhs);
+        public void FillEqual<T1>(IFrontend<T1> lhs, IFrontend<T1> rhs) => ComparisonFunction.FillEqual(lhs, rhs);
 
-        public void FillEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillEqual(NdArray<T> lhs, T rhs) => ComparisonFunction.FillEqual(lhs, ScalarLike(lhs, rhs));
 
-        public void FillEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillEqual(T lhs, NdArray<T> rhs) => ComparisonFunction.FillEqual(ScalarLike(rhs, lhs), rhs);
 
-        public void FillNotEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, rhs);
+        public void FillNotEqual(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction.FillNotEqual(lhs, rhs);
 
-        public void FillNotEqual(NdArray<T> lhs, T rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, lhs, ScalarLike(lhs, rhs));
+        public void FillNotEqual(NdArray<T> lhs, T rhs) => ComparisonFunction.FillNotEqual(lhs, ScalarLike(lhs, rhs));
 
-        public void FillNotEqual(T lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillNotEqual((dynamic)this, ScalarLike(rhs, lhs), rhs);
+        public void FillNotEqual(T lhs, NdArray<T> rhs) => ComparisonFunction.FillNotEqual(ScalarLike(rhs, lhs), rhs);
 
         public void FillLess(NdArray<T> lhs, NdArray<T> rhs) => ComparisonFunction<bool>.FillLess((dynamic)this, lhs, rhs);
 
@@ -1453,6 +1461,15 @@ namespace NdArrayNet
             return newView;
         }
 
+        public (IFrontend<T1>, IFrontend<T2>) PrepareElemwiseSources<T1, T2>(IFrontend<T1> arrayA, IFrontend<T2> arrayB)
+        {
+            // AssertSameStorage [later..]
+            var arrA = BroadCastTo(Shape, arrayA);
+            var arrB = BroadCastTo(Shape, arrayB);
+
+            return (arrA, arrB);
+        }
+
         public override bool Equals(object obj)
         {
             var array = obj as NdArray<T>;
@@ -1594,47 +1611,6 @@ namespace NdArrayNet
             Layout.CheckAxis(array.Layout, axis);
         }
 
-        internal static (NdArray<TA>, NdArray<TR>) PrepareAxisReduceSources<TR, TA>(NdArray<TR> target, int axis, NdArray<TA> array, NdArray<TR> initial = null, Order order = Order.RowMajor)
-        {
-            // AssertSameStorage. Later. Note might need to support the different TR and TA types.
-            CheckAxis(axis, array);
-
-            var reducedShaped = List.Without(axis, array.Shape);
-            if (!Enumerable.SequenceEqual(target.Shape, reducedShaped))
-            {
-                var errorMessage = string.Format("Reduction of NdArray {0} along axis {1} gives shape {2} but target has shape {3}.", ErrorMessage.ShapeToString(array.Shape), axis, ErrorMessage.ShapeToString(reducedShaped), ErrorMessage.ShapeToString(target.Shape));
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            if (!(initial is null))
-            {
-                AssertSameStorage(new[] { target, initial });
-                BroadCastTo(reducedShaped, initial);
-            }
-
-            var axisToLastTemp = Enumerable.Range(0, array.NumDimensions).ToList();
-            axisToLastTemp.RemoveAt(axis);
-            axisToLastTemp.Add(axis);
-
-            var axisToLast = axisToLastTemp.ToArray();
-            var newArray = PermuteAxes(axisToLast, array);
-            if (!Enumerable.SequenceEqual(target.Shape, newArray.Shape.Take(newArray.NumDimensions - 1)))
-            {
-                throw new InvalidOperationException("Internal axis reduce shape computation error.");
-            }
-
-            return (newArray, initial);
-        }
-
-        internal static (NdArray<TR>, NdArray<TA>) PrepareAxisReduceTarget<TR, TA>(int axis, NdArray<TA> array, Order order = Order.RowMajor)
-        {
-            CheckAxis(axis, array);
-            var reducedShaped = List.Without(axis, array.Shape);
-            var target = new NdArray<TR>(reducedShaped, array.Storage.Device, order);
-
-            return (target, array);
-        }
-
         internal static void AssertSameShape(NdArray<T> a, NdArray<T> b)
         {
             if (!Enumerable.SequenceEqual(a.Shape, b.Shape))
@@ -1732,55 +1708,6 @@ namespace NdArrayNet
             return msg;
         }
 
-        internal static (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order = Order.RowMajor)
-        {
-            var target = new NdArray<TR>(array.Shape, array.Storage.Device, order);
-            return (target, array);
-        }
-
-        internal static (NdArray<TR>, NdArray<TA>, NdArray<TB>) PrepareElemwise<TR, TA, TB>(NdArray<TA> arrayA, NdArray<TB> arrayB, Order order = Order.RowMajor)
-        {
-            // AssertSameStorage [later..]
-            var (arrA, arrB) = BroadCastToSame(arrayA, arrayB);
-            var target = new NdArray<TR>(arrA.Shape, arrA.Storage.Device, order);
-
-            return (target, arrA, arrB);
-        }
-
-        internal static (NdArray<TR>, NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwise<TR, TA, TB, TC>(NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC, Order order = Order.RowMajor)
-        {
-            // AssertSameStorage [later..]
-            var (arrA, arrB, arrC) = BroadCastToSame(arrayA, arrayB, arrayC);
-            var target = new NdArray<TR>(arrA.Shape, arrA.Storage.Device, order);
-
-            return (target, arrA, arrB, arrC);
-        }
-
-        internal static NdArray<TA> PrepareElemwiseSources<TR, TA>(NdArray<TR> target, NdArray<TA> array)
-        {
-            // AssertSameStorage [later..]
-            return BroadCastTo(target.Shape, array);
-        }
-
-        internal static (NdArray<TA>, NdArray<TB>) PrepareElemwiseSources<TR, TA, TB>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB)
-        {
-            // AssertSameStorage [later..]
-            var arrA = BroadCastTo(target.Shape, arrayA);
-            var arrB = BroadCastTo(target.Shape, arrayB);
-
-            return (arrA, arrB);
-        }
-
-        internal static (NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwiseSources<TR, TA, TB, TC>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC)
-        {
-            // AssertSameStorage [later..]
-            var arrA = BroadCastTo(target.Shape, arrayA);
-            var arrB = BroadCastTo(target.Shape, arrayB);
-            var arrC = BroadCastTo(target.Shape, arrayC);
-
-            return (arrA, arrB, arrC);
-        }
-
         internal NdArray<T> AssertBool()
         {
             if (DataType != typeof(bool))
@@ -1794,7 +1721,12 @@ namespace NdArrayNet
 
         internal NdArray<T> Copy(Order order = Order.RowMajor)
         {
-            var (target, src) = PrepareElemwise<T, T>(this, order);
+            return Copy(StaticMethod.Value, order);
+        }
+
+        internal NdArray<T> Copy(IStaticMethod staticMethod, Order order)
+        {
+            var (target, src) = staticMethod.PrepareElemwise<T, T>(this, order);
             target.Backend.Copy(target, src);
             return target;
         }

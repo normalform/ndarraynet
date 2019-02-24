@@ -59,6 +59,7 @@
     <Compile Include="IDevice.cs" />
     <Compile Include="IFrontend.cs" />
     <Compile Include="IHostStorage.cs" />
+    <Compile Include="IStaticMethod.cs" />
     <Compile Include="IStorage.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="NdArray.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ScalarOps.cs" />
     <Compile Include="ScalarPrimitives.cs" />
     <Compile Include="ScalarPrimitivesRegistry.cs" />
+    <Compile Include="StaticMethod.cs" />
     <Compile Include="Utils\ErrorMessage.cs" />
     <Compile Include="Utils\List.cs" />
     <Compile Include="Utils\Permutation.cs" />

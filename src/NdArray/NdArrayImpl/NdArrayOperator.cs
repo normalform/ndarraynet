@@ -36,6 +36,8 @@ namespace NdArray.NdArrayImpl
 
     internal static class NdArrayOperator<T>
     {
+        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
+
         /// <summary>
         /// Returns a view of the diagonal along the given axes.
         /// </summary>
@@ -264,8 +266,13 @@ namespace NdArray.NdArrayImpl
 
         internal static NdArray<T> FillFrom(NdArray<T> target, NdArray<T> source)
         {
-            var src1 = NdArray<T>.PrepareElemwiseSources(target, source);
-            target.CopyFrom(src1);
+            return FillFrom(StaticMethod.Value, target, source);
+        }
+
+        internal static NdArray<T> FillFrom(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        {
+            var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
+            target.CopyFrom(preparedSource);
 
             return target;
         }

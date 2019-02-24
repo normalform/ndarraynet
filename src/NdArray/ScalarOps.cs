@@ -476,8 +476,8 @@ namespace NdArrayNet
 
         public static void Equal<T>(DataAndLayout<bool> trgt, DataAndLayout<T> src1, DataAndLayout<T> src2)
         {
-            var p = ScalarPrimitivesRegistry.For<T, T>();
-            bool op(int[] pos, T a, T b) => p.Equal(a, b);
+            var sp = ScalarPrimitivesRegistry.For<T, T>();
+            bool op(int[] pos, T a, T b) => sp.Equal(a, b);
 
             ApplyBinaryOp(op, trgt, src1, src2, isIndexed: false, useThreads: true);
         }

@@ -31,12 +31,13 @@ namespace NdArrayNet
 {
     public interface IFrontend
     {
+        Layout Layout { get; }
     }
 
-    public interface IFrontend<T>
+    public interface IFrontend<T> : IFrontend
     {
-        Layout Layout { get; }
-
         NdArray<T> Relayout(Layout layout);
+
+        (IFrontend<T1>, IFrontend<T2>) PrepareElemwiseSources<T1, T2>(IFrontend<T1> arrayA, IFrontend<T2> arrayB);
     }
 }

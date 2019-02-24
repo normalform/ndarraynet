@@ -1,4 +1,4 @@
-// <copyright file="AssemblyInfo.cs" company="NdArrayNet">
+﻿// <copyright file="StaticMethodTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,20 +27,27 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-using System.Reflection;
-using System.Runtime.InteropServices;
+namespace NdArrayNet.NdArrayUnitTest
+{
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NdArrayNet;
+    using System;
 
-[assembly: AssemblyTitle("NdArrayUnitTest")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NdArrayUnitTest")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-[assembly: ComVisible(false)]
-[assembly: Guid("272c82f9-7ac2-4ba1-9fdf-ba7c1ee5d351")]
+    [TestClass]
+    public class StaticMethodTests
+    {
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void PrepareAxisReduceSources_WrongShape_ThrowException()
+        {
+            // arrange
+            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
+            var target = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
 
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+            var staticMethod = new StaticMethod();
+
+            // action
+            var output = staticMethod.PrepareAxisReduceSources(target, 1, source, null, Order.RowMajor);
+        }
+    }
+}

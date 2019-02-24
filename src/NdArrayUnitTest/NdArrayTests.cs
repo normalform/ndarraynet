@@ -2350,18 +2350,6 @@ namespace NdArrayNet.NdArrayUnitTest
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void PrepareAxisReduceSources_WrongShape_ThrowException()
-        {
-            // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
-            var target = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
-
-            // action
-            var output = NdArray<int>.PrepareAxisReduceSources(target, 1, source);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void AssertBool_NotBool_ThrowException()
         {
             // arrange

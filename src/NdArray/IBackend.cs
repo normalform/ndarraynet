@@ -45,7 +45,7 @@ namespace NdArrayNet
 
         void UnaryMinus(IFrontend<T> trgt, IFrontend<T> src);
 
-        void Equal<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
+        void Equal<T1>(IFrontend<bool> trgt, IFrontend<T1> src1, IFrontend<T1> src2);
 
         void NotEqual<TP>(IFrontend<bool> trgt, IFrontend<TP> src1, IFrontend<TP> src2);
 

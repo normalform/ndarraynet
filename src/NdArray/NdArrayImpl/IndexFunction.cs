@@ -35,6 +35,8 @@ namespace NdArray.NdArrayImpl
 
     internal static class IndexFunction<T>
     {
+        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
+
         /// <summary>
         /// Gets a sequence of all indices to enumerate all elements within the NdArray.
         /// </summary>
@@ -63,8 +65,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="source">The NdArray containing the source values.</param>
         public static void FillArgMaxAxis(NdArray<int> target, int axis, NdArray<T> source)
         {
-            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.ArgMaxLastAxis(target, preparedSource);
+            FillArgMaxAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -75,10 +76,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<int> ArgMaxAxis(int axis, NdArray<T> source)
         {
-            var (preparedTargt, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<int, T>(axis, source);
-            FillArgMaxAxis(preparedTargt, axis, preparedSource);
-
-            return preparedTargt;
+            return ArgMaxAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -99,8 +97,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="source">The NdArray containing the source values.</param>
         public static void FillArgMinAxis(NdArray<int> target, int axis, NdArray<T> source)
         {
-            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.ArgMinLastAxis(target, preparedSource);
+            FillArgMinAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -111,10 +108,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<int> ArgMinAxis(int axis, NdArray<T> source)
         {
-            var (preparedTargt, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<int, T>(axis, source);
-            FillArgMinAxis(preparedTargt, axis, preparedSource);
-
-            return preparedTargt;
+            return ArgMinAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -136,8 +130,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="source">The NdArray containing the source values.</param>
         public static void FillFindAxis(NdArray<int> target, T value, int axis, NdArray<T> source)
         {
-            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.FindLastAxis(value, target, preparedSource);
+            FillFindAxis(StaticMethod.Value, target, value, axis, source);
         }
 
         /// <summary>
@@ -149,10 +142,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the indices of the first occurence of <paramref name="value"/>.</returns>
         public static NdArray<int> FindAxis(T value, int axis, NdArray<T> source)
         {
-            var (preparedTargt, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<int, T>(axis, source);
-            FillFindAxis(preparedTargt, value, axis, preparedSource);
-
-            return preparedTargt;
+            return FindAxis(StaticMethod.Value, value, axis, source);
         }
 
         /// <summary>
@@ -199,8 +189,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="source">The NdArray containing the source values.</param>
         public static void FillCountTrueAxis(NdArray<int> target, int axis, NdArray<bool> source)
         {
-            var (preparedSource, _) = NdArray<bool>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.CountTrueLastAxis(target, preparedSource);
+            FillCountTrueAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -211,10 +200,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> source)
         {
-            var (preparedTargt, preparedSource) = NdArray<bool>.PrepareAxisReduceTarget<int, bool>(axis, source);
-            FillCountTrueAxis(preparedTargt, axis, preparedSource);
-
-            return preparedTargt;
+            return CountTrueAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -249,6 +235,62 @@ namespace NdArray.NdArrayImpl
             target.Backend.TrueIndices(target, source);
 
             return target;
+        }
+
+        internal static void FillArgMaxAxis(IStaticMethod staticMethod, NdArray<int> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.ArgMaxLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<int> ArgMaxAxis(IStaticMethod staticMethod, int axis, NdArray<T> source)
+        {
+            var (preparedTargt, preparedSource) = staticMethod.PrepareAxisReduceTarget<int, T>(axis, source, Order.RowMajor);
+            FillArgMaxAxis(preparedTargt, axis, preparedSource);
+
+            return preparedTargt;
+        }
+
+        internal static void FillArgMinAxis(IStaticMethod staticMethod, NdArray<int> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.ArgMinLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<int> ArgMinAxis(IStaticMethod staticMethod, int axis, NdArray<T> source)
+        {
+            var (preparedTargt, preparedSource) = staticMethod.PrepareAxisReduceTarget<int, T>(axis, source, Order.RowMajor);
+            FillArgMinAxis(preparedTargt, axis, preparedSource);
+
+            return preparedTargt;
+        }
+
+        internal static void FillFindAxis(IStaticMethod staticMethod, NdArray<int> target, T value, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.FindLastAxis(value, target, preparedSource);
+        }
+
+        internal static NdArray<int> FindAxis(IStaticMethod staticMethod, T value, int axis, NdArray<T> source)
+        {
+            var (preparedTargt, preparedSource) = staticMethod.PrepareAxisReduceTarget<int, T>(axis, source, Order.RowMajor);
+            FillFindAxis(preparedTargt, value, axis, preparedSource);
+
+            return preparedTargt;
+        }
+
+        internal static void FillCountTrueAxis(IStaticMethod staticMethod, NdArray<int> target, int axis, NdArray<bool> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.CountTrueLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<int> CountTrueAxis(IStaticMethod staticMethod, int axis, NdArray<bool> source)
+        {
+            var (preparedTargt, preparedSource) = staticMethod.PrepareAxisReduceTarget<int, bool>(axis, source, Order.RowMajor);
+            FillCountTrueAxis(preparedTargt, axis, preparedSource);
+
+            return preparedTargt;
         }
     }
 }

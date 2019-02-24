@@ -30,6 +30,7 @@
 namespace NdArrayNet.NdArrayUnitTest
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
 
@@ -40,16 +41,21 @@ namespace NdArrayNet.NdArrayUnitTest
         public void FillEqual()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
-            var result = NdArray<bool>.Zeros(device, new[] { 10 });
+            var mockSrc1 = new Mock<IFrontend<int>>();
+            var mockSrc2 = new Mock<IFrontend<int>>();
+            var mockBackend = new Mock<IBackend<bool>>();
+            var mockFrontend = new Mock<IFrontend<bool>>();
+            mockFrontend.Setup(m => m.PrepareElemwiseSources(It.IsAny<IFrontend<int>>(), It.IsAny<IFrontend<int>>())).Returns((mockSrc1.Object, mockSrc2.Object));
+
+            var comparisonFunction = new ComparisonFunction<bool>(mockFrontend.Object, mockBackend.Object);
 
             // action
-            ComparisonFunction<bool>.FillEqual(result, sourceA, sourceB);
+            comparisonFunction.FillEqual(mockSrc1.Object, mockSrc2.Object);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            mockFrontend.Verify(m => m.PrepareElemwiseSources(mockSrc1.Object, mockSrc2.Object));
+            mockBackend.Verify(m => m.Equal(mockFrontend.Object, mockSrc1.Object, mockSrc2.Object));
+            mockFrontend.VerifyAll();
         }
 
         [TestMethod]
@@ -59,28 +65,37 @@ namespace NdArrayNet.NdArrayUnitTest
             var device = HostDevice.Instance;
             var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
             var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
+            var resultToReturn = NdArray<bool>.Zeros(device, new[] { 10 });
+
+            var mockStaticHelper = new Mock<IStaticMethod>();
+            mockStaticHelper.Setup(m => m.PrepareElemwise<bool, int, int>(It.IsAny<NdArray<int>>(), It.IsAny<NdArray<int>>(), Order.RowMajor)).Returns((resultToReturn, sourceA, sourceB));
 
             // action
-            var result = ComparisonFunction<int>.Equal(sourceA, sourceB);
+            var result = ComparisonFunction<int>.Equal(mockStaticHelper.Object, sourceA, sourceB);
 
             // assert
             CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            mockStaticHelper.Verify(m => m.PrepareElemwise<bool, int, int>(sourceA, sourceB, Order.RowMajor));
         }
 
         [TestMethod]
         public void FillNotEqual()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
-            var result = NdArray<bool>.Zeros(device, new[] { 10 });
+            var mockSrc1 = new Mock<IFrontend<int>>();
+            var mockSrc2 = new Mock<IFrontend<int>>();
+            var mockBackend = new Mock<IBackend<bool>>();
+            var mockFrontend = new Mock<IFrontend<bool>>();
+            mockFrontend.Setup(m => m.PrepareElemwiseSources(It.IsAny<IFrontend<int>>(), It.IsAny<IFrontend<int>>())).Returns((mockSrc1.Object, mockSrc2.Object));
+
+            var comparisonFunction = new ComparisonFunction<bool>(mockFrontend.Object, mockBackend.Object);
 
             // action
-            ComparisonFunction<bool>.FillNotEqual(result, sourceA, sourceB);
+            comparisonFunction.FillNotEqual(mockSrc1.Object, mockSrc2.Object);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            mockFrontend.Verify(m => m.PrepareElemwiseSources(mockSrc1.Object, mockSrc2.Object));
+            mockBackend.Verify(m => m.NotEqual(mockFrontend.Object, mockSrc1.Object, mockSrc2.Object));
         }
 
         [TestMethod]

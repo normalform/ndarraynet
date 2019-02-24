@@ -1,4 +1,4 @@
-// <copyright file="AssemblyInfo.cs" company="NdArrayNet">
+﻿// <copyright file="IStaticMethod.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,20 +27,36 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-using System.Reflection;
-using System.Runtime.InteropServices;
+namespace NdArrayNet
+{
+    internal interface IStaticMethod
+    {
+        bool All(NdArray<bool> source);
 
-[assembly: AssemblyTitle("NdArrayUnitTest")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NdArrayUnitTest")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-[assembly: ComVisible(false)]
-[assembly: Guid("272c82f9-7ac2-4ba1-9fdf-ba7c1ee5d351")]
+        (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(IFrontend<T1> src1, IFrontend<T2> src2);
 
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+        NdArray<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend);
+
+        (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order);
+
+        (NdArray<TR>, NdArray<TA>, NdArray<TB>) PrepareElemwise<TR, TA, TB>(NdArray<TA> arrayA, NdArray<TB> arrayB, Order order);
+
+        (NdArray<TR>, NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwise<TR, TA, TB, TC>(NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC, Order order);
+
+        NdArray<TA> PrepareElemwiseSources<TR, TA>(NdArray<TR> target, NdArray<TA> array);
+
+        (NdArray<TA>, NdArray<TB>) PrepareElemwiseSources<TR, TA, TB>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB);
+
+        (NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwiseSources<TR, TA, TB, TC>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC);
+
+        void CheckAxis<TA>(int axis, NdArray<TA> array);
+
+        void AssertSameStorage<T1>(NdArray<T1>[] arrays);
+
+        NdArray<T> PermuteAxes<T>(int[] permut, NdArray<T> source);
+
+        (NdArray<TA>, NdArray<TR>) PrepareAxisReduceSources<TR, TA>(NdArray<TR> target, int axis, NdArray<TA> array, NdArray<TR> initial, Order order);
+
+        (NdArray<TR>, NdArray<TA>) PrepareAxisReduceTarget<TR, TA>(int axis, NdArray<TA> array, Order order);
+    }
+}

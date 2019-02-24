@@ -75,6 +75,7 @@
     <Compile Include="HostBackendTests.cs" />
     <Compile Include="HostDeviceTests.cs" />
     <Compile Include="HostStorageTests.cs" />
+    <Compile Include="StaticMethodTests.cs" />
     <Compile Include="LayoutTests.cs" />
     <Compile Include="NdArrayImpl\ComparisonFunctionTests.cs" />
     <Compile Include="NdArrayImpl\ConstructorTests.cs" />

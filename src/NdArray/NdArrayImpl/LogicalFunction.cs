@@ -29,14 +29,16 @@
 
 namespace NdArray.NdArrayImpl
 {
+    using System;
     using NdArrayNet;
 
     internal static class LogicalFunction<T>
     {
+        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
+
         public static void FillNegate(NdArray<bool> target, NdArray<bool> source)
         {
-            var preparedSource = NdArray<bool>.PrepareElemwiseSources(target, source);
-            target.Backend.Negate(target, preparedSource);
+            FillNegate(StaticMethod.Value, target, source);
         }
 
         /// <summary>
@@ -46,18 +48,12 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> Negate(NdArray<bool> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<bool>.PrepareElemwise<bool, bool>(source);
-            preparedTarget.AssertBool();
-
-            FillNegate(preparedTarget, preparedSource);
-
-            return preparedTarget;
+            return Negate(StaticMethod.Value, source);
         }
 
         public static void FillAnd(NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
         {
-            var (preparedLhs, preparedRhs) = NdArray<bool>.PrepareElemwiseSources(target, lhs, rhs);
-            target.Backend.And(target, preparedLhs, preparedRhs);
+            FillAnd(StaticMethod.Value, target, lhs, rhs);
         }
 
         /// <summary>
@@ -68,18 +64,12 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> And(NdArray<bool> lhs, NdArray<bool> rhs)
         {
-            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<bool>.PrepareElemwise<bool, bool, bool>(lhs, rhs);
-            preparedTarget.AssertBool();
-
-            FillAnd(preparedTarget, preparedLhs, preparedRhs);
-
-            return preparedTarget;
+            return And(StaticMethod.Value, lhs, rhs);
         }
 
         public static void FillOr(NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
         {
-            var (preparedLhs, preparedRhs) = NdArray<bool>.PrepareElemwiseSources(target, lhs, rhs);
-            target.Backend.Or(target, preparedLhs, preparedRhs);
+            FillOr(StaticMethod.Value, target, lhs, rhs);
         }
 
         /// <summary>
@@ -90,18 +80,12 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> Or(NdArray<bool> lhs, NdArray<bool> rhs)
         {
-            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<bool>.PrepareElemwise<bool, bool, bool>(lhs, rhs);
-            preparedTarget.AssertBool();
-
-            FillOr(preparedTarget, preparedLhs, preparedRhs);
-
-            return preparedTarget;
+            return Or(StaticMethod.Value, lhs, rhs);
         }
 
         public static void FillXor(NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
         {
-            var (preparedLhs, preparedRhs) = NdArray<bool>.PrepareElemwiseSources(target, lhs, rhs);
-            target.Backend.Xor(target, preparedLhs, preparedRhs);
+            FillXor(StaticMethod.Value, target, lhs, rhs);
         }
 
         /// <summary>
@@ -112,18 +96,12 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> Xor(NdArray<bool> lhs, NdArray<bool> rhs)
         {
-            var (preparedTarget, preparedLhs, preparedRhs) = NdArray<bool>.PrepareElemwise<bool, bool, bool>(lhs, rhs);
-            preparedTarget.AssertBool();
-
-            FillXor(preparedTarget, preparedLhs, preparedRhs);
-
-            return preparedTarget;
+            return Xor(StaticMethod.Value, lhs, rhs);
         }
 
         public static void FillAllAxis(NdArray<bool> target, int axis, NdArray<bool> source)
         {
-            var (preparedSource, _) = NdArray<bool>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.AllLastAxis(target, preparedSource);
+            FillAllAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -134,9 +112,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AllAxis(int axis, NdArray<bool> source)
         {
-            var (preparedTargt, preparedSource) = NdArray<bool>.PrepareAxisReduceTarget<bool, bool>(axis, source);
-            FillAllAxis(preparedTargt, axis, preparedSource);
-            return preparedTargt;
+            return AllAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -162,8 +138,7 @@ namespace NdArray.NdArrayImpl
 
         public static void FillAnyAxis(NdArray<bool> target, int axis, NdArray<bool> source)
         {
-            var (preparedSource, _) = NdArray<bool>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.AnyLastAxis(target, preparedSource);
+            FillAnyAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -174,10 +149,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<bool> AnyAxis(int axis, NdArray<bool> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<bool>.PrepareAxisReduceTarget<bool, bool>(axis, source);
-            FillAnyAxis(preparedTarget, axis, preparedSource);
-
-            return preparedTarget;
+            return AnyAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -203,8 +175,7 @@ namespace NdArray.NdArrayImpl
 
         public static void FillCountTrueAxis(NdArray<int> target, int axis, NdArray<bool> source)
         {
-            var (preparedSource, _) = NdArray<int>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.CountTrueLastAxis(target, preparedSource);
+            FillCountTrueAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -214,12 +185,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="source">The NdArray containing the source values.</param>
         public static NdArray<int> CountTrueAxis(int axis, NdArray<bool> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<int>.PrepareAxisReduceTarget<int, bool>(axis, source);
-            preparedTarget.AssertInt();
-
-            FillCountTrueAxis(preparedTarget, axis, preparedSource);
-
-            return preparedTarget;
+            return CountTrueAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -249,9 +215,121 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<T> IfThenElse(NdArray<bool> condition, NdArray<T> ifTrue, NdArray<T> ifFalse)
         {
-            var (target, cond, ift, iff) = NdArray<T>.PrepareElemwise<T, bool, T, T>(condition, ifTrue, ifFalse);
+            return IfThenElse(StaticMethod.Value, condition, ifTrue, ifFalse);
+        }
 
-            var (cond2, ift2, iff2) = NdArray<T>.PrepareElemwiseSources(target, cond, ift, iff);
+        internal static void FillNegate(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> source)
+        {
+            var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
+            target.Backend.Negate(target, preparedSource);
+        }
+
+        internal static NdArray<bool> Negate(IStaticMethod staticMethod, NdArray<bool> source)
+        {
+            var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<bool, bool>(source, Order.RowMajor);
+            preparedTarget.AssertBool();
+
+            FillNegate(preparedTarget, preparedSource);
+
+            return preparedTarget;
+        }
+
+        internal static void FillAnd(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.And(target, preparedLhs, preparedRhs);
+        }
+
+        internal static NdArray<bool> And(IStaticMethod staticMethod, NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, bool, bool>(lhs, rhs, Order.RowMajor);
+            preparedTarget.AssertBool();
+
+            FillAnd(preparedTarget, preparedLhs, preparedRhs);
+
+            return preparedTarget;
+        }
+
+        internal static void FillOr(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Or(target, preparedLhs, preparedRhs);
+        }
+
+        internal static NdArray<bool> Or(IStaticMethod staticMethod, NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, bool, bool>(lhs, rhs, Order.RowMajor);
+            preparedTarget.AssertBool();
+
+            FillOr(preparedTarget, preparedLhs, preparedRhs);
+
+            return preparedTarget;
+        }
+
+        internal static void FillXor(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
+            target.Backend.Xor(target, preparedLhs, preparedRhs);
+        }
+
+        internal static NdArray<bool> Xor(IStaticMethod staticMethod, NdArray<bool> lhs, NdArray<bool> rhs)
+        {
+            var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, bool, bool>(lhs, rhs, Order.RowMajor);
+            preparedTarget.AssertBool();
+
+            FillXor(preparedTarget, preparedLhs, preparedRhs);
+
+            return preparedTarget;
+        }
+
+        internal static void FillAllAxis(IStaticMethod staticMethod, NdArray<bool> target, int axis, NdArray<bool> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.AllLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<bool> AllAxis(IStaticMethod staticMethod, int axis, NdArray<bool> source)
+        {
+            var (preparedTargt, preparedSource) = staticMethod.PrepareAxisReduceTarget<bool, bool>(axis, source, Order.RowMajor);
+            FillAllAxis(preparedTargt, axis, preparedSource);
+            return preparedTargt;
+        }
+
+        internal static void FillAnyAxis(IStaticMethod staticMethod, NdArray<bool> target, int axis, NdArray<bool> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.AnyLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<bool> AnyAxis(IStaticMethod staticMethod, int axis, NdArray<bool> source)
+        {
+            var (preparedTarget, preparedSource) = staticMethod.PrepareAxisReduceTarget<bool, bool>(axis, source, Order.RowMajor);
+            FillAnyAxis(preparedTarget, axis, preparedSource);
+
+            return preparedTarget;
+        }
+
+        internal static void FillCountTrueAxis(IStaticMethod staticMethod, NdArray<int> target, int axis, NdArray<bool> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.CountTrueLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<int> CountTrueAxis(IStaticMethod staticMethod, int axis, NdArray<bool> source)
+        {
+            var (preparedTarget, preparedSource) = staticMethod.PrepareAxisReduceTarget<int, bool>(axis, source, Order.RowMajor);
+            preparedTarget.AssertInt();
+
+            FillCountTrueAxis(preparedTarget, axis, preparedSource);
+
+            return preparedTarget;
+        }
+
+        internal static NdArray<T> IfThenElse(IStaticMethod staticMethod, NdArray<bool> condition, NdArray<T> ifTrue, NdArray<T> ifFalse)
+        {
+            var (target, cond, ift, iff) = staticMethod.PrepareElemwise<T, bool, T, T>(condition, ifTrue, ifFalse, Order.RowMajor);
+
+            var (cond2, ift2, iff2) = staticMethod.PrepareElemwiseSources(target, cond, ift, iff);
             target.Backend.IfThenElse(target, cond2, ift2, iff2);
 
             return target;

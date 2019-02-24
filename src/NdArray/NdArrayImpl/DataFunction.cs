@@ -29,10 +29,13 @@
 
 namespace NdArray.NdArrayImpl
 {
+    using System;
     using NdArrayNet;
 
     internal static class DataFunction<T>
     {
+        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
+
         /// <summary>
         /// Copies elements from a NdArray of different data type into the target NdArray and converts their type.
         /// </summary>
@@ -41,8 +44,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="source">The NdArray to copy from.</param>
         public static void FillConvert<TC>(NdArray<T> target, NdArray<TC> source)
         {
-            var preparedSource = NdArray<T>.PrepareElemwiseSources(target, source);
-            target.Backend.Convert(target, preparedSource);
+            FillConvert(StaticMethod.Value, target, source);
         }
 
         /// <summary>
@@ -53,7 +55,18 @@ namespace NdArray.NdArrayImpl
         /// <returns>A NdArray of the new data type.</returns>
         public static NdArray<T> Convert<TC>(NdArray<TC> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<T>.PrepareElemwise<T, TC>(source);
+            return Convert(StaticMethod.Value, source);
+        }
+
+        internal static void FillConvert<TC>(IStaticMethod staticMethod, NdArray<T> target, NdArray<TC> source)
+        {
+            var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
+            target.Backend.Convert(target, preparedSource);
+        }
+
+        internal static NdArray<T> Convert<TC>(IStaticMethod staticMethod, NdArray<TC> source)
+        {
+            var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, TC>(source, Order.RowMajor);
             FillConvert(preparedTarget, preparedSource);
 
             return preparedTarget;

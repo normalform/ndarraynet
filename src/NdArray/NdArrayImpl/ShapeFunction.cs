@@ -100,12 +100,12 @@ namespace NdArray.NdArrayImpl
         /// Broadcasts the specified NdArray to the specified shape.
         /// </summary>
         /// <param name="shp">The target shape.</param>
-        /// <param name="source">The NdArray to operate on.</param>
+        /// <param name="frontend">The NdArray to operate on.</param>
         /// <returns>NdArray of shape <paramref name="shp"/>.</returns>
-        public static NdArray<T> BroadCastTo(int[] shp, NdArray<T> source)
+        public static NdArray<T> BroadCastTo(int[] shp, IFrontend<T> frontend)
         {
-            var layout = Layout.BroadcastToShape(shp, source.Layout);
-            return source.Relayout(layout);
+            var layout = Layout.BroadcastToShape(shp, frontend.Layout);
+            return frontend.Relayout(layout);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="src1">The NdArray to operate on.</param>
         /// <param name="src2">The NdArray to operate on.</param>
         /// <returns>A tuple of the resulting NdArrays, all having the same shape.</returns>
-        public static (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(NdArray<T1> src1, NdArray<T2> src2)
+        public static (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(IFrontend<T1> src1, IFrontend<T2> src2)
         {
             return ApplyLayoutFn(Layout.BroadcastToSameMany, src1, src2);
         }
@@ -126,7 +126,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="src2">The NdArray to operate on.</param>
         /// <param name="src3">The NdArray to operate on.</param>
         /// <returns>A tuple of the resulting NdArrays, all having the same shape.</returns>
-        public static (NdArray<T1>, NdArray<T2>, NdArray<T3>) BroadCastToSame<T1, T2, T3>(NdArray<T1> src1, NdArray<T2> src2, NdArray<T3> src3)
+        public static (NdArray<T1>, NdArray<T2>, NdArray<T3>) BroadCastToSame<T1, T2, T3>(IFrontend<T1> src1, IFrontend<T2> src2, IFrontend<T3> src3)
         {
             return ApplyLayoutFn(Layout.BroadcastToSameMany, src1, src2, src3);
         }
@@ -315,7 +315,7 @@ namespace NdArray.NdArrayImpl
             return source.Relayout(Layout.SwapDim(axis1, axis2, source.Layout));
         }
 
-        internal static (NdArray<T1>, NdArray<T2>) ApplyLayoutFn<T1, T2>(Func<Layout[], Layout[]> fn, NdArray<T1> src1, NdArray<T2> src2)
+        internal static (NdArray<T1>, NdArray<T2>) ApplyLayoutFn<T1, T2>(Func<Layout[], Layout[]> fn, IFrontend<T1> src1, IFrontend<T2> src2)
         {
             var layouts = new[] { src1.Layout, src2.Layout };
             var newLayouts = fn(layouts);
@@ -327,7 +327,7 @@ namespace NdArray.NdArrayImpl
             throw new InvalidOperationException("unexpected layout function result");
         }
 
-        internal static (NdArray<T1>, NdArray<T2>, NdArray<T3>) ApplyLayoutFn<T1, T2, T3>(Func<Layout[], Layout[]> fn, NdArray<T1> src1, NdArray<T2> src2, NdArray<T3> src3)
+        internal static (NdArray<T1>, NdArray<T2>, NdArray<T3>) ApplyLayoutFn<T1, T2, T3>(Func<Layout[], Layout[]> fn, IFrontend<T1> src1, IFrontend<T2> src2, IFrontend<T3> src3)
         {
             var layouts = new[] { src1.Layout, src2.Layout, src3.Layout };
             var newLayouts = fn(layouts);

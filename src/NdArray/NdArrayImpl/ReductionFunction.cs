@@ -34,10 +34,11 @@ namespace NdArray.NdArrayImpl
 
     internal static class ReductionFunction<T>
     {
+        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
+
         public static void FillMaxAxis(NdArray<T> target, int axis, NdArray<T> source)
         {
-            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.MaxLastAxis(target, preparedSource);
+            FillMaxAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -48,16 +49,12 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<T> MaxAxis(int axis, NdArray<T> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
-            FillMaxAxis(preparedTarget, axis, preparedSource);
-
-            return preparedTarget;
+            return MaxAxis(StaticMethod.Value, axis, source);
         }
 
         public static void FillMinAxis(NdArray<T> target, int axis, NdArray<T> source)
         {
-            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.MinLastAxis(target, preparedSource);
+            FillMinAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -68,10 +65,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<T> MinAxis(int axis, NdArray<T> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
-            FillMinAxis(preparedTarget, axis, preparedSource);
-
-            return preparedTarget;
+            return MinAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -96,8 +90,7 @@ namespace NdArray.NdArrayImpl
 
         public static void FillSumAxis(NdArray<T> target, int axis, NdArray<T> source)
         {
-            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.SumLastAxis(target, preparedSource);
+            FillSumAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -108,10 +101,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<T> SumAxis(int axis, NdArray<T> source)
         {
-            var (preparedTarget, preparedSource) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
-            FillSumAxis(preparedTarget, axis, preparedSource);
-
-            return preparedTarget;
+            return SumAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -152,8 +142,7 @@ namespace NdArray.NdArrayImpl
 
         public static void FillProductAxis(NdArray<T> target, int axis, NdArray<T> source)
         {
-            var (preparedSource, _) = NdArray<T>.PrepareAxisReduceSources(target, axis, source, null);
-            target.Backend.ProductLastAxis(target, preparedSource);
+            FillProductAxis(StaticMethod.Value, target, axis, source);
         }
 
         /// <summary>
@@ -164,11 +153,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>A new NdArray containing the result of this operation.</returns>
         public static NdArray<T> ProductAxis(int axis, NdArray<T> source)
         {
-            var (result, src) = NdArray<T>.PrepareAxisReduceTarget<T, T>(axis, source);
-            var (src1, _) = NdArray<T>.PrepareAxisReduceSources(result, axis, source, null);
-            result.Backend.ProductLastAxis(result, src1);
-
-            return result;
+            return ProductAxis(StaticMethod.Value, axis, source);
         }
 
         /// <summary>
@@ -269,6 +254,63 @@ namespace NdArray.NdArrayImpl
             }
 
             return TraceAxis(source.NumDimensions - 2, source.NumDimensions - 1, source);
+        }
+
+        internal static void FillMaxAxis(IStaticMethod staticMethod, NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.MaxLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<T> MaxAxis(IStaticMethod staticMethod, int axis, NdArray<T> source)
+        {
+            var (preparedTarget, preparedSource) = staticMethod.PrepareAxisReduceTarget<T, T>(axis, source, Order.RowMajor);
+            FillMaxAxis(preparedTarget, axis, preparedSource);
+
+            return preparedTarget;
+        }
+
+        internal static void FillMinAxis(IStaticMethod staticMethod, NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.MinLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<T> MinAxis(IStaticMethod staticMethod, int axis, NdArray<T> source)
+        {
+            var (preparedTarget, preparedSource) = staticMethod.PrepareAxisReduceTarget<T, T>(axis, source, Order.RowMajor);
+            FillMinAxis(preparedTarget, axis, preparedSource);
+
+            return preparedTarget;
+        }
+
+        internal static void FillSumAxis(IStaticMethod staticMethod, NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.SumLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<T> SumAxis(IStaticMethod staticMethod, int axis, NdArray<T> source)
+        {
+            var (preparedTarget, preparedSource) = staticMethod.PrepareAxisReduceTarget<T, T>(axis, source, Order.RowMajor);
+            FillSumAxis(preparedTarget, axis, preparedSource);
+
+            return preparedTarget;
+        }
+
+        internal static void FillProductAxis(IStaticMethod staticMethod, NdArray<T> target, int axis, NdArray<T> source)
+        {
+            var (preparedSource, _) = staticMethod.PrepareAxisReduceSources(target, axis, source, null, Order.RowMajor);
+            target.Backend.ProductLastAxis(target, preparedSource);
+        }
+
+        internal static NdArray<T> ProductAxis(IStaticMethod staticMethod, int axis, NdArray<T> source)
+        {
+            var (result, src) = staticMethod.PrepareAxisReduceTarget<T, T>(axis, source, Order.RowMajor);
+            var (src1, _) = staticMethod.PrepareAxisReduceSources(result, axis, source, null, Order.RowMajor);
+            result.Backend.ProductLastAxis(result, src1);
+
+            return result;
         }
     }
 }
