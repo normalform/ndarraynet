@@ -62,9 +62,11 @@
     <Compile Include="IStaticMethod.cs" />
     <Compile Include="IStorage.cs" />
     <Compile Include="Layout.cs" />
+    <Compile Include="NdArrayBase.cs" />
     <Compile Include="NdArray.cs" />
     <Compile Include="NdArrayImpl\ComparisonFunction.cs" />
     <Compile Include="NdArrayImpl\Constructor.cs" />
+    <Compile Include="NdArrayImpl\FunctionBase.cs" />
     <Compile Include="NdArrayImpl\DataFunction.cs" />
     <Compile Include="NdArrayImpl\ElementWiseMathFunction.cs" />
     <Compile Include="NdArrayImpl\ElementWiseOperator.cs" />

@@ -33,10 +33,8 @@ namespace NdArray.NdArrayImpl
     using System.Linq;
     using NdArrayNet;
 
-    internal static class IndexFunction<T>
+    internal class IndexFunction<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         /// <summary>
         /// Gets a sequence of all indices to enumerate all elements within the NdArray.
         /// </summary>

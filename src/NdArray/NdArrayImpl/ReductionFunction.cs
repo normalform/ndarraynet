@@ -32,10 +32,8 @@ namespace NdArray.NdArrayImpl
     using System;
     using NdArrayNet;
 
-    internal static class ReductionFunction<T>
+    internal class ReductionFunction<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         public static void FillMaxAxis(NdArray<T> target, int axis, NdArray<T> source)
         {
             FillMaxAxis(StaticMethod.Value, target, axis, source);

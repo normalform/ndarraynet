@@ -29,13 +29,10 @@
 
 namespace NdArray.NdArrayImpl
 {
-    using System;
     using NdArrayNet;
 
-    internal static class LogicalFunction<T>
+    internal class LogicalFunction<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         public static void FillNegate(NdArray<bool> target, NdArray<bool> source)
         {
             FillNegate(StaticMethod.Value, target, source);

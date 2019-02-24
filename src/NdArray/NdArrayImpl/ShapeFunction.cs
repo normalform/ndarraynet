@@ -33,7 +33,7 @@ namespace NdArray.NdArrayImpl
     using System.Linq;
     using NdArrayNet;
 
-    internal static class ShapeFunction<T>
+    internal class ShapeFunction<T> : FunctionBase
     {
         /// <summary>
         /// Pads the NdArray from the left with size-one dimensions until it has at least the specified number of

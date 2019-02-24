@@ -38,7 +38,7 @@ namespace NdArrayNet
     /// An N-dimensional array with elements of type T.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class NdArray<T> : IFrontend<T>
+    public class NdArray<T> : NdArrayBase, IFrontend<T>
     {
         internal readonly ComparisonFunction<T> ComparisonFunction;
 
@@ -51,8 +51,6 @@ namespace NdArrayNet
             { typeof(byte), (T v) => { var val = Convert.ToByte(v); return string.Format("{0,3:D}", val); } },
             { typeof(bool), (T v) => { var val = Convert.ToBoolean(v); return val ? "true" : "false"; } },
         };
-
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
 
         /// <summary>
         /// Implicit constructor.

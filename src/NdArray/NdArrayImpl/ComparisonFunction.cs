@@ -29,14 +29,11 @@
 
 namespace NdArray.NdArrayImpl
 {
-    using System;
     using System.Linq;
     using NdArrayNet;
 
-    internal class ComparisonFunction<T>
+    internal class ComparisonFunction<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         private readonly IFrontend<T> frontend;
         private readonly IBackend<T> backend;
 

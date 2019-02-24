@@ -29,13 +29,10 @@
 
 namespace NdArray.NdArrayImpl
 {
-    using System;
     using NdArrayNet;
 
-    internal static class DataFunction<T>
+    internal class DataFunction<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         /// <summary>
         /// Copies elements from a NdArray of different data type into the target NdArray and converts their type.
         /// </summary>

@@ -29,13 +29,10 @@
 
 namespace NdArray.NdArrayImpl
 {
-    using System;
     using NdArrayNet;
 
-    internal static class ElementWiseOperator<T>
+    internal class ElementWiseOperator<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         public static void FillUnaryPlus(NdArray<T> target, NdArray<T> source)
         {
             FillUnaryPlus(StaticMethod.Value, target, source);

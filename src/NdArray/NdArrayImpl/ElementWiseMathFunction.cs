@@ -29,13 +29,10 @@
 
 namespace NdArray.NdArrayImpl
 {
-    using System;
     using NdArrayNet;
 
-    internal class ElementWiseMathFunction<T>
+    internal class ElementWiseMathFunction<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         public static void FillAbs(NdArray<T> target, NdArray<T> source)
         {
             FillAbs(StaticMethod.Value, target, source);

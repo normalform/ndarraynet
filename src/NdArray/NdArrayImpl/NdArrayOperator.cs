@@ -34,10 +34,8 @@ namespace NdArray.NdArrayImpl
     using System.Linq;
     using NdArrayNet;
 
-    internal static class NdArrayOperator<T>
+    internal class NdArrayOperator<T> : FunctionBase
     {
-        private static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
-
         /// <summary>
         /// Returns a view of the diagonal along the given axes.
         /// </summary>
