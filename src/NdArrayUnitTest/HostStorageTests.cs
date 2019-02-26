@@ -67,7 +67,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var data = new int[100];
             var hostStorage = new HostStorage<int>(data);
-            var layout = new Layout(new[] { 10, 10 }, 0, new[] { 10, 1 });
 
             // action
             using (var memory = hostStorage.Pin())

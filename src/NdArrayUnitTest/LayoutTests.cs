@@ -647,18 +647,6 @@ namespace NdArrayNet.NdArrayUnitTest
         }
 
         [Fact]
-        public void TryReshape_WithRemainderAndInvalidNewShape_ThrowException1()
-        {
-            // arrange
-            var array = NdArray<int>.Ones(HostDevice.Instance, new[] { 2, 3, 4 });
-
-            // action
-            var newShape = new[] { 3, SpecialIdx.Remainder, 3 };
-            var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
-            Assert.Equal("Cannot reshape from [2,3,4] to [3,Remainder,3] because 24 / 9 is not an integer\r\nParameter name: shape", exception.Message);
-        }
-
-        [Fact]
         public void TryReshape_TwoRemainders_ThrowException()
         {
             // arrange

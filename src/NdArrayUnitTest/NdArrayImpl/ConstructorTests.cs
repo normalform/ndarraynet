@@ -168,7 +168,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.Empty(device, 3);
 
             // assert
-            var expectedLayout = new Layout(new[] { 0, 0, 0 }, 0, new[] { 0 });
+            var expectedLayout = new Layout(new[] { 0, 0, 0 }, 0, new[] { 0, 0, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
         [Fact]
@@ -181,7 +182,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<bool>.Falses(device, new[] { 1, 2, 3 });
 
             // assert
-            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.False(array[new[] { 0, 0, 0 }]);
             Assert.False(array[new[] { 0, 1, 2 }]);
         }
@@ -196,7 +198,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.Filled(device, new[] { 1, 2, 3 }, 55);
 
             // assert
-            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(55, array[new[] { 0, 0, 0 }]);
             Assert.Equal(55, array[new[] { 0, 1, 2 }]);
         }
@@ -211,7 +214,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.Identity(device, 3);
 
             // assert
-            var expectedLayout = new Layout(new[] { 3, 3 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 3, 3 }, 0, new[] { 3, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(1, array[new[] { 0, 0 }]);
             Assert.Equal(0, array[new[] { 0, 1 }]);
             Assert.Equal(0, array[new[] { 0, 2 }]);
@@ -235,7 +239,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.Ones(device, new[] { 2, 2 });
 
             // assert
-            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(1, array[new[] { 0, 0 }]);
             Assert.Equal(1, array[new[] { 0, 1 }]);
             Assert.Equal(1, array[new[] { 1, 0 }]);
@@ -253,7 +258,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.OnesLike(zeros);
 
             // assert
-            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(1, array[new[] { 0, 0 }]);
             Assert.Equal(1, array[new[] { 0, 1 }]);
             Assert.Equal(1, array[new[] { 1, 0 }]);
@@ -271,6 +277,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(0, array[new[] { 0 }]);
             Assert.Equal(1, array[new[] { 1 }]);
             Assert.Equal(2, array[new[] { 2 }]);
@@ -289,6 +296,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(1.0, array[new[] { 0 }]);
             Assert.Equal(1.25, array[new[] { 1 }]);
             Assert.Equal(1.5, array[new[] { 2 }]);
@@ -346,7 +354,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<bool>.Trues(device, new[] { 1, 2, 3 });
 
             // assert
-            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.True(array[new[] { 0, 0, 0 }]);
             Assert.True(array[new[] { 0, 1, 2 }]);
         }
@@ -361,7 +370,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.Zeros(device, new[] { 2, 2 });
 
             // assert
-            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(0, array[new[] { 0, 0 }]);
             Assert.Equal(0, array[new[] { 0, 1 }]);
             Assert.Equal(0, array[new[] { 1, 0 }]);
@@ -379,7 +389,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.ZerosLike(ones);
 
             // assert
-            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
+            var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
+            Assert.Equal(expectedLayout, array.Layout);
             Assert.Equal(0, array[new[] { 0, 0 }]);
             Assert.Equal(0, array[new[] { 0, 1 }]);
             Assert.Equal(0, array[new[] { 1, 0 }]);

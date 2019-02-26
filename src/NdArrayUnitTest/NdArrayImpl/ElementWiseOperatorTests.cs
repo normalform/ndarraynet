@@ -132,7 +132,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputB = NdArray<int>.Scalar(device, 3);
 
             // action
-            var equal = inputA + inputB;
+            var equal = inputA - inputB;
 
             // assert
             Assert.Equal(new[] { 10 }, equal.Shape);

@@ -426,8 +426,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             var output = ShapeFunction<int>.ReverseAxis(0, input);
 
-            var s = output.ToString();
-
             // assert
             Assert.Equal(4, output.Shape[0]);
             Assert.Equal(-1, output.Layout.Stride[0]);
