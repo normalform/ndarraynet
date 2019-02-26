@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
+    using Xunit;
 
-    [TestClass]
     public class ComparisonFunctionTests
     {
-        [TestMethod]
+        [Fact]
         public void FillEqual()
         {
             // arrange
@@ -58,7 +57,7 @@ namespace NdArrayNet.NdArrayUnitTest
             mockFrontend.VerifyAll();
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal()
         {
             // arrange
@@ -74,11 +73,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = ComparisonFunction<int>.Equal(mockStaticHelper.Object, sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
             mockStaticHelper.Verify(m => m.PrepareElemwise<bool, int, int>(sourceA, sourceB, Order.RowMajor));
         }
 
-        [TestMethod]
+        [Fact]
         public void FillNotEqual()
         {
             // arrange
@@ -98,7 +97,7 @@ namespace NdArrayNet.NdArrayUnitTest
             mockBackend.Verify(m => m.NotEqual(mockFrontend.Object, mockSrc1.Object, mockSrc2.Object));
         }
 
-        [TestMethod]
+        [Fact]
         public void NotEqual()
         {
             // arrange
@@ -110,10 +109,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = ComparisonFunction<int>.NotEqual(sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void FillLess()
         {
             // arrange
@@ -126,10 +125,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ComparisonFunction<bool>.FillLess(result, sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Less()
         {
             // arrange
@@ -141,10 +140,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = ComparisonFunction<int>.Less(sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void FillLessOrEqual()
         {
             // arrange
@@ -157,10 +156,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ComparisonFunction<bool>.FillLessOrEqual(result, sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void LessOrEqual()
         {
             // arrange
@@ -172,10 +171,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = ComparisonFunction<int>.LessOrEqual(sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void FillGreater()
         {
             // arrange
@@ -188,10 +187,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ComparisonFunction<bool>.FillGreater(result, sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Greater()
         {
             // arrange
@@ -203,10 +202,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = ComparisonFunction<int>.Greater(sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void FillGreaterOrEqual()
         {
             // arrange
@@ -219,10 +218,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ComparisonFunction<bool>.FillGreaterOrEqual(result, sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void GreaterOrEqual()
         {
             // arrange
@@ -234,10 +233,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = ComparisonFunction<int>.GreaterOrEqual(sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, result.Shape);
+            Assert.Equal(new[] { 10 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsClose_SameIntVectors_ReturnTrues()
         {
             // arrange
@@ -248,10 +247,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var close = ComparisonFunction<int>.IsClose(source, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, close.Shape);
+            Assert.Equal(new[] { 10 }, close.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsClose_SameDoubleVectors_ReturnTrues()
         {
             // arrange
@@ -262,10 +261,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var close = ComparisonFunction<double>.IsClose(source, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, close.Shape);
+            Assert.Equal(new[] { 10 }, close.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsClose_DifferentDoubleVectors_ReturnFalses()
         {
             // arrange
@@ -276,10 +275,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var close = ComparisonFunction<double>.IsClose(source, source + 1.0);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, close.Shape);
+            Assert.Equal(new[] { 10 }, close.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsClose_DifferentDoubleVectorsWithBigTolerence_ReturnTrue()
         {
             // arrange
@@ -290,10 +289,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var close = ComparisonFunction<double>.IsClose(source, source + 1.0, 2.0);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, close.Shape);
+            Assert.Equal(new[] { 10 }, close.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsClose_CloseDoubleVectors_ReturnTrue()
         {
             // arrange
@@ -305,10 +304,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var close = ComparisonFunction<double>.IsClose(sourceA, sourceB);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, close.Shape);
+            Assert.Equal(new[] { 10 }, close.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AlmostEqual_SameIntVectors_ReturnTrue()
         {
             // arrange
@@ -320,10 +319,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var almostEqual = ComparisonFunction<int>.AlmostEqual(sourceA, sourceB);
 
             // assert
-            Assert.IsTrue(almostEqual);
+            Assert.True(almostEqual);
         }
 
-        [TestMethod]
+        [Fact]
         public void AlmostEqual_DifferentIntVectors_ReturnFalse()
         {
             // arrange
@@ -335,10 +334,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var almostEqual = ComparisonFunction<int>.AlmostEqual(sourceA, sourceB);
 
             // assert
-            Assert.IsFalse(almostEqual);
+            Assert.False(almostEqual);
         }
 
-        [TestMethod]
+        [Fact]
         public void FillIsFinite()
         {
             // arrange
@@ -350,10 +349,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ComparisonFunction<int>.FillIsFinite(result, source);
 
             // assert
-            Assert.IsTrue(NdArray<int>.All(result));
+            Assert.True(NdArray<int>.All(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite()
         {
             // arrange
@@ -364,7 +363,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = ComparisonFunction<int>.IsFinite(source);
 
             // assert
-            Assert.IsTrue(NdArray<int>.All(result));
+            Assert.True(NdArray<int>.All(result));
         }
     }
 }

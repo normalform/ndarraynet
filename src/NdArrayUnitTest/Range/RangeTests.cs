@@ -29,13 +29,12 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
+    using Xunit;
 
-    [TestClass]
     public class RangeTests
     {
-        [TestMethod]
+        [Fact]
         public void Range_ReturnRangeTypeAndStartStopStep()
         {
             // arrange
@@ -45,13 +44,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var rangeType = range.Type;
 
             // assert
-            Assert.AreEqual(RangeType.Range, rangeType);
-            Assert.AreEqual(10, range.Start);
-            Assert.AreEqual(30, range.Stop);
-            Assert.AreEqual(2, range.Step);
+            Assert.Equal(RangeType.Range, rangeType);
+            Assert.Equal(10, range.Start);
+            Assert.Equal(30, range.Stop);
+            Assert.Equal(2, range.Step);
         }
 
-        [TestMethod]
+        [Fact]
         public void Elem_ReturnElemRangeTypeAndPosition()
         {
             // arrange
@@ -61,11 +60,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var rangeType = elem.Type;
 
             // assert
-            Assert.AreEqual(RangeType.Elem, rangeType);
-            Assert.AreEqual(100, elem.Pos);
+            Assert.Equal(RangeType.Elem, rangeType);
+            Assert.Equal(100, elem.Pos);
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAxis_ReturnNewAxisRangeType()
         {
             // arrange
@@ -75,10 +74,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var rangeType = newAxis.Type;
 
             // assert
-            Assert.AreEqual(RangeType.NewAxis, rangeType);
+            Assert.Equal(RangeType.NewAxis, rangeType);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllFill_ReturnAllFillRangeType()
         {
             // arrange
@@ -88,7 +87,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var rangeType = allFill.Type;
 
             // assert
-            Assert.AreEqual(RangeType.AllFill, rangeType);
+            Assert.Equal(RangeType.AllFill, rangeType);
         }
     }
 }

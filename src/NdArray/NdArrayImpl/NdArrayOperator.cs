@@ -143,7 +143,7 @@ namespace NdArray.NdArrayImpl
         {
             if (axis1 == axis2)
             {
-                var errorMessage = string.Format("axes [axis1={0}, axis2={1}] to use for diagonal must be different", axis1, axis2);
+                var errorMessage = string.Format("Axes [axis1={0}, axis2={1}] to use for diagonal must be different", axis1, axis2);
                 throw new ArgumentException(errorMessage, "axis2");
             }
 
@@ -174,7 +174,7 @@ namespace NdArray.NdArrayImpl
         {
             if (source.NumDimensions < 1)
             {
-                throw new ArgumentException("need at leat a one-dimensional array to create a diagonal matrix", "source");
+                throw new ArgumentException("Need at leat a one-dimensional array to create a diagonal matrix", "source");
             }
 
             return DiagMatAxis(source.NumDimensions - 1, source.NumDimensions, source);

@@ -324,7 +324,7 @@ namespace NdArray.NdArrayImpl
                 return (src1.Relayout(newLayouts[0]), src2.Relayout(newLayouts[1]));
             }
 
-            throw new InvalidOperationException("unexpected layout function result");
+            throw new InvalidOperationException("Unexpected layout function result");
         }
 
         internal static (NdArray<T1>, NdArray<T2>, NdArray<T3>) ApplyLayoutFn<T1, T2, T3>(Func<Layout[], Layout[]> fn, IFrontend<T1> src1, IFrontend<T2> src2, IFrontend<T3> src3)
@@ -336,7 +336,7 @@ namespace NdArray.NdArrayImpl
                 return (src1.Relayout(newLayouts[0]), src2.Relayout(newLayouts[1]), src3.Relayout(newLayouts[2]));
             }
 
-            throw new InvalidOperationException("unexpected layout function result");
+            throw new InvalidOperationException("Unexpected layout function result");
         }
 
         internal static NdArray<T>[] ApplyLayoutFn(Func<Layout[], Layout[]> fn, NdArray<T>[] sources)
@@ -356,7 +356,7 @@ namespace NdArray.NdArrayImpl
                 return (src1.Relayout(newLayouts[0]), src2.Relayout(newLayouts[1]));
             }
 
-            throw new InvalidOperationException("unexpected layout function result");
+            throw new InvalidOperationException("Unexpected layout function result");
         }
 
         internal static (NdArray<T1>, NdArray<T2>, NdArray<T3>) ApplyLayoutFn<T1, T2, T3>(Func<int[], Layout[], Layout[]> fn, int[] dims, NdArray<T1> src1, NdArray<T2> src2, NdArray<T3> src3)
@@ -368,7 +368,7 @@ namespace NdArray.NdArrayImpl
                 return (src1.Relayout(newLayouts[0]), src2.Relayout(newLayouts[1]), src3.Relayout(newLayouts[2]));
             }
 
-            throw new InvalidOperationException("unexpected layout function result");
+            throw new InvalidOperationException("Unexpected layout function result");
         }
 
         internal static NdArray<T>[] ApplyLayoutFn(Func<int[], Layout[], Layout[]> fn, int[] dims, NdArray<T>[] sources)

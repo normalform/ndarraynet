@@ -29,261 +29,260 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class PrimitivesTests
     {
-        [TestMethod]
+        [Fact]
         public void Zero_Byte_ReturnByteZero()
         {
             // arrange & action
             var zero = Primitives.Zero<byte>();
 
             // assert
-            Assert.AreEqual(0U, zero);
-            Assert.IsInstanceOfType(zero, typeof(byte));
+            Assert.Equal(0U, zero);
+            Assert.IsType<byte>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Byte_ReturnByteOne()
         {
             // arrange & action
             var one = Primitives.One<byte>();
 
             // assert
-            Assert.AreEqual(1U, one);
-            Assert.IsInstanceOfType(one, typeof(byte));
+            Assert.Equal(1U, one);
+            Assert.IsType<byte>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Sbyte_ReturnSbyteZero()
         {
             // arrange & action
             var zero = Primitives.Zero<sbyte>();
 
             // assert
-            Assert.AreEqual(0, zero);
-            Assert.IsInstanceOfType(zero, typeof(sbyte));
+            Assert.Equal(0, zero);
+            Assert.IsType<sbyte>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Sbyte_ReturnSbyteOne()
         {
             // arrange & action
             var one = Primitives.One<sbyte>();
 
             // assert
-            Assert.AreEqual(1, one);
-            Assert.IsInstanceOfType(one, typeof(sbyte));
+            Assert.Equal(1, one);
+            Assert.IsType<sbyte>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Short_ReturnShortZero()
         {
             // arrange & action
             var zero = Primitives.Zero<short>();
 
             // assert
-            Assert.AreEqual(0, zero);
-            Assert.IsInstanceOfType(zero, typeof(short));
+            Assert.Equal(0, zero);
+            Assert.IsType<short>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Short_ReturnShortOne()
         {
             // arrange & action
             var one = Primitives.One<short>();
 
             // assert
-            Assert.AreEqual(1, one);
-            Assert.IsInstanceOfType(one, typeof(short));
+            Assert.Equal(1, one);
+            Assert.IsType<short>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Ushort_ReturnUshortZero()
         {
             // arrange & action
             var zero = Primitives.Zero<ushort>();
 
             // assert
-            Assert.AreEqual(0, zero);
-            Assert.IsInstanceOfType(zero, typeof(ushort));
+            Assert.Equal(0, zero);
+            Assert.IsType<ushort>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Ushort_ReturnUshortOne()
         {
             // arrange & action
             var one = Primitives.One<ushort>();
 
             // assert
-            Assert.AreEqual(1, one);
-            Assert.IsInstanceOfType(one, typeof(ushort));
+            Assert.Equal(1, one);
+            Assert.IsType<ushort>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Int_ReturnIntOne()
         {
             // arrange & action
             var zero = Primitives.Zero<int>();
 
             // assert
-            Assert.AreEqual(0, zero);
-            Assert.IsInstanceOfType(zero, typeof(int));
+            Assert.Equal(0, zero);
+            Assert.IsType<int>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Int_ReturnIntOne()
         {
             // arrange & action
             var one = Primitives.One<int>();
 
             // assert
-            Assert.AreEqual(1, one);
-            Assert.IsInstanceOfType(one, typeof(int));
+            Assert.Equal(1, one);
+            Assert.IsType<int>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Uint_ReturnUintZero()
         {
             // arrange & action
             var zero = Primitives.Zero<uint>();
 
             // assert
-            Assert.AreEqual(0U, zero);
-            Assert.IsInstanceOfType(zero, typeof(uint));
+            Assert.Equal(0U, zero);
+            Assert.IsType<uint>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Uint_ReturnUintOne()
         {
             // arrange & action
             var one = Primitives.One<uint>();
 
             // assert
-            Assert.AreEqual(1U, one);
-            Assert.IsInstanceOfType(one, typeof(uint));
+            Assert.Equal(1U, one);
+            Assert.IsType<uint>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Long_ReturnLongZero()
         {
             // arrange & action
             var zero = Primitives.Zero<long>();
 
             // assert
-            Assert.AreEqual(0L, zero);
-            Assert.IsInstanceOfType(zero, typeof(long));
+            Assert.Equal(0L, zero);
+            Assert.IsType<long>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Long_ReturnLongOne()
         {
             // arrange & action
             var one = Primitives.One<long>();
 
             // assert
-            Assert.AreEqual(1L, one);
-            Assert.IsInstanceOfType(one, typeof(long));
+            Assert.Equal(1L, one);
+            Assert.IsType<long>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Ulong_ReturnUlongZero()
         {
             // arrange & action
             var zero = Primitives.Zero<ulong>();
 
             // assert
-            Assert.AreEqual(0UL, zero);
-            Assert.IsInstanceOfType(zero, typeof(ulong));
+            Assert.Equal(0UL, zero);
+            Assert.IsType<ulong>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Ulong_ReturnUlongOne()
         {
             // arrange & action
             var one = Primitives.One<ulong>();
 
             // assert
-            Assert.AreEqual(1UL, one);
-            Assert.IsInstanceOfType(one, typeof(ulong));
+            Assert.Equal(1UL, one);
+            Assert.IsType<ulong>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Float_ReturnFloatZero()
         {
             // arrange & action
             var zero = Primitives.Zero<float>();
 
             // assert
-            Assert.AreEqual(0.0F, zero);
-            Assert.IsInstanceOfType(zero, typeof(float));
+            Assert.Equal(0.0F, zero);
+            Assert.IsType<float>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Float_ReturnFloatOne()
         {
             // arrange & action
             var one = Primitives.One<float>();
 
             // assert
-            Assert.AreEqual(1.0F, one);
-            Assert.IsInstanceOfType(one, typeof(float));
+            Assert.Equal(1.0F, one);
+            Assert.IsType<float>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Double_ReturnDoubleZero()
         {
             // arrange & action
             var zero = Primitives.Zero<double>();
 
             // assert
-            Assert.AreEqual(0.0, zero);
-            Assert.IsInstanceOfType(zero, typeof(double));
+            Assert.Equal(0.0, zero);
+            Assert.IsType<double>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Double_ReturnDoubleOne()
         {
             // arrange & action
             var one = Primitives.One<double>();
 
             // assert
-            Assert.AreEqual(1.0, one);
-            Assert.IsInstanceOfType(one, typeof(double));
+            Assert.Equal(1.0, one);
+            Assert.IsType<double>(one);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zero_Decimal_ReturnDecimalZero()
         {
             // arrange & action
             var zero = Primitives.Zero<decimal>();
 
             // assert
-            Assert.AreEqual(decimal.Zero, zero);
-            Assert.IsInstanceOfType(zero, typeof(decimal));
+            Assert.Equal(decimal.Zero, zero);
+            Assert.IsType<decimal>(zero);
         }
 
-        [TestMethod]
+        [Fact]
         public void One_Decimal_ReturnDecimalOne()
         {
             // arrange & action
             var one = Primitives.One<decimal>();
 
             // assert
-            Assert.AreEqual(decimal.One, one);
-            Assert.IsInstanceOfType(one, typeof(decimal));
+            Assert.Equal(decimal.One, one);
+            Assert.IsType<decimal>(one);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void GetStaticProperty_InvalidMethod_ThrowException()
         {
-            // action
-            var _ = Primitives.GetStaticProperty(typeof(int), "INVALID_METHOD");
+            // action & assert
+            var ex = Assert.Throws<InvalidOperationException>(() => Primitives.GetStaticProperty(typeof(int), "INVALID_METHOD"));
+            Assert.Equal("The type Int32 must implement the static property INVALID_METHOD", ex.Message);
         }
     }
 }

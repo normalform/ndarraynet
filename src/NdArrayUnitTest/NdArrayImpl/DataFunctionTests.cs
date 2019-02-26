@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class DataFunctionTests
     {
-        [TestMethod]
+        [Fact]
         public void Convert()
         {
             // arrange
@@ -47,19 +46,19 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = DataFunction<double>.Convert(source).Value;
 
             // assert
-            Assert.IsInstanceOfType(result, typeof(double));
-            Assert.AreEqual(2.0, result);
+            Assert.IsType<double>(result);
+            Assert.Equal(2.0, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Convert_InvalidConvert_ThrowException()
         {
             // arrange
             var source = NdArray<int>.Scalar(HostDevice.Instance, 2);
 
             // action
-            var result = DataFunction<string>.Convert(source);
+            var exception = Assert.Throws<ArgumentException>(() => DataFunction<string>.Convert(source));
+            Assert.Equal("Type 'System.String' cannot be marshaled as an unmanaged structure; no meaningful size or offset can be computed.", exception.Message);
         }
     }
 }

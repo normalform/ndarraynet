@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class ConstructorTests
     {
-        [TestMethod]
+        [Fact]
         public void Arange_Start0()
         {
             // arrange
@@ -48,11 +47,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(0, array[0].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(0, array[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_Start1()
         {
             // arrange
@@ -63,11 +62,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 9 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(1, array[0].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(1, array[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_Step1()
         {
             // arrange
@@ -78,11 +77,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(1, array[1].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(1, array[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_Step2()
         {
             // arrange
@@ -93,11 +92,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(2, array[1].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(2, array[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_Stop10()
         {
             // arrange
@@ -108,11 +107,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(9, array[9].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(9, array[9].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_Stop11()
         {
             // arrange
@@ -123,11 +122,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 11 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(10, array[10].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(10, array[10].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Counting_Int()
         {
             // arrange
@@ -138,12 +137,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(0, array[0].Value);
-            Assert.AreEqual(9, array[9].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(0, array[0].Value);
+            Assert.Equal(9, array[9].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Counting_Double()
         {
             // arrange
@@ -154,12 +153,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
-            Assert.AreEqual(0.0, array[0].Value);
-            Assert.AreEqual(9.0, array[9].Value);
+            Assert.Equal(expectedLayout, array.Layout);
+            Assert.Equal(0.0, array[0].Value);
+            Assert.Equal(9.0, array[9].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Empty()
         {
             // arrange
@@ -172,7 +171,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var expectedLayout = new Layout(new[] { 0, 0, 0 }, 0, new[] { 0 });
         }
 
-        [TestMethod]
+        [Fact]
         public void Falses()
         {
             // arrange
@@ -183,11 +182,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
-            Assert.AreEqual(false, array[new[] { 0, 0, 0 }]);
-            Assert.AreEqual(false, array[new[] { 0, 1, 2 }]);
+            Assert.False(array[new[] { 0, 0, 0 }]);
+            Assert.False(array[new[] { 0, 1, 2 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filled()
         {
             // arrange
@@ -198,11 +197,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
-            Assert.AreEqual(55, array[new[] { 0, 0, 0 }]);
-            Assert.AreEqual(55, array[new[] { 0, 1, 2 }]);
+            Assert.Equal(55, array[new[] { 0, 0, 0 }]);
+            Assert.Equal(55, array[new[] { 0, 1, 2 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Identity_3by3()
         {
             // arrange
@@ -213,20 +212,20 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 3, 3 }, 0, new[] { 1 });
-            Assert.AreEqual(1, array[new[] { 0, 0 }]);
-            Assert.AreEqual(0, array[new[] { 0, 1 }]);
-            Assert.AreEqual(0, array[new[] { 0, 2 }]);
+            Assert.Equal(1, array[new[] { 0, 0 }]);
+            Assert.Equal(0, array[new[] { 0, 1 }]);
+            Assert.Equal(0, array[new[] { 0, 2 }]);
 
-            Assert.AreEqual(0, array[new[] { 1, 0 }]);
-            Assert.AreEqual(1, array[new[] { 1, 1 }]);
-            Assert.AreEqual(0, array[new[] { 1, 2 }]);
+            Assert.Equal(0, array[new[] { 1, 0 }]);
+            Assert.Equal(1, array[new[] { 1, 1 }]);
+            Assert.Equal(0, array[new[] { 1, 2 }]);
 
-            Assert.AreEqual(0, array[new[] { 2, 0 }]);
-            Assert.AreEqual(0, array[new[] { 2, 1 }]);
-            Assert.AreEqual(1, array[new[] { 2, 2 }]);
+            Assert.Equal(0, array[new[] { 2, 0 }]);
+            Assert.Equal(0, array[new[] { 2, 1 }]);
+            Assert.Equal(1, array[new[] { 2, 2 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ones()
         {
             // arrange
@@ -237,13 +236,13 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
-            Assert.AreEqual(1, array[new[] { 0, 0 }]);
-            Assert.AreEqual(1, array[new[] { 0, 1 }]);
-            Assert.AreEqual(1, array[new[] { 1, 0 }]);
-            Assert.AreEqual(1, array[new[] { 1, 1 }]);
+            Assert.Equal(1, array[new[] { 0, 0 }]);
+            Assert.Equal(1, array[new[] { 0, 1 }]);
+            Assert.Equal(1, array[new[] { 1, 0 }]);
+            Assert.Equal(1, array[new[] { 1, 1 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void OnesLike()
         {
             // arrange
@@ -255,13 +254,13 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
-            Assert.AreEqual(1, array[new[] { 0, 0 }]);
-            Assert.AreEqual(1, array[new[] { 0, 1 }]);
-            Assert.AreEqual(1, array[new[] { 1, 0 }]);
-            Assert.AreEqual(1, array[new[] { 1, 1 }]);
+            Assert.Equal(1, array[new[] { 0, 0 }]);
+            Assert.Equal(1, array[new[] { 0, 1 }]);
+            Assert.Equal(1, array[new[] { 1, 0 }]);
+            Assert.Equal(1, array[new[] { 1, 1 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Linspace_Int()
         {
             // arrange
@@ -272,14 +271,14 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
-            Assert.AreEqual(0, array[new[] { 0 }]);
-            Assert.AreEqual(1, array[new[] { 1 }]);
-            Assert.AreEqual(2, array[new[] { 2 }]);
-            Assert.AreEqual(3, array[new[] { 3 }]);
-            Assert.AreEqual(4, array[new[] { 4 }]);
+            Assert.Equal(0, array[new[] { 0 }]);
+            Assert.Equal(1, array[new[] { 1 }]);
+            Assert.Equal(2, array[new[] { 2 }]);
+            Assert.Equal(3, array[new[] { 3 }]);
+            Assert.Equal(4, array[new[] { 4 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Linspace_Double()
         {
             // arrange
@@ -290,25 +289,25 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
-            Assert.AreEqual(1.0, array[new[] { 0 }]);
-            Assert.AreEqual(1.25, array[new[] { 1 }]);
-            Assert.AreEqual(1.5, array[new[] { 2 }]);
-            Assert.AreEqual(1.75, array[new[] { 3 }]);
-            Assert.AreEqual(2.0, array[new[] { 4 }]);
+            Assert.Equal(1.0, array[new[] { 0 }]);
+            Assert.Equal(1.25, array[new[] { 1 }]);
+            Assert.Equal(1.5, array[new[] { 2 }]);
+            Assert.Equal(1.75, array[new[] { 3 }]);
+            Assert.Equal(2.0, array[new[] { 4 }]);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Linspace_InvalidNumElements_ThrowException()
         {
             // arrange
             var device = HostDevice.Instance;
 
             // action
-            var array = Constructor<int>.Linspace(device, 0, 5, 1);
+            var exception = Assert.Throws<ArgumentException>(() => Constructor<int>.Linspace(device, 0, 5, 1));
+            Assert.Equal("Linspace requires at least two elements.\r\nParameter name: numElement", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Scalar()
         {
             // arrange
@@ -319,10 +318,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.Scalar(device, Value);
 
             // asssert
-            Assert.AreEqual(Value, array.Value);
+            Assert.Equal(Value, array.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ScalarLike()
         {
             // arrange
@@ -334,10 +333,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = Constructor<int>.ScalarLike(referenceArray, Value);
 
             // asssert
-            Assert.AreEqual(Value, array.Value);
+            Assert.Equal(Value, array.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Trues()
         {
             // arrange
@@ -348,11 +347,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 1 });
-            Assert.AreEqual(true, array[new[] { 0, 0, 0 }]);
-            Assert.AreEqual(true, array[new[] { 0, 1, 2 }]);
+            Assert.True(array[new[] { 0, 0, 0 }]);
+            Assert.True(array[new[] { 0, 1, 2 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zeros()
         {
             // arrange
@@ -363,13 +362,13 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
-            Assert.AreEqual(0, array[new[] { 0, 0 }]);
-            Assert.AreEqual(0, array[new[] { 0, 1 }]);
-            Assert.AreEqual(0, array[new[] { 1, 0 }]);
-            Assert.AreEqual(0, array[new[] { 1, 1 }]);
+            Assert.Equal(0, array[new[] { 0, 0 }]);
+            Assert.Equal(0, array[new[] { 0, 1 }]);
+            Assert.Equal(0, array[new[] { 1, 0 }]);
+            Assert.Equal(0, array[new[] { 1, 1 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void ZerosLike()
         {
             // arrange
@@ -381,10 +380,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 1 });
-            Assert.AreEqual(0, array[new[] { 0, 0 }]);
-            Assert.AreEqual(0, array[new[] { 0, 1 }]);
-            Assert.AreEqual(0, array[new[] { 1, 0 }]);
-            Assert.AreEqual(0, array[new[] { 1, 1 }]);
+            Assert.Equal(0, array[new[] { 0, 0 }]);
+            Assert.Equal(0, array[new[] { 0, 1 }]);
+            Assert.Equal(0, array[new[] { 1, 0 }]);
+            Assert.Equal(0, array[new[] { 1, 1 }]);
         }
     }
 }

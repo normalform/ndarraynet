@@ -29,16 +29,15 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
     using System;
     using System.Linq;
+    using Xunit;
 
-    [TestClass]
     public class IndexFunctionTests
     {
-        [TestMethod]
+        [Fact]
         public void AllIndex()
         {
             // arrange
@@ -48,15 +47,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.AllIndex(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 0, 0 }, output[0]);
-            CollectionAssert.AreEqual(new[] { 0, 0, 1 }, output[1]);
-            CollectionAssert.AreEqual(new[] { 0, 0, 2 }, output[2]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 0 }, output[3]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 1 }, output[4]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 2 }, output[5]);
+            Assert.Equal(new[] { 0, 0, 0 }, output[0]);
+            Assert.Equal(new[] { 0, 0, 1 }, output[1]);
+            Assert.Equal(new[] { 0, 0, 2 }, output[2]);
+            Assert.Equal(new[] { 1, 0, 0 }, output[3]);
+            Assert.Equal(new[] { 1, 0, 1 }, output[4]);
+            Assert.Equal(new[] { 1, 0, 2 }, output[5]);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllElements()
         {
             // arrange
@@ -66,10 +65,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.AllElements(source);
 
             // assert
-            CollectionAssert.AreEqual(Enumerable.Range(0, 9).ToArray(), output);
+            Assert.Equal(Enumerable.Range(0, 9).ToArray(), output);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMaxAxis()
         {
             // arrange
@@ -79,11 +78,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.ArgMaxAxis(1, source);
 
             // assert
-            Assert.AreEqual(3, output[0].Value);
-            Assert.AreEqual(3, output[1].Value);
+            Assert.Equal(3, output[0].Value);
+            Assert.Equal(3, output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMax()
         {
             // arrange
@@ -93,10 +92,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.ArgMax(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 3 }, output);
+            Assert.Equal(new[] { 1, 3 }, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMinAxis()
         {
             // arrange
@@ -106,11 +105,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.ArgMinAxis(1, source);
 
             // assert
-            Assert.AreEqual(0, output[0].Value);
-            Assert.AreEqual(0, output[1].Value);
+            Assert.Equal(0, output[0].Value);
+            Assert.Equal(0, output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMin()
         {
             // arrange
@@ -120,10 +119,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.ArgMin(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 0 }, output);
+            Assert.Equal(new[] { 0, 0 }, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void FindAxis()
         {
             // arrange
@@ -133,11 +132,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.FindAxis(2, 1, source);
 
             // assert
-            Assert.AreEqual(2, output[0].Value);
-            Assert.AreEqual(SpecialIdx.NotFound, output[1].Value);
+            Assert.Equal(2, output[0].Value);
+            Assert.Equal(SpecialIdx.NotFound, output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryFind()
         {
             // arrange
@@ -148,10 +147,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.TryFind(2, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 1 }, output);
+            Assert.Equal(new[] { 0, 1 }, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryFind_NotFound()
         {
             // arrange
@@ -161,10 +160,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.TryFind(10, source);
 
             // assert
-            Assert.IsTrue(output.Length == 0);
+            Assert.True(output.Length == 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void Find()
         {
             // arrange
@@ -175,21 +174,21 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<int>.Find(2, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 1 }, output);
+            Assert.Equal(new[] { 0, 1 }, output);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Find_NotFound_ThrowException()
         {
             // arrange
             var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var output = IndexFunction<int>.Find(10, source);
+            var exception = Assert.Throws<InvalidOperationException>(() => IndexFunction<int>.Find(10, source));
+            Assert.Equal("Value 10 was not found in specifed NdArray.", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrueAxis()
         {
             // arrange
@@ -203,11 +202,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<bool>.CountTrueAxis(1, source);
 
             // assert
-            Assert.AreEqual(2, output[0].Value);
-            Assert.AreEqual(2, output[1].Value);
+            Assert.Equal(2, output[0].Value);
+            Assert.Equal(2, output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrueNdArray()
         {
             // arrange
@@ -221,10 +220,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<bool>.CountTrueNdArray(source);
 
             // assert
-            Assert.AreEqual(4, output[0].Value);
+            Assert.Equal(4, output[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrue()
         {
             // arrange
@@ -238,10 +237,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<bool>.CountTrue(source);
 
             // assert
-            Assert.AreEqual(4, output);
+            Assert.Equal(4, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void TrueIndices()
         {
             // arrange
@@ -255,14 +254,14 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = IndexFunction<bool>.TrueIndices(source);
 
             // assert
-            Assert.AreEqual(0, output[new[] { 0, 0 }]);
-            Assert.AreEqual(0, output[new[] { 0, 1 }]);
-            Assert.AreEqual(0, output[new[] { 1, 0 }]);
-            Assert.AreEqual(2, output[new[] { 1, 1 }]);
-            Assert.AreEqual(1, output[new[] { 2, 0 }]);
-            Assert.AreEqual(1, output[new[] { 2, 1 }]);
-            Assert.AreEqual(1, output[new[] { 3, 0 }]);
-            Assert.AreEqual(2, output[new[] { 3, 1 }]);
+            Assert.Equal(0, output[new[] { 0, 0 }]);
+            Assert.Equal(0, output[new[] { 0, 1 }]);
+            Assert.Equal(0, output[new[] { 1, 0 }]);
+            Assert.Equal(2, output[new[] { 1, 1 }]);
+            Assert.Equal(1, output[new[] { 2, 0 }]);
+            Assert.Equal(1, output[new[] { 2, 1 }]);
+            Assert.Equal(1, output[new[] { 3, 0 }]);
+            Assert.Equal(2, output[new[] { 3, 1 }]);
         }
     }
 }

@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
     using System.Linq;
+    using Xunit;
 
-    [TestClass]
     public class ScalarOpsTests
     {
-        [TestMethod]
+        [Fact]
         public void Fill_Scalar()
         {
             // arrange
@@ -49,10 +48,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Fill(FillPattern, scalar);
 
             // assert
-            Assert.IsTrue(data.All(d => d == FillPattern));
+            Assert.True(data.All(d => d == FillPattern));
         }
 
-        [TestMethod]
+        [Fact]
         public void Fill_Vector1D()
         {
             // arrange
@@ -66,10 +65,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Fill(FillPattern, target);
 
             // assert
-            Assert.IsTrue(data.All(d => d == FillPattern));
+            Assert.True(data.All(d => d == FillPattern));
         }
 
-        [TestMethod]
+        [Fact]
         public void Fill_Vector2D()
         {
             // arrange
@@ -82,10 +81,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Fill(FillPattern, target);
 
             // assert
-            Assert.IsTrue(data.All(d => d == FillPattern));
+            Assert.True(data.All(d => d == FillPattern));
         }
 
-        [TestMethod]
+        [Fact]
         public void FillIncrementing()
         {
             // arrange
@@ -98,10 +97,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expecedData = Enumerable.Range(0, BufferSize).Select(n => n * 2).ToArray();
-            Assert.IsTrue(Enumerable.SequenceEqual(expecedData, data));
+            Assert.True(Enumerable.SequenceEqual(expecedData, data));
         }
 
-        [TestMethod]
+        [Fact]
         public void Copy_Scalar()
         {
             // arrange
@@ -117,10 +116,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Copy(target, src);
 
             // assert
-            Assert.AreEqual(CopyPattern, targetData[0]);
+            Assert.Equal(CopyPattern, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Copy_Vector1D()
         {
             // arrange
@@ -135,10 +134,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Copy(target, src);
 
             // assert
-            Assert.IsTrue(Enumerable.SequenceEqual(targetData, srcData));
+            Assert.True(Enumerable.SequenceEqual(targetData, srcData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Copy_Vector2D()
         {
             // arrange
@@ -153,10 +152,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Copy(target, src);
 
             // assert
-            Assert.IsTrue(Enumerable.SequenceEqual(targetData, srcData));
+            Assert.True(Enumerable.SequenceEqual(targetData, srcData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_Scalar()
         {
             // arrange
@@ -179,10 +178,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const int ExpectedValue = 20;
-            Assert.AreEqual(ExpectedValue, targetData[0]);
+            Assert.Equal(ExpectedValue, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_Vector1D()
         {
             // arrange
@@ -200,10 +199,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedData = src1Data.Select(x => x * x).ToArray();
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+            Assert.True(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_Vector2D()
         {
             // arrange
@@ -221,10 +220,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedData = src1Data.Select(x => x * x).ToArray();
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+            Assert.True(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Abs()
         {
             // arrange
@@ -240,10 +239,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var allPositive = target.Data.All(v => v >= 0);
-            Assert.IsTrue(allPositive);
+            Assert.True(allPositive);
         }
 
-        [TestMethod]
+        [Fact]
         public void Acos()
         {
             // arrange
@@ -258,12 +257,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - Math.PI) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - (Math.PI / 2.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - Math.PI) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - (Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 0.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Asin()
         {
             // arrange
@@ -278,12 +277,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - (-Math.PI / 2.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - (Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - (-Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - (Math.PI / 2.0)) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Atan()
         {
             // arrange
@@ -298,12 +297,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - (-Math.PI / 4.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - (Math.PI / 4.0)) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - (-Math.PI / 4.0)) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - (Math.PI / 4.0)) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ceiling()
         {
             // arrange
@@ -318,10 +317,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Ceiling(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { -1.0, 0.0, 0.0, 1.0, 1.0, 1.0 }, targetData);
+            Assert.Equal(new[] { -1.0, 0.0, 0.0, 1.0, 1.0, 1.0 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cos()
         {
             // arrange
@@ -337,12 +336,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 1.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 0.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cosh()
         {
             // arrange
@@ -358,12 +357,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - 2.5091784786580567) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 2.5091784786580567) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - 2.5091784786580567) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 1.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 2.5091784786580567) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Exp()
         {
             // arrange
@@ -379,13 +378,13 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - 0.36787944117144233) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 2.718281828459045) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[3] - 22026.465794806718) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - 0.36787944117144233) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 1.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 2.718281828459045) < Epsilon);
+            Assert.True(Math.Abs(targetData[3] - 22026.465794806718) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Floor()
         {
             // arrange
@@ -400,10 +399,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Floor(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { -1.0, -1.0, -1.0, 0.0, 0.0, 1.0 }, targetData);
+            Assert.Equal(new[] { -1.0, -1.0, -1.0, 0.0, 0.0, 1.0 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log()
         {
             // arrange
@@ -419,12 +418,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 1.3862943611198906) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 1.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 1.3862943611198906) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log10()
         {
             // arrange
@@ -440,12 +439,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 2.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 1.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 2.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Maximum()
         {
             // arrange
@@ -463,10 +462,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedData = src1Data.Zip(src2Data, (s1, s2) => Tuple.Create(s1, s2)).Select(t => Math.Max(t.Item1, t.Item2));
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+            Assert.True(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Minimum()
         {
             // arrange
@@ -484,10 +483,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedData = src1Data.Zip(src2Data, (s1, s2) => Tuple.Create(s1, s2)).Select(t => Math.Min(t.Item1, t.Item2));
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+            Assert.True(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Pow()
         {
             // arrange
@@ -504,12 +503,12 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Pow(target, lhs, rhs);
 
             // assert
-            Assert.AreEqual(25.0, targetData[0]);
-            Assert.AreEqual(216.0, targetData[1]);
-            Assert.AreEqual(2401.0, targetData[2]);
+            Assert.Equal(25.0, targetData[0]);
+            Assert.Equal(216.0, targetData[1]);
+            Assert.Equal(2401.0, targetData[2]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Round()
         {
             // arrange
@@ -524,10 +523,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Round(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { -1.0, -1.0, 0.0, 0.0, 1.0, 1.0 }, targetData);
+            Assert.Equal(new[] { -1.0, -1.0, 0.0, 0.0, 1.0, 1.0 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sign()
         {
             // arrange
@@ -542,10 +541,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Sign(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { -1.0, -1.0, 0.0, 1.0 }, targetData);
+            Assert.Equal(new[] { -1.0, -1.0, 0.0, 1.0 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sin()
         {
             // arrange
@@ -561,12 +560,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - -1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 1.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - -1.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 1.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sinh()
         {
             // arrange
@@ -582,12 +581,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - -2.3012989023072947) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 2.3012989023072947) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - -2.3012989023072947) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 2.3012989023072947) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sqrt()
         {
             // arrange
@@ -602,10 +601,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Sqrt(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1.0, 2.0, 4.0 }, targetData);
+            Assert.Equal(new[] { 1.0, 2.0, 4.0 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tan()
         {
             // arrange
@@ -621,12 +620,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e12;
-            Assert.IsTrue(Math.Abs(targetData[0] - -16331778728383844) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 16331778728383844) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - -16331778728383844) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 16331778728383844) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tanh()
         {
             // arrange
@@ -642,12 +641,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(targetData[0] - -0.91715234) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[1] - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(targetData[2] - 0.91715234) < Epsilon);
+            Assert.True(Math.Abs(targetData[0] - -0.91715234) < Epsilon);
+            Assert.True(Math.Abs(targetData[1] - 0.0) < Epsilon);
+            Assert.True(Math.Abs(targetData[2] - 0.91715234) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Truncate()
         {
             // arrange
@@ -662,10 +661,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Truncate(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { -1.0, 0.0, 0.0, 0.0, 0.0, 1.0 }, targetData);
+            Assert.Equal(new[] { -1.0, 0.0, 0.0, 0.0, 0.0, 1.0 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void MaxLastAxis()
         {
             // arrange
@@ -680,10 +679,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.MaxLastAxis(target, src);
 
             // assert
-            Assert.AreEqual(1, targetData[0]);
+            Assert.Equal(1, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void MinLastAxis()
         {
             // arrange
@@ -698,10 +697,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.MinLastAxis(target, src);
 
             // assert
-            Assert.AreEqual(-1, targetData[0]);
+            Assert.Equal(-1, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void SumLastAxis()
         {
             // arrange
@@ -716,10 +715,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.SumLastAxis(target, src);
 
             // assert
-            Assert.AreEqual(6.0, targetData[0]);
+            Assert.Equal(6.0, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductLastAxis()
         {
             // arrange
@@ -734,10 +733,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.ProductLastAxis(target, src);
 
             // assert
-            Assert.AreEqual(720.0, targetData[0]);
+            Assert.Equal(720.0, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Negate()
         {
             // arrange
@@ -752,10 +751,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Negate(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { false, false, true, true, false, true }, targetData);
+            Assert.Equal(new[] { false, false, true, true, false, true }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_bool()
         {
             // arrange
@@ -772,10 +771,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Equal(target, src1, src2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { true, false, false, true }, targetData);
+            Assert.Equal(new[] { true, false, false, true }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_int()
         {
             // arrange
@@ -792,10 +791,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Equal(target, src1, src2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { true, false, false, true }, targetData);
+            Assert.Equal(new[] { true, false, false, true }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void And()
         {
             // arrange
@@ -812,10 +811,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.And(target, src1, src2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { false, false, false, true }, targetData);
+            Assert.Equal(new[] { false, false, false, true }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Or()
         {
             // arrange
@@ -832,10 +831,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Or(target, src1, src2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { false, true, true, true }, targetData);
+            Assert.Equal(new[] { false, true, true, true }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Xor()
         {
             // arrange
@@ -852,10 +851,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Xor(target, src1, src2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { false, true, true, false }, targetData);
+            Assert.Equal(new[] { false, true, true, false }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllLastAxis_AllTrue()
         {
             // arrange
@@ -870,10 +869,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.AllLastAxis(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { true, false, false, false }, targetData);
+            Assert.Equal(new[] { true, false, false, false }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllLastAxis_NotAllTrue()
         {
             // arrange
@@ -888,10 +887,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.AllLastAxis(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { false, false, false, false }, targetData);
+            Assert.Equal(new[] { false, false, false, false }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void AnyLastAxis_AllFalse()
         {
             // arrange
@@ -906,10 +905,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.AnyLastAxis(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { false, false, false, false }, targetData);
+            Assert.Equal(new[] { false, false, false, false }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void AnyLastAxis_NotAllFalse()
         {
             // arrange
@@ -924,10 +923,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.AnyLastAxis(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { true, false, false, false }, targetData);
+            Assert.Equal(new[] { true, false, false, false }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrueLastAxis()
         {
             // arrange
@@ -941,10 +940,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.CountTrueLastAxis(target, src);
 
             // assert
-            Assert.AreEqual(2, targetData[0]);
+            Assert.Equal(2, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void IfThenElse()
         {
             // arrange
@@ -963,10 +962,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.IfThenElse(target, condition, ifTrue, ifFalse);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 5, 2, 7, 4 }, targetData);
+            Assert.Equal(new[] { 5, 2, 7, 4 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMaxLastAxis()
         {
             // arrange
@@ -980,10 +979,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.ArgMaxLastAxis(target, src);
 
             // assert
-            Assert.AreEqual(2, targetData[0]);
+            Assert.Equal(2, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMinLastAxis()
         {
             // arrange
@@ -997,10 +996,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.ArgMinLastAxis(target, src);
 
             // assert
-            Assert.AreEqual(3, targetData[0]);
+            Assert.Equal(3, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void FindLastAxis()
         {
             // arrange
@@ -1014,10 +1013,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.FindLastAxis(2, target, src);
 
             // assert
-            Assert.AreEqual(1, targetData[0]);
+            Assert.Equal(1, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void FindLastAxis_Notfound()
         {
             // arrange
@@ -1031,10 +1030,10 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.FindLastAxis(9, target, src);
 
             // assert
-            Assert.AreEqual(SpecialIdx.NotFound, targetData[0]);
+            Assert.Equal(SpecialIdx.NotFound, targetData[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert()
         {
             // arrange
@@ -1048,12 +1047,11 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.Convert(target, source);
 
             // assert
-            Assert.IsInstanceOfType(targetData, typeof(double[]));
-            CollectionAssert.AreEqual(new[] { 4.0, 2.0, 7.0, 1.0 }, targetData);
+            Assert.IsType<double[]>(targetData);
+            Assert.Equal(new[] { 4.0, 2.0, 7.0, 1.0 }, targetData);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Convert_InvalidConvert_ThrowException()
         {
             var targetData = new string[4];
@@ -1063,10 +1061,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var source = new DataAndLayout<int>(srcData, new FastAccess(new Layout(new int[] { 4 }, 0, new int[] { 1 })));
 
             // action
-            ScalarOps.Convert(target, source);
+            var exception = Assert.Throws<InvalidOperationException>(() => ScalarOps.Convert(target, source));
+            Assert.Equal("No coercion operator is defined between types 'System.Int32' and 'System.String'.", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void TrueIndices()
         {
             // arrange
@@ -1080,7 +1079,7 @@ namespace NdArrayNet.NdArrayUnitTest
             ScalarOps.TrueIndices(target, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 3, 1, 3 }, targetData);
+            Assert.Equal(new[] { 1, 3, 1, 3 }, targetData);
         }
     }
 }

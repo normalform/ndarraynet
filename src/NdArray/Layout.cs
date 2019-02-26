@@ -260,7 +260,7 @@ namespace NdArrayNet
         {
             if (size < 0)
             {
-                throw new ArgumentOutOfRangeException("size", "size must be positive");
+                throw new ArgumentOutOfRangeException("size", "Size must be positive");
             }
 
             if (layout.Shape[dim] == 1)
@@ -419,7 +419,7 @@ namespace NdArrayNet
         {
             if (!(axis >= 0 && axis <= source.NumDimensions))
             {
-                var errorMessage = string.Format("axis {0} out of range for NdArray with shape {1}", axis, ErrorMessage.ShapeToString(source.Shape));
+                var errorMessage = string.Format("Axis {0} out of range for NdArray with shape {1}", axis, ErrorMessage.ShapeToString(source.Shape));
                 throw new ArgumentException(errorMessage);
             }
 
@@ -434,7 +434,7 @@ namespace NdArrayNet
             var numDim = source.NumDimensions;
             if (numDim < 2)
             {
-                var errorMessage = string.Format("cannot transpose non-matrix of shape {0}", ErrorMessage.ShapeToString(source.Shape));
+                var errorMessage = string.Format("Cannot transpose non-matrix of shape {0}", ErrorMessage.ShapeToString(source.Shape));
                 throw new ArgumentException(errorMessage, "source");
             }
 
@@ -445,7 +445,7 @@ namespace NdArrayNet
         {
             if (source.NumDimensions == 0)
             {
-                throw new ArgumentException("cannot remove dimensions from scalar", "source");
+                throw new ArgumentException("Cannot remove dimensions from scalar", "source");
             }
 
             return new Layout(source.Shape.Skip(1).ToArray(), source.Offset, source.Stride.Skip(1).ToArray());
@@ -455,7 +455,7 @@ namespace NdArrayNet
         {
             if (source.NumDimensions == 0)
             {
-                throw new ArgumentException("cannot remove dimensions from scalar", "source");
+                throw new ArgumentException("Cannot remove dimensions from scalar", "source");
             }
 
             return new Layout(
@@ -661,7 +661,7 @@ namespace NdArrayNet
                 return false;
             }
 
-            return this.Equals(layoutObj);
+            return Equals(layoutObj);
         }
 
         public override int GetHashCode()
@@ -706,13 +706,13 @@ namespace NdArrayNet
                 }
                 else
                 {
-                    var errorMessage = string.Format("cannot reshape from {0} to {1} because {2} / {3} is not an integer", ErrorMessage.ShapeToString(array.Shape), ErrorMessage.ShapeToString(shape), elemsNeeded, elemsSoFar);
+                    var errorMessage = string.Format("Cannot reshape from {0} to {1} because {2} / {3} is not an integer", ErrorMessage.ShapeToString(array.Shape), ErrorMessage.ShapeToString(shape), elemsNeeded, elemsSoFar);
                     throw new ArgumentException(errorMessage, "shape");
                 }
             }
             else
             {
-                var errorMessage = string.Format("only the size of one dimension can be determined automatically, but shape was {0}", ErrorMessage.ShapeToString(shape));
+                var errorMessage = string.Format("Only the size of one dimension can be determined automatically, but shape was {0}", ErrorMessage.ShapeToString(shape));
                 throw new ArgumentException(errorMessage, "shape");
             }
 
@@ -720,7 +720,7 @@ namespace NdArrayNet
             var shpElems = newShape.Aggregate(1, (a, b) => a * b);
             if (shpElems != array.NumElements)
             {
-                var errorMessage = string.Format("cannot reshape from shape {0} (with {1} elements) to shape {2} (with {3} elements)", ErrorMessage.ShapeToString(array.Shape), array.NumElements, ErrorMessage.ShapeToString(newShape), shpElems);
+                var errorMessage = string.Format("Cannot reshape from shape {0} (with {1} elements) to shape {2} (with {3} elements)", ErrorMessage.ShapeToString(array.Shape), array.NumElements, ErrorMessage.ShapeToString(newShape), shpElems);
                 throw new ArgumentException(errorMessage, "shape");
             }
 
@@ -778,7 +778,7 @@ namespace NdArrayNet
         {
             if (size < 0)
             {
-                throw new ArgumentOutOfRangeException("size", "size must be positive");
+                throw new ArgumentOutOfRangeException("size", "Size must be positive");
             }
 
             if (layout.Shape[dim] == 1)

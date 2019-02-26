@@ -1810,7 +1810,7 @@ namespace NdArrayNet
         {
             if (DataType != typeof(int))
             {
-                var errorMessage = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
+                var errorMessage = string.Format("The operation requires a NdArray<System.Int32> but the data type of the specified NdArray is {0}.", DataType);
                 throw new InvalidOperationException(errorMessage);
             }
 

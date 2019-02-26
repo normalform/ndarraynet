@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using NdArrayNet;
     using System.Linq;
+    using Xunit;
 
-    [TestClass]
     public class HostBackendTests
     {
-        [TestMethod]
+        [Fact]
         public void GetIndex()
         {
             // arrange
@@ -52,10 +51,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             // 5 + (4 * 1) + 2
-            Assert.AreEqual(11, val);
+            Assert.Equal(11, val);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetIndex()
         {
             // arrange
@@ -71,8 +70,8 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             // 5 + (4 * 1) + 2
-            Assert.AreEqual(999, memory[11]);
-            Assert.AreEqual(999, memory.Aggregate(0, (a, b) => a + b));
+            Assert.Equal(999, memory[11]);
+            Assert.Equal(999, memory.Aggregate(0, (a, b) => a + b));
         }
     }
 }

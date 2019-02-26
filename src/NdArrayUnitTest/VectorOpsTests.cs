@@ -29,16 +29,15 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
     using System.Linq;
     using System.Numerics;
+    using Xunit;
 
-    [TestClass]
     public class VectorOpsTests
     {
-        [TestMethod]
+        [Fact]
         public void CanUseSrc_WithNullSrc_ReturnTrue()
         {
             // arrange
@@ -48,10 +47,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUseSrc<int>(DummyDimValue, null);
 
             // assert
-            Assert.IsTrue(canUse);
+            Assert.True(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUseSrc_ContinuousStride_ReturnTrue()
         {
             // arrange
@@ -64,10 +63,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUseSrc(NumDim, src);
 
             // assert
-            Assert.IsTrue(canUse);
+            Assert.True(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUseSrc_NoStride_ReturnTrue()
         {
             // arrange
@@ -80,10 +79,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUseSrc(NumDim, src);
 
             // assert
-            Assert.IsTrue(canUse);
+            Assert.True(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUseSrc_NotContinuousStride_ReturnFalse()
         {
             // arrange
@@ -96,10 +95,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUseSrc(NumDim, src);
 
             // assert
-            Assert.IsFalse(canUse);
+            Assert.False(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_ScalarTarget_ReturnFalse()
         {
             // arrange
@@ -109,10 +108,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target);
 
             // assert
-            Assert.IsFalse(canUse);
+            Assert.False(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_UnSupportedType_ReturnFalse()
         {
             // arrange
@@ -123,10 +122,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target);
 
             // assert
-            Assert.IsFalse(canUse);
+            Assert.False(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_TargetIsNotContinuous_ReturnFalse()
         {
             // arrange
@@ -137,10 +136,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target);
 
             // assert
-            Assert.IsFalse(canUse);
+            Assert.False(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_GoodTargetOnly_ReturnTrue()
         {
             // arrange
@@ -150,10 +149,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target);
 
             // assert
-            Assert.IsTrue(canUse);
+            Assert.True(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_CanNotUseSrc1_ReturnFalse()
         {
             // arrange
@@ -166,10 +165,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target, src1);
 
             // assert
-            Assert.IsFalse(canUse);
+            Assert.False(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_CanUseSrc1_ReturnTrue()
         {
             // arrange
@@ -180,10 +179,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target, src1);
 
             // assert
-            Assert.IsTrue(canUse);
+            Assert.True(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_CanNotUseSrc2Only_ReturnFalse()
         {
             // arrange
@@ -197,10 +196,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target, src1, src2);
 
             // assert
-            Assert.IsFalse(canUse);
+            Assert.False(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_CanNotUseSrc1Only_ReturnFalse()
         {
             // arrange
@@ -214,10 +213,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target, src1, src2);
 
             // assert
-            Assert.IsFalse(canUse);
+            Assert.False(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanUse_CanUseBothSrc1AndSrc2_ReturnTrue()
         {
             // arrange
@@ -229,10 +228,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var canUse = VectorOps.CanUse(target, src1, src2);
 
             // assert
-            Assert.IsTrue(canUse);
+            Assert.True(canUse);
         }
 
-        [TestMethod]
+        [Fact]
         public void Fill()
         {
             // arrange
@@ -249,10 +248,10 @@ namespace NdArrayNet.NdArrayUnitTest
             VectorOps.Fill(FillPattern, target);
 
             // assert
-            Assert.IsTrue(data.All(d => d == FillPattern));
+            Assert.True(data.All(d => d == FillPattern));
         }
 
-        [TestMethod]
+        [Fact]
         public void Copy()
         {
             // arrange
@@ -270,10 +269,10 @@ namespace NdArrayNet.NdArrayUnitTest
             VectorOps.Copy(target, src);
 
             // assert
-            Assert.IsTrue(Enumerable.SequenceEqual(targetData, srcData));
+            Assert.True(Enumerable.SequenceEqual(targetData, srcData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply()
         {
             // arrange
@@ -294,10 +293,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedData = src1Data.Select(x => x * x).ToArray();
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+            Assert.True(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Abs()
         {
             // arrange
@@ -313,10 +312,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var allPositive = target.Data.All(v => v >= 0);
-            Assert.IsTrue(allPositive);
+            Assert.True(allPositive);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sqrt()
         {
             // arrange
@@ -331,10 +330,10 @@ namespace NdArrayNet.NdArrayUnitTest
             VectorOps.Sqrt(target, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1.0, 2.0, 4.0 }, targetData);
+            Assert.Equal(new[] { 1.0, 2.0, 4.0 }, targetData);
         }
 
-        [TestMethod]
+        [Fact]
         public void Maximum()
         {
             // arrange
@@ -352,10 +351,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedData = src1Data.Zip(src2Data, (s1, s2) => Tuple.Create(s1, s2)).Select(t => Math.Max(t.Item1, t.Item2));
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+            Assert.True(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
-        [TestMethod]
+        [Fact]
         public void Minimum()
         {
             // arrange
@@ -373,7 +372,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedData = src1Data.Zip(src2Data, (s1, s2) => Tuple.Create(s1, s2)).Select(t => Math.Min(t.Item1, t.Item2));
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedData, targetData));
+            Assert.True(Enumerable.SequenceEqual(expectedData, targetData));
         }
 
         private struct UnSupportedTypeForUnitTestOnly

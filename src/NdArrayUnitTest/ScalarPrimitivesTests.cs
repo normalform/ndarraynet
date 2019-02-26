@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
     using System.Linq.Expressions;
+    using Xunit;
 
-    [TestClass]
     public class ScalarPrimitivesTests
     {
-        [TestMethod]
+        [Fact]
         public void CompileAny_UsingAdd_ReturnFunctionToAdd()
         {
             // arrange
@@ -51,21 +50,21 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = fun(1, 2);
 
             // assert
-            Assert.AreEqual(3, result);
+            Assert.Equal(3, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void CompileAny_NoExpressions_InvalidOperationException()
         {
             // arrange
             var errExpr = new Expression<Func<int, int, int>>[] { };
 
             // action
-            var fun = ScalarPrimitives<int, int>.CompileAny(errExpr);
+            var exception = Assert.Throws<InvalidOperationException>(() => ScalarPrimitives<int, int>.CompileAny(errExpr));
+            Assert.Equal("Cannot compile scalar primitive for type Int32", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Add_Int_ReturnInt()
         {
             // arrange
@@ -75,10 +74,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Add(3, 4);
 
             // assert
-            Assert.AreEqual(7, result);
+            Assert.Equal(7, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Add_Double_ReturnDouble()
         {
             // arrange
@@ -88,10 +87,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Add(3.0, 4.0);
 
             // assert
-            Assert.AreEqual(7.0, result);
+            Assert.Equal(7.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtract_Int_ReturnInt()
         {
             // arrange
@@ -101,10 +100,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Subtract(3, 4);
 
             // assert
-            Assert.AreEqual(-1, result);
+            Assert.Equal(-1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtract_Double_ReturnDouble()
         {
             // arrange
@@ -114,10 +113,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Subtract(3, 4);
 
             // assert
-            Assert.AreEqual(-1.0, result);
+            Assert.Equal(-1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_Int_ReturnInt()
         {
             // arrange
@@ -127,10 +126,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Multiply(3, 4);
 
             // assert
-            Assert.AreEqual(12, result);
+            Assert.Equal(12, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_Double_ReturnDouble()
         {
             // arrange
@@ -140,10 +139,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Multiply(3.0, 4.0);
 
             // assert
-            Assert.AreEqual(12.0, result);
+            Assert.Equal(12.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_Int_ReturnInt()
         {
             // arrange
@@ -153,21 +152,21 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Divide(3, 4);
 
             // assert
-            Assert.AreEqual(0, result);
+            Assert.Equal(0, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(DivideByZeroException))]
+        [Fact]
         public void Divide_IntDiviceByZero_DividecByZeroException()
         {
             // arrange
             var sp = new ScalarPrimitives<int, int>();
 
             // action
-            var result = sp.Divide(3, 0);
+            var exception = Assert.Throws<DivideByZeroException>(() => sp.Divide(3, 0));
+            Assert.Equal("Attempted to divide by zero.", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_Double_ReturnDouble()
         {
             // arrange
@@ -177,10 +176,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Divide(3.0, 4.0);
 
             // assert
-            Assert.AreEqual(0.75, result);
+            Assert.Equal(0.75, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_PostiveDoubleDivideByZero_ReturnPositiveInfinity()
         {
             // arrange
@@ -190,10 +189,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Divide(3.0, 0.0);
 
             // assert
-            Assert.AreEqual(double.PositiveInfinity, result);
+            Assert.Equal(double.PositiveInfinity, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_NegativeDoubleDivideByZero_ReturnNegativeInfinity()
         {
             // arrange
@@ -203,10 +202,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Divide(-3.0, 0.0);
 
             // assert
-            Assert.AreEqual(double.NegativeInfinity, result);
+            Assert.Equal(double.NegativeInfinity, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_DoubleDivide_ReturnNan()
         {
             // arrange
@@ -216,10 +215,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Divide(0.0, 0.0);
 
             // assert
-            Assert.AreEqual(double.NaN, result);
+            Assert.Equal(double.NaN, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_IntCase1_ReturnInt()
         {
             // arrange
@@ -229,10 +228,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Modulo(3, 4);
 
             // assert
-            Assert.AreEqual(3, result);
+            Assert.Equal(3, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_IntCase2_ReturnInt()
         {
             // arrange
@@ -242,10 +241,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Modulo(4, 3);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_IntCase3_ReturnInt()
         {
             // arrange
@@ -256,10 +255,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             // NOTE: The Python returns -2
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_DoubleCase1_ReturnDouble()
         {
             // arrange
@@ -269,10 +268,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Modulo(3.0, 4.0);
 
             // assert
-            Assert.AreEqual(3.0, result);
+            Assert.Equal(3.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_DoubleCase2_ReturnDouble()
         {
             // arrange
@@ -282,10 +281,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Modulo(4.0, 3.0);
 
             // assert
-            Assert.AreEqual(1.0, result);
+            Assert.Equal(1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_DoubleByZero_ReturnNan()
         {
             // arrange
@@ -295,10 +294,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Modulo(4.0, 0.0);
 
             // assert
-            Assert.AreEqual(double.NaN, result);
+            Assert.Equal(double.NaN, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Power_Int_ReturnInt()
         {
             // arrange
@@ -308,10 +307,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Power(3, 4);
 
             // assert
-            Assert.AreEqual(81, result);
+            Assert.Equal(81, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Power_Double_ReturnDouble()
         {
             // arrange
@@ -321,10 +320,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Power(3.0, 4.0);
 
             // assert
-            Assert.AreEqual(81.0, result);
+            Assert.Equal(81.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Abs_Int_ReturnInt()
         {
             // arrange
@@ -334,10 +333,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Abs(-3);
 
             // assert
-            Assert.AreEqual(3, result);
+            Assert.Equal(3, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Abs_Double_ReturnDouble()
         {
             // arrange
@@ -347,10 +346,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Abs(-3.0);
 
             // assert
-            Assert.AreEqual(3, result);
+            Assert.Equal(3, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sign_IntPositive_ReturnInt()
         {
             // arrange
@@ -360,10 +359,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sign(3);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sign_DoublePositive_ReturnDouble()
         {
             // arrange
@@ -373,10 +372,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sign(3.0);
 
             // assert
-            Assert.AreEqual(1.0, result);
+            Assert.Equal(1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sign_IntNegative_ReturnInt()
         {
             // arrange
@@ -386,10 +385,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sign(-3);
 
             // assert
-            Assert.AreEqual(-1, result);
+            Assert.Equal(-1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sign_DoubleNegative_ReturnDouble()
         {
             // arrange
@@ -399,10 +398,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sign(-3.0);
 
             // assert
-            Assert.AreEqual(-1.0, result);
+            Assert.Equal(-1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log_Int_ReturnInt()
         {
             // arrange
@@ -412,10 +411,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log(1);
 
             // assert
-            Assert.AreEqual(0, result);
+            Assert.Equal(0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log_Double_ReturnDouble()
         {
             // arrange
@@ -425,10 +424,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log(Math.E);
 
             // assert
-            Assert.AreEqual(1.0, result);
+            Assert.Equal(1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log_Int0_ReturnIntMin()
         {
             // arrange
@@ -438,10 +437,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log(0);
 
             // assert
-            Assert.AreEqual(int.MinValue, result);
+            Assert.Equal(int.MinValue, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log_Double0_ReturnNegativeInfinity()
         {
             // arrange
@@ -451,10 +450,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log(0.0);
 
             // assert
-            Assert.AreEqual(double.NegativeInfinity, result);
+            Assert.Equal(double.NegativeInfinity, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log_IntNegative_ReturnIntMin()
         {
             // arrange
@@ -464,10 +463,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log(-1);
 
             // assert
-            Assert.AreEqual(int.MinValue, result);
+            Assert.Equal(int.MinValue, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log_DoubleNegative_ReturnNan()
         {
             // arrange
@@ -477,10 +476,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log(-1.0);
 
             // assert
-            Assert.AreEqual(double.NaN, result);
+            Assert.Equal(double.NaN, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log10_Int_ReturnInt()
         {
             // arrange
@@ -490,10 +489,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log10(10);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log10_Double_ReturnDouble()
         {
             // arrange
@@ -503,10 +502,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Log10(10);
 
             // assert
-            Assert.AreEqual(1.0, result);
+            Assert.Equal(1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Exp_Int_ReturnInt()
         {
             // arrange
@@ -516,10 +515,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Exp(0);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Exp_Double_ReturnDouble()
         {
             // arrange
@@ -529,10 +528,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Exp(1);
 
             // assert
-            Assert.AreEqual(Math.E, result);
+            Assert.Equal(Math.E, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sin_Int_ReturnInt()
         {
             // arrange
@@ -542,10 +541,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sin(0);
 
             // assert
-            Assert.AreEqual(0, result);
+            Assert.Equal(0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sin_Double_ReturnDouble()
         {
             // arrange
@@ -555,10 +554,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sin(Math.PI / 2.0);
 
             // assert
-            Assert.AreEqual(1.0, result);
+            Assert.Equal(1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cos_Int_ReturnInt()
         {
             // arrange
@@ -568,10 +567,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Cos(0);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cos_Double_ReturnDouble()
         {
             // arrange
@@ -581,10 +580,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Cos(Math.PI);
 
             // assert
-            Assert.AreEqual(-1.0, result);
+            Assert.Equal(-1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tan_Int_ReturnInt()
         {
             // arrange
@@ -594,10 +593,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Tan(2);
 
             // assert
-            Assert.AreEqual(-2, result);
+            Assert.Equal(-2, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tan_Double_ReturnDouble()
         {
             // arrange
@@ -608,10 +607,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.0 - result) < Epsilon);
+            Assert.True(Math.Abs(1.0 - result) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Asin_Int_ReturnInt()
         {
             // arrange
@@ -621,10 +620,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Asin(1);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Asin_Double_ReturnDouble()
         {
             // arrange
@@ -635,10 +634,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.5707963267949 - result) < Epsilon);
+            Assert.True(Math.Abs(1.5707963267949 - result) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Acos_Int_ReturnInt()
         {
             // arrange
@@ -648,10 +647,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Acos(-1);
 
             // assert
-            Assert.AreEqual(3, result);
+            Assert.Equal(3, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Acos_Double_ReturnDouble()
         {
             // arrange
@@ -662,10 +661,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.5707963267949 - result) < Epsilon);
+            Assert.True(Math.Abs(1.5707963267949 - result) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Atan_Int_ReturnInt()
         {
             // arrange
@@ -675,10 +674,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Atan(-2);
 
             // assert
-            Assert.AreEqual(-1, result);
+            Assert.Equal(-1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Atan_Double_ReturnDouble()
         {
             // arrange
@@ -689,10 +688,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(0.785398163397448 - result) < Epsilon);
+            Assert.True(Math.Abs(0.785398163397448 - result) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sinh_Int_ReturnInt()
         {
             // arrange
@@ -702,10 +701,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sinh(1);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sinh_Double_ReturnDouble()
         {
             // arrange
@@ -716,10 +715,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.1752011936438 - result) < Epsilon);
+            Assert.True(Math.Abs(1.1752011936438 - result) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cosh_Int_ReturnInt()
         {
             // arrange
@@ -729,10 +728,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Cosh(1);
 
             // assert
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cosh_Double_ReturnDouble()
         {
             // arrange
@@ -743,10 +742,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.54308063481524 - result) < Epsilon);
+            Assert.True(Math.Abs(1.54308063481524 - result) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tanh_Int_ReturnInt()
         {
             // arrange
@@ -756,10 +755,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Tanh(1);
 
             // assert
-            Assert.AreEqual(0, result);
+            Assert.Equal(0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tanh_Double_ReturnDouble()
         {
             // arrange
@@ -770,10 +769,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(0.761594155955765 - result) < Epsilon);
+            Assert.True(Math.Abs(0.761594155955765 - result) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sqrt_Int_ReturnInt()
         {
             // arrange
@@ -783,10 +782,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sqrt(9);
 
             // assert
-            Assert.AreEqual(3, result);
+            Assert.Equal(3, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sqrt_Double_ReturnDouble()
         {
             // arrange
@@ -796,10 +795,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Sqrt(9);
 
             // assert
-            Assert.AreEqual(3.0, result);
+            Assert.Equal(3.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ceiling_Int_ReturnInt()
         {
             // arrange
@@ -809,10 +808,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Ceiling(9);
 
             // assert
-            Assert.AreEqual(9, result);
+            Assert.Equal(9, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ceiling_DoublePositive_ReturnDouble()
         {
             // arrange
@@ -822,10 +821,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Ceiling(1.01);
 
             // assert
-            Assert.AreEqual(2.0, result);
+            Assert.Equal(2.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ceiling_DoubleNegative_ReturnDouble()
         {
             // arrange
@@ -835,10 +834,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Ceiling(-1.01);
 
             // assert
-            Assert.AreEqual(-1.0, result);
+            Assert.Equal(-1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Floor_Int_ReturnInt()
         {
             // arrange
@@ -848,10 +847,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Floor(9);
 
             // assert
-            Assert.AreEqual(9, result);
+            Assert.Equal(9, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Floor_DoublePositive_ReturnDouble()
         {
             // arrange
@@ -861,10 +860,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Floor(1.9);
 
             // assert
-            Assert.AreEqual(1.0, result);
+            Assert.Equal(1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Floor_DoubleNegative_ReturnDouble()
         {
             // arrange
@@ -874,10 +873,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Floor(-1.9);
 
             // assert
-            Assert.AreEqual(-2.0, result);
+            Assert.Equal(-2.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Round_Int_ReturnInt()
         {
             // arrange
@@ -887,10 +886,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Round(9);
 
             // assert
-            Assert.AreEqual(9, result);
+            Assert.Equal(9, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Round_DoublePositive_ReturnDouble()
         {
             // arrange
@@ -900,10 +899,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Round(1.5);
 
             // assert
-            Assert.AreEqual(2.0, result);
+            Assert.Equal(2.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Round_DoubleNegative_ReturnDouble()
         {
             // arrange
@@ -913,10 +912,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Round(-1.5);
 
             // assert
-            Assert.AreEqual(-2.0, result);
+            Assert.Equal(-2.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Truncate_Int_ReturnInt()
         {
             // arrange
@@ -926,10 +925,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Truncate(9);
 
             // assert
-            Assert.AreEqual(9, result);
+            Assert.Equal(9, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Truncate_DoublePositive_ReturnDouble()
         {
             // arrange
@@ -939,10 +938,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Truncate(1.5);
 
             // assert
-            Assert.AreEqual(1.0, result);
+            Assert.Equal(1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Truncate_DoubleNegative_ReturnDouble()
         {
             // arrange
@@ -952,10 +951,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Truncate(-1.5);
 
             // assert
-            Assert.AreEqual(-1.0, result);
+            Assert.Equal(-1.0, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_IntToLong_ReturnLong()
         {
             // arrange
@@ -965,10 +964,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Convert(100);
 
             // assert
-            Assert.AreEqual(100L, result);
+            Assert.Equal(100L, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void Convert_DoubleToLong_ReturnLong()
         {
             // arrange
@@ -978,30 +977,30 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = sp.Convert(100.0);
 
             // assert
-            Assert.AreEqual(100L, result);
+            Assert.Equal(100L, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void For_IntInt_ReturnScalarPrimitivesIntInt()
         {
             // arrange & action
             var op = ScalarPrimitivesRegistry.For<int, int>();
 
             // assert
-            Assert.IsInstanceOfType(op, typeof(ScalarPrimitives<int, int>));
+            Assert.IsType<ScalarPrimitives<int, int>>(op);
         }
 
-        [TestMethod]
+        [Fact]
         public void For_DoubleInt_ReturnScalarPrimitivesDoubleInt()
         {
             // arrange & action
             var op = ScalarPrimitivesRegistry.For<double, int>();
 
             // assert
-            Assert.IsInstanceOfType(op, typeof(ScalarPrimitives<double, int>));
+            Assert.IsType<ScalarPrimitives<double, int>>(op);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithIntValue_ReturnTrue()
         {
             // arrange
@@ -1011,10 +1010,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<int, int>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsTrue(isFinite);
+            Assert.True(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithDoubleValue_ReturnTrue()
         {
             // arrange
@@ -1024,10 +1023,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsTrue(isFinite);
+            Assert.True(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithDoubleNan_ReturnFalse()
         {
             // arrange
@@ -1037,10 +1036,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsFalse(isFinite);
+            Assert.False(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithDoublePositiveInfinity_ReturnFalse()
         {
             // arrange
@@ -1050,10 +1049,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsFalse(isFinite);
+            Assert.False(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithDoubleNegativeInfinity_ReturnFalse()
         {
             // arrange
@@ -1063,10 +1062,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<double, double>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsFalse(isFinite);
+            Assert.False(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithFloatValue_ReturnTrue()
         {
             // arrange
@@ -1076,10 +1075,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsTrue(isFinite);
+            Assert.True(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithFloatNan_ReturnFalse()
         {
             // arrange
@@ -1089,10 +1088,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsFalse(isFinite);
+            Assert.False(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithFloatPositiveInfinity_ReturnFalse()
         {
             // arrange
@@ -1102,10 +1101,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsFalse(isFinite);
+            Assert.False(isFinite);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite_WithFloatNegativeInfinity_ReturnFalse()
         {
             // arrange
@@ -1115,7 +1114,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var isFinite = ScalarPrimitives<float, float>.IsFiniteFunc(Value);
 
             // assert
-            Assert.IsFalse(isFinite);
+            Assert.False(isFinite);
         }
     }
 }

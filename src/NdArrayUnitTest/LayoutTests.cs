@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
     using System.Linq;
+    using Xunit;
 
-    [TestClass]
     public class LayoutTests
     {
-        [TestMethod]
+        [Fact]
         public void OrderedStride_case1()
         {
             // arrange
@@ -49,10 +48,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 120, 60, 20, 5, 1 };
-            CollectionAssert.AreEqual(expected, result);
+            Assert.Equal(expected, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void OrderedStride_case2()
         {
             // arrange
@@ -64,10 +63,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 24, 6, 2, 1, 1 };
-            CollectionAssert.AreEqual(expected, result);
+            Assert.Equal(expected, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void OrderedStride_case3()
         {
             // arrange
@@ -79,11 +78,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 24, 24, 12, 4, 1 };
-            CollectionAssert.AreEqual(expected, result);
+            Assert.Equal(expected, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void OrderedStride_OrderIsNotPermutation_ThrowException()
         {
             // arrange
@@ -91,11 +89,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var order = new[] { 1, 2, 3, 4, 5 };
 
             // action
-            var _ = Layout.OrderedStride(shape, order);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.OrderedStride(shape, order));
+            Assert.Equal("The stride order [1,2,3,4,5] is not a permutation", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void OrderedStride_DifferentSize_ThrowException()
         {
             // arrange
@@ -103,10 +101,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var order = new[] { 0, 1 };
 
             // action
-            var _ = Layout.OrderedStride(shape, order);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.OrderedStride(shape, order));
+            Assert.Equal("The stride order [0,1] is incompatible with the shape [0,1,2,3,4]", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void CStride()
         {
             // arrange
@@ -117,10 +116,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 120, 60, 20, 5, 1 };
-            CollectionAssert.AreEqual(expected, result);
+            Assert.Equal(expected, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void FStride()
         {
             // arrange
@@ -131,10 +130,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 1, 1, 2, 6, 24 };
-            CollectionAssert.AreEqual(expected, result);
+            Assert.Equal(expected, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void NewC()
         {
             // arrange
@@ -145,11 +144,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 120, 60, 20, 5, 1 };
-            CollectionAssert.AreEqual(shape, result.Shape);
-            CollectionAssert.AreEqual(expected, result.Stride);
+            Assert.Equal(shape, result.Shape);
+            Assert.Equal(expected, result.Stride);
         }
 
-        [TestMethod]
+        [Fact]
         public void NewF()
         {
             // arrange
@@ -160,12 +159,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 1, 1, 2, 6, 24 };
-            CollectionAssert.AreEqual(shape, result.Shape);
-            CollectionAssert.AreEqual(expected, result.Stride);
+            Assert.Equal(shape, result.Shape);
+            Assert.Equal(expected, result.Stride);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void SwapDim_NegativeDimensionToSwap_ThrowExceptions()
         {
             // arrange
@@ -173,11 +171,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.SwapDim(-1, 2, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.SwapDim(-1, 2, layout));
+            Assert.Equal("Cannot swap dimension -1 with 2 of for shape [1,2,3,4,5].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void SwapDim_NegativeDimensionToSwapWith_ThrowExceptions()
         {
             // arrange
@@ -185,11 +183,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.SwapDim(2, -1, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.SwapDim(2, -1, layout));
+            Assert.Equal("Cannot swap dimension 2 with -1 of for shape [1,2,3,4,5].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void SwapDim_TooBigDimensionToSwap_ThrowExceptions()
         {
             // arrange
@@ -197,11 +195,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.SwapDim(9, 2, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.SwapDim(9, 2, layout));
+            Assert.Equal("Cannot swap dimension 9 with 2 of for shape [1,2,3,4,5].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void SwapDim_TooBigDimensionToSwapWith_ThrowExceptions()
         {
             // arrange
@@ -209,10 +207,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = Layout.NewC(shape);
 
             // action
-            var _ = Layout.SwapDim(2, 9, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.SwapDim(2, 9, layout));
+            Assert.Equal("Cannot swap dimension 2 with 9 of for shape [1,2,3,4,5].", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadLeft()
         {
             // arrange
@@ -226,12 +225,12 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expectedShape = new[] { 1, 1, 2 };
             var expectedStride = new[] { 0, 2, 1 };
-            CollectionAssert.AreEqual(expectedShape, paddedLayout.Shape);
-            CollectionAssert.AreEqual(expectedStride, paddedLayout.Stride);
-            Assert.AreEqual(8, paddedLayout.Offset);
+            Assert.Equal(expectedShape, paddedLayout.Shape);
+            Assert.Equal(expectedStride, paddedLayout.Stride);
+            Assert.Equal(8, paddedLayout.Offset);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadRight()
         {
             // arrange
@@ -245,12 +244,12 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expectedShape = new[] { 1, 2, 1 };
             var expectedStride = new[] { 2, 1, 0 };
-            CollectionAssert.AreEqual(expectedShape, paddedLayout.Shape);
-            CollectionAssert.AreEqual(expectedStride, paddedLayout.Stride);
-            Assert.AreEqual(8, paddedLayout.Offset);
+            Assert.Equal(expectedShape, paddedLayout.Shape);
+            Assert.Equal(expectedStride, paddedLayout.Stride);
+            Assert.Equal(8, paddedLayout.Offset);
         }
 
-        [TestMethod]
+        [Fact]
         public void StrideEqual_WithSameStrides_ReturnTrue()
         {
             // arrange
@@ -262,10 +261,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = Layout.StrideEqual(shape, strideA, strideB);
 
             // assert
-            Assert.IsTrue(equal);
+            Assert.True(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void StrideEqual_WithDifferentStrides_ReturnFalse()
         {
             // arrange
@@ -277,10 +276,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = Layout.StrideEqual(shape, strideA, strideB);
 
             // assert
-            Assert.IsFalse(equal);
+            Assert.False(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void StrideEqual_WithDifferentStridesButZeroShape_ReturnTrue()
         {
             // arrange
@@ -295,10 +294,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = Layout.StrideEqual(shape, strideA, strideB);
 
             // assert
-            Assert.IsTrue(equal);
+            Assert.True(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsC_WithC_ReturnTrue()
         {
             // arrange
@@ -308,10 +307,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isC = Layout.IsC(layoutStyleC);
 
             // assert
-            Assert.IsTrue(isC);
+            Assert.True(isC);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsC_WithF_ReturnFalse()
         {
             // arrange
@@ -321,10 +320,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isC = Layout.IsC(layoutStyleF);
 
             // assert
-            Assert.IsFalse(isC);
+            Assert.False(isC);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsF_WithC_ReturnFalse()
         {
             // arrange
@@ -334,10 +333,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isF = Layout.IsF(layoutStyleC);
 
             // assert
-            Assert.IsFalse(isF);
+            Assert.False(isF);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsF_WithF_ReturnTrue()
         {
             // arrange
@@ -347,10 +346,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var isF = Layout.IsF(layoutStyleF);
 
             // assert
-            Assert.IsTrue(isF);
+            Assert.True(isF);
         }
 
-        [TestMethod]
+        [Fact]
         public void HasContiguousMemory_WithC_ReturnTrue()
         {
             // arrange
@@ -360,10 +359,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var continuous = Layout.HasContiguousMemory(layoutStyleC);
 
             // assert
-            Assert.IsTrue(continuous);
+            Assert.True(continuous);
         }
 
-        [TestMethod]
+        [Fact]
         public void HasContiguousMemory_WithF_ReturnTrue()
         {
             // arrange
@@ -373,22 +372,21 @@ namespace NdArrayNet.NdArrayUnitTest
             var continuous = Layout.HasContiguousMemory(layoutStyleF);
 
             // assert
-            Assert.IsTrue(continuous);
+            Assert.True(continuous);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void BraodcastDim_NegativeSize_ThrowException()
         {
             // arrange
             var layout = Layout.NewC(new[] { 1, 2, 3 });
 
             // action
-            Layout.BraodcastDim(0, -1, layout);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.BraodcastDim(0, -1, layout));
+            Assert.Equal("Size must be positive\r\nParameter name: size", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void BraodcastDim_InvalidShape_ThrowException()
         {
             // arrange
@@ -398,10 +396,11 @@ namespace NdArrayNet.NdArrayUnitTest
             const int DummyValue = 9;
 
             // action
-            Layout.BraodcastDim(DimOfTheShapeValue2, DummyValue, layout);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.BraodcastDim(DimOfTheShapeValue2, DummyValue, layout));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Dimension 1 of shape [1,2,3] must be of size 1 to broadcast.", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void BraodcastDim_Valid_ReturnNewLayout()
         {
             // arrange
@@ -417,13 +416,12 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expectedShape = new[] { NewShapeValue, 2, 3 };
             var expectedStride = new[] { 0, 3, 1 };
-            CollectionAssert.AreEqual(expectedShape, newLayout.Shape);
-            CollectionAssert.AreEqual(expectedStride, newLayout.Stride);
-            Assert.AreEqual(0, newLayout.Offset);
+            Assert.Equal(expectedShape, newLayout.Shape);
+            Assert.Equal(expectedStride, newLayout.Stride);
+            Assert.Equal(0, newLayout.Offset);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void BroadcastToShape_LowerBroadcastShapeRank_ThrowException()
         {
             // arrange
@@ -431,11 +429,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var broadcastShape = new[] { 2, 3 };
 
             // action
-            var _ = Layout.BroadcastToShape(broadcastShape, layout);
+            var exception = Assert.Throws<InvalidOperationException>(() => Layout.BroadcastToShape(broadcastShape, layout));
+            Assert.Equal("Cannot broadcast to shape [2,3] from shape [1,2,3] of higher rank.", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void BroadcastToShape_InvalidShapeValue_ThrowException()
         {
             // arrange
@@ -444,10 +442,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var broadcastShape = new[] { 2, 3, InvalidShapeValue, 5 };
 
             // action
-            var _ = Layout.BroadcastToShape(broadcastShape, layout);
+            var exception = Assert.Throws<InvalidOperationException>(() => Layout.BroadcastToShape(broadcastShape, layout));
+            Assert.Equal("Cannot broadcast shape [2,3,4,5] to shape [2,3,9,5].", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadcastToShape_WithDifferentValidShape_ReturnBroadcastLayout()
         {
             // arrange
@@ -460,12 +459,12 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expectedShape = new[] { 1, 7, 2, 3 };
             var expectedStride = new[] { 0, 0, 3, 1 };
-            CollectionAssert.AreEqual(expectedShape, broadcastLayout.Shape);
-            CollectionAssert.AreEqual(expectedStride, broadcastLayout.Stride);
-            Assert.AreEqual(0, broadcastLayout.Offset);
+            Assert.Equal(expectedShape, broadcastLayout.Shape);
+            Assert.Equal(expectedStride, broadcastLayout.Stride);
+            Assert.Equal(0, broadcastLayout.Offset);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadcastToShape_WithSameShape_ReturnBroadcastLayout()
         {
             // arrange
@@ -478,12 +477,12 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expectedShape = new[] { 1, 7, 2, 3 };
             var expectedStride = new[] { 42, 6, 3, 1 };
-            CollectionAssert.AreEqual(expectedShape, broadcastLayout.Shape);
-            CollectionAssert.AreEqual(expectedStride, broadcastLayout.Stride);
-            Assert.AreEqual(0, broadcastLayout.Offset);
+            Assert.Equal(expectedShape, broadcastLayout.Shape);
+            Assert.Equal(expectedStride, broadcastLayout.Stride);
+            Assert.Equal(0, broadcastLayout.Offset);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_WithoutCopyCase1_ReturnNewLayout()
         {
             // arrange
@@ -494,10 +493,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+            Assert.Equal(newShape, newLayout.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_WithoutCopyCase2_ReturnNewLayout()
         {
             // arrange
@@ -508,10 +507,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+            Assert.Equal(newShape, newLayout.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_WithoutCopyCase3_ReturnNewLayout()
         {
             // arrange
@@ -522,10 +521,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+            Assert.Equal(newShape, newLayout.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_WithoutCopyCase4_ReturnNewLayout()
         {
             // arrange
@@ -536,10 +535,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+            Assert.Equal(newShape, newLayout.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_WithoutCopyCase5_ReturnNewLayout()
         {
             // arrange
@@ -550,10 +549,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+            Assert.Equal(newShape, newLayout.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_WithoutCopyCase6_ReturnNewLayout()
         {
             // arrange
@@ -564,10 +563,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+            Assert.Equal(newShape, newLayout.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_DifferentOrderWithoutCopy_ReturnNewShape()
         {
             // arrange
@@ -578,10 +577,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(newShape, newLayout.Shape);
+            Assert.Equal(newShape, newLayout.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_NeedCopyCase1_ReturnNull()
         {
             // arrange
@@ -592,10 +591,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            Assert.IsNull(newLayout);
+            Assert.Null(newLayout);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_NeedCopyCase2_ReturnNull()
         {
             // arrange
@@ -606,10 +605,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            Assert.IsNull(newLayout);
+            Assert.Null(newLayout);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshape_WithRemainder_ReturnNewLayout()
         {
             // arrange
@@ -620,11 +619,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newLayout = Layout.TryReshape(newShape, array);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 3, 2 }, newLayout.Shape);
+            Assert.Equal(new[] { 4, 3, 2 }, newLayout.Shape);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void TryReshape_DifferentNumElements_ThrowException()
         {
             // arrange
@@ -632,11 +630,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var newShape = new[] { 3, 2, 5 };
-            var newLayout = Layout.TryReshape(newShape, array);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
+            Assert.Equal("Cannot reshape from shape [10] (with 10 elements) to shape [3,2,5] (with 30 elements)\r\nParameter name: shape", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void TryReshape_WithRemainderAndInvalidNewShape_ThrowException()
         {
             // arrange
@@ -644,11 +642,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var newShape = new[] { 3, SpecialIdx.Remainder, 3 };
-            var newLayout = Layout.TryReshape(newShape, array);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
+            Assert.Equal("Cannot reshape from [2,3,4] to [3,Remainder,3] because 24 / 9 is not an integer\r\nParameter name: shape", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void TryReshape_WithRemainderAndInvalidNewShape_ThrowException1()
         {
             // arrange
@@ -656,11 +654,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var newShape = new[] { 3, SpecialIdx.Remainder, 3 };
-            var newLayout = Layout.TryReshape(newShape, array);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
+            Assert.Equal("Cannot reshape from [2,3,4] to [3,Remainder,3] because 24 / 9 is not an integer\r\nParameter name: shape", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void TryReshape_TwoRemainders_ThrowException()
         {
             // arrange
@@ -668,10 +666,11 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var newShape = new[] { 3, SpecialIdx.Remainder, SpecialIdx.Remainder };
-            var newLayout = Layout.TryReshape(newShape, array);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
+            Assert.Equal("Only the size of one dimension can be determined automatically, but shape was [3,Remainder,Remainder]\r\nParameter name: shape", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_WithSameObject_ReturnTrue()
         {
             // arrange
@@ -681,10 +680,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = layout.Equals(layout);
 
             // assert
-            Assert.IsTrue(equal);
+            Assert.True(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_WithNullObject_ReturnFalse()
         {
             // arrange
@@ -694,10 +693,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = layout.Equals(null);
 
             // assert
-            Assert.IsFalse(equal);
+            Assert.False(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_WithSameLayout_ReturnTrue()
         {
             // arrange
@@ -708,10 +707,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = layout1.Equals(layout2);
 
             // assert
-            Assert.IsTrue(equal);
+            Assert.True(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_WithDifferentShape_ReturnFase()
         {
             // arrange
@@ -722,10 +721,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = layout1.Equals(layout2);
 
             // assert
-            Assert.IsFalse(equal);
+            Assert.False(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_WithDifferentOffset_ReturnFase()
         {
             // arrange
@@ -736,10 +735,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = layout1.Equals(layout2);
 
             // assert
-            Assert.IsFalse(equal);
+            Assert.False(equal);
         }
 
-        [TestMethod]
+        [Fact]
         public void Equal_WithDifferentStride_ReturnFase()
         {
             // arrange
@@ -750,32 +749,32 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = layout1.Equals(layout2);
 
             // assert
-            Assert.IsFalse(equal);
+            Assert.False(equal);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Transpos_OneD_ThrowException()
         {
             // arrange
             var layout = new Layout(new int[] { 10 }, 0, new int[] { 1 });
 
             // action
-            Layout.Transpos(layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.Transpos(layout));
+            Assert.Equal("Cannot transpose non-matrix of shape [10]\r\nParameter name: source", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Transpos_Scalar_ThrowException()
         {
             // arrange
             var layout = new Layout(new int[] { }, 0, new int[] { 0 });
 
             // action
-            Layout.Transpos(layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.Transpos(layout));
+            Assert.Equal("Cannot transpose non-matrix of shape []\r\nParameter name: source", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Transpos()
         {
             // arrange
@@ -786,21 +785,21 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 3, 2 }, 0, new[] { 6, 1, 3 });
-            Assert.AreEqual(expectedLayout, output);
+            Assert.Equal(expectedLayout, output);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CutLeft_Scalar_ThrowException()
         {
             // arrange
             var layout = new Layout(new int[] { }, 0, new int[] { 0 });
 
             // action
-            Layout.CutLeft(layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.CutLeft(layout));
+            Assert.Equal("Cannot remove dimensions from scalar\r\nParameter name: source", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void CutLeft()
         {
             // arrange
@@ -811,21 +810,21 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 3 }, 0, new[] { 3, 1 });
-            Assert.AreEqual(expectedLayout, output);
+            Assert.Equal(expectedLayout, output);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CutRight_Scalar_ThrowException()
         {
             // arrange
             var layout = new Layout(new int[] { }, 0, new int[] { 0 });
 
             // action
-            Layout.CutRight(layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.CutRight(layout));
+            Assert.Equal("Cannot remove dimensions from scalar\r\nParameter name: source", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void CutRight()
         {
             // arrange
@@ -836,10 +835,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2 }, 0, new[] { 6, 3 });
-            Assert.AreEqual(expectedLayout, output);
+            Assert.Equal(expectedLayout, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBroadcasted_WithBroadCastedLayout_ReturnTrue()
         {
             // arrange
@@ -849,10 +848,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = Layout.IsBroadcasted(layout);
 
             // assert
-            Assert.IsTrue(output);
+            Assert.True(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBroadcasted_WithoutBroadCastedLayout_ReturnFalse()
         {
             // arrange
@@ -862,10 +861,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = Layout.IsBroadcasted(layout);
 
             // assert
-            Assert.IsFalse(output);
+            Assert.False(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void ReverseAxis()
         {
             // arrange
@@ -876,10 +875,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 3, new[] { 6, -3, 1 });
-            Assert.AreEqual(expectedLayout, output);
+            Assert.Equal(expectedLayout, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllIndex()
         {
             // arrange
@@ -889,15 +888,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = Layout.AllIndex(layout);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 0, 0 }, output[0]);
-            CollectionAssert.AreEqual(new[] { 0, 0, 1 }, output[1]);
-            CollectionAssert.AreEqual(new[] { 0, 0, 2 }, output[2]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 0 }, output[3]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 1 }, output[4]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 2 }, output[5]);
+            Assert.Equal(new[] { 0, 0, 0 }, output[0]);
+            Assert.Equal(new[] { 0, 0, 1 }, output[1]);
+            Assert.Equal(new[] { 0, 0, 2 }, output[2]);
+            Assert.Equal(new[] { 1, 0, 0 }, output[3]);
+            Assert.Equal(new[] { 1, 0, 1 }, output[4]);
+            Assert.Equal(new[] { 1, 0, 2 }, output[5]);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllIndexOfShape()
         {
             // arrange
@@ -907,15 +906,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = Layout.AllIndexOfShape(shape).ToArray();
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 0, 0 }, output[0]);
-            CollectionAssert.AreEqual(new[] { 0, 0, 1 }, output[1]);
-            CollectionAssert.AreEqual(new[] { 0, 0, 2 }, output[2]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 0 }, output[3]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 1 }, output[4]);
-            CollectionAssert.AreEqual(new[] { 1, 0, 2 }, output[5]);
+            Assert.Equal(new[] { 0, 0, 0 }, output[0]);
+            Assert.Equal(new[] { 0, 0, 1 }, output[1]);
+            Assert.Equal(new[] { 0, 0, 2 }, output[2]);
+            Assert.Equal(new[] { 1, 0, 0 }, output[3]);
+            Assert.Equal(new[] { 1, 0, 1 }, output[4]);
+            Assert.Equal(new[] { 1, 0, 2 }, output[5]);
         }
 
-        [TestMethod]
+        [Fact]
         public void LinearToIndex()
         {
             // arrange
@@ -926,11 +925,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = Layout.LinearToIndex(layout, 73);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 1, 0, 2, 3 }, output);
+            Assert.Equal(new[] { 0, 1, 0, 2, 3 }, output);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Check_InvalidShapeAndStrideLenth_ThrowException()
         {
             // arrange
@@ -938,11 +936,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, new int[] { });
 
             // action
-            Layout.Check(layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.Check(layout));
+            Assert.Equal("shape [1,2,3,4,5] and stride [] must have same number of entries", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Check_NegativeShape_ThrowException()
         {
             // arrange
@@ -951,11 +949,11 @@ namespace NdArrayNet.NdArrayUnitTest
             shape[2] = -1;
 
             // action
-            Layout.Check(layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.Check(layout));
+            Assert.Equal("shape [1,2,-1,4,5] cannot have negative entires", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void DiagAxis_SameAxes_ThrowException()
         {
             // arrange
@@ -964,11 +962,11 @@ namespace NdArrayNet.NdArrayUnitTest
             shape[2] = -1;
 
             // action
-            var _ = Layout.DiagAxis(1, 1, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.DiagAxis(1, 1, layout));
+            Assert.Equal("Axes to use for diagonal must be different.\r\nParameter name: ax1", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void DiagAxis_DifferntShapes_ThrowException()
         {
             // arrange
@@ -976,11 +974,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            var _ = Layout.DiagAxis(1, 2, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.DiagAxis(1, 2, layout));
+            Assert.Equal("Array must have same dimensions along axis 1 and 2 to extract diagonal but it has shape [1,2,3,4,5]\r\nParameter name: layout", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void BroadcastToSameInDimsMany_BigDim_ThrowException()
         {
             // arrange
@@ -989,11 +987,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layouts = new Layout[] { array.Layout, array.Layout, array.Layout };
 
             // action
-            var _ = Layout.BroadcastToSameInDimsMany(dims, layouts);
+            var exception = Assert.Throws<InvalidOperationException>(() => Layout.BroadcastToSameInDimsMany(dims, layouts));
+            Assert.Equal("Cannot broadcast shapes [1,2,3],[1,2,3],[1,2,3] to same size in non - existant dimension 8.", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void BroadcastToSameInDimsMany_NotCompatible_ThrowException()
         {
             // arrange
@@ -1004,11 +1002,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layouts = new Layout[] { array1.Layout, array2.Layout, array3.Layout };
 
             // action
-            var _ = Layout.BroadcastToSameInDimsMany(dims, layouts);
+            var exception = Assert.Throws<InvalidOperationException>(() => Layout.BroadcastToSameInDimsMany(dims, layouts));
+            Assert.Equal("Cannot broadcast shapes [1,3,4],[3,3,4],[2,3,4] to same size in dimension 0 because they do not agree in the target size.", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void BroadcastToSameInDimsMany_UnableToBroadCast_ThrowException()
         {
             // arrange
@@ -1018,11 +1016,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layouts = new Layout[] { array2.Layout, array1.Layout, array2.Layout };
 
             // action
-            var _ = Layout.BroadcastToSameInDimsMany(dims, layouts);
+            var exception = Assert.Throws<InvalidOperationException>(() => Layout.BroadcastToSameInDimsMany(dims, layouts));
+            Assert.Equal("Non-broadcast dimension 0 of shapes [3,3,4],[2,3,4],[3,3,4] does not agree.", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void InsertAxis_NegativeAxis_ThrowException()
         {
             // arrange
@@ -1030,11 +1028,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            var _ = Layout.InsertAxis(-1, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.InsertAxis(-1, layout));
+            Assert.Equal("Axis -1 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void InsertAxis_BigAxis_ThrowException()
         {
             // arrange
@@ -1042,10 +1040,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            var _ = Layout.InsertAxis(100, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.InsertAxis(100, layout));
+            Assert.Equal("Axis 100 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void PermuteAxes()
         {
             // arrange
@@ -1057,11 +1056,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedShape = new int[] { 4, 3, 2 };
-            CollectionAssert.AreEqual(expectedShape, output.Shape);
+            Assert.Equal(expectedShape, output.Shape);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void PermuteAxes_InvalidPermut_ThrowException()
         {
             // arrange
@@ -1069,11 +1067,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            var _ = Layout.PermuteAxes(new[] { 2, 3, 4 }, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.PermuteAxes(new[] { 2, 3, 4 }, layout));
+            Assert.Equal("Permutation [2,3,4] must have same rank as shape [1,2,3,4,5].\r\nParameter name: permut", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void View_ThrowException()
         {
             // arrange
@@ -1081,11 +1079,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            var _ = Layout.View(new[] { new InvalidRangeTypeForTest() }, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.View(new[] { new InvalidRangeTypeForTest() }, layout));
+            Assert.Equal("Slice [NdArrayNet.NdArrayUnitTest.LayoutTests+InvalidRangeTypeForTest] is incompatible with shape [1,2,3,4,5].\r\nParameter name: ranges", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void BroadcastDim_NegativeSize_ThrowException()
         {
             // arrange
@@ -1093,11 +1091,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            var _ = Layout.BroadcastDim(0, -1, layout);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.BroadcastDim(0, -1, layout));
+            Assert.Equal("Size must be positive\r\nParameter name: size", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void BroadcastDim_UnableToBroadCast_ThrowException1()
         {
             // arrange
@@ -1105,11 +1103,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            var _ = Layout.BroadcastDim(1, 2, layout);
+            var exception = Assert.Throws<ArgumentException>(() => Layout.BroadcastDim(1, 2, layout));
+            Assert.Equal("Dimension 1 of shape [1,2,3,4,5] must be of size 1 to broadcast.\r\nParameter name: dim", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void CheckAxis_NegativeAxis_ThrowException()
         {
             // arrange
@@ -1117,11 +1115,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            Layout.CheckAxis(layout, -1);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckAxis(layout, -1));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: axis -1 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void CheckAxis_TooBigAxis_ThrowException()
         {
             // arrange
@@ -1129,11 +1127,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            Layout.CheckAxis(layout, 100);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckAxis(layout, 100));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: axis 100 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void CheckElementRange_NegativeIndex_ThrowException()
         {
             // arrange
@@ -1141,11 +1139,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            Layout.CheckElementRange(false, 10, -1, new[] { RangeFactory.Elem(0) }, layout.Shape);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckElementRange(false, 10, -1, new[] { RangeFactory.Elem(0) }, layout.Shape));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Index -1 out of range in slice [0] for shape [1,2,3,4,5].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void CheckElementRange_TooBigIndex_ThrowException()
         {
             // arrange
@@ -1153,7 +1151,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var layout = new Layout(shape, 0, Layout.CStride(shape));
 
             // action
-            Layout.CheckElementRange(false, 10, 100, new[] { RangeFactory.Elem(0) }, layout.Shape);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckElementRange(false, 10, 100, new[] { RangeFactory.Elem(0) }, layout.Shape));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Index 100 out of range in slice [0] for shape [1,2,3,4,5].", exception.Message);
         }
 
         private class InvalidRangeTypeForTest : RangeBase

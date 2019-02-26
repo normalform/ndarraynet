@@ -29,25 +29,24 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class HostStorageTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void HostStorage_WithMaximumSize_ThrowException()
         {
             // arrange
             var size = int.MaxValue + 1L;
 
             // action
-            var _ = new HostStorage<int>(size);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new HostStorage<int>(size));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Cannot create host NdArray storage for 2147483648 elements, the current limit is 2147483647 elements.", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Backend()
         {
             // arrange
@@ -59,10 +58,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var hostBackend = hostStorage.Backend(layout);
 
             // assert
-            Assert.IsInstanceOfType(hostBackend, typeof(HostBackend<int>));
+            Assert.IsType<HostBackend<int>>(hostBackend);
         }
 
-        [TestMethod]
+        [Fact]
         public void Pin()
         {
             // arrange
@@ -74,7 +73,7 @@ namespace NdArrayNet.NdArrayUnitTest
             using (var memory = hostStorage.Pin())
             {
                 // assert
-                Assert.IsInstanceOfType(memory, typeof(PinnedMemory));
+                Assert.IsType<PinnedMemory>(memory);
             }
         }
     }

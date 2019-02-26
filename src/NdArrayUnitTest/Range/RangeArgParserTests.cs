@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
     using System.Linq;
+    using Xunit;
 
-    [TestClass]
     public class RangeArgParserTests
     {
-        [TestMethod]
+        [Fact]
         public void Parse_EmptyArgs_ReturnEmptyRanges()
         {
             // arrange
@@ -47,10 +46,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args.Cast<object>().ToArray());
 
             // assert
-            Assert.AreEqual(0, ranges.Length);
+            Assert.Empty(ranges);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_RangeArgs_ReturnSameRanges()
         {
             // arrange
@@ -60,10 +59,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args);
 
             // assert
-            Assert.AreSame(args[0], ranges[0]);
+            Assert.Same(args[0], ranges[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_SignelInteger_ReturnOneElem()
         {
             // arrange
@@ -73,12 +72,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args.Cast<object>().ToArray());
 
             // assert
-            Assert.AreEqual(1, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(Elem));
-            Assert.AreEqual(5, (ranges[0] as Elem).Pos);
+            Assert.Single(ranges);
+            Assert.IsType<Elem>(ranges[0]);
+            Assert.Equal(5, (ranges[0] as Elem).Pos);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_SignelIntegerWithNewAxis_ReturnOneElem()
         {
             // arrange
@@ -88,11 +87,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args.Cast<object>().ToArray());
 
             // assert
-            Assert.AreEqual(1, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(NewAxis));
+            Assert.Single(ranges);
+            Assert.IsType<NewAxis>(ranges[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_SignelIntegerWithFill_ReturnOneElem()
         {
             // arrange
@@ -102,11 +101,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args.Cast<object>().ToArray());
 
             // assert
-            Assert.AreEqual(1, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(AllFill));
+            Assert.Single(ranges);
+            Assert.IsType<AllFill>(ranges[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_SignelIntegerWithNewAxisAndRanges_ReturnOneElem()
         {
             // arrange
@@ -116,12 +115,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args);
 
             // assert
-            Assert.AreEqual(2, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(NewAxis));
-            Assert.IsInstanceOfType(ranges[1], typeof(Elem));
+            Assert.Equal(2, ranges.Length);
+            Assert.IsType<NewAxis>(ranges[0]);
+            Assert.IsType<Elem>(ranges[1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_SignelIntegerWithFillAndRanges_ReturnOneElem()
         {
             // arrange
@@ -131,12 +130,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args);
 
             // assert
-            Assert.AreEqual(2, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(AllFill));
-            Assert.IsInstanceOfType(ranges[1], typeof(Elem));
+            Assert.Equal(2, ranges.Length);
+            Assert.IsType<AllFill>(ranges[0]);
+            Assert.IsType<Elem>(ranges[1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_TwoInteger_ReturnOneElem()
         {
             // arrange
@@ -146,60 +145,60 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args.Cast<object>().ToArray());
 
             // assert
-            Assert.AreEqual(1, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(Range));
+            Assert.Single(ranges);
+            Assert.IsType<Range>(ranges[0]);
 
             var range = ranges[0] as Range;
-            Assert.AreEqual(5, range.Start);
-            Assert.AreEqual(9, range.Stop);
-            Assert.AreEqual(1, range.Step);
+            Assert.Equal(5, range.Start);
+            Assert.Equal(9, range.Stop);
+            Assert.Equal(1, range.Step);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_TwoIntegerStartIsNewAxis_ThrowException()
         {
             // arrange
             var args = new[] { SpecialIdx.NewAxis, 9 };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [NewAxis, 9].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_TwoIntegerStartIsFill_ThrowException()
         {
             // arrange
             var args = new[] { SpecialIdx.Fill, 9 };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [..., 9].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_TwoIntegerStepIsNewAxis_ThrowException()
         {
             // arrange
             var args = new[] { 5, SpecialIdx.NewAxis };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [5, NewAxis].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_TwoIntegerStepIsFill_ThrowException()
         {
             // arrange
             var args = new[] { 5, SpecialIdx.Fill };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [5, ...].", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_ThreeInteger_ReturnOneElem()
         {
             // arrange
@@ -209,82 +208,83 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args.Cast<object>().ToArray());
 
             // assert
-            Assert.AreEqual(1, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(Range));
+            Assert.Single(ranges);
+            Assert.IsType<Range>(ranges[0]);
 
             var range = ranges[0] as Range;
-            Assert.AreEqual(5, range.Start);
-            Assert.AreEqual(9, range.Stop);
-            Assert.AreEqual(2, range.Step);
+            Assert.Equal(5, range.Start);
+            Assert.Equal(9, range.Stop);
+            Assert.Equal(2, range.Step);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_ThreeIntegerStartIsNewAxis_ThrowException()
         {
             // arrange
             var args = new[] { SpecialIdx.NewAxis, 9, 2 };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [NewAxis, 9, 2].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_ThreeIntegerStartIsFill_ThrowException()
         {
             // arrange
             var args = new[] { SpecialIdx.Fill, 9, 2 };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [..., 9, 2].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_ThreeIntegerStopIsNewAxis_ThrowException()
         {
             // arrange
             var args = new[] { 5, SpecialIdx.NewAxis, 2 };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [5, NewAxis, 2].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_ThreeIntegerStopIsFill_ThrowException()
         {
             // arrange
             var args = new[] { 5, SpecialIdx.Fill, 2 };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [5, ..., 2].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_ThreeIntegerStepIsNewAxis_ThrowException()
         {
             // arrange
             var args = new[] { 5, 9, SpecialIdx.NewAxis };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [5, 9, NewAxis].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_ThreeIntegerStepIsFill_ThrowException()
         {
             // arrange
             var args = new[] { 5, 9, SpecialIdx.Fill };
 
             // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [5, 9, ...].", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Parse_FourInteger_ReturnOneElem()
         {
             // arrange
@@ -294,27 +294,27 @@ namespace NdArrayNet.NdArrayUnitTest
             var ranges = RangeArgParser.Parse(args.Cast<object>().ToArray());
 
             // assert
-            Assert.AreEqual(2, ranges.Length);
-            Assert.IsInstanceOfType(ranges[0], typeof(Range));
+            Assert.Equal(2, ranges.Length);
+            Assert.IsType<Range>(ranges[0]);
 
             var range = ranges[0] as Range;
-            Assert.AreEqual(5, range.Start);
-            Assert.AreEqual(9, range.Stop);
-            Assert.AreEqual(2, range.Step);
+            Assert.Equal(5, range.Start);
+            Assert.Equal(9, range.Stop);
+            Assert.Equal(2, range.Step);
 
-            Assert.IsInstanceOfType(ranges[1], typeof(Elem));
-            Assert.AreEqual(7, (ranges[1] as Elem).Pos);
+            Assert.IsType<Elem>(ranges[1]);
+            Assert.Equal(7, (ranges[1] as Elem).Pos);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Parse_InvalidType_ThrowException()
         {
             // arrange
             var args = new[] { "INVALID" };
 
-            // action
-            var _ = RangeArgParser.Parse(args.Cast<object>().ToArray());
+            // action & assert
+            var exception = Assert.Throws<InvalidOperationException>(() => RangeArgParser.Parse(args.Cast<object>().ToArray()));
+            Assert.Equal("InvalidArg item Specified items / slices are invalid: [INVALID].", exception.Message);
         }
     }
 }

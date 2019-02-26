@@ -29,50 +29,49 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
+    using Xunit;
 
-    [TestClass]
     public class SpecialIdxTests
     {
-        [TestMethod]
+        [Fact]
         public void NewAxis()
         {
             // arrange & action
             var idx = SpecialIdx.NewAxis;
 
             // assert
-            Assert.AreEqual(int.MinValue + 1, idx);
+            Assert.Equal(int.MinValue + 1, idx);
         }
 
-        [TestMethod]
+        [Fact]
         public void Fill()
         {
             // arrange & action
             var idx = SpecialIdx.Fill;
 
             // assert
-            Assert.AreEqual(int.MinValue + 2, idx);
+            Assert.Equal(int.MinValue + 2, idx);
         }
 
-        [TestMethod]
+        [Fact]
         public void Remainder()
         {
             // arrange & action
             var idx = SpecialIdx.Remainder;
 
             // assert
-            Assert.AreEqual(int.MinValue + 3, idx);
+            Assert.Equal(int.MinValue + 3, idx);
         }
 
-        [TestMethod]
+        [Fact]
         public void NotFound()
         {
             // arrange & action
             var idx = SpecialIdx.NotFound;
 
             // assert
-            Assert.AreEqual(int.MinValue + 4, idx);
+            Assert.Equal(int.MinValue + 4, idx);
         }
     }
 }

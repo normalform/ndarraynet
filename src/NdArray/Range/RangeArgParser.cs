@@ -76,7 +76,7 @@ namespace NdArrayNet
                     if (start == SpecialIdx.NewAxis || start == SpecialIdx.Fill ||
                         stop == SpecialIdx.NewAxis || stop == SpecialIdx.Fill)
                     {
-                        var errorMessage = string.Format("invalidArg item Specified items / slices are invalid: {0}.", ErrorMessage.RangeArgsToString(allArgs));
+                        var errorMessage = string.Format("InvalidArg item Specified items / slices are invalid: {0}.", ErrorMessage.RangeArgsToString(allArgs));
                         throw new InvalidOperationException(errorMessage);
                     }
 
@@ -99,7 +99,7 @@ namespace NdArrayNet
                 }
                 else
                 {
-                    var errorMessage = string.Format("invalidArg item Specified items / slices are invalid: {0}.", ErrorMessage.RangeArgsToString(allArgs));
+                    var errorMessage = string.Format("InvalidArg item Specified items / slices are invalid: {0}.", ErrorMessage.RangeArgsToString(allArgs));
                     throw new InvalidOperationException(errorMessage);
                 }
             }

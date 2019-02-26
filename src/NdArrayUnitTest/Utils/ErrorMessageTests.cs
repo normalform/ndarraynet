@@ -29,14 +29,13 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System.Linq;
+    using Xunit;
 
-    [TestClass]
     public class ErrorMessageTests
     {
-        [TestMethod]
+        [Fact]
         public void ArrayToString()
         {
             // arrange
@@ -46,10 +45,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.ArrayToString(array);
 
             // assert
-            Assert.AreEqual("[1,2,3]", message);
+            Assert.Equal("[1,2,3]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShapeToString()
         {
             // arrange
@@ -59,10 +58,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.ShapeToString(array);
 
             // assert
-            Assert.AreEqual("[1,2,3,...,NewAxis,Remainder]", message);
+            Assert.Equal("[1,2,3,...,NewAxis,Remainder]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_RangeDefault()
         {
             // arrange
@@ -72,10 +71,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[0:2]", message);
+            Assert.Equal("[0:2]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_RangeWithStep()
         {
             // arrange
@@ -85,10 +84,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[0:4:2]", message);
+            Assert.Equal("[0:4:2]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_TwoRangesWithStep()
         {
             // arrange
@@ -98,10 +97,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[0:4:2, 0:3]", message);
+            Assert.Equal("[0:4:2, 0:3]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_Elem()
         {
             // arrange
@@ -111,10 +110,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[8]", message);
+            Assert.Equal("[8]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_RangeAll()
         {
             // arrange
@@ -124,10 +123,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[:]", message);
+            Assert.Equal("[:]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_AllFill()
         {
             // arrange
@@ -137,10 +136,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[...]", message);
+            Assert.Equal("[...]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_FillIndex()
         {
             // arrange
@@ -150,10 +149,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[...]", message);
+            Assert.Equal("[...]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_NewAxis()
         {
             // arrange
@@ -163,10 +162,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[NewAxis]", message);
+            Assert.Equal("[NewAxis]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void RangeArgsToString_NewAxisIndex()
         {
             // arrange
@@ -176,10 +175,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.RangeArgsToString(objects);
 
             // assert
-            Assert.AreEqual("[NewAxis]", message);
+            Assert.Equal("[NewAxis]", message);
         }
 
-        [TestMethod]
+        [Fact]
         public void ObjectsToString()
         {
             // arrange
@@ -189,7 +188,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var message = ErrorMessage.ObjectsToString(objects);
 
             // assert
-            Assert.AreEqual("[1,2,3]", message);
+            Assert.Equal("[1,2,3]", message);
         }
     }
 }

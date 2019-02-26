@@ -29,43 +29,42 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
+    using Xunit;
 
-    [TestClass]
     public class HostDeviceTests
     {
-        [TestMethod]
+        [Fact]
         public void Instance_CreateHostDevice()
         {
             // arrange & action
             var device = HostDevice.Instance;
 
             // assert
-            Assert.IsInstanceOfType(device, typeof(HostDevice));
+            Assert.IsType<HostDevice>(device);
         }
 
-        [TestMethod]
+        [Fact]
         public void Id()
         {
             // arrange & action
             var device = HostDevice.Instance;
 
             // assert
-            Assert.AreEqual("Host", device.Id);
+            Assert.Equal("Host", device.Id);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zeroed()
         {
             // arrange & action
             var device = HostDevice.Instance;
 
             // assert
-            Assert.AreEqual(true, device.Zeroed);
+            Assert.True(device.Zeroed);
         }
 
-        [TestMethod]
+        [Fact]
         public void Create()
         {
             // arrange
@@ -75,7 +74,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var storage = device.Create<int>(10);
 
             // assert
-            Assert.IsInstanceOfType(storage, typeof(HostStorage<int>));
+            Assert.IsType<HostStorage<int>>(storage);
         }
     }
 }

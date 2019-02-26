@@ -29,64 +29,62 @@
 
 namespace NdArrayNet.NumCsUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using NdArrayNet;
+    using Xunit;
 
-    [TestClass]
     public class NumCsConstructTests
     {
-        [TestMethod]
+        [Fact]
         public void Arange_IntTypeFullArgs_ReturnIntegerTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Arange(0, 10, 1);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_IntOneElement_ReturnIntegerTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Arange(1);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_IntTypeStopArgOnly_ReturnIntegerTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Arange(10);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ones_IntTypeScalar_ReturnIntegerTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Ones<int>(new int[] { });
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ones_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Ones<int>(new[] { 2, 3, 4, 5 });
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void OnesLike_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange
@@ -96,20 +94,20 @@ namespace NdArrayNet.NumCsUnitTest
             var array = NumCs.OnesLike(template);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zeros_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Zeros<int>(new[] { 2, 3, 4, 5 });
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void ZerosLike_IntTypeVector_ReturnIntegerTypeNdArray()
         {
             // arrange
@@ -119,40 +117,40 @@ namespace NdArrayNet.NumCsUnitTest
             var array = NumCs.ZerosLike(template);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<int>));
+            Assert.IsType<NdArray<int>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_DoubleTypeFullArgs_ReturnDoubleTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Arange(0.0, 10.0, 1.0);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<double>));
+            Assert.IsType<NdArray<double>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Arange_DoubleTypeStopArgOnly_ReturnDoubleTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Arange(10.0);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<double>));
+            Assert.IsType<NdArray<double>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ones_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Ones<double>(new[] { 2, 3, 4, 5 });
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<double>));
+            Assert.IsType<NdArray<double>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void OnesLike_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange
@@ -162,20 +160,20 @@ namespace NdArrayNet.NumCsUnitTest
             var array = NumCs.OnesLike(template);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<double>));
+            Assert.IsType<NdArray<double>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zeros_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange & action
             var array = NumCs.Zeros<double>(new[] { 2, 3, 4, 5 });
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<double>));
+            Assert.IsType<NdArray<double>>(array);
         }
 
-        [TestMethod]
+        [Fact]
         public void ZerosLike_DoubleTypeVector_ReturnDoubleTypeNdArray()
         {
             // arrange
@@ -185,7 +183,7 @@ namespace NdArrayNet.NumCsUnitTest
             var array = NumCs.ZerosLike(template);
 
             // assert
-            Assert.IsInstanceOfType(array, typeof(NdArray<double>));
+            Assert.IsType<NdArray<double>>(array);
         }
     }
 }

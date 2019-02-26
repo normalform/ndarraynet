@@ -29,14 +29,13 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
+    using Xunit;
 
-    [TestClass]
     public class LogicalFunctionTests
     {
-        [TestMethod]
+        [Fact]
         public void Negate()
         {
             // arrange
@@ -46,10 +45,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.Negate(input);
 
             // assert
-            Assert.IsTrue(NdArray<bool>.All(output));
+            Assert.True(NdArray<bool>.All(output));
         }
 
-        [TestMethod]
+        [Fact]
         public void And()
         {
             // arrange
@@ -62,10 +61,10 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expected = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
             var result = expected == output;
-            Assert.IsTrue(NdArray<bool>.All(result));
+            Assert.True(NdArray<bool>.All(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void Or()
         {
             // arrange
@@ -78,10 +77,10 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expected = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
             var result = expected == output;
-            Assert.IsTrue(NdArray<bool>.All(result));
+            Assert.True(NdArray<bool>.All(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void Xor()
         {
             // arrange
@@ -93,11 +92,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.Xor(input1, input2);
 
             // assert
-            Assert.AreEqual(false, output[0].Value);
-            Assert.AreEqual(true, output[1].Value);
+            Assert.False(output[0].Value);
+            Assert.True(output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllAxis()
         {
             // arrange
@@ -109,11 +108,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output1 = LogicalFunction<bool>.AllAxis(1, input);
 
             // assert
-            Assert.AreEqual(true, output0[0].Value);
-            Assert.AreEqual(true, output1[1].Value);
+            Assert.True(output0[0].Value);
+            Assert.True(output1[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllNdArray()
         {
             // arrange
@@ -124,10 +123,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.AllNdArray(input);
 
             // assert
-            Assert.AreEqual(false, output[0].Value);
+            Assert.False(output[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void All()
         {
             // arrange
@@ -138,10 +137,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.All(input);
 
             // assert
-            Assert.AreEqual(false, output);
+            Assert.False(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void AnyAxis()
         {
             // arrange
@@ -153,11 +152,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output1 = LogicalFunction<bool>.AnyAxis(1, input);
 
             // assert
-            Assert.AreEqual(true, output0[1].Value);
-            Assert.AreEqual(false, output1[1].Value);
+            Assert.True(output0[1].Value);
+            Assert.False(output1[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void AnyNdArray()
         {
             // arrange
@@ -168,10 +167,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.AnyNdArray(input);
 
             // assert
-            Assert.AreEqual(true, output[0].Value);
+            Assert.True(output[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Any()
         {
             // arrange
@@ -182,10 +181,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.Any(input);
 
             // assert
-            Assert.AreEqual(true, output);
+            Assert.True(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrueAxis()
         {
             // arrange
@@ -199,11 +198,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output1 = LogicalFunction<bool>.CountTrueAxis(1, input);
 
             // assert
-            Assert.AreEqual(1, output0[0].Value);
-            Assert.AreEqual(2, output1[1].Value);
+            Assert.Equal(1, output0[0].Value);
+            Assert.Equal(2, output1[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrueNdArray()
         {
             // arrange
@@ -216,10 +215,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.CountTrueNdArray(input);
 
             // assert
-            Assert.AreEqual(5, output[0].Value);
+            Assert.Equal(5, output[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrue()
         {
             // arrange
@@ -232,10 +231,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<bool>.CountTrue(input);
 
             // assert
-            Assert.AreEqual(5, output);
+            Assert.Equal(5, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void IfThenElse()
         {
             // arrange
@@ -250,10 +249,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = LogicalFunction<int>.IfThenElse(condition, ifTrue, ifFalse);
 
             // assert
-            Assert.AreEqual(0, output[0].Value);
-            Assert.AreEqual(1, output[1].Value);
-            Assert.AreEqual(0, output[2].Value);
-            Assert.AreEqual(1, output[3].Value);
+            Assert.Equal(0, output[0].Value);
+            Assert.Equal(1, output[1].Value);
+            Assert.Equal(0, output[2].Value);
+            Assert.Equal(1, output[3].Value);
         }
     }
 }

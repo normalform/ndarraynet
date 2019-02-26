@@ -29,14 +29,13 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System.Numerics;
+    using Xunit;
 
-    [TestClass]
     public class ElementWiseOperatorTests
     {
-        [TestMethod]
+        [Fact]
         public void UnaryPlus()
         {
             // arrange
@@ -47,10 +46,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = +input;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, output.Shape);
+            Assert.Equal(new[] { 10 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void UnaryMinus()
         {
             // arrange
@@ -61,10 +60,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = -input;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, output.Shape);
+            Assert.Equal(new[] { 10 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Add_VectorWithVector()
         {
             // arrange
@@ -76,10 +75,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA + inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Add_VectorWithScalar()
         {
             // arrange
@@ -91,10 +90,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA + inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Add_ScalarWithVector()
         {
             // arrange
@@ -106,10 +105,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputB + inputA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtract_VectorWithVector()
         {
             // arrange
@@ -121,10 +120,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA - inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtract_VectorWithScalar()
         {
             // arrange
@@ -136,10 +135,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA + inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Subtract_ScalarWithVector()
         {
             // arrange
@@ -151,10 +150,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputB - inputA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_VectorWithVector()
         {
             // arrange
@@ -166,10 +165,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA * inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_VectorWithScalar()
         {
             // arrange
@@ -181,10 +180,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA * inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Multiply_ScalarWithVector()
         {
             // arrange
@@ -196,10 +195,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputB * inputA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_VectorWithVector()
         {
             // arrange
@@ -211,10 +210,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA / inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_VectorWithScalar()
         {
             // arrange
@@ -226,10 +225,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA / inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_ScalarWithVector()
         {
             // arrange
@@ -241,10 +240,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputB / inputA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_WithAligned()
         {
             // arrange
@@ -259,10 +258,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputB / inputA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { numElements }, equal.Shape);
+            Assert.Equal(new[] { numElements }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Divide_WithUnAligned()
         {
             // arrange
@@ -277,10 +276,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputB / inputA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { numElements }, equal.Shape);
+            Assert.Equal(new[] { numElements }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_VectorWithVector()
         {
             // arrange
@@ -292,10 +291,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA % inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_VectorWithScalar()
         {
             // arrange
@@ -307,10 +306,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputA % inputB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Modulo_ScalarWithVector()
         {
             // arrange
@@ -322,7 +321,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var equal = inputB % inputA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 10 }, equal.Shape);
+            Assert.Equal(new[] { 10 }, equal.Shape);
         }
     }
 }

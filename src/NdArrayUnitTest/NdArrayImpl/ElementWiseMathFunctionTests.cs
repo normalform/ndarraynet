@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class ElementWiseMathFunctionTests
     {
-        [TestMethod]
+        [Fact]
         public void Abs()
         {
             // arrange
@@ -47,10 +46,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<int>.Abs(srcArray);
 
             // assert
-            Assert.IsTrue(newArray[0].Value > 0);
+            Assert.True(newArray[0].Value > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void Acos()
         {
             // arrange
@@ -61,12 +60,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - Math.PI) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - (Math.PI / 2.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - Math.PI) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - (Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Asin()
         {
             // arrange
@@ -77,12 +76,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - (-Math.PI / 2.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - (Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - (-Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - (Math.PI / 2.0)) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Atan()
         {
             // arrange
@@ -93,12 +92,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - (-Math.PI / 4.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - (Math.PI / 4.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - (-Math.PI / 4.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - (Math.PI / 4.0)) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ceiling()
         {
             // arrange
@@ -108,12 +107,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Ceiling(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(0.0, newArray[1].Value);
-            Assert.AreEqual(1.0, newArray[4].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(0.0, newArray[1].Value);
+            Assert.Equal(1.0, newArray[4].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cos()
         {
             // arrange
@@ -127,12 +126,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cosh()
         {
             // arrange
@@ -146,12 +145,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 2.5091784786580567) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.5091784786580567) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 2.5091784786580567) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.5091784786580567) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Exp()
         {
             // arrange
@@ -166,13 +165,13 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.36787944117144233) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.718281828459045) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[3].Value - 22026.465794806718) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.36787944117144233) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.718281828459045) < Epsilon);
+            Assert.True(Math.Abs(newArray[3].Value - 22026.465794806718) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Floor()
         {
             // arrange
@@ -182,15 +181,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Floor(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(-1.0, newArray[1].Value);
-            Assert.AreEqual(-1.0, newArray[2].Value);
-            Assert.AreEqual(0.0, newArray[3].Value);
-            Assert.AreEqual(0.0, newArray[4].Value);
-            Assert.AreEqual(1.0, newArray[5].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(-1.0, newArray[1].Value);
+            Assert.Equal(-1.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[3].Value);
+            Assert.Equal(0.0, newArray[4].Value);
+            Assert.Equal(1.0, newArray[5].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log()
         {
             // arrange
@@ -204,12 +203,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.3862943611198906) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 1.3862943611198906) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log10()
         {
             // arrange
@@ -223,12 +222,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Maximum()
         {
             // arrange
@@ -239,12 +238,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Maximum(srcArray1, srcArray2);
 
             // assert
-            Assert.AreEqual(1.0, newArray[0].Value);
-            Assert.AreEqual(1.0, newArray[1].Value);
-            Assert.AreEqual(1.0, newArray[2].Value);
+            Assert.Equal(1.0, newArray[0].Value);
+            Assert.Equal(1.0, newArray[1].Value);
+            Assert.Equal(1.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Minimum()
         {
             // arrange
@@ -255,12 +254,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Minimum(srcArray1, srcArray2);
 
             // assert
-            Assert.AreEqual(0.0, newArray[0].Value);
-            Assert.AreEqual(0.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[0].Value);
+            Assert.Equal(0.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Pow()
         {
             // arrange
@@ -278,12 +277,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Pow(lhs, rhs);
 
             // assert
-            Assert.AreEqual(25.0, newArray[0].Value);
-            Assert.AreEqual(216.0, newArray[1].Value);
-            Assert.AreEqual(2401.0, newArray[2].Value);
+            Assert.Equal(25.0, newArray[0].Value);
+            Assert.Equal(216.0, newArray[1].Value);
+            Assert.Equal(2401.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Round()
         {
             // arrange
@@ -293,15 +292,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Round(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(-1.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
-            Assert.AreEqual(0.0, newArray[3].Value);
-            Assert.AreEqual(1.0, newArray[4].Value);
-            Assert.AreEqual(1.0, newArray[5].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(-1.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[3].Value);
+            Assert.Equal(1.0, newArray[4].Value);
+            Assert.Equal(1.0, newArray[5].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sign()
         {
             // arrange
@@ -315,13 +314,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Sign(src);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(-1.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
-            Assert.AreEqual(1.0, newArray[3].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(-1.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
+            Assert.Equal(1.0, newArray[3].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sin()
         {
             // arrange
@@ -335,12 +334,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 1.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sinh()
         {
             // arrange
@@ -354,12 +353,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -2.3012989023072947) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.3012989023072947) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -2.3012989023072947) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.3012989023072947) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sqrt()
         {
             // arrange
@@ -372,12 +371,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Sqrt(srcArray);
 
             // assert
-            Assert.AreEqual(1.0, newArray[0].Value);
-            Assert.AreEqual(2.0, newArray[1].Value);
-            Assert.AreEqual(4.0, newArray[2].Value);
+            Assert.Equal(1.0, newArray[0].Value);
+            Assert.Equal(2.0, newArray[1].Value);
+            Assert.Equal(4.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tan()
         {
             // arrange
@@ -391,12 +390,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e12;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -16331778728383844) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 16331778728383844) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -16331778728383844) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 16331778728383844) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tanh()
         {
             // arrange
@@ -410,12 +409,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -0.91715234) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.91715234) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -0.91715234) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 0.91715234) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Truncate()
         {
             // arrange
@@ -425,12 +424,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = ElementWiseMathFunction<double>.Truncate(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(0.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
-            Assert.AreEqual(0.0, newArray[3].Value);
-            Assert.AreEqual(0.0, newArray[4].Value);
-            Assert.AreEqual(1.0, newArray[5].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(0.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[3].Value);
+            Assert.Equal(0.0, newArray[4].Value);
+            Assert.Equal(1.0, newArray[5].Value);
         }
     }
 }

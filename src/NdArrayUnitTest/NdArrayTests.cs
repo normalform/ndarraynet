@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
     using System.Linq;
+    using Xunit;
 
-    [TestClass]
     public class NdArrayTests
     {
-        [TestMethod]
+        [Fact]
         public void NdArray_RowMajor()
         {
             // arrange
@@ -48,10 +47,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 120, 60, 20, 5, 1 };
-            CollectionAssert.AreEqual(expected, array.Layout.Stride);
+            Assert.Equal(expected, array.Layout.Stride);
         }
 
-        [TestMethod]
+        [Fact]
         public void NdArray_ColumnMajor()
         {
             // arrange
@@ -62,10 +61,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = new[] { 1, 1, 2, 6, 24 };
-            CollectionAssert.AreEqual(expected, array.Layout.Stride);
+            Assert.Equal(expected, array.Layout.Stride);
         }
 
-        [TestMethod]
+        [Fact]
         public void NumElements()
         {
             // arrange
@@ -76,10 +75,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = 120;
-            Assert.AreEqual(expected, array.NumElements);
+            Assert.Equal(expected, array.NumElements);
         }
 
-        [TestMethod]
+        [Fact]
         public void NumDimensions()
         {
             // arrange
@@ -90,11 +89,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expected = 5;
-            Assert.AreEqual(expected, array.NumDimensions);
+            Assert.Equal(expected, array.NumDimensions);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void FillIncrementing_WithScalar_ThrowException()
         {
             // arrange
@@ -102,10 +100,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = NdArray<int>.Ones(device, new int[] { });
 
             // action
-            array.FillIncrementing(0, 1);
+            var exception = Assert.Throws<InvalidOperationException>(() => array.FillIncrementing(0, 1));
+            Assert.Equal("FillIncrementing requires a vector.", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetValue_ScalarArray_ReturnValue()
         {
             // arrange
@@ -116,11 +115,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var value = scalarArray.Value;
 
             // assert
-            Assert.AreEqual(1, value);
+            Assert.Equal(1, value);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void GetValue_Vector_ThrowException()
         {
             // arrange
@@ -128,10 +126,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var scalarArray = NdArray<int>.Ones(device, new int[] { 1 });
 
             // action
-            var _ = scalarArray.Value;
+            var exception = Assert.Throws<InvalidOperationException>(() => scalarArray.Value);
+            Assert.Equal("This operation requires a scalar (0-dimensional) NdArray, but its shape is [1]", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetValue_ScalarArray_ReturnValue()
         {
             // arrange
@@ -142,11 +141,10 @@ namespace NdArrayNet.NdArrayUnitTest
             scalarArray.Value = 100;
 
             // assert
-            Assert.AreEqual(100, scalarArray.Value);
+            Assert.Equal(100, scalarArray.Value);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void SetValue_Vector_ThrowException()
         {
             // arrange
@@ -154,10 +152,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var scalarArray = NdArray<int>.Ones(device, new int[] { 1 });
 
             // action
-            scalarArray.Value = 100;
+            var exception = Assert.Throws<InvalidOperationException>(() => scalarArray.Value = 100);
+            Assert.Equal("This operation requires a scalar (0-dimensional) NdArray, but its shape is [1]", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Get_SingleIndex()
         {
             // arrange
@@ -168,10 +167,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var scalarArray = array[2];
 
             // assert
-            Assert.AreEqual(2, scalarArray.Value);
+            Assert.Equal(2, scalarArray.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Set_SingleIndex()
         {
             // arrange
@@ -183,10 +182,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var scalarArray = array[2];
 
             // assert
-            Assert.AreEqual(1, scalarArray.Value);
+            Assert.Equal(1, scalarArray.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void AssertSameShape_WithSameShape_Pass()
         {
             // arrange
@@ -199,8 +198,7 @@ namespace NdArrayNet.NdArrayUnitTest
             NdArray<int>.AssertSameShape(arrayA, arrayB);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void AssertSameShape_DifferentShape_ThrowException()
         {
             // arrange
@@ -209,10 +207,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var arrayB = NdArray<int>.Arange(device, 1, 3, 1);
 
             // action
-            NdArray<int>.AssertSameShape(arrayA, arrayB);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArray<int>.AssertSameShape(arrayA, arrayB));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: NdArrays of shapes [3] and [2] were expected to have same shape", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void AssertSameStorage()
         {
             // arrange
@@ -228,8 +227,7 @@ namespace NdArrayNet.NdArrayUnitTest
             NdArray<int>.AssertSameStorage(arrays);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void AssertScalar_WithVector_ThrowException()
         {
             // arrange
@@ -237,10 +235,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = NdArray<int>.Arange(device, 0, 3, 1);
 
             // action
-            array.AssertScalar();
+            var exception = Assert.Throws<InvalidOperationException>(() => array.AssertScalar());
+            Assert.Equal("This operation requires a scalar (0-dimensional) NdArray, but its shape is [3]", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void AssertScalar_WithScalar_Pass()
         {
             // arrange
@@ -252,7 +251,7 @@ namespace NdArrayNet.NdArrayUnitTest
             array.AssertScalar();
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAndGetWithArrayAndPos()
         {
             // arrange
@@ -264,10 +263,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var value = NdArray<int>.Get(array, new[] { 0, 1, 2 });
 
             // assert
-            Assert.AreEqual(999, value);
+            Assert.Equal(999, value);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetView_WithRangeSpecifiers()
         {
             // arrange
@@ -288,17 +287,17 @@ namespace NdArrayNet.NdArrayUnitTest
             var arrayView3 = array[new[] { RangeFactory.Range(1, 1), RangeFactory.Range(0, 1) }];
 
             // assert
-            Assert.AreEqual(2, scalarView.Value);
-            Assert.AreEqual(1, arrayView1[0].Value);
-            Assert.AreEqual(2, arrayView1[1].Value);
-            Assert.AreEqual(3, arrayView1[2].Value);
-            Assert.AreEqual(4, arrayView2[0].Value);
-            Assert.AreEqual(5, arrayView2[1].Value);
-            Assert.AreEqual(4, arrayView3[new[] { 0, 0 }]);
-            Assert.AreEqual(5, arrayView3[new[] { 0, 1 }]);
+            Assert.Equal(2, scalarView.Value);
+            Assert.Equal(1, arrayView1[0].Value);
+            Assert.Equal(2, arrayView1[1].Value);
+            Assert.Equal(3, arrayView1[2].Value);
+            Assert.Equal(4, arrayView2[0].Value);
+            Assert.Equal(5, arrayView2[1].Value);
+            Assert.Equal(4, arrayView3[new[] { 0, 0 }]);
+            Assert.Equal(5, arrayView3[new[] { 0, 1 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetView_WithRangeSpecifiers()
         {
             // arrange
@@ -309,15 +308,15 @@ namespace NdArrayNet.NdArrayUnitTest
             array[new[] { RangeFactory.Elem(0), RangeFactory.All }] = NdArray<int>.Arange(device, 7, 10, 1);
 
             // assert
-            Assert.AreEqual(7, NdArray<int>.Get(array, new[] { 0, 0 }));
-            Assert.AreEqual(8, NdArray<int>.Get(array, new[] { 0, 1 }));
-            Assert.AreEqual(9, NdArray<int>.Get(array, new[] { 0, 2 }));
-            Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 0 }));
-            Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 1 }));
-            Assert.AreEqual(1, NdArray<int>.Get(array, new[] { 1, 2 }));
+            Assert.Equal(7, NdArray<int>.Get(array, new[] { 0, 0 }));
+            Assert.Equal(8, NdArray<int>.Get(array, new[] { 0, 1 }));
+            Assert.Equal(9, NdArray<int>.Get(array, new[] { 0, 2 }));
+            Assert.Equal(1, NdArray<int>.Get(array, new[] { 1, 0 }));
+            Assert.Equal(1, NdArray<int>.Get(array, new[] { 1, 1 }));
+            Assert.Equal(1, NdArray<int>.Get(array, new[] { 1, 2 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void ScalarString()
         {
             // arrange
@@ -333,16 +332,16 @@ namespace NdArrayNet.NdArrayUnitTest
             var strUnkown = NdArray<UnKownValueTypeForTestOnly>.ScalarString(NdArray<UnKownValueTypeForTestOnly>.Zeros(device, new int[] { }));
 
             // assert
-            Assert.AreEqual("   1", strInt);
-            Assert.AreEqual("   1", strLong);
-            Assert.AreEqual("   1.0000", strFloat);
-            Assert.AreEqual("   1.0000", strDouble);
-            Assert.AreEqual("true", strBool);
-            Assert.AreEqual("  1", strByte);
-            Assert.AreEqual("UnKownType", strUnkown);
+            Assert.Equal("   1", strInt);
+            Assert.Equal("   1", strLong);
+            Assert.Equal("   1.0000", strFloat);
+            Assert.Equal("   1.0000", strDouble);
+            Assert.Equal("true", strBool);
+            Assert.Equal("  1", strByte);
+            Assert.Equal("UnKownType", strUnkown);
         }
 
-        [TestMethod]
+        [Fact]
         public void PrettyDim()
         {
             // arrange
@@ -353,10 +352,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var str = NdArray<int>.PrettyDim(10, " ", array);
 
             // assert
-            Assert.AreEqual("[[[   1    1    1]\n  [   1    1    1]]]", str);
+            Assert.Equal("[[[   1    1    1]\n  [   1    1    1]]]", str);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArrayToString()
         {
             // arrange
@@ -367,10 +366,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var str = array.ToString();
 
             // assert
-            Assert.AreEqual("[[[   1    1    1]\n  [   1    1    1]]]", str);
+            Assert.Equal("[[[   1    1    1]\n  [   1    1    1]]]", str);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshapeView_WitoutCopy_ReturnReshapedArray()
         {
             // arrange
@@ -381,10 +380,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newView = array.TryReshapeView(new[] { 1, 10 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 10 }, newView.Shape);
+            Assert.Equal(new[] { 1, 10 }, newView.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryReshapeView_NeedCopy_ReturnNull()
         {
             // arrange
@@ -394,10 +393,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newView = array.TryReshapeView(new[] { 2, 5 });
 
             // assert
-            Assert.IsNull(newView);
+            Assert.Null(newView);
         }
 
-        [TestMethod]
+        [Fact]
         public void ReshapeView_WitoutCopy_ReturnReshapedArray()
         {
             // arrange
@@ -408,21 +407,21 @@ namespace NdArrayNet.NdArrayUnitTest
             var newView = array.ReshapeView(new[] { 1, 10 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 10 }, newView.Shape);
+            Assert.Equal(new[] { 1, 10 }, newView.Shape);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void ReshapeView_NeedCopy_ReturnNull()
         {
             // arrange
             var array = new NdArray<int>(new[] { 2, 5 }, HostDevice.Instance, Order.ColumnMajor);
 
             // action
-            var newView = array.ReshapeView(new[] { 2, 5 });
+            var exception = Assert.Throws<InvalidOperationException>(() => array.ReshapeView(new[] { 2, 5 }));
+            Assert.Equal("Cannot reshape NdArray of shape [2,5] and strides [1,2] without copying.", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Reshape_WithoutCopy()
         {
             // arrange
@@ -433,10 +432,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newView = array.Reshape(new[] { 2, 3, 4, 5 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, newView.Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, newView.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Reshape_NeedCopy()
         {
             // arrange
@@ -446,10 +445,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newView = array.Reshape(new[] { 5, 2 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 5, 2 }, newView.Shape);
+            Assert.Equal(new[] { 5, 2 }, newView.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Broadcasting_VectorsWithSameShape()
         {
             // arrange
@@ -461,10 +460,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = arrayA * arrayB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+            Assert.Equal(new[] { 2, 3, 4 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Broadcasting_VectorsWithDiffernetShape()
         {
             // arrange
@@ -476,10 +475,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = arrayA * arrayB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+            Assert.Equal(new[] { 2, 3, 4 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Broadcasting_VectorsWithScalar()
         {
             // arrange
@@ -491,10 +490,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = arrayA * arrayB;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+            Assert.Equal(new[] { 2, 3, 4 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Broadcasting_ScalarWithScalar()
         {
             // arrange
@@ -506,10 +505,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = arrayA * arrayB;
 
             // assert
-            CollectionAssert.AreEqual(new int[] { }, result.Shape);
+            Assert.Equal(new int[] { }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Broadcasting_ScalarWithVectors()
         {
             // arrange
@@ -521,10 +520,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = arrayB * arrayA;
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result.Shape);
+            Assert.Equal(new[] { 2, 3, 4 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Scalar()
         {
             // arrange
@@ -535,10 +534,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = NdArray<int>.Scalar(device, Value);
 
             // asssert
-            Assert.AreEqual(Value, array.Value);
+            Assert.Equal(Value, array.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ScalarLike()
         {
             // arrange
@@ -550,10 +549,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var array = NdArray<int>.ScalarLike(referenceArray, Value);
 
             // asssert
-            Assert.AreEqual(Value, array.Value);
+            Assert.Equal(Value, array.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Counting()
         {
             // arrange
@@ -564,10 +563,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Empty()
         {
             // arrange
@@ -578,10 +577,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 0, 0, 0 }, 0, new[] { 0, 0, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Falses()
         {
             // arrange
@@ -592,10 +591,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Filled()
         {
             // arrange
@@ -606,10 +605,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Identity_3by3()
         {
             // arrange
@@ -620,10 +619,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 3, 3 }, 0, new[] { 3, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ones()
         {
             // arrange
@@ -634,10 +633,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void OnesLike()
         {
             // arrange
@@ -649,10 +648,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Linspace()
         {
             // arrange
@@ -663,10 +662,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Trues()
         {
             // arrange
@@ -677,10 +676,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Zeros()
         {
             // arrange
@@ -691,10 +690,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void ZerosLike()
         {
             // arrange
@@ -706,10 +705,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
-            Assert.AreEqual(expectedLayout, array.Layout);
+            Assert.Equal(expectedLayout, array.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void Abs()
         {
             // arrange
@@ -719,10 +718,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<int>.Abs(srcArray);
 
             // assert
-            Assert.IsTrue(newArray[0].Value > 0);
+            Assert.True(newArray[0].Value > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void Acos()
         {
             // arrange
@@ -733,12 +732,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - Math.PI) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - (Math.PI / 2.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - Math.PI) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - (Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Asin()
         {
             // arrange
@@ -749,12 +748,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - (-Math.PI / 2.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - (Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - (-Math.PI / 2.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - (Math.PI / 2.0)) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Atan()
         {
             // arrange
@@ -765,12 +764,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - (-Math.PI / 4.0)) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - (Math.PI / 4.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - (-Math.PI / 4.0)) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - (Math.PI / 4.0)) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Ceiling()
         {
             // arrange
@@ -780,12 +779,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Ceiling(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(0.0, newArray[1].Value);
-            Assert.AreEqual(1.0, newArray[4].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(0.0, newArray[1].Value);
+            Assert.Equal(1.0, newArray[4].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cos()
         {
             // arrange
@@ -799,12 +798,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 0.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Cosh()
         {
             // arrange
@@ -818,12 +817,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 2.5091784786580567) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.5091784786580567) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 2.5091784786580567) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.5091784786580567) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Exp()
         {
             // arrange
@@ -838,13 +837,13 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.36787944117144233) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.718281828459045) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[3].Value - 22026.465794806718) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.36787944117144233) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.718281828459045) < Epsilon);
+            Assert.True(Math.Abs(newArray[3].Value - 22026.465794806718) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Floor()
         {
             // arrange
@@ -854,15 +853,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Floor(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(-1.0, newArray[1].Value);
-            Assert.AreEqual(-1.0, newArray[2].Value);
-            Assert.AreEqual(0.0, newArray[3].Value);
-            Assert.AreEqual(0.0, newArray[4].Value);
-            Assert.AreEqual(1.0, newArray[5].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(-1.0, newArray[1].Value);
+            Assert.Equal(-1.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[3].Value);
+            Assert.Equal(0.0, newArray[4].Value);
+            Assert.Equal(1.0, newArray[5].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log()
         {
             // arrange
@@ -876,12 +875,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.3862943611198906) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 1.3862943611198906) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Log10()
         {
             // arrange
@@ -895,12 +894,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Maximum()
         {
             // arrange
@@ -911,12 +910,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Maximum(srcArray1, srcArray2);
 
             // assert
-            Assert.AreEqual(1.0, newArray[0].Value);
-            Assert.AreEqual(1.0, newArray[1].Value);
-            Assert.AreEqual(1.0, newArray[2].Value);
+            Assert.Equal(1.0, newArray[0].Value);
+            Assert.Equal(1.0, newArray[1].Value);
+            Assert.Equal(1.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Minimum()
         {
             // arrange
@@ -927,12 +926,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Minimum(srcArray1, srcArray2);
 
             // assert
-            Assert.AreEqual(0.0, newArray[0].Value);
-            Assert.AreEqual(0.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[0].Value);
+            Assert.Equal(0.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Pow()
         {
             // arrange
@@ -950,12 +949,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Pow(lhs, rhs);
 
             // assert
-            Assert.AreEqual(25.0, newArray[0].Value);
-            Assert.AreEqual(216.0, newArray[1].Value);
-            Assert.AreEqual(2401.0, newArray[2].Value);
+            Assert.Equal(25.0, newArray[0].Value);
+            Assert.Equal(216.0, newArray[1].Value);
+            Assert.Equal(2401.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Round()
         {
             // arrange
@@ -965,15 +964,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Round(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(-1.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
-            Assert.AreEqual(0.0, newArray[3].Value);
-            Assert.AreEqual(1.0, newArray[4].Value);
-            Assert.AreEqual(1.0, newArray[5].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(-1.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[3].Value);
+            Assert.Equal(1.0, newArray[4].Value);
+            Assert.Equal(1.0, newArray[5].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sign()
         {
             // arrange
@@ -987,13 +986,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Sign(src);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(-1.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
-            Assert.AreEqual(1.0, newArray[3].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(-1.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
+            Assert.Equal(1.0, newArray[3].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sin()
         {
             // arrange
@@ -1007,12 +1006,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -1.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -1.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 1.0) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sinh()
         {
             // arrange
@@ -1026,12 +1025,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -2.3012989023072947) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 2.3012989023072947) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -2.3012989023072947) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 2.3012989023072947) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sqrt()
         {
             // arrange
@@ -1044,12 +1043,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Sqrt(srcArray);
 
             // assert
-            Assert.AreEqual(1.0, newArray[0].Value);
-            Assert.AreEqual(2.0, newArray[1].Value);
-            Assert.AreEqual(4.0, newArray[2].Value);
+            Assert.Equal(1.0, newArray[0].Value);
+            Assert.Equal(2.0, newArray[1].Value);
+            Assert.Equal(4.0, newArray[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tan()
         {
             // arrange
@@ -1063,12 +1062,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e12;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -16331778728383844) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 16331778728383844) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -16331778728383844) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 16331778728383844) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Tanh()
         {
             // arrange
@@ -1082,12 +1081,12 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(newArray[0].Value - -0.91715234) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
-            Assert.IsTrue(Math.Abs(newArray[2].Value - 0.91715234) < Epsilon);
+            Assert.True(Math.Abs(newArray[0].Value - -0.91715234) < Epsilon);
+            Assert.True(Math.Abs(newArray[1].Value - 0.0) < Epsilon);
+            Assert.True(Math.Abs(newArray[2].Value - 0.91715234) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Truncate()
         {
             // arrange
@@ -1097,15 +1096,15 @@ namespace NdArrayNet.NdArrayUnitTest
             var newArray = NdArray<double>.Truncate(srcArray);
 
             // assert
-            Assert.AreEqual(-1.0, newArray[0].Value);
-            Assert.AreEqual(0.0, newArray[1].Value);
-            Assert.AreEqual(0.0, newArray[2].Value);
-            Assert.AreEqual(0.0, newArray[3].Value);
-            Assert.AreEqual(0.0, newArray[4].Value);
-            Assert.AreEqual(1.0, newArray[5].Value);
+            Assert.Equal(-1.0, newArray[0].Value);
+            Assert.Equal(0.0, newArray[1].Value);
+            Assert.Equal(0.0, newArray[2].Value);
+            Assert.Equal(0.0, newArray[3].Value);
+            Assert.Equal(0.0, newArray[4].Value);
+            Assert.Equal(1.0, newArray[5].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Flattern()
         {
             // arrange
@@ -1116,10 +1115,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             var expectedLayout = new Layout(new[] { 24 }, 0, new[] { 1 });
-            Assert.AreEqual(expectedLayout, newArray.Layout);
+            Assert.Equal(expectedLayout, newArray.Layout);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsFinite()
         {
             // arrange
@@ -1130,10 +1129,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var finite = NdArray<int>.IsFinite(inputA);
 
             // assert
-            Assert.IsTrue(NdArray<int>.All(finite));
+            Assert.True(NdArray<int>.All(finite));
         }
 
-        [TestMethod]
+        [Fact]
         public void AllFinite()
         {
             // arrange
@@ -1144,10 +1143,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var finite = NdArray<int>.AllFinite(inputA);
 
             // assert
-            Assert.IsTrue(finite);
+            Assert.True(finite);
         }
 
-        [TestMethod]
+        [Fact]
         public void MaxAxis()
         {
             // arrange
@@ -1158,10 +1157,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var max = NdArray<int>.MaxAxis(0, source);
 
             // assert
-            Assert.AreEqual(9, max.Value);
+            Assert.Equal(9, max.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void MaxNdArray()
         {
             // arrange
@@ -1172,10 +1171,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var max = NdArray<int>.MaxNdArray(source);
 
             // assert
-            Assert.AreEqual(9, max.Value);
+            Assert.Equal(9, max.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Max()
         {
             // arrange
@@ -1186,10 +1185,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var max = NdArray<int>.Max(source);
 
             // assert
-            Assert.AreEqual(9, max);
+            Assert.Equal(9, max);
         }
 
-        [TestMethod]
+        [Fact]
         public void MinAxis()
         {
             // arrange
@@ -1200,10 +1199,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var min = NdArray<int>.MinAxis(0, source);
 
             // assert
-            Assert.AreEqual(0, min.Value);
+            Assert.Equal(0, min.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void MinNdArray()
         {
             // arrange
@@ -1214,10 +1213,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var min = NdArray<int>.MinNdArray(source);
 
             // assert
-            Assert.AreEqual(0, min.Value);
+            Assert.Equal(0, min.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Min()
         {
             // arrange
@@ -1228,10 +1227,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var min = NdArray<int>.Min(source);
 
             // assert
-            Assert.AreEqual(0, min);
+            Assert.Equal(0, min);
         }
 
-        [TestMethod]
+        [Fact]
         public void SumAxis()
         {
             // arrange
@@ -1242,10 +1241,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var sum = NdArray<int>.SumAxis(0, source);
 
             // assert
-            Assert.AreEqual(45, sum.Value);
+            Assert.Equal(45, sum.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void SumNdArray()
         {
             // arrange
@@ -1256,10 +1255,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var sum = NdArray<int>.SumNdArray(source);
 
             // assert
-            Assert.AreEqual(45, sum.Value);
+            Assert.Equal(45, sum.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Sum()
         {
             // arrange
@@ -1270,10 +1269,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var sum = NdArray<int>.Sum(source);
 
             // assert
-            Assert.AreEqual(45, sum);
+            Assert.Equal(45, sum);
         }
 
-        [TestMethod]
+        [Fact]
         public void MeanAxis()
         {
             // arrange
@@ -1284,10 +1283,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var mean = NdArray<double>.MeanAxis(1, source);
 
             // assert
-            Assert.AreEqual(2.5, mean[0].Value);
+            Assert.Equal(2.5, mean[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Mean()
         {
             // arrange
@@ -1298,10 +1297,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var sum = NdArray<double>.Mean(source);
 
             // assert
-            Assert.AreEqual(4.5, sum);
+            Assert.Equal(4.5, sum);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductAxis()
         {
             // arrange
@@ -1312,10 +1311,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var product = NdArray<double>.ProductAxis(1, source);
 
             // assert
-            Assert.AreEqual(24.0, product[0].Value);
+            Assert.Equal(24.0, product[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductNdArray()
         {
             // arrange
@@ -1326,10 +1325,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var product = NdArray<double>.ProductNdArray(source);
 
             // assert
-            Assert.AreEqual(40320.0, product[0].Value);
+            Assert.Equal(40320.0, product[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Product()
         {
             // arrange
@@ -1340,10 +1339,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var product = NdArray<double>.Product(source);
 
             // assert
-            Assert.AreEqual(40320.0, product);
+            Assert.Equal(40320.0, product);
         }
 
-        [TestMethod]
+        [Fact]
         public void VarAxis()
         {
             // arrange
@@ -1354,10 +1353,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var var = NdArray<double>.VarAxis(1, source);
 
             // assert
-            Assert.AreEqual(1.25, var[0].Value);
+            Assert.Equal(1.25, var[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void VarAxis_Ddof1()
         {
             // arrange
@@ -1369,10 +1368,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.666666666 - var[0].Value) < Epsilon);
+            Assert.True(Math.Abs(1.666666666 - var[0].Value) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Var()
         {
             // arrange
@@ -1383,10 +1382,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var var = NdArray<double>.Var(source);
 
             // assert
-            Assert.AreEqual(5.25, var);
+            Assert.Equal(5.25, var);
         }
 
-        [TestMethod]
+        [Fact]
         public void Var_Ddof1()
         {
             // arrange
@@ -1397,10 +1396,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var var = NdArray<double>.Var(source, 1.0);
 
             // assert
-            Assert.AreEqual(6.0, var);
+            Assert.Equal(6.0, var);
         }
 
-        [TestMethod]
+        [Fact]
         public void StdAxis()
         {
             // arrange
@@ -1412,10 +1411,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.11803399 - std[0].Value) < Epsilon);
+            Assert.True(Math.Abs(1.11803399 - std[0].Value) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void StdAxis_Ddof1()
         {
             // arrange
@@ -1427,10 +1426,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.29099445 - std[0].Value) < Epsilon);
+            Assert.True(Math.Abs(1.29099445 - std[0].Value) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Std()
         {
             // arrange
@@ -1442,10 +1441,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(2.29128784747792 - std) < Epsilon);
+            Assert.True(Math.Abs(2.29128784747792 - std) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void Std_Ddof1()
         {
             // arrange
@@ -1457,10 +1456,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(2.449489742783178 - std) < Epsilon);
+            Assert.True(Math.Abs(2.449489742783178 - std) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void TraceAxis()
         {
             // arrange
@@ -1471,12 +1470,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var trace = NdArray<int>.TraceAxis(0, 1, source);
 
             // assert
-            Assert.AreEqual(36, trace[0].Value);
-            Assert.AreEqual(39, trace[1].Value);
-            Assert.AreEqual(42, trace[2].Value);
+            Assert.Equal(36, trace[0].Value);
+            Assert.Equal(39, trace[1].Value);
+            Assert.Equal(42, trace[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Trace()
         {
             // arrange
@@ -1487,12 +1486,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var trace = NdArray<int>.Trace(source);
 
             // assert
-            Assert.AreEqual(12, trace[0].Value);
-            Assert.AreEqual(39, trace[1].Value);
-            Assert.AreEqual(66, trace[2].Value);
+            Assert.Equal(12, trace[0].Value);
+            Assert.Equal(39, trace[1].Value);
+            Assert.Equal(66, trace[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiagAxis()
         {
             // arrange
@@ -1503,10 +1502,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var diag = NdArray<int>.DiagAxis(1, 2, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 3, 5 }, diag.Shape);
+            Assert.Equal(new[] { 4, 3, 5 }, diag.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Diag()
         {
             // arrange
@@ -1517,12 +1516,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var diag = NdArray<int>.Diag(source);
 
             // assert
-            Assert.AreEqual(0, diag[0].Value);
-            Assert.AreEqual(4, diag[1].Value);
-            Assert.AreEqual(8, diag[2].Value);
+            Assert.Equal(0, diag[0].Value);
+            Assert.Equal(4, diag[1].Value);
+            Assert.Equal(8, diag[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Concat()
         {
             // arrange
@@ -1538,10 +1537,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var concat = NdArray<int>.Concat(ConcatAxis, inputs);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 53 }, concat.Shape);
+            Assert.Equal(new[] { 4, 53 }, concat.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Copy_ColumnMajor()
         {
             // arrange
@@ -1551,11 +1550,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var copy = NdArray<int>.Copy(source, Order.ColumnMajor);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 5 }, copy.Shape);
-            CollectionAssert.AreEqual(new[] { 1, 2 }, copy.Layout.Stride);
+            Assert.Equal(new[] { 2, 5 }, copy.Shape);
+            Assert.Equal(new[] { 1, 2 }, copy.Layout.Stride);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiagMatAxis()
         {
             // arrange
@@ -1567,10 +1566,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var diagMat = NdArray<int>.DiagMatAxis(axis1, axis2, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 4, 3 }, diagMat.Shape);
+            Assert.Equal(new[] { 4, 4, 3 }, diagMat.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiagMat()
         {
             // arrange
@@ -1580,10 +1579,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var diagMat = NdArray<int>.DiagMat(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 3 }, diagMat.Shape);
+            Assert.Equal(new[] { 3, 3 }, diagMat.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiffAxis()
         {
             // arrange
@@ -1593,10 +1592,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = NdArray<int>.DiffAxis(1, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 2 }, result.Shape);
+            Assert.Equal(new[] { 3, 2 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Transpos()
         {
             // arrange
@@ -1606,13 +1605,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = NdArray<int>.Transpos(source);
 
             // assert
-            Assert.AreEqual(0, result[new[] { 0, 0 }]);
-            Assert.AreEqual(1, result[new[] { 1, 0 }]);
-            Assert.AreEqual(2, result[new[] { 0, 1 }]);
-            Assert.AreEqual(3, result[new[] { 1, 1 }]);
+            Assert.Equal(0, result[new[] { 0, 0 }]);
+            Assert.Equal(1, result[new[] { 1, 0 }]);
+            Assert.Equal(2, result[new[] { 0, 1 }]);
+            Assert.Equal(3, result[new[] { 1, 1 }]);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeastNd()
         {
             // arrange
@@ -1623,10 +1622,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.AtLeastNd(MinNumDim, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 2, 2 }, output.Shape);
+            Assert.Equal(new[] { 1, 2, 2 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeast1d()
         {
             // arrange
@@ -1637,10 +1636,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.AtLeast1d(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1 }, output.Shape);
+            Assert.Equal(new[] { 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeast2d()
         {
             // arrange
@@ -1651,10 +1650,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.AtLeast2d(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1 }, output.Shape);
+            Assert.Equal(new[] { 1, 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeast3d()
         {
             // arrange
@@ -1665,10 +1664,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.AtLeast3d(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1, 1 }, output.Shape);
+            Assert.Equal(new[] { 1, 1, 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastDim()
         {
             // arrange
@@ -1678,10 +1677,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.BroadCastDim(1, 9, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 9, 5 }, output.Shape);
+            Assert.Equal(new[] { 3, 9, 5 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastTo()
         {
             // arrange
@@ -1691,10 +1690,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.BroadCastTo(new[] { 2, 7, 3 }, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 7, 3 }, output.Shape);
+            Assert.Equal(new[] { 2, 7, 3 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSame_Two()
         {
             // arrange
@@ -1705,11 +1704,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2) = NdArray<int>.BroadCastToSame(input1, input2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSame_Three()
         {
             // arrange
@@ -1721,12 +1720,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2, output3) = NdArray<int>.BroadCastToSame(input1, input2, input3);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output3.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSame_Many()
         {
             // arrange
@@ -1739,13 +1738,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var outputs = NdArray<int>.BroadCastToSame(new[] { input1, input2, input3, input4 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[0].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[1].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[2].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[0].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[1].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[2].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSameInDims_Two()
         {
             // arrange
@@ -1756,11 +1755,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2) = NdArray<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 7, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 7, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSameInDims_Three()
         {
             // arrange
@@ -1772,12 +1771,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2, output3) = NdArray<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2, input3);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 2, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 5, 5 }, output2.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+            Assert.Equal(new[] { 3, 2, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 5, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output3.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSameInDims_Many()
         {
             // arrange
@@ -1790,13 +1789,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var outputs = NdArray<int>.BroadCastToSameInDims(new[] { 0, 2 }, new[] { input1, input2, input3, input4 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 2, 5 }, outputs[0].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 5 }, outputs[1].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 4, 5 }, outputs[2].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 5, 5 }, outputs[3].Shape);
+            Assert.Equal(new[] { 2, 2, 5 }, outputs[0].Shape);
+            Assert.Equal(new[] { 2, 3, 5 }, outputs[1].Shape);
+            Assert.Equal(new[] { 2, 4, 5 }, outputs[2].Shape);
+            Assert.Equal(new[] { 2, 5, 5 }, outputs[3].Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void CutLeft()
         {
             // arrange
@@ -1806,10 +1805,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.CutLeft(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3 }, output.Shape);
+            Assert.Equal(new[] { 2, 3 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void CutRight()
         {
             // arrange
@@ -1819,10 +1818,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.CutRight(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 2 }, output.Shape);
+            Assert.Equal(new[] { 1, 2 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Flatten()
         {
             // arrange
@@ -1832,10 +1831,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.Flatten(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 24 }, output.Shape);
+            Assert.Equal(new[] { 24 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void InsertAxis()
         {
             // arrange
@@ -1845,10 +1844,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.InsertAxis(1, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 1, 3, 4 }, output.Shape);
+            Assert.Equal(new[] { 2, 1, 3, 4 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBroadcasted_WithBroadCastedNdArray_ReturnTrue()
         {
             // arrange
@@ -1859,10 +1858,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.IsBroadcasted(broadCasted);
 
             // assert
-            Assert.IsTrue(output);
+            Assert.True(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadLeft()
         {
             // arrange
@@ -1872,10 +1871,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.PadLeft(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, output.Shape);
+            Assert.Equal(new[] { 1, 2, 3, 4 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadRight()
         {
             // arrange
@@ -1885,10 +1884,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.PadRight(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 1 }, output.Shape);
+            Assert.Equal(new[] { 2, 3, 4, 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadToSame_Two()
         {
             // arrange
@@ -1899,11 +1898,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2) = NdArray<int>.PadToSame(input1, input2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 1, 4, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadToSamee_Three()
         {
             // arrange
@@ -1915,12 +1914,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2, output3) = NdArray<int>.PadToSame(input1, input2, input3);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output2.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+            Assert.Equal(new[] { 1, 1, 5 }, output1.Shape);
+            Assert.Equal(new[] { 1, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output3.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadToSame_Many()
         {
             // arrange
@@ -1933,13 +1932,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var outputs = NdArray<int>.PadToSame(new[] { input1, input2, input3, input4 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1, 1, 5 }, outputs[0].Shape);
-            CollectionAssert.AreEqual(new[] { 1, 1, 4, 5 }, outputs[1].Shape);
-            CollectionAssert.AreEqual(new[] { 1, 3, 4, 5 }, outputs[2].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
+            Assert.Equal(new[] { 1, 1, 1, 5 }, outputs[0].Shape);
+            Assert.Equal(new[] { 1, 1, 4, 5 }, outputs[1].Shape);
+            Assert.Equal(new[] { 1, 3, 4, 5 }, outputs[2].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PermuteAxes()
         {
             // arrange
@@ -1949,10 +1948,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.PermuteAxes(new[] { 1, 0, 3, 2 }, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 2, 5, 4 }, output.Shape);
+            Assert.Equal(new[] { 3, 2, 5, 4 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void ReverseAxis()
         {
             // arrange
@@ -1962,11 +1961,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.ReverseAxis(0, source);
 
             // assert
-            Assert.AreEqual(4, output.Shape[0]);
-            Assert.AreEqual(-1, output.Layout.Stride[0]);
+            Assert.Equal(4, output.Shape[0]);
+            Assert.Equal(-1, output.Layout.Stride[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void SwapDim()
         {
             // arrange
@@ -1976,10 +1975,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.SwapDim(0, 2, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 3, 2 }, output.Shape);
+            Assert.Equal(new[] { 4, 3, 2 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void LogicalNegate()
         {
             // arrange
@@ -1989,10 +1988,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.Not(source);
 
             // assert
-            Assert.IsTrue(NdArray<bool>.All(output));
+            Assert.True(NdArray<bool>.All(output));
         }
 
-        [TestMethod]
+        [Fact]
         public void LogicalAnd()
         {
             // arrange
@@ -2005,10 +2004,10 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expected = NdArray<bool>.Zeros(HostDevice.Instance, new int[] { 4 });
             var result = expected == output;
-            Assert.IsTrue(NdArray<bool>.All(result));
+            Assert.True(NdArray<bool>.All(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void LogicalOr()
         {
             // arrange
@@ -2021,10 +2020,10 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             var expected = NdArray<bool>.Ones(HostDevice.Instance, new int[] { 4 });
             var result = expected == output;
-            Assert.IsTrue(NdArray<bool>.All(result));
+            Assert.True(NdArray<bool>.All(result));
         }
 
-        [TestMethod]
+        [Fact]
         public void LogicalXor()
         {
             // arrange
@@ -2036,11 +2035,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.Xor(input1, input2);
 
             // assert
-            Assert.AreEqual(false, output[0].Value);
-            Assert.AreEqual(true, output[1].Value);
+            Assert.False(output[0].Value);
+            Assert.True(output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllIndex()
         {
             // arrange
@@ -2050,18 +2049,18 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.AllIndex(array);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 0 }, output[0]);
-            CollectionAssert.AreEqual(new[] { 0, 1 }, output[1]);
-            CollectionAssert.AreEqual(new[] { 0, 2 }, output[2]);
-            CollectionAssert.AreEqual(new[] { 1, 0 }, output[3]);
-            CollectionAssert.AreEqual(new[] { 1, 1 }, output[4]);
-            CollectionAssert.AreEqual(new[] { 1, 2 }, output[5]);
-            CollectionAssert.AreEqual(new[] { 2, 0 }, output[6]);
-            CollectionAssert.AreEqual(new[] { 2, 1 }, output[7]);
-            CollectionAssert.AreEqual(new[] { 2, 2 }, output[8]);
+            Assert.Equal(new[] { 0, 0 }, output[0]);
+            Assert.Equal(new[] { 0, 1 }, output[1]);
+            Assert.Equal(new[] { 0, 2 }, output[2]);
+            Assert.Equal(new[] { 1, 0 }, output[3]);
+            Assert.Equal(new[] { 1, 1 }, output[4]);
+            Assert.Equal(new[] { 1, 2 }, output[5]);
+            Assert.Equal(new[] { 2, 0 }, output[6]);
+            Assert.Equal(new[] { 2, 1 }, output[7]);
+            Assert.Equal(new[] { 2, 2 }, output[8]);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllElements()
         {
             // arrange
@@ -2071,10 +2070,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.AllElements(array);
 
             // assert
-            CollectionAssert.AreEqual(Enumerable.Range(0, 9).ToArray(), output);
+            Assert.Equal(Enumerable.Range(0, 9).ToArray(), output);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllAxis()
         {
             // arrange
@@ -2086,11 +2085,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output1 = NdArray<bool>.AllAxis(1, source);
 
             // assert
-            Assert.AreEqual(true, output0[0].Value);
-            Assert.AreEqual(true, output1[1].Value);
+            Assert.True(output0[0].Value);
+            Assert.True(output1[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllNdArray()
         {
             // arrange
@@ -2101,10 +2100,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.AllNdArray(source);
 
             // assert
-            Assert.AreEqual(false, output[0].Value);
+            Assert.False(output[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void All()
         {
             // arrange
@@ -2115,10 +2114,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.All(source);
 
             // assert
-            Assert.AreEqual(false, output);
+            Assert.False(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void AnyAxis()
         {
             // arrange
@@ -2130,11 +2129,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output1 = NdArray<bool>.AnyAxis(1, source);
 
             // assert
-            Assert.AreEqual(true, output0[1].Value);
-            Assert.AreEqual(false, output1[1].Value);
+            Assert.True(output0[1].Value);
+            Assert.False(output1[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void AnyNdArray()
         {
             // arrange
@@ -2145,10 +2144,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.AnyNdArray(source);
 
             // assert
-            Assert.AreEqual(true, output[0].Value);
+            Assert.True(output[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Any()
         {
             // arrange
@@ -2159,10 +2158,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.Any(source);
 
             // assert
-            Assert.AreEqual(true, output);
+            Assert.True(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrueAxis()
         {
             // arrange
@@ -2176,11 +2175,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output1 = NdArray<bool>.CountTrueAxis(1, source);
 
             // assert
-            Assert.AreEqual(1, output0[0].Value);
-            Assert.AreEqual(2, output1[1].Value);
+            Assert.Equal(1, output0[0].Value);
+            Assert.Equal(2, output1[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrueNdArray()
         {
             // arrange
@@ -2193,10 +2192,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.CountTrueNdArray(source);
 
             // assert
-            Assert.AreEqual(5, output[0].Value);
+            Assert.Equal(5, output[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CountTrue()
         {
             // arrange
@@ -2209,10 +2208,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<bool>.CountTrue(source);
 
             // assert
-            Assert.AreEqual(5, output);
+            Assert.Equal(5, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void IfThenElse()
         {
             // arrange
@@ -2227,13 +2226,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.IfThenElse(condition, ifTrue, ifFalse);
 
             // assert
-            Assert.AreEqual(0, output[0].Value);
-            Assert.AreEqual(1, output[1].Value);
-            Assert.AreEqual(0, output[2].Value);
-            Assert.AreEqual(1, output[3].Value);
+            Assert.Equal(0, output[0].Value);
+            Assert.Equal(1, output[1].Value);
+            Assert.Equal(0, output[2].Value);
+            Assert.Equal(1, output[3].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMaxAxis()
         {
             // arrange
@@ -2243,11 +2242,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.ArgMaxAxis(1, source);
 
             // assert
-            Assert.AreEqual(3, output[0].Value);
-            Assert.AreEqual(3, output[1].Value);
+            Assert.Equal(3, output[0].Value);
+            Assert.Equal(3, output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMax()
         {
             // arrange
@@ -2257,10 +2256,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.ArgMax(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 3 }, output);
+            Assert.Equal(new[] { 1, 3 }, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMinAxis()
         {
             // arrange
@@ -2270,11 +2269,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.ArgMinAxis(1, source);
 
             // assert
-            Assert.AreEqual(0, output[0].Value);
-            Assert.AreEqual(0, output[1].Value);
+            Assert.Equal(0, output[0].Value);
+            Assert.Equal(0, output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgMin()
         {
             // arrange
@@ -2284,10 +2283,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.ArgMin(source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 0 }, output);
+            Assert.Equal(new[] { 0, 0 }, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void FindAxis()
         {
             // arrange
@@ -2297,11 +2296,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.FindAxis(2, 1, source);
 
             // assert
-            Assert.AreEqual(2, output[0].Value);
-            Assert.AreEqual(SpecialIdx.NotFound, output[1].Value);
+            Assert.Equal(2, output[0].Value);
+            Assert.Equal(SpecialIdx.NotFound, output[1].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryFind()
         {
             // arrange
@@ -2312,10 +2311,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.TryFind(2, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 1 }, output);
+            Assert.Equal(new[] { 0, 1 }, output);
         }
 
-        [TestMethod]
+        [Fact]
         public void TryFind_NotFound()
         {
             // arrange
@@ -2325,10 +2324,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.TryFind(10, source);
 
             // assert
-            Assert.IsTrue(output.Length == 0);
+            Assert.True(output.Length == 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void Find()
         {
             // arrange
@@ -2339,40 +2338,40 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = NdArray<int>.Find(2, source);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 0, 1 }, output);
+            Assert.Equal(new[] { 0, 1 }, output);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void Find_NotFound_ThrowException()
         {
             // arrange
             var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var output = NdArray<int>.Find(10, source);
+            var exception = Assert.Throws<InvalidOperationException>(() => NdArray<int>.Find(10, source));
+            Assert.Equal("Value 10 was not found in specifed NdArray.", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void AssertBool_NotBool_ThrowException()
         {
             // arrange
             var source = NdArray<int>.Arange(HostDevice.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var _ = source.AssertBool();
+            var exception = Assert.Throws<InvalidOperationException>(() => source.AssertBool());
+            Assert.Equal("The operation requires a NdArray<bool> but the data type of the specified NdArray is System.Int32.", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void AssertInt_NotInt_ThrowException()
         {
             // arrange
             var source = NdArray<uint>.Arange(HostDevice.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
 
             // action
-            var _ = source.AssertBool();
+            var exception = Assert.Throws<InvalidOperationException>(() => source.AssertInt());
+            Assert.Equal("The operation requires a NdArray<System.Int32> but the data type of the specified NdArray is System.UInt32.", exception.Message);
         }
 
         private struct UnKownValueTypeForTestOnly

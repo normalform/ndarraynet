@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class ReductionsFunctionTests
     {
-        [TestMethod]
+        [Fact]
         public void MaxAxis()
         {
             // arrange
@@ -48,10 +47,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var max = ReductionFunction<double>.MaxAxis(1, input);
 
             // assert
-            Assert.AreEqual(4.0, max[0].Value);
+            Assert.Equal(4.0, max[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void MinAxis()
         {
             // arrange
@@ -62,10 +61,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var min = ReductionFunction<double>.MinAxis(1, input);
 
             // assert
-            Assert.AreEqual(1.0, min[0].Value);
+            Assert.Equal(1.0, min[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void MaxNdArray()
         {
             // arrange
@@ -76,10 +75,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var max = ReductionFunction<double>.MaxNdArray(input);
 
             // assert
-            Assert.AreEqual(8.0, max[0].Value);
+            Assert.Equal(8.0, max[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void MinNdArray()
         {
             // arrange
@@ -90,10 +89,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var min = ReductionFunction<double>.MinNdArray(input);
 
             // assert
-            Assert.AreEqual(1.0, min[0].Value);
+            Assert.Equal(1.0, min[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void SumAxis()
         {
             // arrange
@@ -104,10 +103,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var sum = ReductionFunction<double>.SumAxis(1, input);
 
             // assert
-            Assert.AreEqual(10.0, sum[0].Value);
+            Assert.Equal(10.0, sum[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void SumNdArray()
         {
             // arrange
@@ -118,10 +117,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var sum = ReductionFunction<double>.SumNdArray(input);
 
             // assert
-            Assert.AreEqual(36.0, sum[0].Value);
+            Assert.Equal(36.0, sum[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void MeanAxis()
         {
             // arrange
@@ -132,10 +131,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var mean = ReductionFunction<double>.MeanAxis(1, input);
 
             // assert
-            Assert.AreEqual(2.5, mean[0].Value);
+            Assert.Equal(2.5, mean[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Mean()
         {
             // arrange
@@ -146,10 +145,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var sum = ReductionFunction<double>.Mean(input);
 
             // assert
-            Assert.AreEqual(4.5, sum);
+            Assert.Equal(4.5, sum);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductAxis()
         {
             // arrange
@@ -160,10 +159,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var product = ReductionFunction<double>.ProductAxis(1, input);
 
             // assert
-            Assert.AreEqual(24.0, product[0].Value);
+            Assert.Equal(24.0, product[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductNdArray()
         {
             // arrange
@@ -174,10 +173,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var product = ReductionFunction<double>.ProductNdArray(input);
 
             // assert
-            Assert.AreEqual(40320.0, product[0].Value);
+            Assert.Equal(40320.0, product[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void VarAxis()
         {
             // arrange
@@ -188,10 +187,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var var = ReductionFunction<double>.VarAxis(1, input);
 
             // assert
-            Assert.AreEqual(1.25, var[0].Value);
+            Assert.Equal(1.25, var[0].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void VarAxis_Ddof1()
         {
             // arrange
@@ -203,10 +202,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.666666666 - var[0].Value) < Epsilon);
+            Assert.True(Math.Abs(1.666666666 - var[0].Value) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void StdAxis()
         {
             // arrange
@@ -218,10 +217,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.11803399 - std[0].Value) < Epsilon);
+            Assert.True(Math.Abs(1.11803399 - std[0].Value) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void StdAxis_Ddof1()
         {
             // arrange
@@ -233,10 +232,10 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // assert
             const double Epsilon = 1e-8;
-            Assert.IsTrue(Math.Abs(1.29099445 - std[0].Value) < Epsilon);
+            Assert.True(Math.Abs(1.29099445 - std[0].Value) < Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void TraceAxis()
         {
             // arrange
@@ -247,12 +246,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var trace = ReductionFunction<int>.TraceAxis(0, 1, input);
 
             // assert
-            Assert.AreEqual(36, trace[0].Value);
-            Assert.AreEqual(39, trace[1].Value);
-            Assert.AreEqual(42, trace[2].Value);
+            Assert.Equal(36, trace[0].Value);
+            Assert.Equal(39, trace[1].Value);
+            Assert.Equal(42, trace[2].Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void Trace()
         {
             // arrange
@@ -263,13 +262,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var trace = ReductionFunction<int>.Trace(input);
 
             // assert
-            Assert.AreEqual(12, trace[0].Value);
-            Assert.AreEqual(39, trace[1].Value);
-            Assert.AreEqual(66, trace[2].Value);
+            Assert.Equal(12, trace[0].Value);
+            Assert.Equal(39, trace[1].Value);
+            Assert.Equal(66, trace[2].Value);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Trace_WithInvalidDimension_ThrowException()
         {
             // arrange
@@ -277,7 +275,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var input = NdArray<int>.Arange(device, 0, 27, 1);
 
             // action
-            var trace = ReductionFunction<int>.Trace(input);
+            var exception = Assert.Throws<ArgumentException>(() => ReductionFunction<int>.Trace(input));
+            Assert.Equal("Need at least a two dimensional array for trace but got 1 dimensional and it's shape is [27].\r\nParameter name: source", exception.Message);
         }
     }
 }

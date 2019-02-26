@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class ShapeFunctionTests
     {
-        [TestMethod]
+        [Fact]
         public void AtLeastNd_SameDimWithInput_ReturnSameNdArray()
         {
             // arrange
@@ -48,10 +47,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.AtLeastNd(MinNumDim, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 2 }, output.Shape);
+            Assert.Equal(new[] { 2, 2 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeastNd_SmallerDimThanInput_ReturnSameNdArray()
         {
             // arrange
@@ -62,10 +61,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.AtLeastNd(MinNumDim, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 2 }, output.Shape);
+            Assert.Equal(new[] { 2, 2 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeastNd_GreaterDimThanInput_ReturnNewNdArray()
         {
             // arrange
@@ -76,10 +75,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.AtLeastNd(MinNumDim, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 2, 2 }, output.Shape);
+            Assert.Equal(new[] { 1, 2, 2 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeast1d()
         {
             // arrange
@@ -90,10 +89,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.AtLeast1d(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1 }, output.Shape);
+            Assert.Equal(new[] { 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeast2d()
         {
             // arrange
@@ -104,10 +103,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.AtLeast2d(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1 }, output.Shape);
+            Assert.Equal(new[] { 1, 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void AtLeast3d()
         {
             // arrange
@@ -118,10 +117,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.AtLeast3d(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1, 1 }, output.Shape);
+            Assert.Equal(new[] { 1, 1, 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastDim()
         {
             // arrange
@@ -131,10 +130,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.BroadCastDim(1, 9, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 9, 5 }, output.Shape);
+            Assert.Equal(new[] { 3, 9, 5 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastTo()
         {
             // arrange
@@ -144,10 +143,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.BroadCastTo(new[] { 2, 7, 3 }, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 7, 3 }, output.Shape);
+            Assert.Equal(new[] { 2, 7, 3 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSame_Two()
         {
             // arrange
@@ -158,11 +157,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2) = ShapeFunction<int>.BroadCastToSame(input1, input2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSame_Three()
         {
             // arrange
@@ -174,12 +173,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2, output3) = ShapeFunction<int>.BroadCastToSame(input1, input2, input3);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output3.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSame_Many()
         {
             // arrange
@@ -192,13 +191,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var outputs = ShapeFunction<int>.BroadCastToSame(new[] { input1, input2, input3, input4 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[0].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[1].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[2].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[0].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[1].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[2].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSameInDims_Two()
         {
             // arrange
@@ -209,11 +208,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2) = ShapeFunction<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 7, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 7, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSameInDims_Three()
         {
             // arrange
@@ -225,12 +224,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2, output3) = ShapeFunction<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2, input3);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 2, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 5, 5 }, output2.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+            Assert.Equal(new[] { 3, 2, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 5, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output3.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void BroadCastToSameInDims_Many()
         {
             // arrange
@@ -243,13 +242,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var outputs = ShapeFunction<int>.BroadCastToSameInDims(new[] { 0, 2 }, new[] { input1, input2, input3, input4 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 2, 5 }, outputs[0].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 5 }, outputs[1].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 4, 5 }, outputs[2].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 5, 5 }, outputs[3].Shape);
+            Assert.Equal(new[] { 2, 2, 5 }, outputs[0].Shape);
+            Assert.Equal(new[] { 2, 3, 5 }, outputs[1].Shape);
+            Assert.Equal(new[] { 2, 4, 5 }, outputs[2].Shape);
+            Assert.Equal(new[] { 2, 5, 5 }, outputs[3].Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void CutLeft()
         {
             // arrange
@@ -259,10 +258,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.CutLeft(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3 }, output.Shape);
+            Assert.Equal(new[] { 2, 3 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void CutRight()
         {
             // arrange
@@ -272,10 +271,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.CutRight(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 2 }, output.Shape);
+            Assert.Equal(new[] { 1, 2 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Flatten()
         {
             // arrange
@@ -285,10 +284,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.Flatten(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 24 }, output.Shape);
+            Assert.Equal(new[] { 24 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void InsertAxis()
         {
             // arrange
@@ -298,10 +297,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.InsertAxis(1, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 1, 3, 4 }, output.Shape);
+            Assert.Equal(new[] { 2, 1, 3, 4 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBroadcasted_WithBroadCastedNdArray_ReturnTrue()
         {
             // arrange
@@ -312,10 +311,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.IsBroadcasted(broadCasted);
 
             // assert
-            Assert.IsTrue(output);
+            Assert.True(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsBroadcasted_WithoutBroadCastedNdArray_ReturnFalse()
         {
             // arrange
@@ -325,10 +324,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.IsBroadcasted(input);
 
             // assert
-            Assert.IsFalse(output);
+            Assert.False(output);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadLeft()
         {
             // arrange
@@ -338,10 +337,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.PadLeft(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4 }, output.Shape);
+            Assert.Equal(new[] { 1, 2, 3, 4 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadRight()
         {
             // arrange
@@ -351,10 +350,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.PadRight(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 1 }, output.Shape);
+            Assert.Equal(new[] { 2, 3, 4, 1 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadToSame_Two()
         {
             // arrange
@@ -365,11 +364,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2) = ShapeFunction<int>.PadToSame(input1, input2);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 1, 4, 5 }, output1.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output2.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadToSamee_Three()
         {
             // arrange
@@ -381,12 +380,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var (output1, output2, output3) = ShapeFunction<int>.PadToSame(input1, input2, input3);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1, 5 }, output1.Shape);
-            CollectionAssert.AreEqual(new[] { 1, 4, 5 }, output2.Shape);
-            CollectionAssert.AreEqual(new[] { 3, 4, 5 }, output3.Shape);
+            Assert.Equal(new[] { 1, 1, 5 }, output1.Shape);
+            Assert.Equal(new[] { 1, 4, 5 }, output2.Shape);
+            Assert.Equal(new[] { 3, 4, 5 }, output3.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PadToSame_Many()
         {
             // arrange
@@ -399,13 +398,13 @@ namespace NdArrayNet.NdArrayUnitTest
             var outputs = ShapeFunction<int>.PadToSame(new[] { input1, input2, input3, input4 });
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 1, 1, 5 }, outputs[0].Shape);
-            CollectionAssert.AreEqual(new[] { 1, 1, 4, 5 }, outputs[1].Shape);
-            CollectionAssert.AreEqual(new[] { 1, 3, 4, 5 }, outputs[2].Shape);
-            CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
+            Assert.Equal(new[] { 1, 1, 1, 5 }, outputs[0].Shape);
+            Assert.Equal(new[] { 1, 1, 4, 5 }, outputs[1].Shape);
+            Assert.Equal(new[] { 1, 3, 4, 5 }, outputs[2].Shape);
+            Assert.Equal(new[] { 2, 3, 4, 5 }, outputs[3].Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void PermuteAxes()
         {
             // arrange
@@ -415,10 +414,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.PermuteAxes(new[] { 1, 0, 3, 2 }, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 2, 5, 4 }, output.Shape);
+            Assert.Equal(new[] { 3, 2, 5, 4 }, output.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void ReverseAxis()
         {
             // arrange
@@ -430,11 +429,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var s = output.ToString();
 
             // assert
-            Assert.AreEqual(4, output.Shape[0]);
-            Assert.AreEqual(-1, output.Layout.Stride[0]);
+            Assert.Equal(4, output.Shape[0]);
+            Assert.Equal(-1, output.Layout.Stride[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void SwapDim()
         {
             // arrange
@@ -444,11 +443,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var output = ShapeFunction<int>.SwapDim(0, 2, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 3, 2 }, output.Shape);
+            Assert.Equal(new[] { 4, 3, 2 }, output.Shape);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void ApplyLayoutFn2_InvalidFuncReturn_ThrowException()
         {
             // arrange
@@ -456,11 +454,11 @@ namespace NdArrayNet.NdArrayUnitTest
             Layout[] invalidFunc(Layout[] _) => new Layout[] { };
 
             // action
-            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, dummy, dummy);
+            var exception = Assert.Throws<InvalidOperationException>(() => ShapeFunction<int>.ApplyLayoutFn(invalidFunc, dummy, dummy));
+            Assert.Equal("Unexpected layout function result", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void ApplyLayoutFn3_InvalidFuncReturn_ThrowException()
         {
             // arrange
@@ -468,11 +466,11 @@ namespace NdArrayNet.NdArrayUnitTest
             Layout[] invalidFunc(Layout[] _) => new Layout[] { };
 
             // action
-            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, dummy, dummy, dummy);
+            var exception = Assert.Throws<InvalidOperationException>(() => ShapeFunction<int>.ApplyLayoutFn(invalidFunc, dummy, dummy, dummy));
+            Assert.Equal("Unexpected layout function result", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void ApplyLayoutFn2Dim_InvalidFuncReturn_ThrowException()
         {
             // arrange
@@ -480,11 +478,11 @@ namespace NdArrayNet.NdArrayUnitTest
             Layout[] invalidFunc(int[] dim, Layout[] _) => new Layout[] { };
 
             // action
-            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, new int[] { }, dummy, dummy);
+            var exception = Assert.Throws<InvalidOperationException>(() => ShapeFunction<int>.ApplyLayoutFn(invalidFunc, new int[] { }, dummy, dummy));
+            Assert.Equal("Unexpected layout function result", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void ApplyLayoutFn3Dim_InvalidFuncReturn_ThrowException()
         {
             // arrange
@@ -492,7 +490,8 @@ namespace NdArrayNet.NdArrayUnitTest
             Layout[] invalidFunc(int[] dim, Layout[] _) => new Layout[] { };
 
             // action
-            var output = ShapeFunction<int>.ApplyLayoutFn(invalidFunc, new int[] { }, dummy, dummy, dummy);
+            var exception = Assert.Throws<InvalidOperationException>(() => ShapeFunction<int>.ApplyLayoutFn(invalidFunc, new int[] { }, dummy, dummy, dummy));
+            Assert.Equal("Unexpected layout function result", exception.Message);
         }
     }
 }

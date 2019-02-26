@@ -29,15 +29,14 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArray.NdArrayImpl;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class NdArrayOperatorTests
     {
-        [TestMethod]
+        [Fact]
         public void DiagAxis()
         {
             // arrange
@@ -48,10 +47,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var diag = NdArrayOperator<int>.DiagAxis(1, 2, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 3, 5 }, diag.Shape);
+            Assert.Equal(new[] { 4, 3, 5 }, diag.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Diag()
         {
             // arrange
@@ -62,13 +61,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var diag = NdArrayOperator<int>.Diag(input);
 
             // assert
-            Assert.AreEqual(0, diag[0].Value);
-            Assert.AreEqual(4, diag[1].Value);
-            Assert.AreEqual(8, diag[2].Value);
+            Assert.Equal(0, diag[0].Value);
+            Assert.Equal(4, diag[1].Value);
+            Assert.Equal(8, diag[2].Value);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Diag_OneDimensionalArray_ThrowException()
         {
             // arrange
@@ -76,11 +74,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var input = NdArray<int>.Arange(device, 0, 9, 1);
 
             // action
-            var diag = NdArrayOperator<int>.Diag(input);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Diag(input));
+            Assert.Equal("Need at least a two dimensional array for diagonal but got shape [9].\r\nParameter name: source", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Concat_EmptyInput_ThrowException()
         {
             // arrange
@@ -88,11 +86,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var emptyInputs = new NdArray<int>[] { };
 
             // action
-            NdArrayOperator<int>.Concat(DummyAxis, emptyInputs);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Concat(DummyAxis, emptyInputs));
+            Assert.Equal("Cannot concatenate empty sequence of NdArray.\r\nParameter name: sources", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void Concat_AxisOutOfrangeCase1_ThrowException()
         {
             // arrange
@@ -100,11 +98,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputs = new NdArray<int>[] { NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 1 }) };
 
             // action
-            NdArrayOperator<int>.Concat(ConcatAxis, inputs);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
+            Assert.Equal("Concatenation axis 3 is out of range for shape [1,1].\r\nParameter name: axis", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void Concat_AxisOutOfrangeCase2_ThrowException()
         {
             // arrange
@@ -112,11 +110,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var inputs = new NdArray<int>[] { NdArray<int>.Zeros(HostDevice.Instance, new[] { 1, 1 }) };
 
             // action
-            NdArrayOperator<int>.Concat(ConcatAxis, inputs);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
+            Assert.Equal("Concatenation axis -1 is out of range for shape [1,1].\r\nParameter name: axis", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Concat_DifferntShapes_ThrowException()
         {
             // arrange
@@ -128,10 +126,11 @@ namespace NdArrayNet.NdArrayUnitTest
             };
 
             // action
-            NdArrayOperator<int>.Concat(ConcatAxis, inputs);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
+            Assert.Equal("Concatentation element with index 1 with shape[2,1] must be equal to shape [1,1] of the first element, except in the concatenation axis 1\r\nParameter name: sources", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Concat()
         {
             // arrange
@@ -147,10 +146,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var concat = NdArrayOperator<int>.Concat(ConcatAxis, inputs);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 53 }, concat.Shape);
+            Assert.Equal(new[] { 4, 53 }, concat.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Copy()
         {
             // arrange
@@ -160,11 +159,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var copy = NdArrayOperator<int>.Copy(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 5 }, copy.Shape);
-            CollectionAssert.AreEqual(new[] { 5, 1 }, copy.Layout.Stride);
+            Assert.Equal(new[] { 2, 5 }, copy.Shape);
+            Assert.Equal(new[] { 5, 1 }, copy.Layout.Stride);
         }
 
-        [TestMethod]
+        [Fact]
         public void Copy_ColumnMajor()
         {
             // arrange
@@ -174,12 +173,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var copy = NdArrayOperator<int>.Copy(input, Order.ColumnMajor);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 2, 5 }, copy.Shape);
-            CollectionAssert.AreEqual(new[] { 1, 2 }, copy.Layout.Stride);
+            Assert.Equal(new[] { 2, 5 }, copy.Shape);
+            Assert.Equal(new[] { 1, 2 }, copy.Layout.Stride);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void DiagMatAxis_SameAxes()
         {
             // arrange
@@ -188,11 +186,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var input = NdArray<int>.Arange(HostDevice.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
 
             // action
-            var diagMat = NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input));
+            Assert.Equal("Axes [axis1=1, axis2=1] to use for diagonal must be different\r\nParameter name: axis2", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void DiagMatAxis_InvalidAxis()
         {
             // arrange
@@ -201,10 +199,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var input = NdArray<int>.Arange(HostDevice.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
 
             // action
-            var diagMat = NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input));
+            Assert.Equal("Cannot insert axis at position 3 into array of shape [2,5].\r\nParameter name: axis2", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiagMatAxis()
         {
             // arrange
@@ -216,11 +215,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var diagMat = NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 4, 4, 3 }, diagMat.Shape);
+            Assert.Equal(new[] { 4, 4, 3 }, diagMat.Shape);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void DiagMat_Scalar_ThrowException()
         {
             // arrange
@@ -228,10 +226,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
 
             // action
-            var diagMat = NdArrayOperator<int>.DiagMat(input);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMat(input));
+            Assert.Equal("Need at leat a one-dimensional array to create a diagonal matrix\r\nParameter name: source", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiagMat()
         {
             // arrange
@@ -241,10 +240,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var diagMat = NdArrayOperator<int>.DiagMat(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 3 }, diagMat.Shape);
+            Assert.Equal(new[] { 3, 3 }, diagMat.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void DiffAxis()
         {
             // arrange
@@ -254,11 +253,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = NdArrayOperator<int>.DiffAxis(1, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 2 }, result.Shape);
+            Assert.Equal(new[] { 3, 2 }, result.Shape);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Diff_Scalar_ThrowException()
         {
             // arrange
@@ -266,10 +264,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var input = NdArray<int>.Scalar(HostDevice.Instance, DummyValue);
 
             // action
-            var diagMat = NdArrayOperator<int>.Diff(input);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Diff(input));
+            Assert.Equal("Need at least a vector to calculate diff.\r\nParameter name: source", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Diff()
         {
             // arrange
@@ -279,10 +278,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = NdArrayOperator<int>.Diff(input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 3, 2 }, result.Shape);
+            Assert.Equal(new[] { 3, 2 }, result.Shape);
         }
 
-        [TestMethod]
+        [Fact]
         public void Replicate()
         {
             // arrange
@@ -292,21 +291,21 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = NdArrayOperator<int>.Replicate(0, 10, input);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 20, 3 }, result.Shape);
+            Assert.Equal(new[] { 20, 3 }, result.Shape);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void Replicate_NegativeRepeats_ThrowException()
         {
             // arrange
             var input = NdArray<int>.Arange(HostDevice.Instance, 0, 2 * 3, 1).Reshape(new[] { 2, 3 });
 
             // action
-            var result = NdArrayOperator<int>.Replicate(0, -10, input);
+            var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Replicate(0, -10, input));
+            Assert.Equal("Number of repetitions cannot be negative.\r\nParameter name: repeats", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Transpos()
         {
             // arrange
@@ -316,10 +315,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var result = NdArrayOperator<int>.Transpos(input);
 
             // assert
-            Assert.AreEqual(0, result[new[] { 0, 0 }]);
-            Assert.AreEqual(1, result[new[] { 1, 0 }]);
-            Assert.AreEqual(2, result[new[] { 0, 1 }]);
-            Assert.AreEqual(3, result[new[] { 1, 1 }]);
+            Assert.Equal(0, result[new[] { 0, 0 }]);
+            Assert.Equal(1, result[new[] { 1, 0 }]);
+            Assert.Equal(2, result[new[] { 0, 1 }]);
+            Assert.Equal(3, result[new[] { 1, 1 }]);
         }
     }
 }

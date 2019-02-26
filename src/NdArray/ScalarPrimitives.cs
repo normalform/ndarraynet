@@ -173,7 +173,7 @@ namespace NdArrayNet
                 }
             }
 
-            var errorMessage = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
+            var errorMessage = string.Format("Cannot compile scalar primitive for type {0}", typeof(T).Name);
             throw new InvalidOperationException(errorMessage);
         }
 
@@ -188,7 +188,7 @@ namespace NdArrayNet
                 }
             }
 
-            var errorMessage = string.Format("cannot compile scalar primitive for type {0}", typeof(T).Name);
+            var errorMessage = string.Format("Cannot compile scalar primitive for type {0}", typeof(T).Name);
             throw new InvalidOperationException(errorMessage);
         }
 

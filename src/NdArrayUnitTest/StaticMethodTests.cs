@@ -29,15 +29,13 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class StaticMethodTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Fact]
         public void PrepareAxisReduceSources_WrongShape_ThrowException()
         {
             // arrange
@@ -47,7 +45,8 @@ namespace NdArrayNet.NdArrayUnitTest
             var staticMethod = new StaticMethod();
 
             // action
-            var output = staticMethod.PrepareAxisReduceSources(target, 1, source, null, Order.RowMajor);
+            var exception = Assert.Throws<InvalidOperationException>(() => staticMethod.PrepareAxisReduceSources(target, 1, source, null, Order.RowMajor));
+            Assert.Equal("Reduction of NdArray [2,4] along axis 1 gives shape [2] but target has shape [2,2].", exception.Message);
         }
     }
 }

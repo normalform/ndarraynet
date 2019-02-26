@@ -29,44 +29,40 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class BaseDeviceTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
+        [Fact]
         public void Id_WithDummy_ThrowException()
         {
             // arrange
             var dummy = new DummyBaseDevice();
 
             // action
-            var _ = dummy.Id;
+            Assert.Throws<NotImplementedException>(() => dummy.Id);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
+        [Fact]
         public void Zeroed_WithDummy_ThrowException()
         {
             // arrange
             var dummy = new DummyBaseDevice();
 
             // action
-            var _ = dummy.Zeroed;
+            Assert.Throws<NotImplementedException>(() => dummy.Zeroed);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
+        [Fact]
         public void Create_WithDummy_ThrowException()
         {
             // arrange
             var dummy = new DummyBaseDevice();
 
             // action
-            var _ = dummy.Create<int>(3);
+            Assert.Throws<NotImplementedException>(() => dummy.Create<int>(3));
         }
 
         internal class DummyBaseDevice : BaseDevice

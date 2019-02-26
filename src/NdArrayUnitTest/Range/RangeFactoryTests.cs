@@ -29,67 +29,66 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
+    using Xunit;
 
-    [TestClass]
     public class RangeFactoryTests
     {
-        [TestMethod]
+        [Fact]
         public void NewAxis_ReturnNewAxis()
         {
             // arrange & action
             var rng = RangeFactory.NewAxis;
 
             // assert
-            Assert.IsInstanceOfType(rng, typeof(NewAxis));
+            Assert.IsType<NewAxis>(rng);
         }
 
-        [TestMethod]
+        [Fact]
         public void AllFill_ReturnAllFill()
         {
             // arrange & action
             var rng = RangeFactory.AllFill;
 
             // assert
-            Assert.IsInstanceOfType(rng, typeof(AllFill));
+            Assert.IsType<AllFill>(rng);
         }
 
-        [TestMethod]
+        [Fact]
         public void Range_ReturnRange()
         {
             // arrange & action
             var rng = RangeFactory.Range(10, 30, 2) as Range;
 
             // assert
-            Assert.IsInstanceOfType(rng, typeof(Range));
-            Assert.AreEqual(10, rng.Start);
-            Assert.AreEqual(30, rng.Stop);
-            Assert.AreEqual(2, rng.Step);
+            Assert.IsType<Range>(rng);
+            Assert.Equal(10, rng.Start);
+            Assert.Equal(30, rng.Stop);
+            Assert.Equal(2, rng.Step);
         }
 
-        [TestMethod]
+        [Fact]
         public void All_ReturnRangeWithAllZeros()
         {
             // arrange & action
             var rng = RangeFactory.All as Range;
 
             // assert
-            Assert.IsInstanceOfType(rng, typeof(Range));
-            Assert.AreEqual(0, rng.Start);
-            Assert.AreEqual(0, rng.Stop);
-            Assert.AreEqual(0, rng.Step);
+            Assert.IsType<Range>(rng);
+            Assert.Equal(0, rng.Start);
+            Assert.Equal(0, rng.Stop);
+            Assert.Equal(0, rng.Step);
         }
 
-        [TestMethod]
+        [Fact]
         public void Elem_ReturnElem()
         {
             // arrange & action
             var rng = RangeFactory.Elem(100) as Elem;
 
             // assert
-            Assert.IsInstanceOfType(rng, typeof(Elem));
-            Assert.AreEqual(100, rng.Pos);
+            Assert.IsType<Elem>(rng);
+            Assert.Equal(100, rng.Pos);
         }
     }
 }

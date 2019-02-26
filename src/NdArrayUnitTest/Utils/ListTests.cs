@@ -29,26 +29,24 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class ListTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void Set_EmptyList_ThrowException()
         {
             // arrange
             var emptyList = new int[] { };
 
             // action
-            var _ = List.Set(1, 2, emptyList);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => List.Set(1, 2, emptyList));
+            Assert.Equal("Element index 1 out of bounds 0\r\nParameter name: indexToSet", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void Set_TooBigIndex_ThrowException()
         {
             // arrange
@@ -57,10 +55,11 @@ namespace NdArrayNet.NdArrayUnitTest
             const int DummyValue = 2;
 
             // action
-            var _ = List.Set(BigIndex, DummyValue, emptyList);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => List.Set(BigIndex, DummyValue, emptyList));
+            Assert.Equal("Element index 1 out of bounds 1\r\nParameter name: indexToSet", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Set_ZeroElement()
         {
             // arrange
@@ -72,10 +71,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var list = List.Set(Elem, Value, stride);
 
             // assert
-            CollectionAssert.AreEqual(new[] { Value, 1 }, list);
+            Assert.Equal(new[] { Value, 1 }, list);
         }
 
-        [TestMethod]
+        [Fact]
         public void Set_NoneZeroElement()
         {
             // arrange
@@ -87,10 +86,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var list = List.Set(Index, Value, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 9, 8, Value, 6, 5, 4, 3, 2, 1 }, list);
+            Assert.Equal(new[] { 9, 8, Value, 6, 5, 4, 3, 2, 1 }, list);
         }
 
-        [TestMethod]
+        [Fact]
         public void Without()
         {
             // arrange
@@ -100,10 +99,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var list = List.Without(1, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 3 }, list);
+            Assert.Equal(new[] { 1, 3 }, list);
         }
 
-        [TestMethod]
+        [Fact]
         public void Insert()
         {
             // arrange
@@ -113,7 +112,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var list = List.Insert(2, 9, src);
 
             // assert
-            CollectionAssert.AreEqual(new[] { 1, 2, 9, 3 }, list);
+            Assert.Equal(new[] { 1, 2, 9, 3 }, list);
         }
     }
 }

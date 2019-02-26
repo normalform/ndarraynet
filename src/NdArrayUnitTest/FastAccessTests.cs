@@ -29,14 +29,13 @@
 
 namespace NdArrayNet.NdArrayUnitTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NdArrayNet;
     using System;
+    using Xunit;
 
-    [TestClass]
     public class FastAccessTests
     {
-        [TestMethod]
+        [Fact]
         public void Offset()
         {
             // arrange
@@ -47,10 +46,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var offset = fastAccess.Offset;
 
             // assert
-            Assert.AreEqual(9, offset);
+            Assert.Equal(9, offset);
         }
 
-        [TestMethod]
+        [Fact]
         public void NumDiensions()
         {
             // arrange
@@ -61,10 +60,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var numDiensions = fastAccess.NumDiensions;
 
             // assert
-            Assert.AreEqual(2, numDiensions);
+            Assert.Equal(2, numDiensions);
         }
 
-        [TestMethod]
+        [Fact]
         public void NumElements()
         {
             // arrange
@@ -75,10 +74,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var numElements = fastAccess.NumElements;
 
             // assert
-            Assert.AreEqual(12, numElements);
+            Assert.Equal(12, numElements);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsPosValid_WithValidPos_ReturnTrue()
         {
             // arrange
@@ -89,10 +88,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var valid = fastAccess.IsPosValid(new[] { 1, 2 });
 
             // assert
-            Assert.IsTrue(valid);
+            Assert.True(valid);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsPosValid_WithInvalidPosWrongLength_ReturnFalse()
         {
             // arrange
@@ -103,10 +102,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var valid = fastAccess.IsPosValid(new[] { 1 });
 
             // assert
-            Assert.IsFalse(valid);
+            Assert.False(valid);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsPosValid_WithInvalidPosOutOfRangeCase1_ReturnFalse()
         {
             // arrange
@@ -117,10 +116,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var valid = fastAccess.IsPosValid(new[] { 3, 2 });
 
             // assert
-            Assert.IsFalse(valid);
+            Assert.False(valid);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsPosValid_WithInvalidPosOutOfRangeCase2_ReturnFalse()
         {
             // arrange
@@ -131,10 +130,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var valid = fastAccess.IsPosValid(new[] { 1, 4 });
 
             // assert
-            Assert.IsFalse(valid);
+            Assert.False(valid);
         }
 
-        [TestMethod]
+        [Fact]
         public void IsPosValid_WithNegativeIndex_ReturnFalse()
         {
             // arrange
@@ -145,11 +144,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var valid = fastAccess.IsPosValid(new[] { -1, 2 });
 
             // assert
-            Assert.IsFalse(valid);
+            Assert.False(valid);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void Addr_WithInvalidLength_ThrowException()
         {
             // arrange
@@ -157,11 +155,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var fastAccess = new FastAccess(layout);
 
             // action
-            var _ = fastAccess.Addr(new[] { 2 });
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => fastAccess.Addr(new[] { 2 }));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Position [2] has wrong dimensionality for NdArray of shape [3,4].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void Addr_WithNegativeIndex_ThrowException()
         {
             // arrange
@@ -169,11 +167,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var fastAccess = new FastAccess(layout);
 
             // action
-            var _ = fastAccess.Addr(new[] { -1, 0 });
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => fastAccess.Addr(new[] { -1, 0 }));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Position [-1,0] is out of range for NdArray of shape [3,4].", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Fact]
         public void Addr_OutOfRange_ThrowException()
         {
             // arrange
@@ -181,10 +179,11 @@ namespace NdArrayNet.NdArrayUnitTest
             var fastAccess = new FastAccess(layout);
 
             // action
-            var _ = fastAccess.Addr(new[] { 10, 0 });
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => fastAccess.Addr(new[] { 10, 0 }));
+            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Position [10,0] is out of range for NdArray of shape [3,4].", exception.Message);
         }
 
-        [TestMethod]
+        [Fact]
         public void Addr_Zero_ReturnOffset()
         {
             // arrange
@@ -195,10 +194,10 @@ namespace NdArrayNet.NdArrayUnitTest
             var addr = fastAccess.Addr(new[] { 0, 0 });
 
             // Assert
-            Assert.AreEqual(5, addr);
+            Assert.Equal(5, addr);
         }
 
-        [TestMethod]
+        [Fact]
         public void Addr_ValidIndex_ReturnOffset()
         {
             // arrange
@@ -209,7 +208,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var addr = fastAccess.Addr(new[] { 1, 1 });
 
             // Assert
-            Assert.AreEqual(10, addr);
+            Assert.Equal(10, addr);
         }
     }
 }
