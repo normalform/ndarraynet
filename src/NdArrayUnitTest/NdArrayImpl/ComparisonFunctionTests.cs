@@ -45,11 +45,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var mockBackend = new Mock<IBackend<bool>>();
             var mockFrontend = new Mock<IFrontend<bool>>();
             mockFrontend.Setup(m => m.PrepareElemwiseSources(It.IsAny<IFrontend<int>>(), It.IsAny<IFrontend<int>>())).Returns((mockSrc1.Object, mockSrc2.Object));
+            mockFrontend.SetupGet(m => m.Backend).Returns(mockBackend.Object);
 
-            var comparisonFunction = new ComparisonFunction<bool>(mockFrontend.Object, mockBackend.Object);
+            var comparisonFunction = new ComparisonFunction();
 
             // action
-            comparisonFunction.FillEqual(mockSrc1.Object, mockSrc2.Object);
+            comparisonFunction.FillEqual(mockFrontend.Object, mockSrc1.Object, mockSrc2.Object);
 
             // assert
             mockFrontend.Verify(m => m.PrepareElemwiseSources(mockSrc1.Object, mockSrc2.Object));
@@ -61,16 +62,16 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Equal()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
-            var resultToReturn = NdArray<bool>.Zeros(device, new[] { 10 });
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config, 0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config, 0, 10, 1);
+            var resultToReturn = NdArray<bool>.Zeros(config, new[] { 10 });
 
             var mockStaticHelper = new Mock<IStaticMethod>();
             mockStaticHelper.Setup(m => m.PrepareElemwise<bool, int, int>(It.IsAny<NdArray<int>>(), It.IsAny<NdArray<int>>(), Order.RowMajor)).Returns((resultToReturn, sourceA, sourceB));
 
             // action
-            var result = ComparisonFunction<int>.Equal(mockStaticHelper.Object, sourceA, sourceB);
+            var result = ComparisonFunction.Equal(mockStaticHelper.Object, sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -86,11 +87,12 @@ namespace NdArrayNet.NdArrayUnitTest
             var mockBackend = new Mock<IBackend<bool>>();
             var mockFrontend = new Mock<IFrontend<bool>>();
             mockFrontend.Setup(m => m.PrepareElemwiseSources(It.IsAny<IFrontend<int>>(), It.IsAny<IFrontend<int>>())).Returns((mockSrc1.Object, mockSrc2.Object));
+            mockFrontend.SetupGet(m => m.Backend).Returns(mockBackend.Object);
 
-            var comparisonFunction = new ComparisonFunction<bool>(mockFrontend.Object, mockBackend.Object);
+            var comparisonFunction = new ComparisonFunction();
 
             // action
-            comparisonFunction.FillNotEqual(mockSrc1.Object, mockSrc2.Object);
+            comparisonFunction.FillNotEqual(mockFrontend.Object, mockSrc1.Object, mockSrc2.Object);
 
             // assert
             mockFrontend.Verify(m => m.PrepareElemwiseSources(mockSrc1.Object, mockSrc2.Object));
@@ -101,12 +103,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void NotEqual()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
 
             // action
-            var result = ComparisonFunction<int>.NotEqual(sourceA, sourceB);
+            var result = ComparisonFunction.NotEqual(sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -116,13 +118,13 @@ namespace NdArrayNet.NdArrayUnitTest
         public void FillLess()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
-            var result = NdArray<bool>.Zeros(device, new[] { 10 });
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
+            var result = NdArray<bool>.Zeros(config,new[] { 10 });
 
             // action
-            ComparisonFunction<bool>.FillLess(result, sourceA, sourceB);
+            ComparisonFunction.FillLess(result, sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -132,12 +134,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Less()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
 
             // action
-            var result = ComparisonFunction<int>.Less(sourceA, sourceB);
+            var result = ComparisonFunction.Less(sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -147,13 +149,13 @@ namespace NdArrayNet.NdArrayUnitTest
         public void FillLessOrEqual()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
-            var result = NdArray<bool>.Zeros(device, new[] { 10 });
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
+            var result = NdArray<bool>.Zeros(config,new[] { 10 });
 
             // action
-            ComparisonFunction<bool>.FillLessOrEqual(result, sourceA, sourceB);
+            ComparisonFunction.FillLessOrEqual(result, sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -163,12 +165,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void LessOrEqual()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
 
             // action
-            var result = ComparisonFunction<int>.LessOrEqual(sourceA, sourceB);
+            var result = ComparisonFunction.LessOrEqual(sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -178,13 +180,13 @@ namespace NdArrayNet.NdArrayUnitTest
         public void FillGreater()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
-            var result = NdArray<bool>.Zeros(device, new[] { 10 });
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
+            var result = NdArray<bool>.Zeros(config,new[] { 10 });
 
             // action
-            ComparisonFunction<bool>.FillGreater(result, sourceA, sourceB);
+            ComparisonFunction.FillGreater(result, sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -194,12 +196,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Greater()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
 
             // action
-            var result = ComparisonFunction<int>.Greater(sourceA, sourceB);
+            var result = ComparisonFunction.Greater(sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -209,13 +211,13 @@ namespace NdArrayNet.NdArrayUnitTest
         public void FillGreaterOrEqual()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
-            var result = NdArray<bool>.Zeros(device, new[] { 10 });
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
+            var result = NdArray<bool>.Zeros(config,new[] { 10 });
 
             // action
-            ComparisonFunction<bool>.FillGreaterOrEqual(result, sourceA, sourceB);
+            ComparisonFunction.FillGreaterOrEqual(result, sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -225,12 +227,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void GreaterOrEqual()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<int>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<int>.Arange(config,0, 10, 1);
 
             // action
-            var result = ComparisonFunction<int>.GreaterOrEqual(sourceA, sourceB);
+            var result = ComparisonFunction.GreaterOrEqual(sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, result.Shape);
@@ -240,11 +242,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsClose_SameIntVectors_ReturnTrues()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var source = NdArray<int>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var source = NdArray<int>.Arange(config,0, 10, 1);
 
             // action
-            var close = ComparisonFunction<int>.IsClose(source, source);
+            var close = ComparisonFunction.IsClose(source, source);
 
             // assert
             Assert.Equal(new[] { 10 }, close.Shape);
@@ -254,11 +256,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsClose_SameDoubleVectors_ReturnTrues()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var source = NdArray<double>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var source = NdArray<double>.Arange(config,0, 10, 1);
 
             // action
-            var close = ComparisonFunction<double>.IsClose(source, source);
+            var close = ComparisonFunction.IsClose(source, source);
 
             // assert
             Assert.Equal(new[] { 10 }, close.Shape);
@@ -268,11 +270,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsClose_DifferentDoubleVectors_ReturnFalses()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var source = NdArray<double>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var source = NdArray<double>.Arange(config,0, 10, 1);
 
             // action
-            var close = ComparisonFunction<double>.IsClose(source, source + 1.0);
+            var close = ComparisonFunction.IsClose(source, source + 1.0);
 
             // assert
             Assert.Equal(new[] { 10 }, close.Shape);
@@ -282,11 +284,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsClose_DifferentDoubleVectorsWithBigTolerence_ReturnTrue()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var source = NdArray<double>.Arange(device, 0, 10, 1);
+            var config = DefaultConfig.Instance;
+            var source = NdArray<double>.Arange(config,0, 10, 1);
 
             // action
-            var close = ComparisonFunction<double>.IsClose(source, source + 1.0, 2.0);
+            var close = ComparisonFunction.IsClose(source, source + 1.0, 2.0);
 
             // assert
             Assert.Equal(new[] { 10 }, close.Shape);
@@ -296,12 +298,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsClose_CloseDoubleVectors_ReturnTrue()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<double>.Arange(device, 0, 10, 1);
-            var sourceB = NdArray<double>.Arange(device, 0, 10, 1) + 1e-100;
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<double>.Arange(config,0, 10, 1);
+            var sourceB = NdArray<double>.Arange(config,0, 10, 1) + 1e-100;
 
             // action
-            var close = ComparisonFunction<double>.IsClose(sourceA, sourceB);
+            var close = ComparisonFunction.IsClose(sourceA, sourceB);
 
             // assert
             Assert.Equal(new[] { 10 }, close.Shape);
@@ -311,12 +313,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AlmostEqual_SameIntVectors_ReturnTrue()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
-            var sourceB = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Zeros(config,new[] { 2, 3, 4 });
+            var sourceB = NdArray<int>.Zeros(config,new[] { 2, 3, 4 });
 
             // action
-            var almostEqual = ComparisonFunction<int>.AlmostEqual(sourceA, sourceB);
+            var almostEqual = ComparisonFunction.AlmostEqual(sourceA, sourceB);
 
             // assert
             Assert.True(almostEqual);
@@ -326,12 +328,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AlmostEqual_DifferentIntVectors_ReturnFalse()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var sourceA = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
-            var sourceB = NdArray<int>.Zeros(device, new[] { 2, 3, 4 }) + 1;
+            var config = DefaultConfig.Instance;
+            var sourceA = NdArray<int>.Zeros(config,new[] { 2, 3, 4 });
+            var sourceB = NdArray<int>.Zeros(config,new[] { 2, 3, 4 }) + 1;
 
             // action
-            var almostEqual = ComparisonFunction<int>.AlmostEqual(sourceA, sourceB);
+            var almostEqual = ComparisonFunction.AlmostEqual(sourceA, sourceB);
 
             // assert
             Assert.False(almostEqual);
@@ -341,12 +343,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void FillIsFinite()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var source = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
-            var result = NdArray<bool>.Ones(device, new[] { 2, 3, 4 });
+            var config = DefaultConfig.Instance;
+            var source = NdArray<int>.Zeros(config,new[] { 2, 3, 4 });
+            var result = NdArray<bool>.Ones(config,new[] { 2, 3, 4 });
 
             // action
-            ComparisonFunction<int>.FillIsFinite(result, source);
+            ComparisonFunction.FillIsFinite(result, source);
 
             // assert
             Assert.True(NdArray<int>.All(result));
@@ -356,11 +358,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsFinite()
         {
             // arrange
-            var device = HostDevice.Instance;
-            var source = NdArray<int>.Zeros(device, new[] { 2, 3, 4 });
+            var config = DefaultConfig.Instance;
+            var source = NdArray<int>.Zeros(config,new[] { 2, 3, 4 });
 
             // action
-            var result = ComparisonFunction<int>.IsFinite(source);
+            var result = ComparisonFunction.IsFinite(source);
 
             // assert
             Assert.True(NdArray<int>.All(result));

@@ -1,4 +1,4 @@
-﻿// <copyright file="IDevice.cs" company="NdArrayNet">
+﻿// <copyright file="IComparisonFunction.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,14 +27,14 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArray.NdArrayImpl
 {
-    internal interface IDevice
+    using NdArrayNet;
+
+    internal interface IComparisonFunction
     {
-        IStorage<T> Create<T>(int numElements);
+        void FillNotEqual<T1, T2>(IFrontend<T1> frontend, IFrontend<T2> lhs, IFrontend<T2> rhs);
 
-        string Id { get; }
-
-        bool Zeroed { get; }
+        void FillEqual<T1, T2>(IFrontend<T1> frontend, IFrontend<T2> lhs, IFrontend<T2> rhs);
     }
 }

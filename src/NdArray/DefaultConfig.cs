@@ -1,4 +1,4 @@
-﻿// <copyright file="IDevice.cs" company="NdArrayNet">
+﻿// <copyright file="DefaultConfig.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,12 +29,40 @@
 
 namespace NdArrayNet
 {
-    internal interface IDevice
+    using NdArray.NdArrayImpl;
+
+    internal sealed class DefaultConfig : IConfig
     {
-        IStorage<T> Create<T>(int numElements);
+        private static DefaultConfig instance;
 
-        string Id { get; }
+        private DefaultConfig()
+        {
+            ComparisonFunction = new ComparisonFunction();
+        }
 
-        bool Zeroed { get; }
+        public static DefaultConfig Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new DefaultConfig();
+                }
+
+                return instance;
+            }
+        }
+
+        public IStorage<T> Create<T>(Layout layout)
+        {
+            var storage = Device.Create<T>(layout.NumElements);
+            var backend = storage.Backend(layout);
+
+            return storage;
+        }
+
+        public IDevice Device => HostDevice.Instance;
+
+        public IComparisonFunction ComparisonFunction { get; }
     }
 }

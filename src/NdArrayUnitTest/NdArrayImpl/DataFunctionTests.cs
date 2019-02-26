@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Convert()
         {
             // arrange
-            var source = NdArray<int>.Scalar(HostDevice.Instance, 2);
+            var source = NdArray<int>.Scalar(DefaultConfig.Instance, 2);
 
             // action
             var result = DataFunction<double>.Convert(source).Value;
@@ -54,7 +54,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Convert_InvalidConvert_ThrowException()
         {
             // arrange
-            var source = NdArray<int>.Scalar(HostDevice.Instance, 2);
+            var source = NdArray<int>.Scalar(DefaultConfig.Instance, 2);
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => DataFunction<string>.Convert(source));

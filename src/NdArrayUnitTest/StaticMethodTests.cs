@@ -39,8 +39,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PrepareAxisReduceSources_WrongShape_ThrowException()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
-            var target = NdArray<int>.Arange(HostDevice.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
+            var target = NdArray<int>.Arange(DefaultConfig.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
 
             var staticMethod = new StaticMethod();
 

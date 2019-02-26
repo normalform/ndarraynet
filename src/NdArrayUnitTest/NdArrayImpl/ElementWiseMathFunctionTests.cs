@@ -40,7 +40,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Abs()
         {
             // arrange
-            var srcArray = NdArray<int>.Linspace(HostDevice.Instance, -4, 4, 8);
+            var srcArray = NdArray<int>.Linspace(DefaultConfig.Instance, -4, 4, 8);
 
             // action
             var newArray = ElementWiseMathFunction<int>.Abs(srcArray);
@@ -53,7 +53,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Acos()
         {
             // arrange
-            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
+            var srcArray = NdArray<double>.Linspace(DefaultConfig.Instance, -1, 1, 3);
 
             // action
             var newArray = ElementWiseMathFunction<double>.Acos(srcArray);
@@ -69,7 +69,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Asin()
         {
             // arrange
-            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
+            var srcArray = NdArray<double>.Linspace(DefaultConfig.Instance, -1, 1, 3);
 
             // action
             var newArray = ElementWiseMathFunction<double>.Asin(srcArray);
@@ -85,7 +85,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Atan()
         {
             // arrange
-            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 3);
+            var srcArray = NdArray<double>.Linspace(DefaultConfig.Instance, -1, 1, 3);
 
             // action
             var newArray = ElementWiseMathFunction<double>.Atan(srcArray);
@@ -101,7 +101,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Ceiling()
         {
             // arrange
-            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+            var srcArray = NdArray<double>.Linspace(DefaultConfig.Instance, -1, 1, 6);
 
             // action
             var newArray = ElementWiseMathFunction<double>.Ceiling(srcArray);
@@ -116,7 +116,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Cos()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = -Math.PI / 2.0;
             srcArray[1].Value = 0.0;
             srcArray[2].Value = Math.PI / 2.0;
@@ -135,7 +135,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Cosh()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = -Math.PI / 2.0;
             srcArray[1].Value = 0.0;
             srcArray[2].Value = Math.PI / 2.0;
@@ -154,7 +154,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Exp()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 4 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 4 });
             srcArray[0].Value = -1.0;
             srcArray[1].Value = 0.0;
             srcArray[2].Value = 1.0;
@@ -175,7 +175,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Floor()
         {
             // arrange
-            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+            var srcArray = NdArray<double>.Linspace(DefaultConfig.Instance, -1, 1, 6);
 
             // action
             var newArray = ElementWiseMathFunction<double>.Floor(srcArray);
@@ -193,7 +193,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Log()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = 1.00;
             srcArray[1].Value = Math.E;
             srcArray[2].Value = 4.0;
@@ -212,7 +212,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Log10()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = 1.00;
             srcArray[1].Value = 10.0;
             srcArray[2].Value = 100.0;
@@ -231,8 +231,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Maximum()
         {
             // arrange
-            var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
-            var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
+            var srcArray1 = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
+            var srcArray2 = NdArray<double>.Ones(DefaultConfig.Instance, new[] { 3 });
 
             // action
             var newArray = ElementWiseMathFunction<double>.Maximum(srcArray1, srcArray2);
@@ -247,8 +247,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Minimum()
         {
             // arrange
-            var srcArray1 = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
-            var srcArray2 = NdArray<double>.Ones(HostDevice.Instance, new[] { 3 });
+            var srcArray1 = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
+            var srcArray2 = NdArray<double>.Ones(DefaultConfig.Instance, new[] { 3 });
 
             // action
             var newArray = ElementWiseMathFunction<double>.Minimum(srcArray1, srcArray2);
@@ -263,12 +263,12 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Pow()
         {
             // arrange
-            var lhs = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var lhs = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             lhs[0].Value = 5.0;
             lhs[1].Value = 6.0;
             lhs[2].Value = 7.0;
 
-            var rhs = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var rhs = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             rhs[0].Value = 2.00;
             rhs[1].Value = 3.0;
             rhs[2].Value = 4.0;
@@ -286,7 +286,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Round()
         {
             // arrange
-            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+            var srcArray = NdArray<double>.Linspace(DefaultConfig.Instance, -1, 1, 6);
 
             // action
             var newArray = ElementWiseMathFunction<double>.Round(srcArray);
@@ -304,7 +304,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Sign()
         {
             // arrange
-            var src = NdArray<double>.Zeros(HostDevice.Instance, new[] { 4 });
+            var src = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 4 });
             src[0].Value = -2.0;
             src[1].Value = -1.0;
             src[2].Value = 0.0;
@@ -324,7 +324,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Sin()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = -Math.PI / 2.0;
             srcArray[1].Value = 0.0;
             srcArray[2].Value = Math.PI / 2.0;
@@ -343,7 +343,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Sinh()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = -Math.PI / 2.0;
             srcArray[1].Value = 0.0;
             srcArray[2].Value = Math.PI / 2.0;
@@ -362,7 +362,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Sqrt()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = 1.0;
             srcArray[1].Value = 4.0;
             srcArray[2].Value = 16.0;
@@ -380,7 +380,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Tan()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = -Math.PI / 2.0;
             srcArray[1].Value = 0.0;
             srcArray[2].Value = Math.PI / 2.0;
@@ -399,7 +399,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Tanh()
         {
             // arrange
-            var srcArray = NdArray<double>.Zeros(HostDevice.Instance, new[] { 3 });
+            var srcArray = NdArray<double>.Zeros(DefaultConfig.Instance, new[] { 3 });
             srcArray[0].Value = -Math.PI / 2.0;
             srcArray[1].Value = 0.0;
             srcArray[2].Value = Math.PI / 2.0;
@@ -418,7 +418,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Truncate()
         {
             // arrange
-            var srcArray = NdArray<double>.Linspace(HostDevice.Instance, -1, 1, 6);
+            var srcArray = NdArray<double>.Linspace(DefaultConfig.Instance, -1, 1, 6);
 
             // action
             var newArray = ElementWiseMathFunction<double>.Truncate(srcArray);

@@ -34,6 +34,8 @@ namespace NdArrayNet
     /// </summary>
     internal interface IStorage
     {
+        IConfig Config { get; }
+
         IDevice Device { get; }
     }
 

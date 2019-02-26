@@ -99,7 +99,7 @@ namespace NdArray.NdArrayImpl
             var totalSize = sources.Sum(i => i.Shape[axis]);
             var concatShape = List.Set(axis, totalSize, shape);
 
-            var result = new NdArray<T>(concatShape, sources[0].Storage.Device);
+            var result = new NdArray<T>(concatShape, sources[0].Storage.Config);
             var position = 0;
             foreach (var source in sources)
             {
@@ -158,7 +158,7 @@ namespace NdArray.NdArrayImpl
             }
 
             var shape = List.Insert(ax2, source.Shape[ax1], source.Shape);
-            var result = NdArray<T>.Zeros(source.Storage.Device, shape);
+            var result = NdArray<T>.Zeros(source.Storage.Config, shape);
             var diag = DiagAxis(ax1, ax2, result);
             FillFrom(diag, source);
 

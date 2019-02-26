@@ -32,63 +32,54 @@ namespace NdArray.NdArrayImpl
     using System.Linq;
     using NdArrayNet;
 
-    internal class ComparisonFunction<T> : FunctionBase
+    internal class ComparisonFunction : FunctionBase, IComparisonFunction
     {
-        private readonly IFrontend<T> frontend;
-        private readonly IBackend<T> backend;
-
-        public ComparisonFunction(IFrontend<T> frontend, IBackend<T> backend)
-        {
-            this.frontend = frontend;
-            this.backend = backend;
-        }
-
-        public static NdArray<bool> Equal(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<bool> Equal<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return Equal(StaticMethod.Value, lhs, rhs);
         }
 
-        public static NdArray<bool> NotEqual(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<bool> NotEqual<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return NotEqual(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillLess<TP>(NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        public static void FillLess<T>(NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             FillLess(StaticMethod.Value, target, lhs, rhs);
         }
 
-        public static NdArray<bool> Less(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<bool> Less<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return Less(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillLessOrEqual<TP>(NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        public static void FillLessOrEqual<T>(NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             FillLessOrEqual(StaticMethod.Value, target, lhs, rhs);
         }
 
-        public static NdArray<bool> LessOrEqual(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<bool> LessOrEqual<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return LessOrEqual(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillGreater<TP>(NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        public static void FillGreater<T>(NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             FillGreater(StaticMethod.Value, target, lhs, rhs);
         }
 
-        public static NdArray<bool> Greater(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<bool> Greater<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return Greater(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillGreaterOrEqual<TP>(NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        public static void FillGreaterOrEqual<T>(NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             FillGreaterOrEqual(StaticMethod.Value, target, lhs, rhs);
         }
 
-        public static NdArray<bool> GreaterOrEqual(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<bool> GreaterOrEqual<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return GreaterOrEqual(StaticMethod.Value, lhs, rhs);
         }
@@ -101,7 +92,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsClose(NdArray<T> lhs, NdArray<T> rhs)
+        public static NdArray<bool> IsClose<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return IsCloseWithoutTolerence(lhs, rhs);
         }
@@ -140,7 +131,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>true if two NdArrays have same (within specified precision) values in all elements, otherwise false.</returns>
-        public static bool AlmostEqual(NdArray<T> lhs, NdArray<T> rhs)
+        public static bool AlmostEqual<T>(NdArray<T> lhs, NdArray<T> rhs)
         {
             return AlmostEqual(StaticMethod.Value, lhs, rhs);
         }
@@ -171,7 +162,7 @@ namespace NdArray.NdArrayImpl
             return AlmostEqual(StaticMethod.Value, lhs, rhs, absoluteTolerence, relativeTolerence);
         }
 
-        public static void FillIsFinite<TP>(NdArray<bool> target, NdArray<TP> source)
+        public static void FillIsFinite<T>(NdArray<bool> target, NdArray<T> source)
         {
             FillIsFinite(StaticMethod.Value, target, source);
         }
@@ -181,24 +172,24 @@ namespace NdArray.NdArrayImpl
         /// </summary>
         /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsFinite(NdArray<T> source)
+        public static NdArray<bool> IsFinite<T>(NdArray<T> source)
         {
             return IsFinite(StaticMethod.Value, source);
         }
 
-        public void FillNotEqual<T1>(IFrontend<T1> lhs, IFrontend<T1> rhs)
+        public void FillNotEqual<T1, T2>(IFrontend<T1> frontend, IFrontend<T2> lhs, IFrontend<T2> rhs)
         {
             var (preparedLhs, preparedRhs) = frontend.PrepareElemwiseSources(lhs, rhs);
-            backend.NotEqual((dynamic)frontend, preparedLhs, preparedRhs);
+            frontend.Backend.NotEqual((dynamic)frontend, preparedLhs, preparedRhs);
         }
 
-        public void FillEqual<T1>(IFrontend<T1> lhs, IFrontend<T1> rhs)
+        public void FillEqual<T1, T2>(IFrontend<T1> frontend, IFrontend<T2> lhs, IFrontend<T2> rhs)
         {
             var (preparedLhs, preparedRhs) = frontend.PrepareElemwiseSources(lhs, rhs);
-            backend.Equal((dynamic)frontend, preparedLhs, preparedRhs);
+            frontend.Backend.Equal((dynamic)frontend, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<bool> IsFinite(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<bool> IsFinite<T>(IStaticMethod staticMethod, NdArray<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<bool, T>(source, Order.RowMajor);
             preparedTarget.AssertBool();
@@ -208,33 +199,33 @@ namespace NdArray.NdArrayImpl
             return preparedTarget;
         }
 
-        internal static NdArray<bool> Equal(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<bool> Equal<T>(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedTarget, preapredLhs, preparedRhs) = staticHelper.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
             preparedTarget.AssertBool();
 
-            preparedTarget.ComparisonFunction.FillEqual(preapredLhs, preparedRhs);
+            preparedTarget.CompFunction.FillEqual(preparedTarget, preapredLhs, preparedRhs);
 
             return preparedTarget;
         }
 
-        internal static NdArray<bool> NotEqual(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<bool> NotEqual<T>(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
             preparedTarget.AssertBool();
 
-            preparedTarget.ComparisonFunction.FillNotEqual(preparedLhs, preparedRhs);
+            preparedTarget.CompFunction.FillNotEqual(preparedTarget,  preparedLhs, preparedRhs);
 
             return preparedTarget;
         }
 
-        internal static void FillLess<TP>(IStaticMethod staticMethod, NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        internal static void FillLess<T>(IStaticMethod staticMethod, NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.Less(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<bool> Less(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<bool> Less<T>(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticHelper.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
             preparedTarget.AssertBool();
@@ -244,13 +235,13 @@ namespace NdArray.NdArrayImpl
             return preparedTarget;
         }
 
-        internal static void FillLessOrEqual<TP>(IStaticMethod staticMethod, NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        internal static void FillLessOrEqual<T>(IStaticMethod staticMethod, NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.LessOrEqual(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<bool> LessOrEqual(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<bool> LessOrEqual<T>(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
             preparedTarget.AssertBool();
@@ -260,13 +251,13 @@ namespace NdArray.NdArrayImpl
             return preparedTarget;
         }
 
-        internal static void FillGreater<TP>(IStaticMethod staticMethod, NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        internal static void FillGreater<T>(IStaticMethod staticMethod, NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.Greater(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<bool> Greater(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<bool> Greater<T>(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticHelper.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
             preparedTarget.AssertBool();
@@ -276,13 +267,13 @@ namespace NdArray.NdArrayImpl
             return preparedTarget;
         }
 
-        internal static void FillGreaterOrEqual<TP>(IStaticMethod staticHelper, NdArray<bool> target, NdArray<TP> lhs, NdArray<TP> rhs)
+        internal static void FillGreaterOrEqual<T>(IStaticMethod staticHelper, NdArray<bool> target, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedLhs, preparedRhs) = staticHelper.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.GreaterOrEqual(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<bool> GreaterOrEqual(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<bool> GreaterOrEqual<T>(IStaticMethod staticHelper, NdArray<T> lhs, NdArray<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticHelper.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
             preparedTarget.AssertBool();
@@ -292,7 +283,7 @@ namespace NdArray.NdArrayImpl
             return preparedTarget;
         }
 
-        internal static bool AlmostEqual(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
+        internal static bool AlmostEqual<T>(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
         {
             if (Enumerable.SequenceEqual(lhs.Shape, rhs.Shape))
             {

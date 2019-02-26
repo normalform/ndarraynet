@@ -41,7 +41,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AllIndex()
         {
             // arrange
-            var source = NdArray<int>.Zeros(HostDevice.Instance, new[] { 2, 1, 3 });
+            var source = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 1, 3 });
 
             // action
             var output = IndexFunction<int>.AllIndex(source);
@@ -59,7 +59,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AllElements()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
             var output = IndexFunction<int>.AllElements(source);
@@ -72,7 +72,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ArgMaxAxis()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var output = IndexFunction<int>.ArgMaxAxis(1, source);
@@ -86,7 +86,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ArgMax()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var output = IndexFunction<int>.ArgMax(source);
@@ -99,7 +99,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ArgMinAxis()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var output = IndexFunction<int>.ArgMinAxis(1, source);
@@ -113,7 +113,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ArgMin()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var output = IndexFunction<int>.ArgMin(source);
@@ -126,7 +126,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void FindAxis()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
 
             // action
             var output = IndexFunction<int>.FindAxis(2, 1, source);
@@ -140,7 +140,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryFind()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
             source[new[] { 1, 3 }] = 2;
 
             // action
@@ -154,7 +154,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryFind_NotFound()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var output = IndexFunction<int>.TryFind(10, source);
@@ -167,7 +167,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Find()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
             source[new[] { 1, 3 }] = 2;
 
             // action
@@ -181,7 +181,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Find_NotFound_ThrowException()
         {
             // arrange
-            var source = NdArray<int>.Arange(HostDevice.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<int>.Arange(DefaultConfig.Instance, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var exception = Assert.Throws<InvalidOperationException>(() => IndexFunction<int>.Find(10, source));
@@ -192,7 +192,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrueAxis()
         {
             // arrange
-            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            var source = NdArray<bool>.Zeros(DefaultConfig.Instance, new[] { 2, 4 });
             source[new[] { 0, 0 }] = true;
             source[new[] { 0, 2 }] = true;
             source[new[] { 1, 1 }] = true;
@@ -210,7 +210,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrueNdArray()
         {
             // arrange
-            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            var source = NdArray<bool>.Zeros(DefaultConfig.Instance, new[] { 2, 4 });
             source[new[] { 0, 0 }] = true;
             source[new[] { 0, 2 }] = true;
             source[new[] { 1, 1 }] = true;
@@ -227,7 +227,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrue()
         {
             // arrange
-            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            var source = NdArray<bool>.Zeros(DefaultConfig.Instance, new[] { 2, 4 });
             source[new[] { 0, 0 }] = true;
             source[new[] { 0, 2 }] = true;
             source[new[] { 1, 1 }] = true;
@@ -244,7 +244,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TrueIndices()
         {
             // arrange
-            var source = NdArray<bool>.Zeros(HostDevice.Instance, new[] { 2, 4 });
+            var source = NdArray<bool>.Zeros(DefaultConfig.Instance, new[] { 2, 4 });
             source[new[] { 0, 0 }] = true;
             source[new[] { 0, 2 }] = true;
             source[new[] { 1, 1 }] = true;

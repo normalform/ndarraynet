@@ -29,7 +29,7 @@
 
 namespace NdArrayNet
 {
-    internal interface IBackend<T>
+    public interface IBackend<T>
     {
         DataAndLayout<T> DataAndLayout { get; }
 

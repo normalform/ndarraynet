@@ -1,4 +1,4 @@
-﻿// <copyright file="IDevice.cs" company="NdArrayNet">
+﻿// <copyright file="IConfig.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,12 +29,14 @@
 
 namespace NdArrayNet
 {
-    internal interface IDevice
+    using NdArray.NdArrayImpl;
+
+    internal interface IConfig
     {
-        IStorage<T> Create<T>(int numElements);
+        IDevice Device { get; }
 
-        string Id { get; }
+        IComparisonFunction ComparisonFunction { get; }
 
-        bool Zeroed { get; }
+        IStorage<T> Create<T>(Layout layout);
     }
 }

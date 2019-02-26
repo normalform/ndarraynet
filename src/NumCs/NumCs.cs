@@ -31,46 +31,46 @@ namespace NdArrayNet
 {
     public static class NumCs
     {
-        private static readonly IDevice Device = HostDevice.Instance;
+        private static readonly IConfig Config = DefaultConfig.Instance;
 
         public static NdArray<int> Arange(int stop)
         {
-            return NdArray<int>.Arange(Device, 0, stop, 1);
+            return NdArray<int>.Arange(Config, 0, stop, 1);
         }
 
         public static NdArray<int> Arange(int start, int stop, int step)
         {
-            return NdArray<int>.Arange(Device, start, stop, step);
+            return NdArray<int>.Arange(Config, start, stop, step);
         }
 
         public static NdArray<double> Arange(double stop)
         {
-            return NdArray<double>.Arange(Device, 0.0, stop, 1.0);
+            return NdArray<double>.Arange(Config, 0.0, stop, 1.0);
         }
 
         public static NdArray<double> Arange(double start, double stop, double step)
         {
-            return NdArray<double>.Arange(Device, start, stop, step);
+            return NdArray<double>.Arange(Config, start, stop, step);
         }
 
         public static NdArray<T> Ones<T>(int[] shape)
         {
-            return NdArray<T>.Ones(Device, shape);
+            return NdArray<T>.Ones(Config, shape);
         }
 
         public static NdArray<T> OnesLike<T>(NdArray<T> template)
         {
-            return NdArray<T>.Ones(template.Storage.Device, template.Shape);
+            return NdArray<T>.Ones(template.Storage.Config, template.Shape);
         }
 
         public static NdArray<T> Zeros<T>(int[] shape)
         {
-            return NdArray<T>.Zeros(Device, shape);
+            return NdArray<T>.Zeros(Config, shape);
         }
 
         public static NdArray<T> ZerosLike<T>(NdArray<T> template)
         {
-            return NdArray<T>.Zeros(template.Storage.Device, template.Shape);
+            return NdArray<T>.Zeros(template.Storage.Config, template.Shape);
         }
     }
 }

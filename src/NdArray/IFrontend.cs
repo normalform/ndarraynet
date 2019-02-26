@@ -38,6 +38,10 @@ namespace NdArrayNet
     {
         NdArray<T> Relayout(Layout layout);
 
+        IBackend<T> Backend { get; }
+
         (IFrontend<T1>, IFrontend<T2>) PrepareElemwiseSources<T1, T2>(IFrontend<T1> arrayA, IFrontend<T2> arrayB);
+
+        void FillEqual<T1>(IFrontend<T1> lhs, IFrontend<T1> rhs);
     }
 }

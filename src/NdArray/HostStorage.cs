@@ -56,7 +56,9 @@ namespace NdArrayNet
 
         public T[] Data { get; }
 
-        public IDevice Device => HostDevice.Instance;
+        public IConfig Config => DefaultConfig.Instance;
+
+        public IDevice Device => Config.Device;
 
         public int DataSize => Data.Length;
 

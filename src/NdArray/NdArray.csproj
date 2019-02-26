@@ -53,9 +53,11 @@
     <Compile Include="DataAndLayout.cs" />
     <Compile Include="FastAccess.cs" />
     <Compile Include="HostBackend.cs" />
+    <Compile Include="DefaultConfig.cs" />
     <Compile Include="HostDevice.cs" />
     <Compile Include="HostStorage.cs" />
     <Compile Include="IBackend.cs" />
+    <Compile Include="IConfig.cs" />
     <Compile Include="IDevice.cs" />
     <Compile Include="IFrontend.cs" />
     <Compile Include="IHostStorage.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="NdArrayImpl\DataFunction.cs" />
     <Compile Include="NdArrayImpl\ElementWiseMathFunction.cs" />
     <Compile Include="NdArrayImpl\ElementWiseOperator.cs" />
+    <Compile Include="NdArrayImpl\IComparisonFunction.cs" />
     <Compile Include="NdArrayImpl\IndexFunction.cs" />
     <Compile Include="NdArrayImpl\LogicalFunction.cs" />
     <Compile Include="NdArrayImpl\NdArrayOperator.cs" />
