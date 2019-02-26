@@ -794,7 +794,7 @@ namespace NdArrayNet
         {
             if (!(axis >= 0 && axis < layout.NumDimensions))
             {
-                var errorMessage = string.Format("axis {0} out of range for NdArray with shape {1}", axis, ErrorMessage.ShapeToString(layout.Shape));
+                var errorMessage = string.Format("Axis {0} out of range for NdArray with shape {1}", axis, ErrorMessage.ShapeToString(layout.Shape));
                 throw new ArgumentOutOfRangeException(errorMessage);
             }
         }

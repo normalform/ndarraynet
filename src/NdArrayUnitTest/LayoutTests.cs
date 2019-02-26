@@ -383,7 +383,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.BraodcastDim(0, -1, layout));
-            Assert.Equal("Size must be positive\r\nParameter name: size", exception.Message);
+            Assert.Contains("Size must be positive", exception.Message);
         }
 
         [Fact]
@@ -397,7 +397,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.BraodcastDim(DimOfTheShapeValue2, DummyValue, layout));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Dimension 1 of shape [1,2,3] must be of size 1 to broadcast.", exception.Message);
+            Assert.Contains("Dimension 1 of shape [1,2,3] must be of size 1 to broadcast.", exception.Message);
         }
 
         [Fact]
@@ -631,7 +631,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             var newShape = new[] { 3, 2, 5 };
             var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
-            Assert.Equal("Cannot reshape from shape [10] (with 10 elements) to shape [3,2,5] (with 30 elements)\r\nParameter name: shape", exception.Message);
+            Assert.Contains("Cannot reshape from shape [10] (with 10 elements) to shape [3,2,5] (with 30 elements)", exception.Message);
         }
 
         [Fact]
@@ -643,7 +643,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             var newShape = new[] { 3, SpecialIdx.Remainder, 3 };
             var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
-            Assert.Equal("Cannot reshape from [2,3,4] to [3,Remainder,3] because 24 / 9 is not an integer\r\nParameter name: shape", exception.Message);
+            Assert.Contains("Cannot reshape from [2,3,4] to [3,Remainder,3] because 24 / 9 is not an integer", exception.Message);
         }
 
         [Fact]
@@ -655,7 +655,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // action
             var newShape = new[] { 3, SpecialIdx.Remainder, SpecialIdx.Remainder };
             var exception = Assert.Throws<ArgumentException>(() => Layout.TryReshape(newShape, array));
-            Assert.Equal("Only the size of one dimension can be determined automatically, but shape was [3,Remainder,Remainder]\r\nParameter name: shape", exception.Message);
+            Assert.Contains("Only the size of one dimension can be determined automatically, but shape was [3,Remainder,Remainder]", exception.Message);
         }
 
         [Fact]
@@ -748,7 +748,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.Transpos(layout));
-            Assert.Equal("Cannot transpose non-matrix of shape [10]\r\nParameter name: source", exception.Message);
+            Assert.Contains("Cannot transpose non-matrix of shape [10]", exception.Message);
         }
 
         [Fact]
@@ -759,7 +759,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.Transpos(layout));
-            Assert.Equal("Cannot transpose non-matrix of shape []\r\nParameter name: source", exception.Message);
+            Assert.Contains("Cannot transpose non-matrix of shape []", exception.Message);
         }
 
         [Fact]
@@ -784,7 +784,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.CutLeft(layout));
-            Assert.Equal("Cannot remove dimensions from scalar\r\nParameter name: source", exception.Message);
+            Assert.Contains("Cannot remove dimensions from scalar", exception.Message);
         }
 
         [Fact]
@@ -809,7 +809,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.CutRight(layout));
-            Assert.Equal("Cannot remove dimensions from scalar\r\nParameter name: source", exception.Message);
+            Assert.Contains("Cannot remove dimensions from scalar", exception.Message);
         }
 
         [Fact]
@@ -951,7 +951,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.DiagAxis(1, 1, layout));
-            Assert.Equal("Axes to use for diagonal must be different.\r\nParameter name: ax1", exception.Message);
+            Assert.Contains("Axes to use for diagonal must be different.", exception.Message);
         }
 
         [Fact]
@@ -963,7 +963,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.DiagAxis(1, 2, layout));
-            Assert.Equal("Array must have same dimensions along axis 1 and 2 to extract diagonal but it has shape [1,2,3,4,5]\r\nParameter name: layout", exception.Message);
+            Assert.Contains("Array must have same dimensions along axis 1 and 2 to extract diagonal but it has shape [1,2,3,4,5]", exception.Message);
         }
 
         [Fact]
@@ -1056,7 +1056,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.PermuteAxes(new[] { 2, 3, 4 }, layout));
-            Assert.Equal("Permutation [2,3,4] must have same rank as shape [1,2,3,4,5].\r\nParameter name: permut", exception.Message);
+            Assert.Contains("Permutation [2,3,4] must have same rank as shape [1,2,3,4,5].", exception.Message);
         }
 
         [Fact]
@@ -1068,7 +1068,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.View(new[] { new InvalidRangeTypeForTest() }, layout));
-            Assert.Equal("Slice [NdArrayNet.NdArrayUnitTest.LayoutTests+InvalidRangeTypeForTest] is incompatible with shape [1,2,3,4,5].\r\nParameter name: ranges", exception.Message);
+            Assert.Contains("Slice [NdArrayNet.NdArrayUnitTest.LayoutTests+InvalidRangeTypeForTest] is incompatible with shape [1,2,3,4,5].", exception.Message);
         }
 
         [Fact]
@@ -1080,7 +1080,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.BroadcastDim(0, -1, layout));
-            Assert.Equal("Size must be positive\r\nParameter name: size", exception.Message);
+            Assert.Contains("Size must be positive", exception.Message);
         }
 
         [Fact]
@@ -1092,7 +1092,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Layout.BroadcastDim(1, 2, layout));
-            Assert.Equal("Dimension 1 of shape [1,2,3,4,5] must be of size 1 to broadcast.\r\nParameter name: dim", exception.Message);
+            Assert.Contains("Dimension 1 of shape [1,2,3,4,5] must be of size 1 to broadcast.", exception.Message);
         }
 
         [Fact]
@@ -1104,7 +1104,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckAxis(layout, -1));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: axis -1 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
+            Assert.Contains("Axis -1 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
         }
 
         [Fact]
@@ -1116,7 +1116,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckAxis(layout, 100));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: axis 100 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
+            Assert.Contains("Axis 100 out of range for NdArray with shape [1,2,3,4,5]", exception.Message);
         }
 
         [Fact]
@@ -1128,7 +1128,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckElementRange(false, 10, -1, new[] { RangeFactory.Elem(0) }, layout.Shape));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Index -1 out of range in slice [0] for shape [1,2,3,4,5].", exception.Message);
+            Assert.Contains("Index -1 out of range in slice [0] for shape [1,2,3,4,5].", exception.Message);
         }
 
         [Fact]
@@ -1140,7 +1140,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Layout.CheckElementRange(false, 10, 100, new[] { RangeFactory.Elem(0) }, layout.Shape));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Index 100 out of range in slice [0] for shape [1,2,3,4,5].", exception.Message);
+            Assert.Contains("Index 100 out of range in slice [0] for shape [1,2,3,4,5].", exception.Message);
         }
 
         private class InvalidRangeTypeForTest : RangeBase

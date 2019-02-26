@@ -276,7 +276,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => ReductionFunction<int>.Trace(input));
-            Assert.Equal("Need at least a two dimensional array for trace but got 1 dimensional and it's shape is [27].\r\nParameter name: source", exception.Message);
+            Assert.Contains("Need at least a two dimensional array for trace but got 1 dimensional and it's shape is [27].", exception.Message);
         }
     }
 }

@@ -208,7 +208,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArray<int>.AssertSameShape(arrayA, arrayB));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: NdArrays of shapes [3] and [2] were expected to have same shape", exception.Message);
+            Assert.Contains("NdArrays of shapes [3] and [2] were expected to have same shape", exception.Message);
         }
 
         [Fact]

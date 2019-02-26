@@ -75,7 +75,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Diag(input));
-            Assert.Equal("Need at least a two dimensional array for diagonal but got shape [9].\r\nParameter name: source", exception.Message);
+            Assert.Contains("Need at least a two dimensional array for diagonal but got shape [9].", exception.Message);
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Concat(DummyAxis, emptyInputs));
-            Assert.Equal("Cannot concatenate empty sequence of NdArray.\r\nParameter name: sources", exception.Message);
+            Assert.Contains("Cannot concatenate empty sequence of NdArray.", exception.Message);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
-            Assert.Equal("Concatenation axis 3 is out of range for shape [1,1].\r\nParameter name: axis", exception.Message);
+            Assert.Contains("Concatenation axis 3 is out of range for shape [1,1].", exception.Message);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
-            Assert.Equal("Concatenation axis -1 is out of range for shape [1,1].\r\nParameter name: axis", exception.Message);
+            Assert.Contains("Concatenation axis -1 is out of range for shape [1,1].", exception.Message);
         }
 
         [Fact]
@@ -127,7 +127,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
-            Assert.Equal("Concatentation element with index 1 with shape[2,1] must be equal to shape [1,1] of the first element, except in the concatenation axis 1\r\nParameter name: sources", exception.Message);
+            Assert.Contains("Concatentation element with index 1 with shape[2,1] must be equal to shape [1,1] of the first element, except in the concatenation axis 1", exception.Message);
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input));
-            Assert.Equal("Axes [axis1=1, axis2=1] to use for diagonal must be different\r\nParameter name: axis2", exception.Message);
+            Assert.Contains("Axes [axis1=1, axis2=1] to use for diagonal must be different", exception.Message);
         }
 
         [Fact]
@@ -200,7 +200,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input));
-            Assert.Equal("Cannot insert axis at position 3 into array of shape [2,5].\r\nParameter name: axis2", exception.Message);
+            Assert.Contains("Cannot insert axis at position 3 into array of shape [2,5].", exception.Message);
         }
 
         [Fact]
@@ -227,7 +227,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMat(input));
-            Assert.Equal("Need at leat a one-dimensional array to create a diagonal matrix\r\nParameter name: source", exception.Message);
+            Assert.Contains("Need at leat a one-dimensional array to create a diagonal matrix", exception.Message);
         }
 
         [Fact]
@@ -265,7 +265,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Diff(input));
-            Assert.Equal("Need at least a vector to calculate diff.\r\nParameter name: source", exception.Message);
+            Assert.Contains("Need at least a vector to calculate diff.", exception.Message);
         }
 
         [Fact]
@@ -302,7 +302,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Replicate(0, -10, input));
-            Assert.Equal("Number of repetitions cannot be negative.\r\nParameter name: repeats", exception.Message);
+            Assert.Contains("Number of repetitions cannot be negative.", exception.Message);
         }
 
         [Fact]

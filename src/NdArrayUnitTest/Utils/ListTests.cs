@@ -43,7 +43,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => List.Set(1, 2, emptyList));
-            Assert.Equal("Element index 1 out of bounds 0\r\nParameter name: indexToSet", exception.Message);
+            Assert.Contains("Element index 1 out of bounds 0", exception.Message);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => List.Set(BigIndex, DummyValue, emptyList));
-            Assert.Equal("Element index 1 out of bounds 1\r\nParameter name: indexToSet", exception.Message);
+            Assert.Contains("Element index 1 out of bounds 1", exception.Message);
         }
 
         [Fact]

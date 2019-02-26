@@ -156,7 +156,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => fastAccess.Addr(new[] { 2 }));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Position [2] has wrong dimensionality for NdArray of shape [3,4].", exception.Message);
+            Assert.Contains("Position [2] has wrong dimensionality for NdArray of shape [3,4].", exception.Message);
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => fastAccess.Addr(new[] { -1, 0 }));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Position [-1,0] is out of range for NdArray of shape [3,4].", exception.Message);
+            Assert.Contains("Position [-1,0] is out of range for NdArray of shape [3,4].", exception.Message);
         }
 
         [Fact]
@@ -180,7 +180,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => fastAccess.Addr(new[] { 10, 0 }));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Position [10,0] is out of range for NdArray of shape [3,4].", exception.Message);
+            Assert.Contains("Position [10,0] is out of range for NdArray of shape [3,4].", exception.Message);
         }
 
         [Fact]

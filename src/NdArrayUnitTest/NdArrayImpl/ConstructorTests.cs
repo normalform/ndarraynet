@@ -312,7 +312,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => Constructor<int>.Linspace(device, 0, 5, 1));
-            Assert.Equal("Linspace requires at least two elements.\r\nParameter name: numElement", exception.Message);
+            Assert.Contains("Linspace requires at least two elements.", exception.Message);
         }
 
         [Fact]

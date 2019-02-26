@@ -43,7 +43,7 @@ namespace NdArrayNet.NdArrayUnitTest
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new HostStorage<int>(size));
-            Assert.Equal("Specified argument was out of the range of valid values.\r\nParameter name: Cannot create host NdArray storage for 2147483648 elements, the current limit is 2147483647 elements.", exception.Message);
+            Assert.Contains("Cannot create host NdArray storage for 2147483648 elements, the current limit is 2147483647 elements.", exception.Message);
         }
 
         [Fact]
