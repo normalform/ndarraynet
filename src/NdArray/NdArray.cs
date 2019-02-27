@@ -32,7 +32,8 @@ namespace NdArrayNet
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using NdArray.NdArrayImpl;
+    using NdArray.NdFunction;
+    using NdArray.NdFunction.Comparison;
 
     /// <summary>
     /// An N-dimensional array with elements of type T.

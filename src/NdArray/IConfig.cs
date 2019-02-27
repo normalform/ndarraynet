@@ -29,7 +29,7 @@
 
 namespace NdArrayNet
 {
-    using NdArray.NdArrayImpl;
+    using NdArray.NdFunction.Comparison;
 
     public interface IConfig
     {

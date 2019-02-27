@@ -31,7 +31,7 @@ namespace NdArrayNet
 {
     using System;
     using System.Linq;
-    using NdArray.NdArrayImpl;
+    using NdArray.NdFunction;
 
     internal class StaticMethod : IStaticMethod
     {

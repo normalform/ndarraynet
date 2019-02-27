@@ -1,4 +1,4 @@
-﻿// <copyright file="IFrontend.cs" company="NdArrayNet">
+﻿// <copyright file="DataFunctionTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,27 +27,38 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArrayNet.NdArrayUnitTest
 {
-    using NdArray.NdFunction.Comparison;
+    using NdArray.NdFunction;
+    using NdArrayNet;
+    using System;
+    using Xunit;
 
-    public interface IFrontend
+    public class DataFunctionTests
     {
-        Layout Layout { get; }
+        [Fact]
+        public void Convert()
+        {
+            // arrange
+            var source = NdArray<int>.Scalar(ConfigManager.Instance, 2);
 
-        int[] Shape { get; }
-    }
+            // action
+            var result = DataFunction<double>.Convert(source).Value;
 
-    public interface IFrontend<T> : IFrontend
-    {
-        NdArray<T> Relayout(Layout layout);
+            // assert
+            Assert.IsType<double>(result);
+            Assert.Equal(2.0, result);
+        }
 
-        IBackend<T> Backend { get; }
+        [Fact]
+        public void Convert_InvalidConvert_ThrowException()
+        {
+            // arrange
+            var source = NdArray<int>.Scalar(ConfigManager.Instance, 2);
 
-        IConfig<T> Config { get; }
-
-        INdArrayComparison<T> Comparison { get; }
-
-        IConfigManager ConfigManager { get; }
+            // action
+            var exception = Assert.Throws<ArgumentException>(() => DataFunction<string>.Convert(source));
+            Assert.Equal("Type 'System.String' cannot be marshaled as an unmanaged structure; no meaningful size or offset can be computed.", exception.Message);
+        }
     }
 }

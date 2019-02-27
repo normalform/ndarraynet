@@ -29,7 +29,8 @@
 
 namespace NdArrayNet
 {
-    using NdArray.NdArrayImpl;
+    using NdArray;
+    using NdArray.NdFunction.Comparison;
 
     internal sealed class DefaultConfig<T> : IConfig<T>
     {

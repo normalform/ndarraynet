@@ -1,4 +1,4 @@
-﻿// <copyright file="IFrontend.cs" company="NdArrayNet">
+﻿// <copyright file="FunctionBase.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,27 +27,17 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArray.NdFunction
 {
-    using NdArray.NdFunction.Comparison;
+    using System;
+    using NdArrayNet;
 
-    public interface IFrontend
+    internal class FunctionBase
     {
-        Layout Layout { get; }
+        internal static readonly Lazy<IStaticMethod> StaticMethod = new Lazy<IStaticMethod>(() => new StaticMethod());
 
-        int[] Shape { get; }
-    }
-
-    public interface IFrontend<T> : IFrontend
-    {
-        NdArray<T> Relayout(Layout layout);
-
-        IBackend<T> Backend { get; }
-
-        IConfig<T> Config { get; }
-
-        INdArrayComparison<T> Comparison { get; }
-
-        IConfigManager ConfigManager { get; }
+        protected FunctionBase()
+        {
+        }
     }
 }

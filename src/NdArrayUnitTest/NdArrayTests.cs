@@ -30,11 +30,10 @@
 namespace NdArrayNet.NdArrayUnitTest
 {
     using Moq;
-    using NdArray.NdArrayImpl;
+    using NdArray.NdFunction.Comparison;
     using NdArrayNet;
     using System;
     using System.Linq;
-    using System.Linq.Expressions;
     using Xunit;
     using System.Collections.Generic;
 

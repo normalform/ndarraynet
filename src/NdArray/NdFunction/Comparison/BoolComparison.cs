@@ -1,4 +1,4 @@
-﻿// <copyright file="IFrontend.cs" company="NdArrayNet">
+﻿// <copyright file="BoolComparison.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,27 +27,14 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArrayNet
+namespace NdArray.NdFunction.Comparison
 {
-    using NdArray.NdFunction.Comparison;
+    using NdArrayNet;
 
-    public interface IFrontend
+    internal sealed class BoolComparison : BaseComparison<bool>
     {
-        Layout Layout { get; }
-
-        int[] Shape { get; }
-    }
-
-    public interface IFrontend<T> : IFrontend
-    {
-        NdArray<T> Relayout(Layout layout);
-
-        IBackend<T> Backend { get; }
-
-        IConfig<T> Config { get; }
-
-        INdArrayComparison<T> Comparison { get; }
-
-        IConfigManager ConfigManager { get; }
+        public BoolComparison(IStaticMethod staticMethod) : base(staticMethod)
+        {
+        }
     }
 }
