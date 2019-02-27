@@ -13,6 +13,7 @@ This is a hobby project after work.
 Refernce designs:
  - numpy (Python)
  - F# Tensor (F#)
+ - .Net Core Numeric.Tensor (C#)
  - xTensor (C++)
  - NumSharp (C#)
  - NumNet and BlasNet (C#)
