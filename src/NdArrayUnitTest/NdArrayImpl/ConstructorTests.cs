@@ -40,10 +40,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Arange_Start0()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Arange(config, 0, 10, 1);
+            var array = Constructor<int>.Arange(configManager, 0, 10, 1);
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
@@ -55,10 +55,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Arange_Start1()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Arange(config, 1, 10, 1);
+            var array = Constructor<int>.Arange(configManager, 1, 10, 1);
 
             // assert
             var expectedLayout = new Layout(new[] { 9 }, 0, new[] { 1 });
@@ -70,10 +70,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Arange_Step1()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Arange(config, 0, 10, 1);
+            var array = Constructor<int>.Arange(configManager, 0, 10, 1);
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
@@ -85,10 +85,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Arange_Step2()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Arange(config, 0, 10, 2);
+            var array = Constructor<int>.Arange(configManager, 0, 10, 2);
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
@@ -100,10 +100,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Arange_Stop10()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Arange(config, 0, 10, 1);
+            var array = Constructor<int>.Arange(configManager, 0, 10, 1);
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
@@ -115,10 +115,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Arange_Stop11()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Arange(config,0, 11, 1);
+            var array = Constructor<int>.Arange(configManager,0, 11, 1);
 
             // assert
             var expectedLayout = new Layout(new[] { 11 }, 0, new[] { 1 });
@@ -130,10 +130,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Counting_Int()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Counting(config,10);
+            var array = Constructor<int>.Counting(configManager,10);
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
@@ -146,10 +146,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Counting_Double()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<double>.Counting(config,10);
+            var array = Constructor<double>.Counting(configManager,10);
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
@@ -162,10 +162,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Empty()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Empty(config,3);
+            var array = Constructor<int>.Empty(configManager,3);
 
             // assert
             var expectedLayout = new Layout(new[] { 0, 0, 0 }, 0, new[] { 0, 0, 1 });
@@ -176,10 +176,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Falses()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<bool>.Falses(config,new[] { 1, 2, 3 });
+            var array = Constructor<bool>.Falses(configManager,new[] { 1, 2, 3 });
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
@@ -192,10 +192,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Filled()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Filled(config,new[] { 1, 2, 3 }, 55);
+            var array = Constructor<int>.Filled(configManager,new[] { 1, 2, 3 }, 55);
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
@@ -208,10 +208,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Identity_3by3()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Identity(config,3);
+            var array = Constructor<int>.Identity(configManager,3);
 
             // assert
             var expectedLayout = new Layout(new[] { 3, 3 }, 0, new[] { 3, 1 });
@@ -233,10 +233,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Ones()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Ones(config,new[] { 2, 2 });
+            var array = Constructor<int>.Ones(configManager,new[] { 2, 2 });
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
@@ -251,8 +251,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void OnesLike()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var zeros = NdArray<int>.Zeros(config,new[] { 2, 2 });
+            var configManager = ConfigManager.Instance;
+            var zeros = NdArray<int>.Zeros(configManager,new[] { 2, 2 });
 
             // action
             var array = Constructor<int>.OnesLike(zeros);
@@ -270,10 +270,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Linspace_Int()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Linspace(config,0, 5, 5);
+            var array = Constructor<int>.Linspace(configManager,0, 5, 5);
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
@@ -289,10 +289,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Linspace_Double()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<double>.Linspace(config,1.0, 2.0, 5);
+            var array = Constructor<double>.Linspace(configManager,1.0, 2.0, 5);
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
@@ -308,10 +308,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Linspace_InvalidNumElements_ThrowException()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var exception = Assert.Throws<ArgumentException>(() => Constructor<int>.Linspace(config,0, 5, 1));
+            var exception = Assert.Throws<ArgumentException>(() => Constructor<int>.Linspace(configManager,0, 5, 1));
             Assert.Contains("Linspace requires at least two elements.", exception.Message);
         }
 
@@ -319,11 +319,11 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Scalar()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
             const int Value = 9;
 
             // action
-            var array = Constructor<int>.Scalar(config,Value);
+            var array = Constructor<int>.Scalar(configManager,Value);
 
             // asssert
             Assert.Equal(Value, array.Value);
@@ -333,8 +333,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ScalarLike()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var referenceArray = NdArray<int>.Arange(config,0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var configManager = ConfigManager.Instance;
+            var referenceArray = NdArray<int>.Arange(configManager,0, 24, 1).Reshape(new[] { 2, 3, 4 });
             const int Value = 9;
 
             // action
@@ -348,10 +348,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Trues()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<bool>.Trues(config,new[] { 1, 2, 3 });
+            var array = Constructor<bool>.Trues(configManager,new[] { 1, 2, 3 });
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
@@ -364,10 +364,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Zeros()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var array = Constructor<int>.Zeros(config,new[] { 2, 2 });
+            var array = Constructor<int>.Zeros(configManager,new[] { 2, 2 });
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
@@ -382,8 +382,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ZerosLike()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var ones = NdArray<int>.Ones(config,new[] { 2, 2 });
+            var configManager = ConfigManager.Instance;
+            var ones = NdArray<int>.Ones(configManager,new[] { 2, 2 });
 
             // action
             var array = Constructor<int>.ZerosLike(ones);

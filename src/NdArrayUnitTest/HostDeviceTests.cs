@@ -38,40 +38,40 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Instance_CreateHostDevice()
         {
             // arrange & action
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // assert
-            Assert.IsType<HostDevice>(config.Device);
+            Assert.IsType<HostDevice>(configManager.GetConfig<int>().Device);
         }
 
         [Fact]
         public void Id()
         {
             // arrange & action
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // assert
-            Assert.Equal("Host", config.Device.Id);
+            Assert.Equal("Host", configManager.GetConfig<int>().Device.Id);
         }
 
         [Fact]
         public void Zeroed()
         {
             // arrange & action
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // assert
-            Assert.True(config.Device.Zeroed);
+            Assert.True(configManager.GetConfig<int>().Device.Zeroed);
         }
 
         [Fact]
         public void Create()
         {
             // arrange
-            var config = DefaultConfig.Instance;
+            var configManager = ConfigManager.Instance;
 
             // action
-            var storage = config.Device.Create<int>(10);
+            var storage = configManager.GetConfig<int>().Device.Create<int>(10);
 
             // assert
             Assert.IsType<HostStorage<int>>(storage);

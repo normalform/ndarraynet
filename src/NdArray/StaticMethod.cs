@@ -40,24 +40,24 @@ namespace NdArrayNet
             return LogicalFunction<bool>.All(source);
         }
 
-        public (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(IFrontend<T1> src1, IFrontend<T2> src2)
+        public (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(NdArray<T1> src1, NdArray<T2> src2)
         {
             return ShapeFunction<T1>.BroadCastToSame(src1, src2);
         }
 
-        public (NdArray<T1>, NdArray<T2>, NdArray<T3>) BroadCastToSame<T1, T2, T3>(IFrontend<T1> src1, IFrontend<T2> src2, IFrontend<T3> src3)
+        public (NdArray<T1>, NdArray<T2>, NdArray<T3>) BroadCastToSame<T1, T2, T3>(NdArray<T1> src1, NdArray<T2> src2, NdArray<T3> src3)
         {
             return ShapeFunction<T1>.BroadCastToSame(src1, src2, src3);
         }
 
-        public NdArray<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend)
+        public IFrontend<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend)
         {
             return ShapeFunction<TA>.BroadCastTo(shp, frontend);
         }
 
         public (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order)
         {
-            var target = new NdArray<TR>(array.Shape, array.Storage.Config, order);
+            var target = new NdArray<TR>(array.ConfigManager, array.Shape, order);
             return (target, array);
         }
 
@@ -65,7 +65,7 @@ namespace NdArrayNet
         {
             // AssertSameStorage [later..]
             var (arrA, arrB) = BroadCastToSame(arrayA, arrayB);
-            var target = new NdArray<TR>(arrA.Shape, arrA.Storage.Config, order);
+            var target = new NdArray<TR>(arrA.ConfigManager, arrA.Shape, order);
 
             return (target, arrA, arrB);
         }
@@ -74,18 +74,18 @@ namespace NdArrayNet
         {
             // AssertSameStorage [later..]
             var (arrA, arrB, arrC) = BroadCastToSame(arrayA, arrayB, arrayC);
-            var target = new NdArray<TR>(arrA.Shape, arrA.Storage.Config, order);
+            var target = new NdArray<TR>(arrA.ConfigManager, arrA.Shape, order);
 
             return (target, arrA, arrB, arrC);
         }
 
-        public NdArray<TA> PrepareElemwiseSources<TR, TA>(NdArray<TR> target, NdArray<TA> array)
+        public IFrontend<TA> PrepareElemwiseSources<TR, TA>(IFrontend<TR> target, IFrontend<TA> array)
         {
             // AssertSameStorage [later..]
             return BroadCastTo(target.Shape, array);
         }
 
-        public (NdArray<TA>, NdArray<TB>) PrepareElemwiseSources<TR, TA, TB>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB)
+        public (IFrontend<TA>, IFrontend<TB>) PrepareElemwiseSources<TR, TA, TB>(IFrontend<TR> target, IFrontend<TA> arrayA, IFrontend<TB> arrayB)
         {
             // AssertSameStorage [later..]
             var arrA = BroadCastTo(target.Shape, arrayA);
@@ -94,7 +94,7 @@ namespace NdArrayNet
             return (arrA, arrB);
         }
 
-        public (NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwiseSources<TR, TA, TB, TC>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC)
+        public (IFrontend<TA>, IFrontend<TB>, IFrontend<TC>) PrepareElemwiseSources<TR, TA, TB, TC>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC)
         {
             // AssertSameStorage [later..]
             var arrA = BroadCastTo(target.Shape, arrayA);
@@ -155,7 +155,7 @@ namespace NdArrayNet
         {
             CheckAxis(axis, array);
             var reducedShaped = List.Without(axis, array.Shape);
-            var target = new NdArray<TR>(reducedShaped, array.Storage.Config, order);
+            var target = new NdArray<TR>(array.ConfigManager, reducedShaped, order);
 
             return (target, array);
         }

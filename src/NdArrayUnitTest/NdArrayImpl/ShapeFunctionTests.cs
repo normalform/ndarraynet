@@ -41,7 +41,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int MinNumDim = 2;
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 2 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 2 });
 
             // action
             var output = ShapeFunction<int>.AtLeastNd(MinNumDim, input);
@@ -55,7 +55,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int MinNumDim = 1;
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 2 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 2 });
 
             // action
             var output = ShapeFunction<int>.AtLeastNd(MinNumDim, input);
@@ -69,7 +69,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int MinNumDim = 3;
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 2 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 2 });
 
             // action
             var output = ShapeFunction<int>.AtLeastNd(MinNumDim, input);
@@ -83,7 +83,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 1;
-            var input = NdArray<int>.Scalar(DefaultConfig.Instance, DummyValue);
+            var input = NdArray<int>.Scalar(ConfigManager.Instance, DummyValue);
 
             // action
             var output = ShapeFunction<int>.AtLeast1d(input);
@@ -97,7 +97,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 1;
-            var input = NdArray<int>.Scalar(DefaultConfig.Instance, DummyValue);
+            var input = NdArray<int>.Scalar(ConfigManager.Instance, DummyValue);
 
             // action
             var output = ShapeFunction<int>.AtLeast2d(input);
@@ -111,7 +111,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 1;
-            var input = NdArray<int>.Scalar(DefaultConfig.Instance, DummyValue);
+            var input = NdArray<int>.Scalar(ConfigManager.Instance, DummyValue);
 
             // action
             var output = ShapeFunction<int>.AtLeast3d(input);
@@ -124,7 +124,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastDim()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 1, 5 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 1, 5 });
 
             // action
             var output = ShapeFunction<int>.BroadCastDim(1, 9, input);
@@ -137,7 +137,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastTo()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 7, 1 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 7, 1 });
 
             // action
             var output = ShapeFunction<int>.BroadCastTo(new[] { 2, 7, 3 }, input);
@@ -150,8 +150,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastToSame_Two()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 5 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 5 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
 
             // action
             var (output1, output2) = ShapeFunction<int>.BroadCastToSame(input1, input2);
@@ -165,9 +165,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastToSame_Three()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 5 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 5 });
-            var input3 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
 
             // action
             var (output1, output2, output3) = ShapeFunction<int>.BroadCastToSame(input1, input2, input3);
@@ -182,10 +182,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastToSame_Many()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 5 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 5 });
-            var input3 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
-            var input4 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
+            var input4 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4, 5 });
 
             // action
             var outputs = ShapeFunction<int>.BroadCastToSame(new[] { input1, input2, input3, input4 });
@@ -201,8 +201,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastToSameInDims_Two()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 7, 1 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 7, 1 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
 
             // action
             var (output1, output2) = ShapeFunction<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2);
@@ -216,9 +216,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastToSameInDims_Three()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 2, 1 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 5, 1 });
-            var input3 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 2, 1 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 5, 1 });
+            var input3 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
 
             // action
             var (output1, output2, output3) = ShapeFunction<int>.BroadCastToSameInDims(new[] { 0, 2 }, input1, input2, input3);
@@ -233,10 +233,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void BroadCastToSameInDims_Many()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 2, 1 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 5 });
-            var input3 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 4, 1 });
-            var input4 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 5, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 2, 1 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 5 });
+            var input3 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 4, 1 });
+            var input4 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 5, 5 });
 
             // action
             var outputs = ShapeFunction<int>.BroadCastToSameInDims(new[] { 0, 2 }, new[] { input1, input2, input3, input4 });
@@ -252,7 +252,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CutLeft()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 2, 3 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 2, 3 });
 
             // action
             var output = ShapeFunction<int>.CutLeft(input);
@@ -265,7 +265,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CutRight()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 2, 3 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 2, 3 });
 
             // action
             var output = ShapeFunction<int>.CutRight(input);
@@ -278,7 +278,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Flatten()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var output = ShapeFunction<int>.Flatten(input);
@@ -291,7 +291,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void InsertAxis()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var output = ShapeFunction<int>.InsertAxis(1, input);
@@ -304,7 +304,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsBroadcasted_WithBroadCastedNdArray_ReturnTrue()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 1, 4 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 1, 4 });
             var broadCasted = NdArray<int>.BroadCastDim(1, 2, input);
 
             // action
@@ -318,7 +318,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IsBroadcasted_WithoutBroadCastedNdArray_ReturnFalse()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var output = ShapeFunction<int>.IsBroadcasted(input);
@@ -331,7 +331,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PadLeft()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var output = ShapeFunction<int>.PadLeft(input);
@@ -344,7 +344,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PadRight()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var output = ShapeFunction<int>.PadRight(input);
@@ -357,8 +357,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PadToSame_Two()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 5 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 5 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
 
             // action
             var (output1, output2) = ShapeFunction<int>.PadToSame(input1, input2);
@@ -372,9 +372,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PadToSamee_Three()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 5 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 5 });
-            var input3 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
 
             // action
             var (output1, output2, output3) = ShapeFunction<int>.PadToSame(input1, input2, input3);
@@ -389,10 +389,10 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PadToSame_Many()
         {
             // arrange
-            var input1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 5 });
-            var input2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 5 });
-            var input3 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 4, 5 });
-            var input4 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4, 5 });
+            var input1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 5 });
+            var input2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 5 });
+            var input3 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 4, 5 });
+            var input4 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4, 5 });
 
             // action
             var outputs = ShapeFunction<int>.PadToSame(new[] { input1, input2, input3, input4 });
@@ -408,7 +408,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void PermuteAxes()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4, 5 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4, 5 });
 
             // action
             var output = ShapeFunction<int>.PermuteAxes(new[] { 1, 0, 3, 2 }, input);
@@ -421,7 +421,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ReverseAxis()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 4, 1);
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 4, 1);
 
             // action
             var output = ShapeFunction<int>.ReverseAxis(0, input);
@@ -435,7 +435,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void SwapDim()
         {
             // arrange
-            var input = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var input = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var output = ShapeFunction<int>.SwapDim(0, 2, input);
@@ -448,7 +448,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ApplyLayoutFn2_InvalidFuncReturn_ThrowException()
         {
             // arrange
-            var dummy = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var dummy = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
             Layout[] invalidFunc(Layout[] _) => new Layout[] { };
 
             // action
@@ -460,7 +460,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ApplyLayoutFn3_InvalidFuncReturn_ThrowException()
         {
             // arrange
-            var dummy = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var dummy = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
             Layout[] invalidFunc(Layout[] _) => new Layout[] { };
 
             // action
@@ -472,7 +472,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ApplyLayoutFn2Dim_InvalidFuncReturn_ThrowException()
         {
             // arrange
-            var dummy = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var dummy = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
             Layout[] invalidFunc(int[] dim, Layout[] _) => new Layout[] { };
 
             // action
@@ -484,7 +484,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void ApplyLayoutFn3Dim_InvalidFuncReturn_ThrowException()
         {
             // arrange
-            var dummy = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var dummy = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
             Layout[] invalidFunc(int[] dim, Layout[] _) => new Layout[] { };
 
             // action

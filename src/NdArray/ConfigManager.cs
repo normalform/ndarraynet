@@ -1,4 +1,4 @@
-﻿// <copyright file="IComparisonFunction.cs" company="NdArrayNet">
+﻿// <copyright file="ConfigManager.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -27,14 +27,50 @@
 // either expressed or implied, of the NdArrayNet project.
 // </copyright>
 
-namespace NdArray.NdArrayImpl
+namespace NdArrayNet
 {
-    using NdArrayNet;
+    using System;
+    using System.Collections.Generic;
 
-    internal interface IComparisonFunction
+    internal sealed class ConfigManager : IConfigManager
     {
-        void FillNotEqual<T1, T2>(IFrontend<T1> frontend, IFrontend<T2> lhs, IFrontend<T2> rhs);
+        private readonly object configLock = new object();
 
-        void FillEqual<T1, T2>(IFrontend<T1> frontend, IFrontend<T2> lhs, IFrontend<T2> rhs);
+        private static IConfigManager instance;
+
+        private Dictionary<Type, object> configs;
+
+        public static IConfigManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ConfigManager();
+                }
+
+                return instance;
+            }
+        }
+
+        private ConfigManager()
+        {
+            configs = new Dictionary<Type, object>();
+        }
+
+        public IConfig<T> GetConfig<T>()
+        {
+            var type = typeof(T);
+
+            lock(configLock)
+            {
+                if (!configs.ContainsKey(type))
+                {
+                    configs.Add(type, DefaultConfig<T>.Instance);
+                }
+            }
+
+            return configs[type] as IConfig<T>;
+        }
     }
 }

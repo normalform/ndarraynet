@@ -486,7 +486,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithoutCopyCase1_ReturnNewLayout()
         {
             // arrange
-            var array = NdArray<int>.Arange(DefaultConfig.Instance, 0, 10, 1);
+            var array = NdArray<int>.Arange(ConfigManager.Instance, 0, 10, 1);
 
             // action
             var newShape = new[] { 10, 1 };
@@ -500,7 +500,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithoutCopyCase2_ReturnNewLayout()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 10, 1 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 10, 1 });
 
             // action
             var newShape = new[] { 10 };
@@ -514,7 +514,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithoutCopyCase3_ReturnNewLayout()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 10, 1 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 10, 1 });
 
             // action
             var newShape = new[] { 1, 10 };
@@ -528,7 +528,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithoutCopyCase4_ReturnNewLayout()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 10, 1 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 10, 1 });
 
             // action
             var newShape = new[] { 10, 1 };
@@ -542,7 +542,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithoutCopyCase5_ReturnNewLayout()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 10 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 10 });
 
             // action
             var newShape = new[] { 2, 5 };
@@ -556,7 +556,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithoutCopyCase6_ReturnNewLayout()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 6, 8 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 6, 8 });
 
             // action
             var newShape = new[] { 2, 12, 2 };
@@ -570,7 +570,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_DifferentOrderWithoutCopy_ReturnNewShape()
         {
             // arrange
-            var array = new NdArray<int>(new[] { 1, 1, 1 }, DefaultConfig.Instance, Order.ColumnMajor);
+            var array = new NdArray<int>(ConfigManager.Instance, new[] { 1, 1, 1 }, Order.ColumnMajor);
 
             // action
             var newShape = new[] { 1, 1, 1 };
@@ -584,7 +584,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_NeedCopyCase1_ReturnNull()
         {
             // arrange
-            var array = new NdArray<int>(new[] { 6, 8 }, DefaultConfig.Instance, Order.ColumnMajor);
+            var array = new NdArray<int>(ConfigManager.Instance, new[] { 6, 8 }, Order.ColumnMajor);
 
             // action
             var newShape = new[] { 8, 6 };
@@ -598,7 +598,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_NeedCopyCase2_ReturnNull()
         {
             // arrange
-            var array = new NdArray<int>(new[] { 6, 8 }, DefaultConfig.Instance, Order.ColumnMajor);
+            var array = new NdArray<int>(ConfigManager.Instance, new[] { 6, 8 }, Order.ColumnMajor);
 
             // action
             var newShape = new[] { 2, 12, 2 };
@@ -612,7 +612,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithRemainder_ReturnNewLayout()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var newShape = new[] { 4, SpecialIdx.Remainder, 2 };
@@ -626,7 +626,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_DifferentNumElements_ThrowException()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 10 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 10 });
 
             // action
             var newShape = new[] { 3, 2, 5 };
@@ -638,7 +638,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_WithRemainderAndInvalidNewShape_ThrowException()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var newShape = new[] { 3, SpecialIdx.Remainder, 3 };
@@ -650,7 +650,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void TryReshape_TwoRemainders_ThrowException()
         {
             // arrange
-            var array = NdArray<int>.Ones(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var array = NdArray<int>.Ones(ConfigManager.Instance, new[] { 2, 3, 4 });
 
             // action
             var newShape = new[] { 3, SpecialIdx.Remainder, SpecialIdx.Remainder };
@@ -971,7 +971,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var dims = new int[] { 2, 8, 1 };
-            var array = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 2, 3 });
+            var array = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 2, 3 });
             var layouts = new Layout[] { array.Layout, array.Layout, array.Layout };
 
             // action
@@ -984,9 +984,9 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var dims = new int[] { 0 };
-            var array1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 3, 4 });
-            var array2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 3, 4 });
-            var array3 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
+            var array1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 3, 4 });
+            var array2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 3, 4 });
+            var array3 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
             var layouts = new Layout[] { array1.Layout, array2.Layout, array3.Layout };
 
             // action
@@ -999,8 +999,8 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var dims = new int[] { 0 };
-            var array1 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 3, 4 });
-            var array2 = NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 3, 3, 4 });
+            var array1 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 3, 4 });
+            var array2 = NdArray<int>.Zeros(ConfigManager.Instance, new[] { 3, 3, 4 });
             var layouts = new Layout[] { array2.Layout, array1.Layout, array2.Layout };
 
             // action

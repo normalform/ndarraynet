@@ -50,7 +50,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDevice.cs" />
+    <Compile Include="Comparison\BaseComparison.cs" />
+    <Compile Include="Comparison\NdArrayComparison.cs" />
+    <Compile Include="Comparison\INdArrayComparison.cs" />
+    <Compile Include="Comparison\UIntComparison.cs" />
+    <Compile Include="Comparison\ULongComparison.cs" />
+    <Compile Include="Comparison\UShortComparison.cs" />
+    <Compile Include="Comparison\ByteComparison.cs" />
+    <Compile Include="Comparison\CharComparison.cs" />
+    <Compile Include="Comparison\DecimalComparison.cs" />
+    <Compile Include="Comparison\DoubleComparison.cs" />
+    <Compile Include="Comparison\FloatComparison.cs" />
+    <Compile Include="Comparison\LongComparison.cs" />
+    <Compile Include="Comparison\SByteComparison.cs" />
+    <Compile Include="Comparison\ShortComparison.cs" />
+    <Compile Include="Comparison\BoolComparison.cs" />
+    <Compile Include="Comparison\IntComparison.cs" />
+    <Compile Include="IConfigManager.cs" />
     <Compile Include="DataAndLayout.cs" />
+    <Compile Include="ConfigManager.cs" />
     <Compile Include="FastAccess.cs" />
     <Compile Include="HostBackend.cs" />
     <Compile Include="DefaultConfig.cs" />
@@ -66,13 +84,11 @@
     <Compile Include="Layout.cs" />
     <Compile Include="NdArrayBase.cs" />
     <Compile Include="NdArray.cs" />
-    <Compile Include="NdArrayImpl\ComparisonFunction.cs" />
     <Compile Include="NdArrayImpl\Constructor.cs" />
     <Compile Include="NdArrayImpl\FunctionBase.cs" />
     <Compile Include="NdArrayImpl\DataFunction.cs" />
     <Compile Include="NdArrayImpl\ElementWiseMathFunction.cs" />
     <Compile Include="NdArrayImpl\ElementWiseOperator.cs" />
-    <Compile Include="NdArrayImpl\IComparisonFunction.cs" />
     <Compile Include="NdArrayImpl\IndexFunction.cs" />
     <Compile Include="NdArrayImpl\LogicalFunction.cs" />
     <Compile Include="NdArrayImpl\NdArrayOperator.cs" />

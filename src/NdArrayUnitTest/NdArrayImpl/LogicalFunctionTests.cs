@@ -39,7 +39,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Negate()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 10 });
+            var input = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 10 });
 
             // action
             var output = LogicalFunction<bool>.Negate(input);
@@ -52,14 +52,14 @@ namespace NdArrayNet.NdArrayUnitTest
         public void And()
         {
             // arrange
-            var input1 = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 4 });
-            var input2 = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 4 });
+            var input1 = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 4 });
+            var input2 = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 4 });
 
             // action
             var output = LogicalFunction<bool>.And(input1, input2);
 
             // assert
-            var expected = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 4 });
+            var expected = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 4 });
             var result = expected == output;
             Assert.True(NdArray<bool>.All(result));
         }
@@ -68,14 +68,14 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Or()
         {
             // arrange
-            var input1 = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 4 });
-            var input2 = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 4 });
+            var input1 = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 4 });
+            var input2 = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 4 });
 
             // action
             var output = LogicalFunction<bool>.Or(input1, input2);
 
             // assert
-            var expected = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 4 });
+            var expected = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 4 });
             var result = expected == output;
             Assert.True(NdArray<bool>.All(result));
         }
@@ -84,8 +84,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Xor()
         {
             // arrange
-            var input1 = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 2 });
-            var input2 = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 2 });
+            var input1 = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 2 });
+            var input2 = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 2 });
             input2[0].Value = false;
 
             // action
@@ -100,7 +100,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AllAxis()
         {
             // arrange
-            var input = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = false;
 
             // action
@@ -116,7 +116,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AllNdArray()
         {
             // arrange
-            var input = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = false;
 
             // action
@@ -130,7 +130,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void All()
         {
             // arrange
-            var input = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = false;
 
             // action
@@ -144,7 +144,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AnyAxis()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = true;
 
             // action
@@ -160,7 +160,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void AnyNdArray()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = true;
 
             // action
@@ -174,7 +174,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Any()
         {
             // arrange
-            var input = NdArray<bool>.Zeros(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Zeros(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = true;
 
             // action
@@ -188,7 +188,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrueAxis()
         {
             // arrange
-            var input = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = false;
             input[new[] { 1, 0 }] = false;
             input[new[] { 1, 3 }] = false;
@@ -206,7 +206,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrueNdArray()
         {
             // arrange
-            var input = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = false;
             input[new[] { 1, 0 }] = false;
             input[new[] { 1, 3 }] = false;
@@ -222,7 +222,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void CountTrue()
         {
             // arrange
-            var input = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 2, 4 });
+            var input = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 2, 4 });
             input[new[] { 0, 1 }] = false;
             input[new[] { 1, 0 }] = false;
             input[new[] { 1, 3 }] = false;
@@ -238,9 +238,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void IfThenElse()
         {
             // arrange
-            var condition = NdArray<bool>.Ones(DefaultConfig.Instance, new int[] { 4 });
-            var ifTrue = NdArray<int>.Ones(DefaultConfig.Instance, new int[] { 4 });
-            var ifFalse = NdArray<int>.Zeros(DefaultConfig.Instance, new int[] { 4 });
+            var condition = NdArray<bool>.Ones(ConfigManager.Instance, new int[] { 4 });
+            var ifTrue = NdArray<int>.Ones(ConfigManager.Instance, new int[] { 4 });
+            var ifFalse = NdArray<int>.Zeros(ConfigManager.Instance, new int[] { 4 });
 
             condition[new[] { 0 }] = false;
             condition[new[] { 2 }] = false;

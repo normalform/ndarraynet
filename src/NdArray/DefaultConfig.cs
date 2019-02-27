@@ -31,38 +31,51 @@ namespace NdArrayNet
 {
     using NdArray.NdArrayImpl;
 
-    internal sealed class DefaultConfig : IConfig
+    internal sealed class DefaultConfig<T> : IConfig<T>
     {
-        private static DefaultConfig instance;
+        private static DefaultConfig<T> instance;
 
-        private DefaultConfig()
+        private readonly NdArrayComparison ndArrayComparison;
+
+        public IDevice Device => HostDevice.Instance;
+
+        public INdArrayComparison<T> ComparisonFunction { get; }
+
+        private DefaultConfig(IStaticMethod staticMethod = null)
         {
-            ComparisonFunction = new ComparisonFunction();
+            IStaticMethod newStaticMethod;
+            if (staticMethod == null)
+            {
+                newStaticMethod = new StaticMethod();
+            }
+            else
+            {
+                newStaticMethod = staticMethod;
+            }
+
+            ndArrayComparison = new NdArrayComparison(newStaticMethod);
+            ComparisonFunction = ndArrayComparison.GetComparison<T>();
         }
 
-        public static DefaultConfig Instance
+        public static DefaultConfig<T> Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new DefaultConfig();
+                    instance = new DefaultConfig<T>();
                 }
 
                 return instance;
             }
         }
 
-        public IStorage<T> Create<T>(Layout layout)
+        public IStorage<T> Create(Layout layout)
         {
             var storage = Device.Create<T>(layout.NumElements);
             var backend = storage.Backend(layout);
 
             return storage;
         }
-
-        public IDevice Device => HostDevice.Instance;
-
-        public IComparisonFunction ComparisonFunction { get; }
     }
 }

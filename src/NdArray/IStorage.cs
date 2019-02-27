@@ -32,18 +32,18 @@ namespace NdArrayNet
     /// <summary>
     /// NdArray storage (type neutral).
     /// </summary>
-    internal interface IStorage
+    public interface IStorage
     {
-        IConfig Config { get; }
-
         IDevice Device { get; }
     }
 
     /// <summary>
     /// NdArray storage.
     /// </summary>
-    internal interface IStorage<T> : IStorage
+    public interface IStorage<T> : IStorage
     {
+        IConfig<T> Config { get; }
+
         IBackend<T> Backend(Layout layout);
     }
 }

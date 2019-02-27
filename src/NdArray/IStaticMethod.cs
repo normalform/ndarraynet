@@ -33,9 +33,9 @@ namespace NdArrayNet
     {
         bool All(NdArray<bool> source);
 
-        (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(IFrontend<T1> src1, IFrontend<T2> src2);
+        (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(NdArray<T1> src1, NdArray<T2> src2);
 
-        NdArray<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend);
+        IFrontend<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend);
 
         (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order);
 
@@ -43,11 +43,11 @@ namespace NdArrayNet
 
         (NdArray<TR>, NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwise<TR, TA, TB, TC>(NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC, Order order);
 
-        NdArray<TA> PrepareElemwiseSources<TR, TA>(NdArray<TR> target, NdArray<TA> array);
+        IFrontend<TA> PrepareElemwiseSources<TR, TA>(IFrontend<TR> target, IFrontend<TA> array);
 
-        (NdArray<TA>, NdArray<TB>) PrepareElemwiseSources<TR, TA, TB>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB);
+        (IFrontend<TA>, IFrontend<TB>) PrepareElemwiseSources<TR, TA, TB>(IFrontend<TR> target, IFrontend<TA> arrayA, IFrontend<TB> arrayB);
 
-        (NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwiseSources<TR, TA, TB, TC>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC);
+        (IFrontend<TA>, IFrontend<TB>, IFrontend<TC>) PrepareElemwiseSources<TR, TA, TB, TC>(NdArray<TR> target, NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC);
 
         void CheckAxis<TA>(int axis, NdArray<TA> array);
 

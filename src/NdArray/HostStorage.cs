@@ -56,7 +56,7 @@ namespace NdArrayNet
 
         public T[] Data { get; }
 
-        public IConfig Config => DefaultConfig.Instance;
+        public IConfig<T> Config => ConfigManager.Instance.GetConfig<T>();
 
         public IDevice Device => Config.Device;
 

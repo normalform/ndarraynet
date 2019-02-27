@@ -39,8 +39,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void UnaryPlus()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var input = NdArray<int>.Arange(config,0, 10, 1);
+            var configManager = ConfigManager.Instance;
+            var input = NdArray<int>.Arange(configManager,0, 10, 1);
 
             // action
             var output = +input;
@@ -53,8 +53,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void UnaryMinus()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var input = NdArray<int>.Arange(config,0, 10, 1);
+            var configManager = ConfigManager.Instance;
+            var input = NdArray<int>.Arange(configManager,0, 10, 1);
 
             // action
             var output = -input;
@@ -67,9 +67,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Add_VectorWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Arange(config,0, 10, 1);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Arange(configManager,0, 10, 1);
 
             // action
             var equal = inputA + inputB;
@@ -82,9 +82,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Add_VectorWithScalar()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputA + inputB;
@@ -97,9 +97,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Add_ScalarWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputB + inputA;
@@ -112,9 +112,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Subtract_VectorWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Arange(config,0, 10, 1);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Arange(configManager,0, 10, 1);
 
             // action
             var equal = inputA - inputB;
@@ -127,9 +127,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Subtract_VectorWithScalar()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputA - inputB;
@@ -142,9 +142,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Subtract_ScalarWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputB - inputA;
@@ -157,9 +157,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Multiply_VectorWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Arange(config,0, 10, 1);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Arange(configManager,0, 10, 1);
 
             // action
             var equal = inputA * inputB;
@@ -172,9 +172,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Multiply_VectorWithScalar()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputA * inputB;
@@ -187,9 +187,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Multiply_ScalarWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,0, 10, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,0, 10, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputB * inputA;
@@ -202,9 +202,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Divide_VectorWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, 11, 1);
-            var inputB = NdArray<int>.Arange(config,1, 11, 1);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, 11, 1);
+            var inputB = NdArray<int>.Arange(configManager,1, 11, 1);
 
             // action
             var equal = inputA / inputB;
@@ -217,9 +217,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Divide_VectorWithScalar()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, 11, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, 11, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputA / inputB;
@@ -232,9 +232,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Divide_ScalarWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, 11, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, 11, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputB / inputA;
@@ -250,9 +250,9 @@ namespace NdArrayNet.NdArrayUnitTest
             var vectorCount = Vector<int>.Count;
             var numElements = vectorCount * 2;
 
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, numElements + 1, 1);
-            var inputB = NdArray<int>.Arange(config,1, numElements + 1, 1);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, numElements + 1, 1);
+            var inputB = NdArray<int>.Arange(configManager,1, numElements + 1, 1);
 
             // action
             var equal = inputB / inputA;
@@ -268,9 +268,9 @@ namespace NdArrayNet.NdArrayUnitTest
             var vectorCount = Vector<int>.Count;
             var numElements = vectorCount / 2;
 
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, numElements + 1, 1);
-            var inputB = NdArray<int>.Arange(config,1, numElements + 1, 1);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, numElements + 1, 1);
+            var inputB = NdArray<int>.Arange(configManager,1, numElements + 1, 1);
 
             // action
             var equal = inputB / inputA;
@@ -283,9 +283,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Modulo_VectorWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, 11, 1);
-            var inputB = NdArray<int>.Arange(config,1, 11, 1);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, 11, 1);
+            var inputB = NdArray<int>.Arange(configManager,1, 11, 1);
 
             // action
             var equal = inputA % inputB;
@@ -298,9 +298,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Modulo_VectorWithScalar()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, 11, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, 11, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputA % inputB;
@@ -313,9 +313,9 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Modulo_ScalarWithVector()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var inputA = NdArray<int>.Arange(config,1, 11, 1);
-            var inputB = NdArray<int>.Scalar(config,3);
+            var configManager = ConfigManager.Instance;
+            var inputA = NdArray<int>.Arange(configManager,1, 11, 1);
+            var inputB = NdArray<int>.Scalar(configManager,3);
 
             // action
             var equal = inputB % inputA;

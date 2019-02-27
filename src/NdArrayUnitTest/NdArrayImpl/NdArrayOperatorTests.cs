@@ -40,8 +40,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void DiagAxis()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var input = NdArray<int>.Zeros(config,new[] { 4, 3, 3, 5 });
+            var configManager = ConfigManager.Instance;
+            var input = NdArray<int>.Zeros(configManager,new[] { 4, 3, 3, 5 });
 
             // action
             var diag = NdArrayOperator<int>.DiagAxis(1, 2, input);
@@ -54,8 +54,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Diag()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var input = NdArray<int>.Arange(config,0, 9, 1).Reshape(new[] { 3, 3 });
+            var configManager = ConfigManager.Instance;
+            var input = NdArray<int>.Arange(configManager,0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
             var diag = NdArrayOperator<int>.Diag(input);
@@ -70,8 +70,8 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Diag_OneDimensionalArray_ThrowException()
         {
             // arrange
-            var config = DefaultConfig.Instance;
-            var input = NdArray<int>.Arange(config,0, 9, 1);
+            var configManager = ConfigManager.Instance;
+            var input = NdArray<int>.Arange(configManager,0, 9, 1);
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Diag(input));
@@ -95,7 +95,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int ConcatAxis = 3;
-            var inputs = new NdArray<int>[] { NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 1 }) };
+            var inputs = new NdArray<int>[] { NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 1 }) };
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
@@ -107,7 +107,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int ConcatAxis = -1;
-            var inputs = new NdArray<int>[] { NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 1 }) };
+            var inputs = new NdArray<int>[] { NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 1 }) };
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArrayOperator<int>.Concat(ConcatAxis, inputs));
@@ -121,8 +121,8 @@ namespace NdArrayNet.NdArrayUnitTest
             const int ConcatAxis = 1;
             var inputs = new NdArray<int>[]
             {
-                NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 1, 1 }),
-                NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 2, 1 })
+                NdArray<int>.Zeros(ConfigManager.Instance, new[] { 1, 1 }),
+                NdArray<int>.Zeros(ConfigManager.Instance, new[] { 2, 1 })
             };
 
             // action
@@ -137,9 +137,9 @@ namespace NdArrayNet.NdArrayUnitTest
             const int ConcatAxis = 1;
             var inputs = new NdArray<int>[]
             {
-                NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 28 }),
-                NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 15 }),
-                NdArray<int>.Zeros(DefaultConfig.Instance, new[] { 4, 10 })
+                NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 28 }),
+                NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 15 }),
+                NdArray<int>.Zeros(ConfigManager.Instance, new[] { 4, 10 })
             };
 
             // action
@@ -153,7 +153,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Copy()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
 
             // action
             var copy = NdArrayOperator<int>.Copy(input);
@@ -167,7 +167,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Copy_ColumnMajor()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
 
             // action
             var copy = NdArrayOperator<int>.Copy(input, Order.ColumnMajor);
@@ -183,7 +183,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var axis1 = 1;
             var axis2 = 1;
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input));
@@ -196,7 +196,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var axis1 = 1;
             var axis2 = 3;
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 10, 1).Reshape(new[] { 2, 5 });
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input));
@@ -209,7 +209,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var axis1 = 0;
             var axis2 = 1;
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 12, 1).Reshape(new[] { 4, 3 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 12, 1).Reshape(new[] { 4, 3 });
 
             // action
             var diagMat = NdArrayOperator<int>.DiagMatAxis(axis1, axis2, input);
@@ -223,7 +223,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 3;
-            var input = NdArray<int>.Scalar(DefaultConfig.Instance, DummyValue);
+            var input = NdArray<int>.Scalar(ConfigManager.Instance, DummyValue);
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.DiagMat(input));
@@ -234,7 +234,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void DiagMat()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 3, 1);
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 3, 1);
 
             // action
             var diagMat = NdArrayOperator<int>.DiagMat(input);
@@ -247,7 +247,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void DiffAxis()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
             var result = NdArrayOperator<int>.DiffAxis(1, input);
@@ -261,7 +261,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             const int DummyValue = 3;
-            var input = NdArray<int>.Scalar(DefaultConfig.Instance, DummyValue);
+            var input = NdArray<int>.Scalar(ConfigManager.Instance, DummyValue);
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Diff(input));
@@ -272,7 +272,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Diff()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
             var result = NdArrayOperator<int>.Diff(input);
@@ -285,7 +285,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Replicate()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 2 * 3, 1).Reshape(new[] { 2, 3 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 2 * 3, 1).Reshape(new[] { 2, 3 });
 
             // action
             var result = NdArrayOperator<int>.Replicate(0, 10, input);
@@ -298,7 +298,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Replicate_NegativeRepeats_ThrowException()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 2 * 3, 1).Reshape(new[] { 2, 3 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 2 * 3, 1).Reshape(new[] { 2, 3 });
 
             // action
             var exception = Assert.Throws<ArgumentException>(() => NdArrayOperator<int>.Replicate(0, -10, input));
@@ -309,7 +309,7 @@ namespace NdArrayNet.NdArrayUnitTest
         public void Transpos()
         {
             // arrange
-            var input = NdArray<int>.Arange(DefaultConfig.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
+            var input = NdArray<int>.Arange(ConfigManager.Instance, 0, 4, 1).Reshape(new[] { 2, 2 });
 
             // action
             var result = NdArrayOperator<int>.Transpos(input);

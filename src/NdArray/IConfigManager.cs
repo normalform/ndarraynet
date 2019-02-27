@@ -1,4 +1,4 @@
-﻿// <copyright file="IConfig.cs" company="NdArrayNet">
+﻿// <copyright file="IConfigManager.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved.
 //
@@ -29,18 +29,8 @@
 
 namespace NdArrayNet
 {
-    using NdArray.NdArrayImpl;
-
-    public interface IConfig
+    public interface IConfigManager
     {
-        IDevice Device { get; }
-
-    }
-
-    public interface IConfig<T> : IConfig
-    {
-        INdArrayComparison<T> ComparisonFunction { get; }
-
-        IStorage<T> Create(Layout layout);
+        IConfig<T> GetConfig<T>();
     }
 }

@@ -29,9 +29,13 @@
 
 namespace NdArrayNet
 {
+    using NdArray.NdArrayImpl;
+
     public interface IFrontend
     {
         Layout Layout { get; }
+
+        int[] Shape { get; }
     }
 
     public interface IFrontend<T> : IFrontend
@@ -40,8 +44,10 @@ namespace NdArrayNet
 
         IBackend<T> Backend { get; }
 
-        (IFrontend<T1>, IFrontend<T2>) PrepareElemwiseSources<T1, T2>(IFrontend<T1> arrayA, IFrontend<T2> arrayB);
+        IConfig<T> Config { get; }
 
-        void FillEqual<T1>(IFrontend<T1> lhs, IFrontend<T1> rhs);
+        INdArrayComparison<T> Comparison { get; }
+
+        IConfigManager ConfigManager { get; }
     }
 }

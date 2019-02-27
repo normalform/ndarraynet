@@ -229,7 +229,7 @@ namespace NdArray.NdArrayImpl
         public static NdArray<int> TrueIndices(NdArray<bool> source)
         {
             var count = CountTrue(source);
-            var target = new NdArray<int>(new[] { count, source.NumDimensions }, source.Storage.Config);
+            var target = new NdArray<int>(source.ConfigManager, new[] { count, source.NumDimensions });
             target.Backend.TrueIndices(target, source);
 
             return target;

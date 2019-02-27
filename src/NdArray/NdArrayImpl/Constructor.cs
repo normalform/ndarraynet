@@ -42,7 +42,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="stop">The end value, which is not included.</param>
         /// <param name="step">The increment between successive element.</param>
         /// <typeparam name="T">The new NdArray.</typeparam>
-        public static NdArray<T> Arange(IConfig config, T start, T stop, T step)
+        public static NdArray<T> Arange(IConfigManager configManager, T start, T stop, T step)
         {
             var op = ScalarPrimitivesRegistry.For<T, T>();
             var opc = ScalarPrimitivesRegistry.For<int, T>();
@@ -53,7 +53,7 @@ namespace NdArray.NdArrayImpl
 
             var shape = new[] { numberOfElement };
 
-            var newArray = new NdArray<T>(shape, config);
+            var newArray = new NdArray<T>(configManager, shape);
             newArray.FillIncrementing(start, step);
 
             return newArray;
@@ -65,9 +65,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="numElements">The number of elements of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> Counting(IConfig config, int numElements)
+        public static NdArray<T> Counting(IConfigManager configManager, int numElements)
         {
-            var newArray = new NdArray<T>(new[] { numElements }, config);
+            var newArray = new NdArray<T>(configManager, new[] { numElements });
             newArray.FillIncrementing(Primitives.Zero<T>(), Primitives.One<T>());
 
             return newArray;
@@ -79,9 +79,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="numDimension">The number of dimensions of the new, empty NdArray.</param>
         /// <returns>The new empty NdArray.</returns>
-        public static NdArray<T> Empty(IConfig config, int numDimension)
+        public static NdArray<T> Empty(IConfigManager configManager, int numDimension)
         {
-            return new NdArray<T>(new int[numDimension], config);
+            return new NdArray<T>(configManager, new int[numDimension]);
         }
 
         /// <summary>
@@ -90,9 +90,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<bool> Falses(IConfig config, int[] shape)
+        public static NdArray<bool> Falses(IConfigManager configManager, int[] shape)
         {
-            return Filled(config, shape, false);
+            return Filled(configManager, shape, false);
         }
 
         /// <summary>
@@ -102,9 +102,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <param name="value">The value to fill the new NdArray with.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<TF> Filled<TF>(IConfig config, int[] shape, TF value)
+        public static NdArray<TF> Filled<TF>(IConfigManager configManager, int[] shape, TF value)
         {
-            var newArray = new NdArray<TF>(shape, config);
+            var newArray = new NdArray<TF>(configManager, shape);
             newArray.FillConst(value);
 
             return newArray;
@@ -116,9 +116,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="size">The size of the square identity matrix.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> Identity(IConfig config, int size)
+        public static NdArray<T> Identity(IConfigManager configManager, int size)
         {
-            var newArray = NdArray<T>.Zeros(config, new[] { size, size });
+            var newArray = NdArray<T>.Zeros(configManager, new[] { size, size });
             var diagView = NdArrayOperator<T>.Diag(newArray);
             diagView.FillConst(Primitives.One<T>());
 
@@ -131,9 +131,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> Ones(IConfig config, int[] shape)
+        public static NdArray<T> Ones(IConfigManager configManager, int[] shape)
         {
-            var newArray = new NdArray<T>(shape, config);
+            var newArray = new NdArray<T>(configManager, shape);
             newArray.FillConst(Primitives.One<T>());
 
             return newArray;
@@ -146,7 +146,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>The new NdArray.</returns>
         public static NdArray<T> OnesLike(NdArray<T> template)
         {
-            return Ones(template.Storage.Config, template.Shape);
+            return Ones(template.ConfigManager, template.Shape);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace NdArray.NdArrayImpl
         /// <param name="stop">The end value, which is not included.</param>
         /// <param name="numElement">The size of the vector.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> Linspace(IConfig config, T start, T stop, int numElement)
+        public static NdArray<T> Linspace(IConfigManager configManager, T start, T stop, int numElement)
         {
             if (numElement < 2)
             {
@@ -169,7 +169,7 @@ namespace NdArray.NdArrayImpl
             var numElementT = op.Convert(numElement - 1);
             var increment = op.Divide(op.Subtract(stop, start), numElementT);
 
-            var newArray = new NdArray<T>(new[] { numElement }, config);
+            var newArray = new NdArray<T>(configManager, new[] { numElement });
             newArray.FillIncrementing(start, increment);
 
             return newArray;
@@ -181,9 +181,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="value">The value of the new, scalar NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> Scalar(IConfig config, T value)
+        public static NdArray<T> Scalar(IConfigManager configManager, T value)
         {
-            var newArray = new NdArray<T>(new int[] { }, config);
+            var newArray = new NdArray<T>(configManager, new int[] { });
             newArray.Value = value;
 
             return newArray;
@@ -196,9 +196,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="tmpl">template template NdArray.</param>
         /// <param name="value">The value of the new, scalar NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> ScalarLike(NdArray<T> template, T value)
+        public static NdArray<T> ScalarLike(IFrontend<T> template, T value)
         {
-            return Scalar(template.Storage.Config, value);
+            return Scalar(template.ConfigManager, value);
         }
 
         /// <summary>
@@ -207,9 +207,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<bool> Trues(IConfig config, int[] shape)
+        public static NdArray<bool> Trues(IConfigManager configManager, int[] shape)
         {
-            return Filled(config, shape, true);
+            return Filled(configManager, shape, true);
         }
 
         /// <summary>
@@ -218,9 +218,9 @@ namespace NdArray.NdArrayImpl
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> Zeros(IConfig config, int[] shape)
+        public static NdArray<T> Zeros(IConfigManager configManager, int[] shape)
         {
-            var newArray = new NdArray<T>(shape, config);
+            var newArray = new NdArray<T>(configManager, shape);
             return newArray;
         }
 
@@ -231,7 +231,7 @@ namespace NdArray.NdArrayImpl
         /// <returns>The new NdArray.</returns>
         public static NdArray<T> ZerosLike(NdArray<T> template)
         {
-            return Zeros(template.Storage.Config, template.Shape);
+            return Zeros(template.ConfigManager, template.Shape);
         }
     }
 }
