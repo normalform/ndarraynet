@@ -41,10 +41,6 @@ namespace NdArray.NdArrayImpl
             this.staticMethod = staticMethod;
         }
 
-        public abstract T One { get; }
-
-        public abstract T Zero { get; }
-
         public virtual bool AlmostEqual(NdArray<T> lhs, NdArray<T> rhs, T absoluteTolerence, T relativeTolerence)
         {
             if (Enumerable.SequenceEqual(lhs.Shape, rhs.Shape))

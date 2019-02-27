@@ -2384,14 +2384,14 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.Equal("The operation requires a NdArray<System.Int32> but the data type of the specified NdArray is System.UInt32.", exception.Message);
         }
 
-        public static IEnumerable<object[]> FillBinaryOperators()
+        public static IEnumerable<object[]> FillBinaryOperatorTestInputs()
         {
             yield return new object[] { 1 };    // Int
             yield return new object[] { 1.0 };  // Double
         }
 
         [Theory]
-        [MemberData(nameof(FillBinaryOperators))]
+        [MemberData(nameof(FillBinaryOperatorTestInputs))]
         public static void BinaryFill_ArrayWithArray<T>(T value) where T : struct
         {
             Generic_FillArrayWithArray(value, typeof(T).ToString());

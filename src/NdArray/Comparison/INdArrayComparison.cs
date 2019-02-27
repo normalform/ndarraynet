@@ -38,9 +38,6 @@ namespace NdArray.NdArrayImpl
 
     public interface INdArrayComparison<T> : INdArrayComparison
     {
-        T One { get; }
-        T Zero { get; }
-
         NdArray<bool> Equal(NdArray<T> lhs, NdArray<T> rhs);
         NdArray<bool> NotEqual(NdArray<T> lhs, NdArray<T> rhs);
         NdArray<bool> Less(NdArray<T> lhs, NdArray<T> rhs);
