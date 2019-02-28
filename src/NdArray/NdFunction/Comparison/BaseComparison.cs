@@ -9,7 +9,7 @@ namespace NdArray.NdFunction.Comparison
     using System.Linq;
     using NdArrayNet;
 
-    internal abstract class BaseComparison<T> : INdArrayComparison<T>
+    internal abstract class BaseComparison<T> : INdComparison<T>
     {
         private IStaticMethod staticMethod;
 

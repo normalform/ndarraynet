@@ -1,4 +1,4 @@
-﻿// <copyright file="NdArrayComparison.cs" company="NdArrayNet">
+﻿// <copyright file="NdComparison.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved. 
 // Licensed under the BSD 2-Clause License; See the LICENSE file.
@@ -10,12 +10,7 @@ namespace NdArray.NdFunction.Comparison
     using System.Collections.Generic;
     using NdArrayNet;
 
-    internal static class NdArrayComparison<T>
-    {
-        public static INdArrayComparison<T> Instance(NdArrayComparison comparison) => comparison.GetComparison<T>();
-    }
-
-    internal class NdArrayComparison
+    internal class NdComparison
     {
         private readonly object mapLock = new object();
 
@@ -23,7 +18,7 @@ namespace NdArray.NdFunction.Comparison
 
         private readonly Dictionary<Type, object> comparisonMap = new Dictionary<Type, object>();
 
-        public NdArrayComparison(IStaticMethod staticMethod)
+        public NdComparison(IStaticMethod staticMethod)
         {
             StaticMethod = staticMethod;
             comparisonMap.Add(typeof(bool), new BoolComparison(staticMethod));
@@ -41,14 +36,14 @@ namespace NdArray.NdFunction.Comparison
             comparisonMap.Add(typeof(ushort), new UShortComparison(staticMethod));
         }
 
-        public INdArrayComparison<T> GetComparison<T>()
+        public INdComparison<T> Get<T>()
         {
             var type = typeof(T);
             lock(mapLock)
             {
                 if (comparisonMap.ContainsKey(type))
                 {
-                    return comparisonMap[type] as INdArrayComparison<T>;
+                    return comparisonMap[type] as INdComparison<T>;
                 }
             }
 

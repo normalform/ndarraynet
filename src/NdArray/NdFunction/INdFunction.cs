@@ -8,6 +8,7 @@ namespace NdArray.NdFunction
 {
     public interface INdFunction<T>
     {
-        Comparison.INdArrayComparison<T> Comparison { get; }
+        Comparison.INdComparison<T> Comparison { get; }
+        Constructor.INdConstructor<T> Constructor { get; }
     }
 }

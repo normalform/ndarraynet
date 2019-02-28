@@ -315,7 +315,6 @@ namespace NdArrayNet.NdArrayUnitTest
             var strDouble = NdArray<double>.ScalarString(NdArray<double>.Ones(configDouble, new int[] { }));
             var strBool = NdArray<bool>.ScalarString(NdArray<bool>.Ones(configBool, new int[] { }));
             var strByte = NdArray<byte>.ScalarString(NdArray<byte>.Ones(configByte, new int[] { }));
-            var strUnkown = NdArray<UnKownValueTypeForTestOnly>.ScalarString(NdArray<UnKownValueTypeForTestOnly>.Zeros(configUnkown, new int[] { }));
 
             // assert
             Assert.Equal("   1", strInt);
@@ -324,7 +323,6 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.Equal("   1.0000", strDouble);
             Assert.Equal("true", strBool);
             Assert.Equal("  1", strByte);
-            Assert.Equal("UnKownType", strUnkown);
         }
 
         [Fact]
@@ -2381,7 +2379,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var source0Mock = new Mock<IFrontend<T>>();
             var source1Mock = new Mock<IFrontend<T>>();
             var resultMock = new Mock<IFrontend<bool>>();
-            var comparisonFuncMock = new Mock<INdArrayComparison<T>>();
+            var comparisonFuncMock = new Mock<INdComparison<T>>();
             source0Mock.SetupGet(m => m.NdFunction.Comparison).Returns(comparisonFuncMock.Object);
 
             // action
@@ -2396,7 +2394,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var source1Mock = new Mock<IFrontend<T>>();
             var resultMock = new Mock<IFrontend<bool>>();
-            var comparisonFuncMock = new Mock<INdArrayComparison<T>>();
+            var comparisonFuncMock = new Mock<INdComparison<T>>();
             source1Mock.SetupGet(m => m.NdFunction.Comparison).Returns(comparisonFuncMock.Object);
 
             // action
@@ -2411,7 +2409,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var source0Mock = new Mock<IFrontend<T>>();
             var resultMock = new Mock<IFrontend<bool>>();
-            var comparisonFuncMock = new Mock<INdArrayComparison<T>>();
+            var comparisonFuncMock = new Mock<INdComparison<T>>();
             source0Mock.SetupGet(m => m.NdFunction.Comparison).Returns(comparisonFuncMock.Object);
 
             // action

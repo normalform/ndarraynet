@@ -51,8 +51,8 @@
   <ItemGroup>
     <Compile Include="BaseDevice.cs" />
     <Compile Include="NdFunction\Comparison\BaseComparison.cs" />
-    <Compile Include="NdFunction\Comparison\NdArrayComparison.cs" />
-    <Compile Include="NdFunction\Comparison\INdArrayComparison.cs" />
+    <Compile Include="NdFunction\Comparison\INdComparison.cs" />
+    <Compile Include="NdFunction\Comparison\NdComparison.cs" />
     <Compile Include="NdFunction\Comparison\UIntComparison.cs" />
     <Compile Include="NdFunction\Comparison\ULongComparison.cs" />
     <Compile Include="NdFunction\Comparison\UShortComparison.cs" />
@@ -84,9 +84,24 @@
     <Compile Include="Layout.cs" />
     <Compile Include="NdArrayBase.cs" />
     <Compile Include="NdArray.cs" />
+    <Compile Include="NdFunction\Constructor\ByteConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\CharConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\DecimalConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\DoubleConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\FloatConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\IntConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\LongConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\SByteConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\ShortConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\UIntConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\ULongConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\UShortConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\BoolConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\NdConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\INdConstructor.cs" />
+    <Compile Include="NdFunction\Constructor\BaseConstructor.cs" />
     <Compile Include="NdFunction\NdFunction.cs" />
     <Compile Include="NdFunction\INdFunction.cs" />
-    <Compile Include="NdFunction\Constructor.cs" />
     <Compile Include="NdFunction\FunctionBase.cs" />
     <Compile Include="NdFunction\DataFunction.cs" />
     <Compile Include="NdFunction\ElementWiseMathFunction.cs" />

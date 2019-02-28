@@ -344,7 +344,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsClose(NdArray<T> lhs, NdArray<T> rhs) => (NdArray<bool>)lhs.NdFunction.Comparison.IsClose(lhs, rhs, default, default);
+        public static NdArray<bool> IsClose(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.IsClose(lhs, rhs, default, default);
 
         /// <summary>
         /// Element-wise check if two NdArrays have same (within machine precision) values.
@@ -425,7 +425,7 @@ namespace NdArrayNet
         /// </summary>
         /// <param name="template">The template NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        public static NdArray<T> ZerosLike(NdArray<T> template) => Constructor<T>.ZerosLike(template);
+        public static NdArray<T> ZerosLike(NdArray<T> template) => template.NdFunction.Constructor.ZerosLike(template);
 
         /// <summary>
         /// Element-wise absolute value.
@@ -1481,7 +1481,7 @@ namespace NdArrayNet
         /// <param name="stop">The end value, which is not included.</param>
         /// <param name="step">The increment between successive element.</param>
         /// <typeparam name="T">The new NdArray.</typeparam>
-        internal static NdArray<T> Arange(IConfigManager configManager, T start, T stop, T step) => Constructor<T>.Arange(configManager, start, stop, step);
+        internal static NdArray<T> Arange(IConfigManager configManager, T start, T stop, T step) => configManager.GetConfig<T>().NdFunction.Constructor.Arange(configManager, start, stop, step);
 
         /// <summary>
         /// Creates a new NdArray filled with the integers from zero to the specified maximum.
@@ -1489,7 +1489,7 @@ namespace NdArrayNet
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="numElements">The number of elements of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> Counting(IConfigManager configManager, int numElements) => Constructor<T>.Counting(configManager, numElements);
+        internal static NdArray<T> Counting(IConfigManager configManager, int numElements) => configManager.GetConfig<T>().NdFunction.Constructor.Counting(configManager, numElements);
 
         /// <summary>
         /// Creates a new empty NdArray with the given number of dimensions.
@@ -1497,7 +1497,7 @@ namespace NdArrayNet
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="numDimension">The number of dimensions of the new, empty NdArray.</param>
         /// <returns>The new empty NdArray.</returns>
-        internal static NdArray<T> Empty(IConfigManager configManager, int numDimension) => Constructor<T>.Empty(configManager, numDimension);
+        internal static NdArray<T> Empty(IConfigManager configManager, int numDimension) => configManager.GetConfig<T>().NdFunction.Constructor.Empty(configManager, numDimension);
 
         /// <summary>
         /// Creates a new boolean NdArray filled with falses.
@@ -1505,7 +1505,7 @@ namespace NdArrayNet
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<bool> Falses(IConfigManager configManager, int[] shape) => Constructor<bool>.Falses(configManager, shape);
+        internal static NdArray<bool> Falses(IConfigManager configManager, int[] shape) => configManager.GetConfig<T>().NdFunction.Constructor.Falses(configManager, shape);
 
         /// <summary>
         /// Creates a new NdArray filled with the specified value.
@@ -1514,7 +1514,7 @@ namespace NdArrayNet
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <param name="value">The value to fill the new NdArray with.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> Filled(IConfigManager configManager, int[] shape, T value) => Constructor<T>.Filled(configManager, shape, value);
+        internal static NdArray<T> Filled(IConfigManager configManager, int[] shape, T value) => configManager.GetConfig<T>().NdFunction.Constructor.Filled(configManager, shape, value);
 
         /// <summary>
         /// Creates a new identity matrix.
@@ -1522,7 +1522,7 @@ namespace NdArrayNet
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="size">The size of the square identity matrix.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> Identity(IConfigManager configManager, int size) => Constructor<T>.Identity(configManager, size);
+        internal static NdArray<T> Identity(IConfigManager configManager, int size) => configManager.GetConfig<T>().NdFunction.Constructor.Identity(configManager, size);
 
         /// <summary>
         /// Creates a new NdArray filled with ones (1).
@@ -1530,14 +1530,14 @@ namespace NdArrayNet
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> Ones(IConfigManager configManager, int[] shape) => Constructor<T>.Ones(configManager, shape);
+        internal static NdArray<T> Ones(IConfigManager configManager, int[] shape) => configManager.GetConfig<T>().NdFunction.Constructor.Ones(configManager, shape);
 
         /// <summary>
         /// Creates a new NdArray filled with ones using the specified NdArray as template.
         /// </summary>
         /// <param name="template">The template NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> OnesLike(NdArray<T> template) => Constructor<T>.OnesLike(template);
+        internal static NdArray<T> OnesLike(NdArray<T> template) => template.NdFunction.Constructor.OnesLike(template);
 
         /// <summary>
         /// Creates a new NdArray of given size filled with equaly spaced values.
@@ -1547,7 +1547,7 @@ namespace NdArrayNet
         /// <param name="stop">The end value, which is not included.</param>
         /// <param name="numElement">The size of the vector.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> Linspace(IConfigManager configManager, T start, T stop, int numElement) => Constructor<T>.Linspace(configManager, start, stop, numElement);
+        internal static NdArray<T> Linspace(IConfigManager configManager, T start, T stop, int numElement) => configManager.GetConfig<T>().NdFunction.Constructor.Linspace(configManager, start, stop, numElement);
 
         /// <summary>
         /// Creates a new zero-dimensional (scalar) NdArray with the specified value.
@@ -1555,7 +1555,7 @@ namespace NdArrayNet
         /// <param name="dev">The device to create the NdArray on.</param>
         /// <param name="value">The value of the new, scalar NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> Scalar(IConfigManager configManager, T value) => Constructor<T>.Scalar(configManager, value);
+        internal static NdArray<T> Scalar(IConfigManager configManager, T value) => configManager.GetConfig<T>().NdFunction.Constructor.Scalar(configManager, value);
 
         /// <summary>
         /// Creates a new zero-dimensional (scalar) NdArray using the specified NdArray as template and with
@@ -1564,7 +1564,7 @@ namespace NdArrayNet
         /// <param name="tmpl">template template NdArray.</param>
         /// <param name="value">The value of the new, scalar NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<TP> ScalarLike<TP>(IFrontend<TP> array, TP value) => Constructor<TP>.ScalarLike(array, value);
+        internal static NdArray<TP> ScalarLike<TP>(IFrontend<TP> array, TP value) => array.NdFunction.Constructor.ScalarLike(array, value);
 
         /// <summary>
         /// Creates a new boolean NdArray filled with trues.
@@ -1572,7 +1572,7 @@ namespace NdArrayNet
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<bool> Trues(IConfigManager configManager, int[] shape) => Constructor<T>.Trues(configManager, shape);
+        internal static NdArray<bool> Trues(IConfigManager configManager, int[] shape) => configManager.GetConfig<T>().NdFunction.Constructor.Trues(configManager, shape);
 
         /// <summary>
         /// Creates a new NdArray filled with zeros (0).
@@ -1580,7 +1580,7 @@ namespace NdArrayNet
         /// <param name="device">The device to create the NdArray on.</param>
         /// <param name="shape">The shape of the new NdArray.</param>
         /// <returns>The new NdArray.</returns>
-        internal static NdArray<T> Zeros(IConfigManager configManager, int[] shape) => Constructor<T>.Zeros(configManager, shape);
+        internal static NdArray<T> Zeros(IConfigManager configManager, int[] shape) => configManager.GetConfig<T>().NdFunction.Constructor.Zeros(configManager, shape);
 
         internal static NdArray<T1> PermuteAxes<T1>(int[] permut, NdArray<T1> src)
         {

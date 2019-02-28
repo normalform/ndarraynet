@@ -12,16 +12,20 @@ namespace NdArray.NdFunction
     {
         private readonly IStaticMethod staticMethod;
 
-        private readonly Comparison.NdArrayComparison comparison;
+        private readonly Comparison.NdComparison comparison;
+        private readonly Constructor.NdConstructor constructor;
 
         public NdFunction(IStaticMethod staticMethod)
         {
             this.staticMethod = staticMethod;
-            comparison = new Comparison.NdArrayComparison(staticMethod);
+            comparison = new Comparison.NdComparison(staticMethod);
+            constructor = new Constructor.NdConstructor(staticMethod);
 
-            Comparison = comparison.GetComparison<T>();
+            Comparison = comparison.Get<T>();
+            Constructor = constructor.Get<T>();
         }
 
-        public Comparison.INdArrayComparison<T> Comparison { get; }
+        public Comparison.INdComparison<T> Comparison { get; }
+        public Constructor.INdConstructor<T> Constructor { get; }
     }
 }

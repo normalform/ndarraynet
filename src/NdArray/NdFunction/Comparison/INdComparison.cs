@@ -1,4 +1,4 @@
-﻿// <copyright file="INdArrayComparison.cs" company="NdArrayNet">
+﻿// <copyright file="INdComparison.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved. 
 // Licensed under the BSD 2-Clause License; See the LICENSE file.
@@ -8,12 +8,12 @@ namespace NdArray.NdFunction.Comparison
 {
     using NdArrayNet;
 
-    public interface INdArrayComparison
+    public interface INdComparison
     {
 
     }
 
-    public interface INdArrayComparison<T> : INdArrayComparison
+    public interface INdComparison<T> : INdComparison
     {
         NdArray<bool> Equal(NdArray<T> lhs, NdArray<T> rhs);
         NdArray<bool> NotEqual(NdArray<T> lhs, NdArray<T> rhs);
