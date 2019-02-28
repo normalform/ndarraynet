@@ -82,9 +82,9 @@
     <Compile Include="HostBackendTests.cs" />
     <Compile Include="HostDeviceTests.cs" />
     <Compile Include="HostStorageTests.cs" />
+    <Compile Include="NdFunction\Comparison\BaseComparisonTests.cs" />
     <Compile Include="StaticMethodTests.cs" />
     <Compile Include="LayoutTests.cs" />
-    <Compile Include="NdFunction\ComparisonFunctionTests.cs" />
     <Compile Include="NdFunction\ConstructorTests.cs" />
     <Compile Include="NdFunction\DataFunctionTests.cs" />
     <Compile Include="NdFunction\ElementWiseMathFunctionTests.cs" />

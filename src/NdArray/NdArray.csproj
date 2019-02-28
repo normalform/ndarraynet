@@ -84,6 +84,8 @@
     <Compile Include="Layout.cs" />
     <Compile Include="NdArrayBase.cs" />
     <Compile Include="NdArray.cs" />
+    <Compile Include="NdFunction\NdFunction.cs" />
+    <Compile Include="NdFunction\INdFunction.cs" />
     <Compile Include="NdFunction\Constructor.cs" />
     <Compile Include="NdFunction\FunctionBase.cs" />
     <Compile Include="NdFunction\DataFunction.cs" />

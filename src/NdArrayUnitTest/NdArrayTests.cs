@@ -1,6 +1,6 @@
 ﻿// <copyright file="NdArrayTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
-// All rights reserved. 
+// All rights reserved.
 // Licensed under the BSD 2-Clause License; See the LICENSE file.
 // </copyright>
 
@@ -10,9 +10,9 @@ namespace NdArrayNet.NdArrayUnitTest
     using NdArray.NdFunction.Comparison;
     using NdArrayNet;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Xunit;
-    using System.Collections.Generic;
 
     public class NdArrayTests
     {
@@ -103,7 +103,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var scalarArray = NdArray<int>.Ones(configManager,new int[] { 1 });
+            var scalarArray = NdArray<int>.Ones(configManager, new int[] { 1 });
 
             // action
             var exception = Assert.Throws<InvalidOperationException>(() => scalarArray.Value);
@@ -115,7 +115,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var scalarArray = NdArray<int>.Ones(configManager,new int[] { });
+            var scalarArray = NdArray<int>.Ones(configManager, new int[] { });
 
             // action
             scalarArray.Value = 100;
@@ -129,7 +129,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var scalarArray = NdArray<int>.Ones(configManager,new int[] { 1 });
+            var scalarArray = NdArray<int>.Ones(configManager, new int[] { 1 });
 
             // action
             var exception = Assert.Throws<InvalidOperationException>(() => scalarArray.Value = 100);
@@ -141,7 +141,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Arange(configManager,0, 3, 1);
+            var array = NdArray<int>.Arange(configManager, 0, 3, 1);
 
             // action
             var scalarArray = array[2];
@@ -155,10 +155,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Arange(configManager,0, 3, 1);
+            var array = NdArray<int>.Arange(configManager, 0, 3, 1);
 
             // action
-            array[2] = NdArray<int>.Ones(configManager,new int[] { });
+            array[2] = NdArray<int>.Ones(configManager, new int[] { });
             var scalarArray = array[2];
 
             // assert
@@ -171,8 +171,8 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             // arrange
             var configManager = ConfigManager.Instance;
-            var arrayA = NdArray<int>.Arange(configManager,1, 3, 1);
-            var arrayB = NdArray<int>.Arange(configManager,1, 3, 1);
+            var arrayA = NdArray<int>.Arange(configManager, 1, 3, 1);
+            var arrayB = NdArray<int>.Arange(configManager, 1, 3, 1);
 
             // action
             NdArray<int>.AssertSameShape(arrayA, arrayB);
@@ -183,8 +183,8 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var arrayA = NdArray<int>.Arange(configManager,0, 3, 1);
-            var arrayB = NdArray<int>.Arange(configManager,1, 3, 1);
+            var arrayA = NdArray<int>.Arange(configManager, 0, 3, 1);
+            var arrayB = NdArray<int>.Arange(configManager, 1, 3, 1);
 
             // action
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() => NdArray<int>.AssertSameShape(arrayA, arrayB));
@@ -212,7 +212,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Arange(configManager,0, 3, 1);
+            var array = NdArray<int>.Arange(configManager, 0, 3, 1);
 
             // action
             var exception = Assert.Throws<InvalidOperationException>(() => array.AssertScalar());
@@ -225,7 +225,7 @@ namespace NdArrayNet.NdArrayUnitTest
             // arrange
             var configManager = ConfigManager.Instance;
             var emptyShapeForScalar = new int[] { };
-            var array = NdArray<int>.Zeros(configManager,emptyShapeForScalar);
+            var array = NdArray<int>.Zeros(configManager, emptyShapeForScalar);
 
             // action
             array.AssertScalar();
@@ -236,7 +236,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Ones(configManager,new[] { 2, 3, 4 });
+            var array = NdArray<int>.Ones(configManager, new[] { 2, 3, 4 });
 
             // action
             NdArray<int>.Set(array, new[] { 0, 1, 2 }, 999);
@@ -251,7 +251,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Ones(configManager,new[] { 2, 3 });
+            var array = NdArray<int>.Ones(configManager, new[] { 2, 3 });
 
             NdArray<int>.Set(array, new[] { 0, 0 }, 1);
             NdArray<int>.Set(array, new[] { 0, 1 }, 2);
@@ -282,10 +282,10 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Ones(configManager,new[] { 2, 3 });
+            var array = NdArray<int>.Ones(configManager, new[] { 2, 3 });
 
             // action
-            array[new[] { RangeFactory.Elem(0), RangeFactory.All }] = NdArray<int>.Arange(configManager,7, 10, 1);
+            array[new[] { RangeFactory.Elem(0), RangeFactory.All }] = NdArray<int>.Arange(configManager, 7, 10, 1);
 
             // assert
             Assert.Equal(7, NdArray<int>.Get(array, new[] { 0, 0 }));
@@ -309,7 +309,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configUnkown = ConfigManager.Instance;
 
             // action
-            var strInt = NdArray<int>.ScalarString(NdArray<int>.Ones(configInt,new int[] { }));
+            var strInt = NdArray<int>.ScalarString(NdArray<int>.Ones(configInt, new int[] { }));
             var strLong = NdArray<long>.ScalarString(NdArray<long>.Ones(configLong, new int[] { }));
             var strFloat = NdArray<float>.ScalarString(NdArray<float>.Ones(configFloat, new int[] { }));
             var strDouble = NdArray<double>.ScalarString(NdArray<double>.Ones(configDouble, new int[] { }));
@@ -332,7 +332,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Ones(configManager,new[] { 1, 2, 3 });
+            var array = NdArray<int>.Ones(configManager, new[] { 1, 2, 3 });
 
             // action
             var str = NdArray<int>.PrettyDim(10, " ", array);
@@ -346,7 +346,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Ones(configManager,new[] { 1, 2, 3 });
+            var array = NdArray<int>.Ones(configManager, new[] { 1, 2, 3 });
 
             // action
             var str = array.ToString();
@@ -360,7 +360,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Ones(configManager,new[] { 10 });
+            var array = NdArray<int>.Ones(configManager, new[] { 10 });
 
             // action
             var newView = array.TryReshapeView(new[] { 1, 10 });
@@ -387,7 +387,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Ones(configManager,new[] { 10 });
+            var array = NdArray<int>.Ones(configManager, new[] { 10 });
 
             // action
             var newView = array.ReshapeView(new[] { 1, 10 });
@@ -412,7 +412,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var array = NdArray<int>.Arange(configManager,0, 2 * 3 * 4 * 5, 1);
+            var array = NdArray<int>.Arange(configManager, 0, 2 * 3 * 4 * 5, 1);
 
             // action
             var newView = array.Reshape(new[] { 2, 3, 4, 5 });
@@ -439,8 +439,8 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var arrayA = NdArray<int>.Arange(configManager,0, 24, 1).Reshape(new[] { 2, 3, 4 });
-            var arrayB = NdArray<int>.Arange(configManager,0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayA = NdArray<int>.Arange(configManager, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Arange(configManager, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
 
             // action
             var result = arrayA * arrayB;
@@ -454,8 +454,8 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var arrayA = NdArray<int>.Arange(configManager,0, 24, 1).Reshape(new[] { 2, 3, 4 });
-            var arrayB = NdArray<int>.Arange(configManager,0, 12, 1).Reshape(new[] { 3, 4 });
+            var arrayA = NdArray<int>.Arange(configManager, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Arange(configManager, 0, 12, 1).Reshape(new[] { 3, 4 });
 
             // action
             var result = arrayA * arrayB;
@@ -469,8 +469,8 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var arrayA = NdArray<int>.Arange(configManager,0, 24, 1).Reshape(new[] { 2, 3, 4 });
-            var arrayB = NdArray<int>.Ones(configManager,new int[] { });
+            var arrayA = NdArray<int>.Arange(configManager, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Ones(configManager, new int[] { });
 
             // action
             var result = arrayA * arrayB;
@@ -484,8 +484,8 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var arrayA = NdArray<int>.Ones(configManager,new int[] { });
-            var arrayB = NdArray<int>.Ones(configManager,new int[] { });
+            var arrayA = NdArray<int>.Ones(configManager, new int[] { });
+            var arrayB = NdArray<int>.Ones(configManager, new int[] { });
 
             // action
             var result = arrayA * arrayB;
@@ -499,8 +499,8 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var arrayA = NdArray<int>.Arange(configManager,0, 24, 1).Reshape(new[] { 2, 3, 4 });
-            var arrayB = NdArray<int>.Ones(configManager,new int[] { });
+            var arrayA = NdArray<int>.Arange(configManager, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var arrayB = NdArray<int>.Ones(configManager, new int[] { });
 
             // action
             var result = arrayB * arrayA;
@@ -517,7 +517,7 @@ namespace NdArrayNet.NdArrayUnitTest
             const int Value = 9;
 
             // action
-            var array = NdArray<int>.Scalar(configManager,Value);
+            var array = NdArray<int>.Scalar(configManager, Value);
 
             // asssert
             Assert.Equal(Value, array.Value);
@@ -528,7 +528,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var referenceArray = NdArray<int>.Arange(configManager,0, 24, 1).Reshape(new[] { 2, 3, 4 });
+            var referenceArray = NdArray<int>.Arange(configManager, 0, 24, 1).Reshape(new[] { 2, 3, 4 });
             const int Value = 9;
 
             // action
@@ -545,7 +545,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<int>.Counting(configManager,10);
+            var array = NdArray<int>.Counting(configManager, 10);
 
             // assert
             var expectedLayout = new Layout(new[] { 10 }, 0, new[] { 1 });
@@ -559,7 +559,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<int>.Empty(configManager,3);
+            var array = NdArray<int>.Empty(configManager, 3);
 
             // assert
             var expectedLayout = new Layout(new[] { 0, 0, 0 }, 0, new[] { 0, 0, 1 });
@@ -573,7 +573,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<bool>.Falses(configManager,new[] { 1, 2, 3 });
+            var array = NdArray<bool>.Falses(configManager, new[] { 1, 2, 3 });
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
@@ -587,7 +587,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<int>.Filled(configManager,new[] { 1, 2, 3 }, 55);
+            var array = NdArray<int>.Filled(configManager, new[] { 1, 2, 3 }, 55);
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
@@ -601,7 +601,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<int>.Identity(configManager,3);
+            var array = NdArray<int>.Identity(configManager, 3);
 
             // assert
             var expectedLayout = new Layout(new[] { 3, 3 }, 0, new[] { 3, 1 });
@@ -615,7 +615,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<int>.Ones(configManager,new[] { 2, 2 });
+            var array = NdArray<int>.Ones(configManager, new[] { 2, 2 });
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
@@ -627,7 +627,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var zeros = NdArray<int>.Zeros(configManager,new[] { 2, 2 });
+            var zeros = NdArray<int>.Zeros(configManager, new[] { 2, 2 });
 
             // action
             var array = NdArray<int>.OnesLike(zeros);
@@ -644,7 +644,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<int>.Linspace(configManager,0, 5, 5);
+            var array = NdArray<int>.Linspace(configManager, 0, 5, 5);
 
             // assert
             var expectedLayout = new Layout(new[] { 5 }, 0, new[] { 1 });
@@ -658,7 +658,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<bool>.Trues(configManager,new[] { 1, 2, 3 });
+            var array = NdArray<bool>.Trues(configManager, new[] { 1, 2, 3 });
 
             // assert
             var expectedLayout = new Layout(new[] { 1, 2, 3 }, 0, new[] { 6, 3, 1 });
@@ -672,7 +672,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var configManager = ConfigManager.Instance;
 
             // action
-            var array = NdArray<int>.Zeros(configManager,new[] { 2, 2 });
+            var array = NdArray<int>.Zeros(configManager, new[] { 2, 2 });
 
             // assert
             var expectedLayout = new Layout(new[] { 2, 2 }, 0, new[] { 2, 1 });
@@ -684,7 +684,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var ones = NdArray<int>.Ones(configManager,new[] { 2, 2 });
+            var ones = NdArray<int>.Ones(configManager, new[] { 2, 2 });
 
             // action
             var array = NdArray<int>.ZerosLike(ones);
@@ -1109,7 +1109,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var inputA = NdArray<int>.Zeros(configManager,new[] { 2, 3, 4 });
+            var inputA = NdArray<int>.Zeros(configManager, new[] { 2, 3, 4 });
 
             // action
             var finite = NdArray<int>.IsFinite(inputA);
@@ -1123,7 +1123,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var inputA = NdArray<int>.Zeros(configManager,new[] { 2, 3, 4 });
+            var inputA = NdArray<int>.Zeros(configManager, new[] { 2, 3, 4 });
 
             // action
             var finite = NdArray<int>.AllFinite(inputA);
@@ -1137,7 +1137,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var max = NdArray<int>.MaxAxis(0, source);
@@ -1151,7 +1151,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var max = NdArray<int>.MaxNdArray(source);
@@ -1165,7 +1165,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var max = NdArray<int>.Max(source);
@@ -1179,7 +1179,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var min = NdArray<int>.MinAxis(0, source);
@@ -1193,7 +1193,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var min = NdArray<int>.MinNdArray(source);
@@ -1207,7 +1207,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var min = NdArray<int>.Min(source);
@@ -1221,7 +1221,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var sum = NdArray<int>.SumAxis(0, source);
@@ -1235,7 +1235,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var sum = NdArray<int>.SumNdArray(source);
@@ -1249,7 +1249,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 10, 1);
+            var source = NdArray<int>.Arange(configManager, 0, 10, 1);
 
             // action
             var sum = NdArray<int>.Sum(source);
@@ -1263,7 +1263,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var mean = NdArray<double>.MeanAxis(1, source);
@@ -1277,7 +1277,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var sum = NdArray<double>.Mean(source);
@@ -1291,7 +1291,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var product = NdArray<double>.ProductAxis(1, source);
@@ -1305,7 +1305,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var product = NdArray<double>.ProductNdArray(source);
@@ -1319,7 +1319,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var product = NdArray<double>.Product(source);
@@ -1333,7 +1333,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var var = NdArray<double>.VarAxis(1, source);
@@ -1347,7 +1347,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var var = NdArray<double>.VarAxis(1, source, 1.0);
@@ -1362,7 +1362,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var var = NdArray<double>.Var(source);
@@ -1376,7 +1376,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var var = NdArray<double>.Var(source, 1.0);
@@ -1390,7 +1390,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var std = NdArray<double>.StdAxis(1, source);
@@ -1405,7 +1405,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var std = NdArray<double>.StdAxis(1, source, 1.0);
@@ -1420,7 +1420,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var std = NdArray<double>.Std(source);
@@ -1435,7 +1435,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<double>.Arange(configManager,1, 9, 1).Reshape(new[] { 2, 4 });
+            var source = NdArray<double>.Arange(configManager, 1, 9, 1).Reshape(new[] { 2, 4 });
 
             // action
             var std = NdArray<double>.Std(source, 1.0);
@@ -1450,7 +1450,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 27, 1).Reshape(new[] { 3, 3, 3 });
+            var source = NdArray<int>.Arange(configManager, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
 
             // action
             var trace = NdArray<int>.TraceAxis(0, 1, source);
@@ -1466,7 +1466,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 27, 1).Reshape(new[] { 3, 3, 3 });
+            var source = NdArray<int>.Arange(configManager, 0, 27, 1).Reshape(new[] { 3, 3, 3 });
 
             // action
             var trace = NdArray<int>.Trace(source);
@@ -1482,7 +1482,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Zeros(configManager,new[] { 4, 3, 3, 5 });
+            var source = NdArray<int>.Zeros(configManager, new[] { 4, 3, 3, 5 });
 
             // action
             var diag = NdArray<int>.DiagAxis(1, 2, source);
@@ -1496,7 +1496,7 @@ namespace NdArrayNet.NdArrayUnitTest
         {
             // arrange
             var configManager = ConfigManager.Instance;
-            var source = NdArray<int>.Arange(configManager,0, 9, 1).Reshape(new[] { 3, 3 });
+            var source = NdArray<int>.Arange(configManager, 0, 9, 1).Reshape(new[] { 3, 3 });
 
             // action
             var diag = NdArray<int>.Diag(source);
@@ -2382,7 +2382,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var source1Mock = new Mock<IFrontend<T>>();
             var resultMock = new Mock<IFrontend<bool>>();
             var comparisonFuncMock = new Mock<INdArrayComparison<T>>();
-            source0Mock.SetupGet(m => m.Comparison).Returns(comparisonFuncMock.Object);
+            source0Mock.SetupGet(m => m.NdFunction.Comparison).Returns(comparisonFuncMock.Object);
 
             // action
             NdArray<T>.FillEqual(resultMock.Object, source0Mock.Object, source1Mock.Object);
@@ -2397,7 +2397,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var source1Mock = new Mock<IFrontend<T>>();
             var resultMock = new Mock<IFrontend<bool>>();
             var comparisonFuncMock = new Mock<INdArrayComparison<T>>();
-            source1Mock.SetupGet(m => m.Comparison).Returns(comparisonFuncMock.Object);
+            source1Mock.SetupGet(m => m.NdFunction.Comparison).Returns(comparisonFuncMock.Object);
 
             // action
             NdArray<T>.FillEqual(resultMock.Object, value, source1Mock.Object);
@@ -2412,7 +2412,7 @@ namespace NdArrayNet.NdArrayUnitTest
             var source0Mock = new Mock<IFrontend<T>>();
             var resultMock = new Mock<IFrontend<bool>>();
             var comparisonFuncMock = new Mock<INdArrayComparison<T>>();
-            source0Mock.SetupGet(m => m.Comparison).Returns(comparisonFuncMock.Object);
+            source0Mock.SetupGet(m => m.NdFunction.Comparison).Returns(comparisonFuncMock.Object);
 
             // action
             NdArray<T>.FillEqual(resultMock.Object, source0Mock.Object, value);

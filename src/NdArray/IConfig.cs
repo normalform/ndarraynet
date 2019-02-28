@@ -6,7 +6,7 @@
 
 namespace NdArrayNet
 {
-    using NdArray.NdFunction.Comparison;
+    using NdArray.NdFunction;
 
     public interface IConfig
     {
@@ -16,7 +16,7 @@ namespace NdArrayNet
 
     public interface IConfig<T> : IConfig
     {
-        INdArrayComparison<T> ComparisonFunction { get; }
+        INdFunction<T> NdFunction { get; }
 
         IStorage<T> Create(Layout layout);
     }

@@ -10,7 +10,6 @@ namespace NdArrayNet
     using System.Collections.Generic;
     using System.Linq;
     using NdArray.NdFunction;
-    using NdArray.NdFunction.Comparison;
 
     /// <summary>
     /// An N-dimensional array with elements of type T.
@@ -28,7 +27,7 @@ namespace NdArrayNet
             { typeof(bool), (T v) => { var val = Convert.ToBoolean(v); return val ? "true" : "false"; } },
         };
 
-        public INdArrayComparison<T> Comparison { get; }
+        public INdFunction<T> NdFunction { get; }
 
         /// <summary>
         /// Implicit constructor.
@@ -41,7 +40,7 @@ namespace NdArrayNet
             Layout = layout;
             ConfigManager = configManager;
             Config = configManager.GetConfig<T>();
-            Comparison = Config.ComparisonFunction;
+            NdFunction = Config.NdFunction;
 
             Storage = storage;
         }
@@ -65,7 +64,7 @@ namespace NdArrayNet
 
             ConfigManager = configManager;
             Config = configManager.GetConfig<T>();
-            Comparison = Config.ComparisonFunction;
+            NdFunction = Config.NdFunction;
 
             Storage = Config.Create(Layout);
         }
@@ -198,41 +197,41 @@ namespace NdArrayNet
 
         public static NdArray<T> operator %(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.Modulo(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator ==(NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.Equal(lhs, rhs);
+        public static NdArray<bool> operator ==(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.Equal(lhs, rhs);
 
-        public static NdArray<bool> operator ==(NdArray<T> lhs, T rhs) => lhs.Comparison.Equal(lhs, ScalarLike(lhs, rhs));
+        public static NdArray<bool> operator ==(NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.Equal(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator ==(T lhs, NdArray<T> rhs) => rhs.Comparison.Equal(ScalarLike(rhs, lhs), rhs);
+        public static NdArray<bool> operator ==(T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.Equal(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator !=(NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.NotEqual(lhs, rhs);
+        public static NdArray<bool> operator !=(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.NotEqual(lhs, rhs);
 
-        public static NdArray<bool> operator !=(NdArray<T> lhs, T rhs) => lhs.Comparison.NotEqual(lhs, ScalarLike(lhs, rhs));
+        public static NdArray<bool> operator !=(NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.NotEqual(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator !=(T lhs, NdArray<T> rhs) => rhs.Comparison.NotEqual(ScalarLike(rhs, lhs), rhs);
+        public static NdArray<bool> operator !=(T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.NotEqual(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator <(NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.Less(lhs, rhs);
+        public static NdArray<bool> operator <(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.Less(lhs, rhs);
 
-        public static NdArray<bool> operator <(NdArray<T> lhs, T rhs) => lhs.Comparison.Less(lhs, ScalarLike(lhs, rhs));
+        public static NdArray<bool> operator <(NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.Less(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator <(T lhs, NdArray<T> rhs) => rhs.Comparison.Less(ScalarLike(rhs, lhs), rhs);
+        public static NdArray<bool> operator <(T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.Less(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator <=(NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.LessOrEqual(lhs, rhs);
+        public static NdArray<bool> operator <=(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.LessOrEqual(lhs, rhs);
 
-        public static NdArray<bool> operator <=(NdArray<T> lhs, T rhs) => lhs.Comparison.LessOrEqual(lhs, ScalarLike(lhs, rhs));
+        public static NdArray<bool> operator <=(NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.LessOrEqual(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator <=(T lhs, NdArray<T> rhs) => rhs.Comparison.LessOrEqual(ScalarLike(rhs, lhs), rhs);
+        public static NdArray<bool> operator <=(T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.LessOrEqual(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator >(NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.Greater(lhs, rhs);
+        public static NdArray<bool> operator >(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.Greater(lhs, rhs);
 
-        public static NdArray<bool> operator >(NdArray<T> lhs, T rhs) => lhs.Comparison.Greater(lhs, ScalarLike(lhs, rhs));
+        public static NdArray<bool> operator >(NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.Greater(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator >(T lhs, NdArray<T> rhs) => rhs.Comparison.Greater(ScalarLike(rhs, lhs), rhs);
+        public static NdArray<bool> operator >(T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.Greater(ScalarLike(rhs, lhs), rhs);
 
-        public static NdArray<bool> operator >=(NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.GreaterOrEqual(lhs, rhs);
+        public static NdArray<bool> operator >=(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.GreaterOrEqual(lhs, rhs);
 
-        public static NdArray<bool> operator >=(NdArray<T> lhs, T rhs) => lhs.Comparison.GreaterOrEqual(lhs, ScalarLike(lhs, rhs));
+        public static NdArray<bool> operator >=(NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.GreaterOrEqual(lhs, ScalarLike(lhs, rhs));
 
-        public static NdArray<bool> operator >=(T lhs, NdArray<T> rhs) => rhs.Comparison.GreaterOrEqual(ScalarLike(rhs, lhs), rhs);
+        public static NdArray<bool> operator >=(T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.GreaterOrEqual(ScalarLike(rhs, lhs), rhs);
 
         /// <summary>
         /// Element-wise logical negation.
@@ -345,7 +344,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsClose(NdArray<T> lhs, NdArray<T> rhs) => (NdArray<bool>)lhs.Comparison.IsClose(lhs, rhs, default, default);
+        public static NdArray<bool> IsClose(NdArray<T> lhs, NdArray<T> rhs) => (NdArray<bool>)lhs.NdFunction.Comparison.IsClose(lhs, rhs, default, default);
 
         /// <summary>
         /// Element-wise check if two NdArrays have same (within machine precision) values.
@@ -355,7 +354,7 @@ namespace NdArrayNet
         /// <param name="absoluteTolerence">The absolute tolerance. (default 1e-8)</param>
         /// <param name="relativeTolerence">The relative tolerance. (default 1e-5)</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsClose(NdArray<double> lhs, NdArray<double> rhs, double absoluteTolerence = 1e-8, double relativeTolerence = 1e-5) => lhs.Comparison.IsClose(lhs, rhs, absoluteTolerence, relativeTolerence);
+        public static NdArray<bool> IsClose(NdArray<double> lhs, NdArray<double> rhs, double absoluteTolerence = 1e-8, double relativeTolerence = 1e-5) => lhs.NdFunction.Comparison.IsClose(lhs, rhs, absoluteTolerence, relativeTolerence);
 
         /// <summary>
         /// Element-wise check if two NdArrays have same (within machine precision) values.
@@ -365,7 +364,7 @@ namespace NdArrayNet
         /// <param name="absoluteTolerence">The absolute tolerance. (default 1e-8)</param>
         /// <param name="relativeTolerence">The relative tolerance. (default 1e-5)</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsClose(NdArray<float> lhs, NdArray<float> rhs, float absoluteTolerence = 1e-8f, float relativeTolerence = 1e-5f) => lhs.Comparison.IsClose(lhs, rhs, absoluteTolerence, relativeTolerence);
+        public static NdArray<bool> IsClose(NdArray<float> lhs, NdArray<float> rhs, float absoluteTolerence = 1e-8f, float relativeTolerence = 1e-5f) => lhs.NdFunction.Comparison.IsClose(lhs, rhs, absoluteTolerence, relativeTolerence);
 
         /// <summary>
         /// Checks if two NdArrays have the same (within machine precision) values in all elements.
@@ -375,7 +374,7 @@ namespace NdArrayNet
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>true if two NdArrays have same (within specified precision) values in all elements, otherwise false.</returns>
-        public static bool AlmostEqual(NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.AlmostEqual(lhs, rhs, default, default);
+        public static bool AlmostEqual(NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.AlmostEqual(lhs, rhs, default, default);
 
         /// <summary>
         /// Checks if two NdArrays have the same (within machine precision) values in all elements.
@@ -385,7 +384,7 @@ namespace NdArrayNet
         /// <param name="absoluteTolerence">The absolute tolerance. (default 1e-8)</param>
         /// <param name="relativeTolerence">The relative tolerance. (default 1e-5)</param>
         /// <returns>true if two NdArrays have same (within specified precision) values in all elements, otherwise false.</returns>
-        public static bool AlmostEqual(NdArray<double> lhs, NdArray<double> rhs, double absoluteTolerence = 1e-8, double relativeTolerence = 1e-5) => lhs.Comparison.AlmostEqual(lhs, rhs, absoluteTolerence, relativeTolerence);
+        public static bool AlmostEqual(NdArray<double> lhs, NdArray<double> rhs, double absoluteTolerence = 1e-8, double relativeTolerence = 1e-5) => lhs.NdFunction.Comparison.AlmostEqual(lhs, rhs, absoluteTolerence, relativeTolerence);
 
         /// <summary>
         /// Checks if two NdArrays have the same (within machine precision) values in all elements.
@@ -395,21 +394,21 @@ namespace NdArrayNet
         /// <param name="absoluteTolerence">The absolute tolerance. (default 1e-8)</param>
         /// <param name="relativeTolerence">The relative tolerance. (default 1e-5)</param>
         /// <returns>true if two NdArrays have same (within specified precision) values in all elements, otherwise false.</returns>
-        public static bool AlmostEqual(NdArray<float> lhs, NdArray<float> rhs, float absoluteTolerence = 1e-8f, float relativeTolerence = 1e-5f) => lhs.Comparison.AlmostEqual(lhs, rhs, absoluteTolerence, relativeTolerence);
+        public static bool AlmostEqual(NdArray<float> lhs, NdArray<float> rhs, float absoluteTolerence = 1e-8f, float relativeTolerence = 1e-5f) => lhs.NdFunction.Comparison.AlmostEqual(lhs, rhs, absoluteTolerence, relativeTolerence);
 
         /// <summary>
         /// Element-wise finity check (not -Inf, Inf or NaN).
         /// </summary>
         /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<bool> IsFinite(NdArray<T> source) => source.Comparison.IsFinite(source);
+        public static NdArray<bool> IsFinite(NdArray<T> source) => source.NdFunction.Comparison.IsFinite(source);
 
         /// <summary>
         /// Checks that all elements of the NdArray are finite.
         /// </summary>
         /// <param name="source">The NdArray to operate on.</param>
         /// <returns>true if all elements are finite, otherwise false.</returns>
-        public static bool AllFinite(NdArray<T> source) => All(source.Comparison.IsFinite(source));
+        public static bool AllFinite(NdArray<T> source) => All(source.NdFunction.Comparison.IsFinite(source));
 
         /// <summary>
         /// Flattens the NdArray into a (one-dimensional) vector.
@@ -1142,41 +1141,41 @@ namespace NdArrayNet
 
         public void FillModulo(T lhs, NdArray<T> rhs) => ElementWiseOperator<T>.FillModulo(this, ScalarLike(rhs, lhs), rhs);
 
-        public static void FillEqual(IFrontend<bool> result, IFrontend<T> lhs, IFrontend<T> rhs) => lhs.Comparison.FillEqual(result, lhs, rhs);
+        public static void FillEqual(IFrontend<bool> result, IFrontend<T> lhs, IFrontend<T> rhs) => lhs.NdFunction.Comparison.FillEqual(result, lhs, rhs);
 
-        public static void FillEqual(IFrontend<bool> result, IFrontend<T> lhs, T rhs) => lhs.Comparison.FillEqual(result, lhs, ScalarLike(lhs, rhs));
+        public static void FillEqual(IFrontend<bool> result, IFrontend<T> lhs, T rhs) => lhs.NdFunction.Comparison.FillEqual(result, lhs, ScalarLike(lhs, rhs));
 
-        public static void FillEqual(IFrontend<bool> result, T lhs, IFrontend<T> rhs) => rhs.Comparison.FillEqual(result, ScalarLike(rhs, lhs), rhs);
+        public static void FillEqual(IFrontend<bool> result, T lhs, IFrontend<T> rhs) => rhs.NdFunction.Comparison.FillEqual(result, ScalarLike(rhs, lhs), rhs);
 
-        public static void FillNotEqual(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.FillNotEqual(result, lhs, rhs);
+        public static void FillNotEqual(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.FillNotEqual(result, lhs, rhs);
 
-        public static void FillNotEqual(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.Comparison.FillNotEqual(result, lhs, ScalarLike(lhs, rhs));
+        public static void FillNotEqual(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.FillNotEqual(result, lhs, ScalarLike(lhs, rhs));
 
-        public static void FillNotEqual(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.Comparison.FillNotEqual(result, ScalarLike(rhs, lhs), rhs);
+        public static void FillNotEqual(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.FillNotEqual(result, ScalarLike(rhs, lhs), rhs);
 
-        public static void FillLess(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.FillLess(result, lhs, rhs);
+        public static void FillLess(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.FillLess(result, lhs, rhs);
 
-        public static void FillLess(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.Comparison.FillLess(result, lhs, ScalarLike(lhs, rhs));
+        public static void FillLess(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.FillLess(result, lhs, ScalarLike(lhs, rhs));
 
-        public static void FillLess(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.Comparison.FillLess(result, ScalarLike(rhs, lhs), rhs);
+        public static void FillLess(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.FillLess(result, ScalarLike(rhs, lhs), rhs);
 
-        public static void FillLessOrEqual(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.FillLessOrEqual(result, lhs, rhs);
+        public static void FillLessOrEqual(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.FillLessOrEqual(result, lhs, rhs);
 
-        public static void FillLessOrEqual(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.Comparison.FillLessOrEqual(result, lhs, ScalarLike(lhs, rhs));
+        public static void FillLessOrEqual(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.FillLessOrEqual(result, lhs, ScalarLike(lhs, rhs));
 
-        public static void FillLessOrEqual(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.Comparison.FillLessOrEqual(result, ScalarLike(rhs, lhs), rhs);
+        public static void FillLessOrEqual(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.FillLessOrEqual(result, ScalarLike(rhs, lhs), rhs);
 
-        public static void FillGreater(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.FillGreater(result, lhs, rhs);
+        public static void FillGreater(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.FillGreater(result, lhs, rhs);
 
-        public static void FillGreater(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.Comparison.FillGreater(result, lhs, ScalarLike(lhs, rhs));
+        public static void FillGreater(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.FillGreater(result, lhs, ScalarLike(lhs, rhs));
 
-        public static void FillGreater(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.Comparison.FillGreater(result, ScalarLike(rhs, lhs), rhs);
+        public static void FillGreater(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.FillGreater(result, ScalarLike(rhs, lhs), rhs);
 
-        public static void FillGreaterOrEqual(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.Comparison.FillGreaterOrEqual(result, lhs, rhs);
+        public static void FillGreaterOrEqual(NdArray<bool> result, NdArray<T> lhs, NdArray<T> rhs) => lhs.NdFunction.Comparison.FillGreaterOrEqual(result, lhs, rhs);
 
-        public static void FillGreaterOrEqual(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.Comparison.FillGreaterOrEqual(result, lhs, ScalarLike(lhs, rhs));
+        public static void FillGreaterOrEqual(NdArray<bool> result, NdArray<T> lhs, T rhs) => lhs.NdFunction.Comparison.FillGreaterOrEqual(result, lhs, ScalarLike(lhs, rhs));
 
-        public static void FillGreaterOrEqual(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.Comparison.FillGreaterOrEqual(result, ScalarLike(rhs, lhs), rhs);
+        public static void FillGreaterOrEqual(NdArray<bool> result, T lhs, NdArray<T> rhs) => rhs.NdFunction.Comparison.FillGreaterOrEqual(result, ScalarLike(rhs, lhs), rhs);
 
         /// <summary>
         /// Counts the elements being true along the specified axis and writes the result into this NdArray.
@@ -1230,7 +1229,7 @@ namespace NdArrayNet
         /// Fills this NdArray with the element-wise finity check (not -Inf, Inf or NaN) of the argument.
         /// </summary>
         /// <param name="source">The NdArray to apply this operation to.</param>
-        public static void FillIsFinite<TP>(NdArray<bool> result, NdArray<TP> source) => source.Comparison.FillIsFinite(result, source);
+        public static void FillIsFinite<TP>(NdArray<bool> result, NdArray<TP> source) => source.NdFunction.Comparison.FillIsFinite(result, source);
 
         /// <summary>
         /// Fills this NdArray with the element-wise absolute value of the argument.

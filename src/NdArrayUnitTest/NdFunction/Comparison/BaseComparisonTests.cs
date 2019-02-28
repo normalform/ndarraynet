@@ -1,4 +1,4 @@
-﻿// <copyright file="ComparisonFunctionTests.cs" company="NdArrayNet">
+﻿// <copyright file="BaseComparisonTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
 // All rights reserved. 
 // Licensed under the BSD 2-Clause License; See the LICENSE file.
@@ -11,7 +11,7 @@ namespace NdArrayNet.NdArrayUnitTest
     using NdArrayNet;
     using Xunit;
 
-    public class ComparisonFunctionTests
+    public class BaseComparisonTests
     {
         //[Fact]
         //public void FillEqual()

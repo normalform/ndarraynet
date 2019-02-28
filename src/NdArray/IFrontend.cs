@@ -6,7 +6,7 @@
 
 namespace NdArrayNet
 {
-    using NdArray.NdFunction.Comparison;
+    using NdArray.NdFunction;
 
     public interface IFrontend
     {
@@ -23,7 +23,7 @@ namespace NdArrayNet
 
         IConfig<T> Config { get; }
 
-        INdArrayComparison<T> Comparison { get; }
+        INdFunction<T> NdFunction { get; }
 
         IConfigManager ConfigManager { get; }
     }

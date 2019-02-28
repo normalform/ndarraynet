@@ -6,18 +6,15 @@
 
 namespace NdArrayNet
 {
-    using NdArray;
-    using NdArray.NdFunction.Comparison;
+    using NdArray.NdFunction;
 
     internal sealed class DefaultConfig<T> : IConfig<T>
     {
         private static DefaultConfig<T> instance;
 
-        private readonly NdArrayComparison ndArrayComparison;
-
         public IDevice Device => HostDevice.Instance;
 
-        public INdArrayComparison<T> ComparisonFunction { get; }
+        public INdFunction<T> NdFunction { get; }
 
         private DefaultConfig(IStaticMethod staticMethod = null)
         {
@@ -31,8 +28,7 @@ namespace NdArrayNet
                 newStaticMethod = staticMethod;
             }
 
-            ndArrayComparison = new NdArrayComparison(newStaticMethod);
-            ComparisonFunction = ndArrayComparison.GetComparison<T>();
+            NdFunction = new NdFunction<T>(newStaticMethod);
         }
 
         public static DefaultConfig<T> Instance
