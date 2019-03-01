@@ -21,19 +21,19 @@ namespace NdArray.NdFunction.Constructor
         public NdConstructor(IStaticMethod staticMethod)
         {
             StaticMethod = staticMethod;
-            constructorMap.Add(typeof(bool), new BoolConstructor(staticMethod));
-            constructorMap.Add(typeof(byte), new ByteConstructor(staticMethod));
-            constructorMap.Add(typeof(char), new CharConstructor(staticMethod));
-            constructorMap.Add(typeof(decimal), new DecimalConstructor(staticMethod));
-            constructorMap.Add(typeof(double), new DoubleConstructor(staticMethod));
-            constructorMap.Add(typeof(float), new FloatConstructor(staticMethod));
-            constructorMap.Add(typeof(int), new IntConstructor(staticMethod));
-            constructorMap.Add(typeof(long), new LongConstructor(staticMethod));
-            constructorMap.Add(typeof(sbyte), new SByteConstructor(staticMethod));
-            constructorMap.Add(typeof(short), new ShortConstructor(staticMethod));
-            constructorMap.Add(typeof(uint), new UIntConstructor(staticMethod));
-            constructorMap.Add(typeof(ulong), new ULongConstructor(staticMethod));
-            constructorMap.Add(typeof(ushort), new UShortConstructor(staticMethod));
+            constructorMap.Add(typeof(bool), new DefaultConstructor<bool>(staticMethod));
+            constructorMap.Add(typeof(byte), new DefaultConstructor<byte>(staticMethod));
+            constructorMap.Add(typeof(char), new DefaultConstructor<char>(staticMethod));
+            constructorMap.Add(typeof(decimal), new DefaultConstructor<decimal>(staticMethod));
+            constructorMap.Add(typeof(double), new DefaultConstructor<double>(staticMethod));
+            constructorMap.Add(typeof(float), new DefaultConstructor<float>(staticMethod));
+            constructorMap.Add(typeof(int), new DefaultConstructor<int>(staticMethod));
+            constructorMap.Add(typeof(long), new DefaultConstructor<long>(staticMethod));
+            constructorMap.Add(typeof(sbyte), new DefaultConstructor<sbyte>(staticMethod));
+            constructorMap.Add(typeof(short), new DefaultConstructor<short>(staticMethod));
+            constructorMap.Add(typeof(uint), new DefaultConstructor<uint>(staticMethod));
+            constructorMap.Add(typeof(ulong), new DefaultConstructor<ulong>(staticMethod));
+            constructorMap.Add(typeof(ushort), new DefaultConstructor<ushort>(staticMethod));
         }
 
         public INdConstructor<T> Get<T>()

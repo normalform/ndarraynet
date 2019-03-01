@@ -21,19 +21,19 @@ namespace NdArray.NdFunction.Comparison
         public NdComparison(IStaticMethod staticMethod)
         {
             StaticMethod = staticMethod;
-            comparisonMap.Add(typeof(bool), new BoolComparison(staticMethod));
-            comparisonMap.Add(typeof(byte), new ByteComparison(staticMethod));
-            comparisonMap.Add(typeof(char), new CharComparison(staticMethod));
-            comparisonMap.Add(typeof(decimal), new DecimalComparison(staticMethod));
-            comparisonMap.Add(typeof(double), new DoubleComparison(staticMethod));
-            comparisonMap.Add(typeof(float), new FloatComparison(staticMethod));
-            comparisonMap.Add(typeof(int), new IntComparison(staticMethod));
-            comparisonMap.Add(typeof(long), new LongComparison(staticMethod));
-            comparisonMap.Add(typeof(sbyte), new SByteComparison(staticMethod));
-            comparisonMap.Add(typeof(short), new ShortComparison(staticMethod));
-            comparisonMap.Add(typeof(uint), new UIntComparison(staticMethod));
-            comparisonMap.Add(typeof(ulong), new ULongComparison(staticMethod));
-            comparisonMap.Add(typeof(ushort), new UShortComparison(staticMethod));
+            comparisonMap.Add(typeof(bool), new DefaultComparison<bool>(staticMethod));
+            comparisonMap.Add(typeof(byte), new DefaultComparison<byte>(staticMethod));
+            comparisonMap.Add(typeof(char), new DefaultComparison<char>(staticMethod));
+            comparisonMap.Add(typeof(decimal), new DefaultComparison<decimal>(staticMethod));
+            comparisonMap.Add(typeof(double), new DefaultComparison<double>(staticMethod));
+            comparisonMap.Add(typeof(float), new DefaultComparison<float>(staticMethod));
+            comparisonMap.Add(typeof(int), new DefaultComparison<int>(staticMethod));
+            comparisonMap.Add(typeof(long), new DefaultComparison<long>(staticMethod));
+            comparisonMap.Add(typeof(sbyte), new DefaultComparison<sbyte>(staticMethod));
+            comparisonMap.Add(typeof(short), new DefaultComparison<short>(staticMethod));
+            comparisonMap.Add(typeof(uint), new DefaultComparison<uint>(staticMethod));
+            comparisonMap.Add(typeof(ulong), new DefaultComparison<ulong>(staticMethod));
+            comparisonMap.Add(typeof(ushort), new DefaultComparison<ushort>(staticMethod));
         }
 
         public INdComparison<T> Get<T>()
