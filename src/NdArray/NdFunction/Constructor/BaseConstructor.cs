@@ -102,7 +102,7 @@ namespace NdArray.NdFunction.Constructor
         /// <returns>The new NdArray.</returns>
         public virtual NdArray<T> Identity(IConfigManager configManager, int size)
         {
-            var newArray = NdArray<T>.Zeros(configManager, new[] { size, size });
+            var newArray = Zeros(configManager, new[] { size, size });
             var diagView = NdArrayOperator<T>.Diag(newArray);
             diagView.FillConst(Primitives.One<T>());
 
