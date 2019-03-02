@@ -17,7 +17,16 @@ namespace NdArrayNet
             return LogicalFunction<bool>.All(source);
         }
 
-        public (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(NdArray<T1> src1, NdArray<T2> src2)
+        public void AssertBool<T>(IFrontend<T> source)
+        {
+            if (source.DataType != typeof(bool))
+            {
+                var errorMessage = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", source.DataType);
+                throw new InvalidOperationException(errorMessage);
+            }
+        }
+
+        public (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(IFrontend<T1> src1, IFrontend<T2> src2)
         {
             return ShapeFunction<T1>.BroadCastToSame(src1, src2);
         }
@@ -38,7 +47,7 @@ namespace NdArrayNet
             return (target, array);
         }
 
-        public (NdArray<TR>, NdArray<T1>, NdArray<T2>) PrepareElemwise<TR, T1, T2>(NdArray<T1> arrayA, NdArray<T2> arrayB, Order order)
+        public (IFrontend<TR>, IFrontend<T1>, IFrontend<T2>) PrepareElemwise<TR, T1, T2>(IFrontend<T1> arrayA, IFrontend<T2> arrayB, Order order)
         {
             // AssertSameStorage [later..]
             var (arrA, arrB) = BroadCastToSame(arrayA, arrayB);

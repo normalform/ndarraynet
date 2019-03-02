@@ -2336,16 +2336,17 @@ namespace NdArrayNet.NdArrayUnitTest
             Assert.Equal("Value 10 was not found in specifed NdArray.", exception.Message);
         }
 
-        [Fact]
-        public void AssertBool_NotBool_ThrowException()
-        {
-            // arrange
-            var source = NdArray<int>.Arange(ConfigManager.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
+        // TODO Move to static method unit test
+        //[Fact]
+        //public void AssertBool_NotBool_ThrowException()
+        //{
+        //    // arrange
+        //    var source = NdArray<int>.Arange(ConfigManager.Instance, 0, 8, 1).Reshape(new[] { 2, 4 });
 
-            // action
-            var exception = Assert.Throws<InvalidOperationException>(() => source.AssertBool());
-            Assert.Equal("The operation requires a NdArray<bool> but the data type of the specified NdArray is System.Int32.", exception.Message);
-        }
+        //    // action
+        //    var exception = Assert.Throws<InvalidOperationException>(() => source.AssertBool());
+        //    Assert.Equal("The operation requires a NdArray<bool> but the data type of the specified NdArray is System.Int32.", exception.Message);
+        //}
 
         [Fact]
         public void AssertInt_NotInt_ThrowException()

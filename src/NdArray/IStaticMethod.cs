@@ -10,13 +10,15 @@ namespace NdArrayNet
     {
         bool All(NdArray<bool> source);
 
-        (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(NdArray<T1> src1, NdArray<T2> src2);
+        void AssertBool<T>(IFrontend<T> source);
+
+        (NdArray<T1>, NdArray<T2>) BroadCastToSame<T1, T2>(IFrontend<T1> src1, IFrontend<T2> src2);
 
         IFrontend<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend);
 
         (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order);
 
-        (NdArray<TR>, NdArray<TA>, NdArray<TB>) PrepareElemwise<TR, TA, TB>(NdArray<TA> arrayA, NdArray<TB> arrayB, Order order);
+        (IFrontend<TR>, IFrontend<TA>, IFrontend<TB>) PrepareElemwise<TR, TA, TB>(IFrontend<TA> arrayA, IFrontend<TB> arrayB, Order order);
 
         (NdArray<TR>, NdArray<TA>, NdArray<TB>, NdArray<TC>) PrepareElemwise<TR, TA, TB, TC>(NdArray<TA> arrayA, NdArray<TB> arrayB, NdArray<TC> arrayC, Order order);
 

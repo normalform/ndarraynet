@@ -14,7 +14,7 @@ namespace NdArray.NdFunction.Constructor
         NdArray<T> Counting(IConfigManager configManager, int numElements);
         NdArray<T> Empty(IConfigManager configManager, int numDimension);
         NdArray<bool> Falses(IConfigManager configManager, int[] shape);
-        NdArray<T> Filled<T>(IConfigManager configManager, int[] shape, T value);
+        NdArray<TF> Filled<TF>(IConfigManager configManager, int[] shape, TF value);
         NdArray<T> Identity(IConfigManager configManager, int size);
         NdArray<T> Ones(IConfigManager configManager, int[] shape);
         NdArray<T> OnesLike(NdArray<T> template);

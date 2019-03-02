@@ -1691,15 +1691,6 @@ namespace NdArrayNet
             return msg;
         }
 
-        internal void AssertBool()
-        {
-            if (DataType != typeof(bool))
-            {
-                var errorMessage = string.Format("The operation requires a NdArray<bool> but the data type of the specified NdArray is {0}.", DataType);
-                throw new InvalidOperationException(errorMessage);
-            }
-        }
-
         internal NdArray<T> Copy(Order order = Order.RowMajor)
         {
             return Copy(StaticMethod.Value, order);

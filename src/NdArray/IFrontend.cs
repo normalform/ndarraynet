@@ -6,6 +6,7 @@
 
 namespace NdArrayNet
 {
+    using System;
     using NdArray.NdFunction;
 
     public interface IFrontend
@@ -13,6 +14,8 @@ namespace NdArrayNet
         Layout Layout { get; }
 
         int[] Shape { get; }
+
+        Type DataType { get; }
     }
 
     public interface IFrontend<T> : IFrontend

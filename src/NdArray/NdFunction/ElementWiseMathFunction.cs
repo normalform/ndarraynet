@@ -175,7 +175,7 @@ namespace NdArray.NdFunction
             return Log10(StaticMethod.Value, source);
         }
 
-        public static void FillMaximum(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        public static void FillMaximum(IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             FillMaximum(StaticMethod.Value, target, lhs, rhs);
         }
@@ -191,7 +191,7 @@ namespace NdArray.NdFunction
             return Maximum(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillMinimum(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        public static void FillMinimum(IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             FillMinimum(StaticMethod.Value, target, lhs, rhs);
         }
@@ -213,7 +213,7 @@ namespace NdArray.NdFunction
         /// <param name="lhs">The NdArray on the left side of this binary operation.</param>
         /// <param name="rhs">The NdArray on the right side of this binary operation.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static void FillPow(NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        public static void FillPow(IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             FillPow(StaticMethod.Value, target, lhs, rhs);
         }
@@ -511,46 +511,46 @@ namespace NdArray.NdFunction
             return preparedTarget;
         }
 
-        internal static void FillMaximum(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        internal static void FillMaximum(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.Maximum(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<T> Maximum(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<T> Maximum(IStaticMethod staticMethod, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<T, T, T>(lhs, rhs, Order.RowMajor);
             FillMaximum(preparedTarget, preparedLhs, preparedRhs);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillMinimum(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        internal static void FillMinimum(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.Minimum(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<T> Minimum(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<T> Minimum(IStaticMethod staticMethod, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<T, T, T>(lhs, rhs, Order.RowMajor);
             FillMinimum(preparedTarget, preparedLhs, preparedRhs);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillPow(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> lhs, NdArray<T> rhs)
+        internal static void FillPow(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.Pow(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<T> Pow(IStaticMethod staticMethod, NdArray<T> lhs, NdArray<T> rhs)
+        internal static NdArray<T> Pow(IStaticMethod staticMethod, IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<T, T, T>(lhs, rhs, Order.RowMajor);
             FillPow(preparedTarget, preparedLhs, preparedRhs);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
         internal static void FillRound(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)

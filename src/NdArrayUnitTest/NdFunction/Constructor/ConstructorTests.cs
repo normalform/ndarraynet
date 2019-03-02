@@ -89,7 +89,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [InlineData(typeof(char))]
         public void Empty(Type type)
         {
-            var testHelper = typeof(ConstructorTests).GetMethod("EmptyTestHelper", BindingFlags.NonPublic | BindingFlags.Instance);
+            var testHelper = typeof(ConstructorTests).GetMethod(nameof(EmptyTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
             var genericHelper = testHelper.MakeGenericMethod(type);
             genericHelper.Invoke(this, null);
         }
@@ -114,7 +114,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [InlineData(typeof(char), (char)0)]
         public void Falses_UnsupportedType_ThrowException(Type type, object value)
         {
-            var testHelper = typeof(ConstructorTests).GetMethod("FalsesTestHelper", BindingFlags.NonPublic | BindingFlags.Instance);
+            var testHelper = typeof(ConstructorTests).GetMethod(nameof(FalsesTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
             var genericHelper = testHelper.MakeGenericMethod(type);
             Assert.Throws<TargetInvocationException>(() => genericHelper.Invoke(this, new[] { value }));
         }
@@ -342,7 +342,7 @@ namespace NdArrayNet.NdArrayUnitTest
         [InlineData(typeof(char), (char)1)]
         public void Trues_UnsupportedType_ThrowException(Type type, object value)
         {
-            var testHelper = typeof(ConstructorTests).GetMethod("TruesTestHelper", BindingFlags.NonPublic | BindingFlags.Instance);
+            var testHelper = typeof(ConstructorTests).GetMethod(nameof(TruesTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
             var genericHelper = testHelper.MakeGenericMethod(type);
             Assert.Throws<TargetInvocationException>(() => genericHelper.Invoke(this, new[] { value }));
         }

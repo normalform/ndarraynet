@@ -25,7 +25,7 @@ namespace NdArray.NdFunction
             return Negate(StaticMethod.Value, source);
         }
 
-        public static void FillAnd(NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        public static void FillAnd(IFrontend<bool> target, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             FillAnd(StaticMethod.Value, target, lhs, rhs);
         }
@@ -41,7 +41,7 @@ namespace NdArray.NdFunction
             return And(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillOr(NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        public static void FillOr(IFrontend<bool> target, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             FillOr(StaticMethod.Value, target, lhs, rhs);
         }
@@ -57,7 +57,7 @@ namespace NdArray.NdFunction
             return Or(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillXor(NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        public static void FillXor(IFrontend<bool> target, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             FillXor(StaticMethod.Value, target, lhs, rhs);
         }
@@ -201,14 +201,14 @@ namespace NdArray.NdFunction
         internal static NdArray<bool> Negate(IStaticMethod staticMethod, NdArray<bool> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<bool, bool>(source, Order.RowMajor);
-            preparedTarget.AssertBool();
+            staticMethod.AssertBool(preparedTarget);
 
             FillNegate(preparedTarget, preparedSource);
 
             return preparedTarget;
         }
 
-        internal static void FillAnd(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        internal static void FillAnd(IStaticMethod staticMethod, IFrontend<bool> target, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.And(target, preparedLhs, preparedRhs);
@@ -217,43 +217,43 @@ namespace NdArray.NdFunction
         internal static NdArray<bool> And(IStaticMethod staticMethod, NdArray<bool> lhs, NdArray<bool> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, bool, bool>(lhs, rhs, Order.RowMajor);
-            preparedTarget.AssertBool();
+            staticMethod.AssertBool(preparedTarget);
 
             FillAnd(preparedTarget, preparedLhs, preparedRhs);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<bool>;
         }
 
-        internal static void FillOr(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        internal static void FillOr(IStaticMethod staticMethod, IFrontend<bool> target, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.Or(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<bool> Or(IStaticMethod staticMethod, NdArray<bool> lhs, NdArray<bool> rhs)
+        internal static NdArray<bool> Or(IStaticMethod staticMethod, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, bool, bool>(lhs, rhs, Order.RowMajor);
-            preparedTarget.AssertBool();
+            staticMethod.AssertBool(preparedTarget);
 
             FillOr(preparedTarget, preparedLhs, preparedRhs);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<bool>;
         }
 
-        internal static void FillXor(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> lhs, NdArray<bool> rhs)
+        internal static void FillXor(IStaticMethod staticMethod, IFrontend<bool> target, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             var (preparedLhs, preparedRhs) = staticMethod.PrepareElemwiseSources(target, lhs, rhs);
             target.Backend.Xor(target, preparedLhs, preparedRhs);
         }
 
-        internal static NdArray<bool> Xor(IStaticMethod staticMethod, NdArray<bool> lhs, NdArray<bool> rhs)
+        internal static NdArray<bool> Xor(IStaticMethod staticMethod, IFrontend<bool> lhs, IFrontend<bool> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, bool, bool>(lhs, rhs, Order.RowMajor);
-            preparedTarget.AssertBool();
+            staticMethod.AssertBool(preparedTarget);
 
             FillXor(preparedTarget, preparedLhs, preparedRhs);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<bool>;
         }
 
         internal static void FillAllAxis(IStaticMethod staticMethod, NdArray<bool> target, int axis, NdArray<bool> source)
