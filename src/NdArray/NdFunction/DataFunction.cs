@@ -16,7 +16,7 @@ namespace NdArray.NdFunction
         /// <param name="target">The target NdArray.</param>
         /// <typeparam name="TC">The data type to convert from.</typeparam>
         /// <param name="source">The NdArray to copy from.</param>
-        public static void FillConvert<TC>(NdArray<T> target, NdArray<TC> source)
+        public static void FillConvert<TC>(IFrontend<T> target, IFrontend<TC> source)
         {
             FillConvert(StaticMethod.Value, target, source);
         }
@@ -32,18 +32,18 @@ namespace NdArray.NdFunction
             return Convert(StaticMethod.Value, source);
         }
 
-        internal static void FillConvert<TC>(IStaticMethod staticMethod, NdArray<T> target, NdArray<TC> source)
+        internal static void FillConvert<TC>(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<TC> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Convert(target, preparedSource);
         }
 
-        internal static NdArray<T> Convert<TC>(IStaticMethod staticMethod, NdArray<TC> source)
+        internal static NdArray<T> Convert<TC>(IStaticMethod staticMethod, IFrontend<TC> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, TC>(source, Order.RowMajor);
             FillConvert(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
     }
 }

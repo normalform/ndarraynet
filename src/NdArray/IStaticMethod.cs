@@ -16,7 +16,7 @@ namespace NdArrayNet
 
         IFrontend<TA> BroadCastTo<TA>(int[] shp, IFrontend<TA> frontend);
 
-        (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order);
+        (IFrontend<TR>, IFrontend<TA>) PrepareElemwise<TR, TA>(IFrontend<TA> array, Order order);
 
         (IFrontend<TR>, IFrontend<TA>, IFrontend<TB>) PrepareElemwise<TR, TA, TB>(IFrontend<TA> arrayA, IFrontend<TB> arrayB, Order order);
 
@@ -37,5 +37,7 @@ namespace NdArrayNet
         (NdArray<TA>, NdArray<TR>) PrepareAxisReduceSources<TR, TA>(NdArray<TR> target, int axis, NdArray<TA> array, NdArray<TR> initial, Order order);
 
         (NdArray<TR>, NdArray<TA>) PrepareAxisReduceTarget<TR, TA>(int axis, NdArray<TA> array, Order order);
+
+        IFrontend<bool> IsCloseWithTolerence<T>(IFrontend<T> lhs, IFrontend<T> rhs, T absoluteTolerence, T relativeTolerence);
     }
 }

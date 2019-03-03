@@ -10,7 +10,7 @@ namespace NdArray.NdFunction
 
     internal class LogicalFunction<T> : FunctionBase
     {
-        public static void FillNegate(NdArray<bool> target, NdArray<bool> source)
+        public static void FillNegate(IFrontend<bool> target, IFrontend<bool> source)
         {
             FillNegate(StaticMethod.Value, target, source);
         }
@@ -192,20 +192,20 @@ namespace NdArray.NdFunction
             return IfThenElse(StaticMethod.Value, condition, ifTrue, ifFalse);
         }
 
-        internal static void FillNegate(IStaticMethod staticMethod, NdArray<bool> target, NdArray<bool> source)
+        internal static void FillNegate(IStaticMethod staticMethod, IFrontend<bool> target, IFrontend<bool> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Negate(target, preparedSource);
         }
 
-        internal static NdArray<bool> Negate(IStaticMethod staticMethod, NdArray<bool> source)
+        internal static NdArray<bool> Negate(IStaticMethod staticMethod, IFrontend<bool> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<bool, bool>(source, Order.RowMajor);
             staticMethod.AssertBool(preparedTarget);
 
             FillNegate(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<bool>;
         }
 
         internal static void FillAnd(IStaticMethod staticMethod, IFrontend<bool> target, IFrontend<bool> lhs, IFrontend<bool> rhs)

@@ -16,9 +16,9 @@ namespace NdArray.NdFunction.Comparison
         NdArray<bool> LessOrEqual(IFrontend<T> lhs, IFrontend<T> rhs);
         NdArray<bool> Greater(IFrontend<T> lhs, IFrontend<T> rhs);
         NdArray<bool> GreaterOrEqual(IFrontend<T> lhs, IFrontend<T> rhs);
-        NdArray<bool> IsClose(NdArray<T> lhs, NdArray<T> rhs, T absoluteTolerence, T relativeTolerence);
-        NdArray<bool> IsFinite(NdArray<T> source);
-        bool AlmostEqual(NdArray<T> lhs, NdArray<T> rhs, T absoluteTolerence, T relativeTolerence);
+        NdArray<bool> IsClose(IFrontend<T> lhs, IFrontend<T> rhs, T absoluteTolerence, T relativeTolerence);
+        NdArray<bool> IsFinite(IFrontend<T> source);
+        bool AlmostEqual(IFrontend<T> lhs, IFrontend<T> rhs, T absoluteTolerence, T relativeTolerence);
 
         void FillEqual(IFrontend<bool> result, IFrontend<T> lhs, IFrontend<T> rhs);
         void FillNotEqual(IFrontend<bool> result, IFrontend<T> lhs, IFrontend<T> rhs);
@@ -26,6 +26,6 @@ namespace NdArray.NdFunction.Comparison
         void FillLessOrEqual(IFrontend<bool> result, IFrontend<T> lhs, IFrontend<T> rhs);
         void FillGreater(IFrontend<bool> result, IFrontend<T> lhs, IFrontend<T> rhs);
         void FillGreaterOrEqual(IFrontend<bool> result, IFrontend<T> lhs, IFrontend<T> rhs);
-        void FillIsFinite(NdArray<bool> result, NdArray<T> source);
+        void FillIsFinite(IFrontend<bool> result, IFrontend<T> source);
     }
 }

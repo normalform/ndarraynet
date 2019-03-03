@@ -41,7 +41,7 @@ namespace NdArrayNet
             return ShapeFunction<TA>.BroadCastTo(shp, frontend);
         }
 
-        public (NdArray<TR>, NdArray<TA>) PrepareElemwise<TR, TA>(NdArray<TA> array, Order order)
+        public (IFrontend<TR>, IFrontend<TA>) PrepareElemwise<TR, TA>(IFrontend<TA> array, Order order)
         {
             var target = new NdArray<TR>(array.ConfigManager, array.Shape, order);
             return (target, array);
@@ -144,6 +144,21 @@ namespace NdArrayNet
             var target = new NdArray<TR>(array.ConfigManager, reducedShaped, order);
 
             return (target, array);
+        }
+
+        public IFrontend<bool> IsCloseWithTolerence<T>(IFrontend<T> lhs, IFrontend<T> rhs, T absoluteTolerence, T relativeTolerence)
+        {
+            var absoluteTolerenceScalar = NdArray<T>.ScalarLike(lhs, absoluteTolerence);
+            var relativeTolerenceScalar = NdArray<T>.ScalarLike(lhs, relativeTolerence);
+
+            var lhsArray = lhs as NdArray<T>;
+            var rhsArray = rhs as NdArray<T>;
+
+            /// NOTE This is not symmetric.
+            /// https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.isclose.html
+            var absDiff = NdArray<T>.Abs(lhsArray - rhsArray);
+            var absRhs = NdArray<T>.Abs(rhsArray);
+            return absDiff <= absoluteTolerenceScalar + (relativeTolerenceScalar * absRhs);
         }
     }
 }

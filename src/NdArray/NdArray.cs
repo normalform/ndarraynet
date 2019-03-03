@@ -1700,7 +1700,7 @@ namespace NdArrayNet
         {
             var (target, src) = staticMethod.PrepareElemwise<T, T>(this, order);
             target.Backend.Copy(target, src);
-            return target;
+            return target as NdArray<T>;
         }
 
         internal void FillConst(T value)

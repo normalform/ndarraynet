@@ -1,17 +1,18 @@
 ﻿// <copyright file="ComparisonTests.cs" company="NdArrayNet">
 // Copyright(c) 2019, Jaeho Kim
-// All rights reserved. 
+// All rights reserved.
 // Licensed under the BSD 2-Clause License; See the LICENSE file.
 // </copyright>
 
 namespace NdArrayNet.NdArrayUnitTest
 {
     using Moq;
+    using NdArray.NdFunction;
     using NdArray.NdFunction.Comparison;
     using NdArrayNet;
-    using Xunit;
     using System;
     using System.Reflection;
+    using Xunit;
 
     public class ComparisonTests
     {
@@ -23,7 +24,150 @@ namespace NdArrayNet.NdArrayUnitTest
             var genericHelper = testHelper.MakeGenericMethod(type);
             genericHelper.Invoke(this, null);
         }
-        
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void Equal(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(EqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void FillNotEqual(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillNotEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void NotEqual(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(NotEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void FillLess(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillLessTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void Less(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(LessTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void FillLessOrEqual(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillLessOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void LessOrEqual(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(LessOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void FillGreater(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillGreaterTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void Greater(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(GreaterTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void FillGreaterOrEqual(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillGreaterOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void GreaterOrEqual(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(GreaterOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void FillIsFinite(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillIsFiniteTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(typeof(int))]
+        public void IsFinite(Type type)
+        {
+            var testHelper = typeof(ComparisonTests).GetMethod(nameof(IsFiniteTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericHelper = testHelper.MakeGenericMethod(type);
+            genericHelper.Invoke(this, null);
+        }
+
+        [Theory]
+        [InlineData(0.1, 0.2)]
+        [InlineData(0.1f, 0.2f)]
+        public void IsClose<T>(T absoluteTolerence, T relativeTolerence)
+        {
+            IsCloseTestHelper(absoluteTolerence, relativeTolerence);
+        }
+
+        [Theory]
+        [InlineData(0.1, 0.2)]
+        [InlineData(0.1f, 0.2f)]
+        public void AlmostEqual_WithSameShape<T>(T absoluteTolerence, T relativeTolerence)
+        {
+            var sameShape = new[] { 1, 2, 3 };
+            AlmostEqualTestHelper(sameShape, sameShape, absoluteTolerence, relativeTolerence, true, 1);
+        }
+
+        [Theory]
+        [InlineData(0.1, 0.2)]
+        public void AlmostEqual_WithDifferentShape<T>(T absoluteTolerence, T relativeTolerence)
+        {
+            var lhsShape = new[] { 1, 2, 3 };
+            var rhsShape = new[] { 1, 2 };
+            AlmostEqualTestHelper(lhsShape, rhsShape, absoluteTolerence, relativeTolerence, false, 0);
+        }
+
         private void FillEqualTestHelper<T>()
         {
             // arrange
@@ -43,15 +187,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
             backendMock.Verify(m => m.Equal(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
-        }
-
-        [Theory]
-        [InlineData(typeof(int))]
-        public void Equal(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(EqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
         }
 
         private void EqualTestHelper<T>()
@@ -78,15 +213,6 @@ namespace NdArrayNet.NdArrayUnitTest
             backendMock.Verify(m => m.Equal(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
         }
 
-        [Theory]
-        [InlineData(typeof(int))]
-        public void FillNotEqual(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillNotEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
-        }
-
         private void FillNotEqualTestHelper<T>()
         {
             // arrange
@@ -106,15 +232,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
             backendMock.Verify(m => m.NotEqual(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
-        }
-
-        [Theory]
-        [InlineData(typeof(int))]
-        public void NotEqual(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(NotEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
         }
 
         private void NotEqualTestHelper<T>()
@@ -141,15 +258,6 @@ namespace NdArrayNet.NdArrayUnitTest
             backendMock.Verify(m => m.NotEqual(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
         }
 
-        [Theory]
-        [InlineData(typeof(int))]
-        public void FillLess(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillLessTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
-        }
-
         private void FillLessTestHelper<T>()
         {
             // arrange
@@ -169,15 +277,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
             backendMock.Verify(m => m.Less(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
-        }
-
-        [Theory]
-        [InlineData(typeof(int))]
-        public void Less(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(LessTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
         }
 
         private void LessTestHelper<T>()
@@ -204,15 +303,6 @@ namespace NdArrayNet.NdArrayUnitTest
             backendMock.Verify(m => m.Less(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
         }
 
-        [Theory]
-        [InlineData(typeof(int))]
-        public void FillLessOrEqual(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillLessOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
-        }
-
         private void FillLessOrEqualTestHelper<T>()
         {
             // arrange
@@ -232,15 +322,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
             backendMock.Verify(m => m.LessOrEqual(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
-        }
-
-        [Theory]
-        [InlineData(typeof(int))]
-        public void LessOrEqual(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(LessOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
         }
 
         private void LessOrEqualTestHelper<T>()
@@ -267,15 +348,6 @@ namespace NdArrayNet.NdArrayUnitTest
             backendMock.Verify(m => m.LessOrEqual(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
         }
 
-        [Theory]
-        [InlineData(typeof(int))]
-        public void FillGreater(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillGreaterTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
-        }
-
         private void FillGreaterTestHelper<T>()
         {
             // arrange
@@ -295,15 +367,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
             backendMock.Verify(m => m.Greater(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
-        }
-
-        [Theory]
-        [InlineData(typeof(int))]
-        public void Greater(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(GreaterTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
         }
 
         private void GreaterTestHelper<T>()
@@ -330,15 +393,6 @@ namespace NdArrayNet.NdArrayUnitTest
             backendMock.Verify(m => m.Greater(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
         }
 
-        [Theory]
-        [InlineData(typeof(int))]
-        public void FillGreaterOrEqual(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(FillGreaterOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
-        }
-
         private void FillGreaterOrEqualTestHelper<T>()
         {
             // arrange
@@ -358,15 +412,6 @@ namespace NdArrayNet.NdArrayUnitTest
             // assert
             staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
             backendMock.Verify(m => m.GreaterOrEqual(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
-        }
-
-        [Theory]
-        [InlineData(typeof(int))]
-        public void GreaterOrEqual(Type type)
-        {
-            var testHelper = typeof(ComparisonTests).GetMethod(nameof(GreaterOrEqualTestHelper), BindingFlags.NonPublic | BindingFlags.Instance);
-            var genericHelper = testHelper.MakeGenericMethod(type);
-            genericHelper.Invoke(this, null);
         }
 
         private void GreaterOrEqualTestHelper<T>()
@@ -393,134 +438,101 @@ namespace NdArrayNet.NdArrayUnitTest
             backendMock.Verify(m => m.GreaterOrEqual(resultMock.Object, lhsMock.Object, rhsMock.Object), Times.Once);
         }
 
-        //[Fact]
-        //public void IsClose_SameIntVectors_ReturnTrues()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var source = NdArray<int>.Arange(ConfigManager, 0, 10, 1);
+        private void FillIsFiniteTestHelper<T>()
+        {
+            // arrange
+            var backendMock = new Mock<IBackend<bool>>();
+            var resultMock = new Mock<IFrontend<bool>>();
+            resultMock.SetupGet(m => m.Backend).Returns(backendMock.Object);
+            var sourceMock = new Mock<IFrontend<T>>();
 
-        //    // action
-        //    var close = ComparisonFunction.IsClose(source, source);
+            var staticMethodMock = new Mock<IStaticMethod>();
+            staticMethodMock.Setup(m => m.PrepareElemwiseSources(resultMock.Object, sourceMock.Object)).Returns(sourceMock.Object);
+            var comparison = new NdComparison(staticMethodMock.Object).Get<T>();
 
-        //    // assert
-        //    Assert.Equal(new[] { 10 }, close.Shape);
-        //}
+            // action
+            comparison.FillIsFinite(resultMock.Object, sourceMock.Object);
 
-        //[Fact]
-        //public void IsClose_SameDoubleVectors_ReturnTrues()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var source = NdArray<double>.Arange(ConfigManager,0, 10, 1);
+            // assert
+            staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, sourceMock.Object), Times.Once);
+            backendMock.Verify(m => m.IsFinite(resultMock.Object, sourceMock.Object), Times.Once);
+        }
 
-        //    // action
-        //    var close = ComparisonFunction.IsClose(source, source);
+        private void IsFiniteTestHelper<T>()
+        {
+            // arrange
+            var backendMock = new Mock<IBackend<bool>>();
+            var resultMock = new Mock<IFrontend<bool>>();
+            resultMock.SetupGet(m => m.Backend).Returns(backendMock.Object);
+            var sourceMock = new Mock<IFrontend<T>>();
 
-        //    // assert
-        //    Assert.Equal(new[] { 10 }, close.Shape);
-        //}
+            var staticMethodMock = new Mock<IStaticMethod>();
+            staticMethodMock.Setup(m => m.PrepareElemwise<bool, T>(sourceMock.Object, Order.RowMajor)).Returns((resultMock.Object, sourceMock.Object));
+            staticMethodMock.Setup(m => m.PrepareElemwiseSources(resultMock.Object, sourceMock.Object)).Returns(sourceMock.Object);
+            var comparison = new NdComparison(staticMethodMock.Object).Get<T>();
 
-        //[Fact]
-        //public void IsClose_DifferentDoubleVectors_ReturnFalses()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var source = NdArray<double>.Arange(ConfigManager,0, 10, 1);
+            // action
+            comparison.IsFinite(sourceMock.Object);
 
-        //    // action
-        //    var close = ComparisonFunction.IsClose(source, source + 1.0);
+            // assert
+            staticMethodMock.Verify(m => m.PrepareElemwise<bool, T>(sourceMock.Object, Order.RowMajor), Times.Once);
+            staticMethodMock.Verify(m => m.PrepareElemwiseSources(resultMock.Object, sourceMock.Object), Times.Once);
+            staticMethodMock.Verify(m => m.AssertBool(resultMock.Object));
+            backendMock.Verify(m => m.IsFinite(resultMock.Object, sourceMock.Object), Times.Once);
+        }
 
-        //    // assert
-        //    Assert.Equal(new[] { 10 }, close.Shape);
-        //}
+        private void IsCloseTestHelper<T>(T absoluteTolerence, T relativeTolerence)
+        {
+            // arrange
+            var lhsMock = new Mock<IFrontend<T>>();
+            var rhsMock = new Mock<IFrontend<T>>();
 
-        //[Fact]
-        //public void IsClose_DifferentDoubleVectorsWithBigTolerence_ReturnTrue()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var source = NdArray<double>.Arange(ConfigManager,0, 10, 1);
+            var expectedResult = CreateTestResult();
 
-        //    // action
-        //    var close = ComparisonFunction.IsClose(source, source + 1.0, 2.0);
+            var staticMethodMock = new Mock<IStaticMethod>();
+            staticMethodMock.Setup(m => m.IsCloseWithTolerence(lhsMock.Object, rhsMock.Object, absoluteTolerence, relativeTolerence)).Returns(expectedResult);
+            var comparison = new NdComparison(staticMethodMock.Object).Get<T>();
 
-        //    // assert
-        //    Assert.Equal(new[] { 10 }, close.Shape);
-        //}
+            // action
+            var result = comparison.IsClose(lhsMock.Object, rhsMock.Object, absoluteTolerence, relativeTolerence);
 
-        //[Fact]
-        //public void IsClose_CloseDoubleVectors_ReturnTrue()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var sourceA = NdArray<double>.Arange(ConfigManager,0, 10, 1);
-        //    var sourceB = NdArray<double>.Arange(ConfigManager,0, 10, 1) + 1e-100;
+            // assert
+            Assert.Equal(expectedResult, result);
+            staticMethodMock.Verify(m => m.IsCloseWithTolerence(lhsMock.Object, rhsMock.Object, absoluteTolerence, relativeTolerence), Times.Once);
+        }
 
-        //    // action
-        //    var close = ComparisonFunction.IsClose(sourceA, sourceB);
+        private void AlmostEqualTestHelper<T>(int[] lhsShape, int[] rhsShape, T absoluteTolerence, T relativeTolerence, bool expectedResult, int verifyTimes)
+        {
+            // arrange
+            var lhsMock = new Mock<IFrontend<T>>();
+            var rhsMock = new Mock<IFrontend<T>>();
+            lhsMock.SetupGet(m => m.Shape).Returns(lhsShape);
+            rhsMock.SetupGet(m => m.Shape).Returns(rhsShape);
+            var dummyResult = CreateTestResult();
 
-        //    // assert
-        //    Assert.Equal(new[] { 10 }, close.Shape);
-        //}
+            var staticMethodMock = new Mock<IStaticMethod>();
+            staticMethodMock.Setup(m => m.IsCloseWithTolerence(lhsMock.Object, rhsMock.Object, absoluteTolerence, relativeTolerence)).Returns(dummyResult);
+            staticMethodMock.Setup(m => m.All(dummyResult)).Returns(expectedResult);
+            var comparison = new NdComparison(staticMethodMock.Object).Get<T>();
 
-        //[Fact]
-        //public void AlmostEqual_SameIntVectors_ReturnTrue()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var sourceA = NdArray<int>.Zeros(ConfigManager,new[] { 2, 3, 4 });
-        //    var sourceB = NdArray<int>.Zeros(ConfigManager,new[] { 2, 3, 4 });
+            // action
+            var result = comparison.AlmostEqual(lhsMock.Object, rhsMock.Object, absoluteTolerence, relativeTolerence);
 
-        //    // action
-        //    var almostEqual = ComparisonFunction.AlmostEqual(sourceA, sourceB);
+            // assert
+            Assert.Equal(expectedResult, result);
+            staticMethodMock.Verify(m => m.IsCloseWithTolerence(lhsMock.Object, rhsMock.Object, absoluteTolerence, relativeTolerence), Times.Exactly(verifyTimes));
+        }
 
-        //    // assert
-        //    Assert.True(almostEqual);
-        //}
+        private NdArray<bool> CreateTestResult()
+        {
+            var configMock = new Mock<IConfig<bool>>();
+            var functionMock = new Mock<INdFunction<bool>>();
+            var configManagerMock = new Mock<IConfigManager>();
+            configManagerMock.Setup(m => m.GetConfig<bool>()).Returns(configMock.Object);
+            configManagerMock.SetupGet(m => m.GetConfig<bool>().NdFunction).Returns(functionMock.Object);
+            var expectedResult = new NdArray<bool>(configManagerMock.Object, new[] { 1 });
 
-        //[Fact]
-        //public void AlmostEqual_DifferentIntVectors_ReturnFalse()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var sourceA = NdArray<int>.Zeros(ConfigManager,new[] { 2, 3, 4 });
-        //    var sourceB = NdArray<int>.Zeros(ConfigManager,new[] { 2, 3, 4 }) + 1;
-
-        //    // action
-        //    var almostEqual = ComparisonFunction.AlmostEqual(sourceA, sourceB);
-
-        //    // assert
-        //    Assert.False(almostEqual);
-        //}
-
-        //[Fact]
-        //public void FillIsFinite()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var source = NdArray<int>.Zeros(ConfigManager,new[] { 2, 3, 4 });
-        //    var result = NdArray<bool>.Ones(ConfigManager,new[] { 2, 3, 4 });
-
-        //    // action
-        //    ComparisonFunction.FillIsFinite(result, source);
-
-        //    // assert
-        //    Assert.True(NdArray<int>.All(result));
-        //}
-
-        //[Fact]
-        //public void IsFinite()
-        //{
-        //    // arrange
-        //    var config = DefaultConfig.Instance;
-        //    var source = NdArray<int>.Zeros(ConfigManager,new[] { 2, 3, 4 });
-
-        //    // action
-        //    var result = ComparisonFunction.IsFinite(source);
-
-        //    // assert
-        //    Assert.True(NdArray<int>.All(result));
-        //}
+            return expectedResult;
+        }
     }
 }

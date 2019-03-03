@@ -10,7 +10,7 @@ namespace NdArray.NdFunction
 
     internal class ElementWiseOperator<T> : FunctionBase
     {
-        public static void FillUnaryPlus(NdArray<T> target, NdArray<T> source)
+        public static void FillUnaryPlus(IFrontend<T> target, IFrontend<T> source)
         {
             FillUnaryPlus(StaticMethod.Value, target, source);
         }
@@ -20,7 +20,7 @@ namespace NdArray.NdFunction
             return UnaryPlus(StaticMethod.Value, source);
         }
 
-        public static void FillUnaryMinus(NdArray<T> target, NdArray<T> source)
+        public static void FillUnaryMinus(IFrontend<T> target, IFrontend<T> source)
         {
             FillUnaryMinus(StaticMethod.Value, target, source);
         }
@@ -122,33 +122,33 @@ namespace NdArray.NdFunction
             return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillUnaryPlus(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillUnaryPlus(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.UnaryPlus(target, preparedSource);
         }
 
-        internal static NdArray<T> UnaryPlus(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> UnaryPlus(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillUnaryPlus(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillUnaryMinus(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillUnaryMinus(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
 
             target.Backend.UnaryMinus(target, preparedSource);
         }
 
-        internal static NdArray<T> UnaryMinus(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> UnaryMinus(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillUnaryMinus(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
         internal static void FillAdd(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)

@@ -10,7 +10,7 @@ namespace NdArray.NdFunction
 
     internal class ElementWiseMathFunction<T> : FunctionBase
     {
-        public static void FillAbs(NdArray<T> target, NdArray<T> source)
+        public static void FillAbs(IFrontend<T> target, IFrontend<T> source)
         {
             FillAbs(StaticMethod.Value, target, source);
         }
@@ -25,7 +25,7 @@ namespace NdArray.NdFunction
             return Abs(StaticMethod.Value, source);
         }
 
-        public static void FillAcos(NdArray<T> target, NdArray<T> source)
+        public static void FillAcos(IFrontend<T> target, IFrontend<T> source)
         {
             FillAcos(StaticMethod.Value, target, source);
         }
@@ -40,7 +40,7 @@ namespace NdArray.NdFunction
             return Acos(StaticMethod.Value, source);
         }
 
-        public static void FillAsin(NdArray<T> target, NdArray<T> source)
+        public static void FillAsin(IFrontend<T> target, IFrontend<T> source)
         {
             FillAsin(StaticMethod.Value, target, source);
         }
@@ -55,7 +55,7 @@ namespace NdArray.NdFunction
             return Asin(StaticMethod.Value, source);
         }
 
-        public static void FillAtan(NdArray<T> target, NdArray<T> source)
+        public static void FillAtan(IFrontend<T> target, IFrontend<T> source)
         {
             FillAtan(StaticMethod.Value, target, source);
         }
@@ -70,7 +70,7 @@ namespace NdArray.NdFunction
             return Atan(StaticMethod.Value, source);
         }
 
-        public static void FillCeiling(NdArray<T> target, NdArray<T> source)
+        public static void FillCeiling(IFrontend<T> target, IFrontend<T> source)
         {
             FillCeiling(StaticMethod.Value, target, source);
         }
@@ -85,7 +85,7 @@ namespace NdArray.NdFunction
             return Ceiling(StaticMethod.Value, source);
         }
 
-        public static void FillCos(NdArray<T> target, NdArray<T> source)
+        public static void FillCos(IFrontend<T> target, IFrontend<T> source)
         {
             FillCos(StaticMethod.Value, target, source);
         }
@@ -100,7 +100,7 @@ namespace NdArray.NdFunction
             return Cos(StaticMethod.Value, source);
         }
 
-        public static void FillCosh(NdArray<T> target, NdArray<T> source)
+        public static void FillCosh(IFrontend<T> target, IFrontend<T> source)
         {
             FillCosh(StaticMethod.Value, target, source);
         }
@@ -115,7 +115,7 @@ namespace NdArray.NdFunction
             return Cosh(StaticMethod.Value, source);
         }
 
-        public static void FillExp(NdArray<T> target, NdArray<T> source)
+        public static void FillExp(IFrontend<T> target, IFrontend<T> source)
         {
             FillExp(StaticMethod.Value, target, source);
         }
@@ -130,7 +130,7 @@ namespace NdArray.NdFunction
             return Exp(StaticMethod.Value, source);
         }
 
-        public static void FillFloor(NdArray<T> target, NdArray<T> source)
+        public static void FillFloor(IFrontend<T> target, IFrontend<T> source)
         {
             FillFloor(StaticMethod.Value, target, source);
         }
@@ -145,7 +145,7 @@ namespace NdArray.NdFunction
             return Floor(StaticMethod.Value, source);
         }
 
-        public static void FillLog(NdArray<T> target, NdArray<T> source)
+        public static void FillLog(IFrontend<T> target, IFrontend<T> source)
         {
             FillLog(StaticMethod.Value, target, source);
         }
@@ -160,7 +160,7 @@ namespace NdArray.NdFunction
             return Log(StaticMethod.Value, source);
         }
 
-        public static void FillLog10(NdArray<T> target, NdArray<T> source)
+        public static void FillLog10(IFrontend<T> target, IFrontend<T> source)
         {
             FillLog10(StaticMethod.Value, target, source);
         }
@@ -229,7 +229,7 @@ namespace NdArray.NdFunction
             return Pow(StaticMethod.Value, lhs, rhs);
         }
 
-        public static void FillRound(NdArray<T> target, NdArray<T> source)
+        public static void FillRound(IFrontend<T> target, IFrontend<T> source)
         {
             FillRound(StaticMethod.Value, target, source);
         }
@@ -244,7 +244,7 @@ namespace NdArray.NdFunction
             return Round(StaticMethod.Value, source);
         }
 
-        public static void FillSign(NdArray<T> target, NdArray<T> source)
+        public static void FillSign(IFrontend<T> target, IFrontend<T> source)
         {
             FillSign(StaticMethod.Value, target, source);
         }
@@ -259,7 +259,7 @@ namespace NdArray.NdFunction
             return Sign(StaticMethod.Value, source);
         }
 
-        public static void FillSin(NdArray<T> target, NdArray<T> source)
+        public static void FillSin(IFrontend<T> target, IFrontend<T> source)
         {
             FillSin(StaticMethod.Value, target, source);
         }
@@ -274,7 +274,7 @@ namespace NdArray.NdFunction
             return Sin(StaticMethod.Value, source);
         }
 
-        public static void FillSinh(NdArray<T> target, NdArray<T> source)
+        public static void FillSinh(IFrontend<T> target, IFrontend<T> source)
         {
             FillSinh(StaticMethod.Value, target, source);
         }
@@ -289,7 +289,7 @@ namespace NdArray.NdFunction
             return Sinh(StaticMethod.Value, source);
         }
 
-        public static void FillSqrt(NdArray<T> target, NdArray<T> source)
+        public static void FillSqrt(IFrontend<T> target, IFrontend<T> source)
         {
             FillSqrt(StaticMethod.Value, target, source);
         }
@@ -304,7 +304,7 @@ namespace NdArray.NdFunction
             return Sqrt(StaticMethod.Value, source);
         }
 
-        public static void FillTan(NdArray<T> target, NdArray<T> source)
+        public static void FillTan(IFrontend<T> target, IFrontend<T> source)
         {
             FillTan(StaticMethod.Value, target, source);
         }
@@ -319,7 +319,7 @@ namespace NdArray.NdFunction
             return Tan(StaticMethod.Value, source);
         }
 
-        public static void FillTanh(NdArray<T> target, NdArray<T> source)
+        public static void FillTanh(IFrontend<T> target, IFrontend<T> source)
         {
             FillTanh(StaticMethod.Value, target, source);
         }
@@ -334,7 +334,7 @@ namespace NdArray.NdFunction
             return Tanh(StaticMethod.Value, source);
         }
 
-        public static void FillTruncate(NdArray<T> target, NdArray<T> source)
+        public static void FillTruncate(IFrontend<T> target, IFrontend<T> source)
         {
             FillTruncate(StaticMethod.Value, target, source);
         }
@@ -344,171 +344,171 @@ namespace NdArray.NdFunction
         /// </summary>
         /// <param name="source">The NdArray to apply this operation to.</param>
         /// <returns>A new NdArray containing the result of this operation.</returns>
-        public static NdArray<T> Truncate(NdArray<T> source)
+        public static NdArray<T> Truncate(IFrontend<T> source)
         {
             return Truncate(StaticMethod.Value, source);
         }
 
-        internal static NdArray<T> Truncate(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Truncate(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillTruncate(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillAbs(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillAbs(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Abs(target, preparedSource);
         }
 
-        internal static NdArray<T> Abs(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Abs(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSrouce) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillAbs(preparedTarget, preparedSrouce);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillAcos(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillAcos(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Acos(target, preparedSource);
         }
 
-        internal static NdArray<T> Acos(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Acos(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillAcos(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillAsin(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillAsin(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var src2 = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Asin(target, src2);
         }
 
-        internal static NdArray<T> Asin(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Asin(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillAsin(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillAtan(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillAtan(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Atan(target, preparedSource);
         }
 
-        internal static NdArray<T> Atan(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Atan(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillAtan(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillCeiling(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillCeiling(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var src2 = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Ceiling(target, src2);
         }
 
-        internal static NdArray<T> Ceiling(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Ceiling(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillCeiling(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillCos(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillCos(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Cos(target, preparedSource);
         }
 
-        internal static NdArray<T> Cos(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Cos(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillCos(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillCosh(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillCosh(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Cosh(target, preparedSource);
         }
 
-        internal static NdArray<T> Cosh(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Cosh(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillCosh(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillExp(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillExp(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Exp(target, preparedSource);
         }
 
-        internal static NdArray<T> Exp(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Exp(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillExp(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillFloor(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillFloor(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Floor(target, preparedSource);
         }
 
-        internal static NdArray<T> Floor(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Floor(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillFloor(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillLog(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillLog(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Log(target, preparedSource);
         }
 
-        internal static NdArray<T> Log(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Log(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillLog(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillLog10(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillLog10(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Log10(target, preparedSource);
         }
 
-        internal static NdArray<T> Log10(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Log10(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillLog10(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
         internal static void FillMaximum(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> lhs, IFrontend<T> rhs)
@@ -553,105 +553,105 @@ namespace NdArray.NdFunction
             return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillRound(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillRound(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Round(target, preparedSource);
         }
 
-        internal static NdArray<T> Round(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Round(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillRound(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillSign(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillSign(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Sign(target, preparedSource);
         }
 
-        internal static NdArray<T> Sign(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Sign(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillSign(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillSin(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillSin(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Sin(target, preparedSource);
         }
 
-        internal static NdArray<T> Sin(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Sin(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillSin(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static NdArray<T> Sinh(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Sinh(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillSinh(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillSinh(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillSinh(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Sinh(target, preparedSource);
         }
 
-        internal static void FillSqrt(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillSqrt(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Sqrt(target, preparedSource);
         }
 
-        internal static NdArray<T> Sqrt(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Sqrt(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillSqrt(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillTan(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillTan(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Tan(target, preparedSource);
         }
 
-        internal static NdArray<T> Tan(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Tan(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillTan(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillTanh(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillTanh(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Tanh(target, preparedSource);
         }
 
-        internal static NdArray<T> Tanh(IStaticMethod staticMethod, NdArray<T> source)
+        internal static NdArray<T> Tanh(IStaticMethod staticMethod, IFrontend<T> source)
         {
             var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<T, T>(source, Order.RowMajor);
             FillTanh(preparedTarget, preparedSource);
 
-            return preparedTarget;
+            return preparedTarget as NdArray<T>;
         }
 
-        internal static void FillTruncate(IStaticMethod staticMethod, NdArray<T> target, NdArray<T> source)
+        internal static void FillTruncate(IStaticMethod staticMethod, IFrontend<T> target, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(target, source);
             target.Backend.Truncate(target, preparedSource);

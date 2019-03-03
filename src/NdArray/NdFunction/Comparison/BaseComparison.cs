@@ -18,16 +18,6 @@ namespace NdArray.NdFunction.Comparison
             this.staticMethod = staticMethod;
         }
 
-        public virtual bool AlmostEqual(NdArray<T> lhs, NdArray<T> rhs, T absoluteTolerence, T relativeTolerence)
-        {
-            if (Enumerable.SequenceEqual(lhs.Shape, rhs.Shape))
-            {
-                return staticMethod.All(IsClose(lhs, rhs, absoluteTolerence, relativeTolerence));
-            }
-
-            return false;
-        }
-
         public virtual NdArray<bool> Equal(IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedTarget, preapredLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
@@ -56,7 +46,7 @@ namespace NdArray.NdFunction.Comparison
             result.Backend.GreaterOrEqual(result, preparedLhs, preparedRhs);
         }
 
-        public virtual void FillIsFinite(NdArray<bool> result, NdArray<T> source)
+        public virtual void FillIsFinite(IFrontend<bool> result, IFrontend<T> source)
         {
             var preparedSource = staticMethod.PrepareElemwiseSources(result, source);
             result.Backend.IsFinite(result, preparedSource);
@@ -100,21 +90,6 @@ namespace NdArray.NdFunction.Comparison
             return preparedTarget as NdArray<bool>;
         }
 
-        public virtual NdArray<bool> IsClose(NdArray<T> lhs, NdArray<T> rhs, T absoluteTolerence, T relativeTolerence)
-        {
-            return IsCloseWithTolerence(lhs, rhs, absoluteTolerence, relativeTolerence);
-        }
-
-        public virtual NdArray<bool> IsFinite(NdArray<T> source)
-        {
-            var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<bool, T>(source, Order.RowMajor);
-            staticMethod.AssertBool(preparedTarget);
-
-            FillIsFinite(preparedTarget, source);
-
-            return preparedTarget;
-        }
-
         public virtual NdArray<bool> Less(IFrontend<T> lhs, IFrontend<T> rhs)
         {
             var (preparedTarget, preparedLhs, preparedRhs) = staticMethod.PrepareElemwise<bool, T, T>(lhs, rhs, Order.RowMajor);
@@ -145,30 +120,29 @@ namespace NdArray.NdFunction.Comparison
             return preparedTarget as NdArray<bool>;
         }
 
-        private static NdArray<bool> IsCloseWithoutTolerence(NdArray<T> lhs, NdArray<T> rhs)
+        public virtual NdArray<bool> IsFinite(IFrontend<T> source)
         {
-            if (typeof(T) == typeof(double) || typeof(T) == typeof(float))
-            {
-                var op = ScalarPrimitivesRegistry.For<T, double>();
-                T absoluteTolerenceT = op.Convert(1e-8);
-                T relativeTolerenceT = op.Convert(1e-5);
+            var (preparedTarget, preparedSource) = staticMethod.PrepareElemwise<bool, T>(source, Order.RowMajor);
+            staticMethod.AssertBool(preparedTarget);
 
-                return IsCloseWithTolerence(lhs, rhs, absoluteTolerenceT, relativeTolerenceT);
-            }
+            FillIsFinite(preparedTarget, source);
 
-            return lhs == rhs;
+            return preparedTarget as NdArray<bool>;
         }
 
-        private static NdArray<bool> IsCloseWithTolerence(NdArray<T> lhs, NdArray<T> rhs, T absoluteTolerence, T relativeTolerence)
+        public virtual NdArray<bool> IsClose(IFrontend<T> lhs, IFrontend<T> rhs, T absoluteTolerence, T relativeTolerence)
         {
-            var absoluteTolerenceScalar = NdArray<T>.ScalarLike(lhs, absoluteTolerence);
-            var relativeTolerenceScalar = NdArray<T>.ScalarLike(lhs, relativeTolerence);
+            return staticMethod.IsCloseWithTolerence(lhs, rhs, absoluteTolerence, relativeTolerence) as NdArray<bool>;
+        }
 
-            /// NOTE This is not symmetric.
-            /// https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.isclose.html
-            var absDiff = NdArray<T>.Abs(lhs - rhs);
-            var absRhs = NdArray<T>.Abs(rhs);
-            return absDiff <= absoluteTolerenceScalar + (relativeTolerenceScalar * absRhs);
+        public virtual bool AlmostEqual(IFrontend<T> lhs, IFrontend<T> rhs, T absoluteTolerence, T relativeTolerence)
+        {
+            if (Enumerable.SequenceEqual(lhs.Shape, rhs.Shape))
+            {
+                return staticMethod.All(IsClose(lhs, rhs, absoluteTolerence, relativeTolerence));
+            }
+
+            return false;
         }
     }
 }
